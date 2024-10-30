@@ -25,4 +25,12 @@ permissions:
   contents: read
 jobs:
   run-clang-format:
-    uses: secretflow/.github/.github/workflows/clang-format.yml@main
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4.2.0
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
+        - uses: jidicula/clang-format-action@v4.13.0 # latest
+          with:
+            clang-format-version: '18'
