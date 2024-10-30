@@ -23,7 +23,9 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Configure System
-      run: gcc --version
+      run: |
+        gcc --version 
+        apt-get install libpthread-stubs0-dev
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
