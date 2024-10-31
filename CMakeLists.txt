@@ -70,6 +70,9 @@ endif()
 # set fetch content base directory
 set(FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/external_cmake)
 
+# prefer -pthread instead of -lpthread or -lpthreads
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+
 include(ExternalAbseil)
 include(ExternalBlake3)
 include(ExternalFmt)
