@@ -34,7 +34,8 @@ jobs:
 
         # sudo apt-get install libpthread-stubs0-dev
         # See: https://askubuntu.com/a/1375621
-        # sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthreads.so
         ls -l /usr/lib/x86_64-linux-gnu | grep pthread
 
     - name: Configure CMake
