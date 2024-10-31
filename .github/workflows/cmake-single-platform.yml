@@ -30,7 +30,7 @@ jobs:
         echo $PATH
 
         echo $LIBRARY_PATH
-        export $LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
+        export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
         echo $LIBRARY_PATH
 
         # show ld search path
