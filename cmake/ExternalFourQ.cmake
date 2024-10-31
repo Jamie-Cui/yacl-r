@@ -31,7 +31,7 @@ ExternalProject_Add(
   URL ${YACL_EXT_FOURQ_URL}
   URL_HASH SHA256=${YACL_EXT_FOURQ_SHA256}
   BUILD_IN_SOURCE true
-  PATCH_COMMAND patch -p1 -l -i
+  PATCH_COMMAND patch -p1 -l --binary -i
                 ${PROJECT_SOURCE_DIR}/bazel/patches/FourQlib.patch
   CONFIGURE_COMMAND "" # no configure
   BUILD_COMMAND ${YACL_EXT_FOURQ_BUILD_COMMAND}
