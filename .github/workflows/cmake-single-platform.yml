@@ -26,10 +26,8 @@ jobs:
       run: |
         gcc --version
         echo $PATH
-        ls /usr/lib/x86_64-linux-gnu/
-        # sudo locate libpthread.so
-        # sudo apt-get install -y build-essential
-        # sudo apt-get install -y libpthread-stubs0-dev
+        # see: https://askubuntu.com/a/1375621
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
