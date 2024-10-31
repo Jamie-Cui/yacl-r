@@ -29,13 +29,12 @@ jobs:
         c++ --version
         cmake --version
         ld -v
-        # show ld search path
-        ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012
-
-        sudo apt-get install libpthread-stubs0-dev
         
+        ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012 # show ld search path
+
+        # sudo apt-get install libpthread-stubs0-dev
         # See: https://askubuntu.com/a/1375621
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
+        # sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
         ls -l /usr/lib/x86_64-linux-gnu | grep pthread
 
     - name: Configure CMake
