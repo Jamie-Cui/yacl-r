@@ -27,6 +27,8 @@ jobs:
       run: |
         gcc --version
         c++ --version
+        ls -l which(c++)
+        g++ --version
         cmake --version
         ld -v
         
