@@ -25,8 +25,18 @@ jobs:
     - name: Configure System
       run: |
         gcc --version
+        
+        # Show system path
         echo $PATH
-        # see: https://askubuntu.com/a/1375621
+
+        echo $LIBRARY_PATH
+        export $LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
+        echo $LIBRARY_PATH
+
+        # show ld search path
+        ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012
+        
+        # See: https://askubuntu.com/a/1375621
         sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
 
     - name: Configure CMake
