@@ -35,8 +35,10 @@ jobs:
         ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012 # show ld search path
 
         # should fix the "missing pthread_create in pthread.so" error
-        nm /usr/lib/x86_64-linux-gnu/libpthread.so.0 | grep "pthread_create"
         ls -l /usr/lib/x86_64-linux-gnu | grep pthread
+        ls -l /usr/lib/x86_64-linux-gnu/libpthread.so.0
+        nm /usr/lib/x86_64-linux-gnu/libpthread.so.0 | grep "pthread_create"
+        
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
