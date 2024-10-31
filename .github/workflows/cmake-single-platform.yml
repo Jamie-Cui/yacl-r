@@ -28,12 +28,12 @@ jobs:
         cmake --version
         # show ld search path
         ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012
-        
-        # echo $PATH
-        # export LIBRARY_PATH=$LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/
+
+        sudo apt-get install libpthread-stubs0-dev
         
         # See: https://askubuntu.com/a/1375621
         sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
+        ls -l /usr/lib/x86_64-linux-gnu/libpthread.so
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
