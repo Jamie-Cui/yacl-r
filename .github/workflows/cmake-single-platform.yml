@@ -34,6 +34,9 @@ jobs:
         
         ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012 # show ld search path
 
+        # should fix the "missing pthread_create in pthread.so" error
+        sudo apt install -y libc6-dev
+
         # sudo apt-get install libpthread-stubs0-dev
         # See: https://askubuntu.com/a/1375621
         sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0 /usr/lib/x86_64-linux-gnu/libpthread.so
