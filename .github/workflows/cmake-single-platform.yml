@@ -26,6 +26,7 @@ jobs:
     - name: Configure System
       run: |
         gcc --version
+        c++ --version
         cmake --version
         ld -v
         # show ld search path
