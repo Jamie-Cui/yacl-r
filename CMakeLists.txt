@@ -52,8 +52,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Enable C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED YES)
-set(CMAKE_EXE_LINKER_FLAGS
-    "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup")
+# set(CMAKE_EXE_LINKER_FLAGS
+#    "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup")
 
 include(GNUInstallDirs)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
@@ -82,7 +82,7 @@ include(ExternalGTest)
 include(ExternalGflags)
 include(ExternalMsgpack)
 include(ExternalOpenSSL)
-include(ExternalLibtommath)
+include(ExternalLibTommath)
 include(ExternalSse2neon)
 include(ExternalMcl)
 include(ExternalFourQ)
