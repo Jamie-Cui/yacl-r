@@ -117,7 +117,7 @@ inline int CountBitWidth(uint128_t v) {
 
 namespace std {
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || defined(__GLIBCXX__)
 #else
 constexpr int128_t abs(int128_t x) { return x >= 0 ? x : -x; }
 #endif
@@ -134,7 +134,7 @@ struct is_scalar<uint128_t> : public true_type {};
 template <>
 struct is_scalar<int128_t> : public true_type {};
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L || defined(__GLIBCXX__)
 //-std=gnu++20 pass, -std=c++20 failed
 static_assert(is_integral<uint128_t>::value == true);
 static_assert(is_integral<int128_t>::value == true);

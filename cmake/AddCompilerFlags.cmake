@@ -35,6 +35,7 @@ add_compiler_flags("-Werror")
 
 # FIXME remove this flag
 add_compiler_flags("-Wno-unused-function")
+add_compiler_flags("-Wno-vla") # no variable length error warning
 
 # For cryptos
 add_compiler_flags("-maes")
