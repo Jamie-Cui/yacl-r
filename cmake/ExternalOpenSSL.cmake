@@ -23,14 +23,16 @@ set(YACL_WITH_EXT_OPENSSL TRUE)
 # https://cmake.org/cmake/help/v3.4/module/FindOpenSSL.html
 find_package(OpenSSL QUIET)
 
-if(${OPENSSL_FOUND} AND ${OPENSSL_VERSION} VERSION_GREATER "5.0.0")
-  message(STATUS "Found system OpenSSL (${OPENSSL_VERSION})")
-  set(YACL_WITH_EXT_OPENSSL FALSE)
-else()
-  message(STATUS "OpenSSL not found, or its version is incompatiable")
-  message(STATUS "Use downloaded OpenSSL (${YACL_EXT_OPENSSL_VERSION}) instead")
-  set(YACL_WITH_EXT_OPENSSL TRUE)
-endif()
+set(YACL_WITH_EXT_OPENSSL TRUE)
+
+# if(${OPENSSL_FOUND} AND ${OPENSSL_VERSION} VERSION_GREATER "5.0.0")
+#   message(STATUS "Found system OpenSSL (${OPENSSL_VERSION})")
+#   set(YACL_WITH_EXT_OPENSSL FALSE)
+# else()
+#   message(STATUS "OpenSSL not found, or its version is incompatiable")
+#   message(STATUS "Use downloaded OpenSSL (${YACL_EXT_OPENSSL_VERSION}) instead")
+#   set(YACL_WITH_EXT_OPENSSL TRUE)
+# endif()
 
 if(YACL_WITH_EXT_OPENSSL)
   ExternalProject_Add(
