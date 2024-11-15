@@ -80,9 +80,7 @@ OpensslDrbg::OpensslDrbg(std::string type,
     // instantiate the es_ctx
     OSSL_RET_1(EVP_RAND_instantiate(es_ctx.get(), 128, 0, nullptr, 0, nullptr));
   } else {
-    SPDLOG_DEBUG(
-        "Yacl has been configured to use Yacl's entropy source, but unable "
-        "to find one. Fallback to use openssl's default entropy srouce");
+    SPDLOG_WARN("Yacl is using openssl's default entropy srouce for randomness");
   }
 
   // fetch rand (drbg with the specified type) algorithm from OpenSSL's default
