@@ -25,7 +25,7 @@
 #include "yacl/kernel/algorithms/base_ot.h"
 #include "yacl/kernel/algorithms/ferret_ote.h"
 #include "yacl/kernel/algorithms/softspoken_ote.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 namespace yacl::crypto {
 

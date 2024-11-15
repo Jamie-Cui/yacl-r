@@ -21,16 +21,16 @@
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 namespace yacl::crypto {
 namespace {
 
-void SetupEVPCipherCtx(openssl::UniqueCipherCtx* ctx,
+void SetupEVPCipherCtx(ossl::UniqueCipherCtx* ctx,
                        SymmetricCrypto::CryptoType type, uint128_t key,
                        uint128_t iv, int enc) {
   // This uses AES-128, so the key must be 128 bits.
-  const auto cipher = openssl::FetchEvpCipher(ToString(type));
+  const auto cipher = ossl::FetchEvpCipher(ToString(type));
   YACL_ENFORCE(sizeof(key) == EVP_CIPHER_key_length(cipher.get()));
   const auto* key_data = reinterpret_cast<const uint8_t*>(&key);
   const auto* iv_data = reinterpret_cast<const uint8_t*>(&iv);
@@ -72,8 +72,8 @@ uint128_t CopyDataAsUint128(const uint8_t* data) {
 SymmetricCrypto::SymmetricCrypto(CryptoType type, uint128_t key, uint128_t iv)
     : type_(type), key_(key), iv_(iv) {
   // Init openssl encryption/decryption context
-  enc_ctx_ = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
-  dec_ctx_ = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  enc_ctx_ = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  dec_ctx_ = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
 
   SetupEVPCipherCtx(&enc_ctx_, type_, key_, iv_, 1);
   SetupEVPCipherCtx(&dec_ctx_, type_, key_, iv_, 0);
@@ -85,8 +85,8 @@ SymmetricCrypto::SymmetricCrypto(CryptoType type, ByteContainerView key,
       key_(CopyDataAsUint128(key.data())),
       iv_(CopyDataAsUint128(iv.data())) {
   // Init openssl encryption/decryption context
-  enc_ctx_ = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
-  dec_ctx_ = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  enc_ctx_ = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  dec_ctx_ = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
 
   SetupEVPCipherCtx(&enc_ctx_, type_, key_, iv_, 1);
   SetupEVPCipherCtx(&dec_ctx_, type_, key_, iv_, 0);

@@ -15,14 +15,14 @@
 #include "yacl/crypto/hash/ssl_hash.h"
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/utils/scope_guard.h"
 
 namespace yacl::crypto {
 
 SslHash::SslHash(HashAlgorithm hash_algo)
     : hash_algo_(hash_algo),
-      md_(openssl::FetchEvpMd(ToString(hash_algo))),
+      md_(ossl::FetchEvpMd(ToString(hash_algo))),
       context_(EVP_MD_CTX_new()),
       digest_size_(EVP_MD_size(md_.get())) {
   Reset();
@@ -35,7 +35,7 @@ size_t SslHash::DigestSize() const { return digest_size_; }
 SslHash& SslHash::Reset() {
   OSSL_RET_1(EVP_MD_CTX_reset(context_.get()));
   int res = 0;
-  const auto md = openssl::FetchEvpMd(ToString(hash_algo_));
+  const auto md = ossl::FetchEvpMd(ToString(hash_algo_));
   res = EVP_DigestInit_ex(context_.get(), md.get(), nullptr);
   OSSL_RET_1(res);
 
@@ -53,7 +53,7 @@ std::vector<uint8_t> SslHash::CumulativeHash() const {
   // Do not finalize the internally stored hash context. Instead, finalize a
   // copy of the current context so that the current context can be updated in
   // future calls to Update.
-  auto ctx_snapshot = openssl::UniqueMdCtx(EVP_MD_CTX_new());
+  auto ctx_snapshot = ossl::UniqueMdCtx(EVP_MD_CTX_new());
   YACL_ENFORCE(ctx_snapshot != nullptr);
 
   EVP_MD_CTX_init(ctx_snapshot.get());  // no return value

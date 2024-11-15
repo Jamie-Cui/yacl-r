@@ -36,7 +36,7 @@ yacl_cc_library(
     ],
     visibility = ["//visibility:private"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/utils/spi",
     ],
 )

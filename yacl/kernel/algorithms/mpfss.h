@@ -20,7 +20,7 @@
 /* submodules */
 #include "yacl/crypto/rand/rand.h"
 #include "yacl/kernel/type/ot_store_utils.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 // this module is only a wrapper, no need for security parameter definition

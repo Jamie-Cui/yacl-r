@@ -28,7 +28,7 @@
 #include "yacl/kernel/algorithms/softspoken_ote.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/context.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/parallel.h"
 #include "yacl/utils/thread_pool.h"
 

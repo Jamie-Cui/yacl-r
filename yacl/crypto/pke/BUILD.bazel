@@ -30,7 +30,7 @@ yacl_cc_library(
     hdrs = ["sm2_enc.h"],
     deps = [
         ":pke_interface",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/crypto:key_utils",
     ],
@@ -50,7 +50,7 @@ yacl_cc_library(
     hdrs = ["rsa_enc.h"],
     deps = [
         ":pke_interface",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/crypto:key_utils",
     ],

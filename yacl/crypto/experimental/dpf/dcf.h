@@ -32,7 +32,7 @@
 /* submodules */
 #include "yacl/crypto/rand/rand.h"
 #include "yacl/crypto/tools/prg.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 YACL_MODULE_DECLARE("dcf", SecParam::C::k128, SecParam::S::INF);
 

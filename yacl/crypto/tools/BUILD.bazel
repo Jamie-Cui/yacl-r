@@ -31,7 +31,7 @@ yacl_cc_library(
     srcs = ["prg.cc"],
     hdrs = ["prg.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:dynamic_bitset",
         "//yacl/crypto/block_cipher:symmetric_crypto",
         "//yacl/math/mpint",

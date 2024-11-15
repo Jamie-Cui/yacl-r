@@ -23,7 +23,7 @@
 #include <memory>
 
 #include "yacl/kernel/algorithms/base_ot_interface.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("base_ot_x86_asm", SecParam::C::k128, SecParam::S::INF);

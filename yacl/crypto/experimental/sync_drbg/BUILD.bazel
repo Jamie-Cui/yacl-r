@@ -21,8 +21,8 @@ yacl_cc_library(
     srcs = ["sync_drbg.cc"],
     hdrs = ["sync_drbg.h"],
     deps = [
-        "//yacl:secparam",
-        "//yacl/crypto:openssl_wrappers",
+        "//yacl/base:secparam",
+        "//yacl/crypto:ossl_wrappers",
         "//yacl/crypto/block_cipher:symmetric_crypto",
         "//yacl/crypto/rand/entropy_source",
         "//yacl/link:context",

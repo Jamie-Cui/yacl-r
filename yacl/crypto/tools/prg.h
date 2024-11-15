@@ -26,7 +26,7 @@
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
 #include "yacl/math/mpint/mp_int.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"

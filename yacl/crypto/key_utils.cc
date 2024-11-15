@@ -16,7 +16,7 @@
 
 #include <cstddef>
 
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/io/stream/file_io.h"
 
 namespace yacl::crypto {
@@ -41,14 +41,14 @@ inline void AddX509Extension(X509* cert, int nid, char* value) {
   // self signed
   X509V3_set_ctx(&ctx, cert, cert, nullptr, nullptr, 0);
   auto ex =
-      openssl::UniqueX509Ext(X509V3_EXT_nconf_nid(nullptr, &ctx, nid, value));
+      ossl::UniqueX509Ext(X509V3_EXT_nconf_nid(nullptr, &ctx, nid, value));
 
   YACL_ENFORCE(ex != nullptr);
   X509_add_ext(cert, ex.get(), -1);
 }
 
 // convert bio file to yacl::Buffer
-inline Buffer BioToBuf(const openssl::UniqueBio& bio) {
+inline Buffer BioToBuf(const ossl::UniqueBio& bio) {
   int num_bytes = BIO_pending(bio.get());
   YACL_ENFORCE_GT(num_bytes, 0, "BIO_pending failed.");
 
@@ -79,11 +79,11 @@ inline void ExportBufToFile(Buffer&& buf, const std::string& file_path) {
 // Key Pair Generation
 // -------------------
 
-openssl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen) {
+ossl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen) {
   /* EVP_RSA_gen() may be set deprecated by later version of OpenSSL */
   EVP_PKEY* pkey = EVP_PKEY_new();  // placeholder
 
-  openssl::UniquePkeyCtx ctx(
+  ossl::UniquePkeyCtx ctx(
       EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   OSSL_RET_1(EVP_PKEY_keygen_init(ctx.get()));
@@ -93,13 +93,13 @@ openssl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen) {
 
   // generate keys
   OSSL_RET_1(EVP_PKEY_keygen(ctx.get(), &pkey));
-  return openssl::UniquePkey(pkey);
+  return ossl::UniquePkey(pkey);
 }
 
-openssl::UniquePkey GenSm2KeyPair() {
+ossl::UniquePkey GenSm2KeyPair() {
   EVP_PKEY* pkey = EVP_PKEY_new();  // placeholder
 
-  openssl::UniquePkeyCtx ctx(
+  ossl::UniquePkeyCtx ctx(
       EVP_PKEY_CTX_new_id(EVP_PKEY_SM2, /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   OSSL_RET_1(EVP_PKEY_keygen_init(ctx.get()));
@@ -111,7 +111,7 @@ openssl::UniquePkey GenSm2KeyPair() {
 
   // generate keys
   OSSL_RET_1(EVP_PKEY_keygen(ctx.get(), &pkey));
-  return openssl::UniquePkey(pkey);
+  return ossl::UniquePkey(pkey);
 }
 
 std::pair<Buffer, Buffer> GenRsaKeyPairToPemBuf(unsigned rsa_keygen) {
@@ -133,16 +133,16 @@ std::pair<Buffer, Buffer> GenSm2KeyPairToPemBuf() {
 // -------------------
 
 // load pem from buffer
-openssl::UniquePkey LoadKeyFromBuf(ByteContainerView buf) {
+ossl::UniquePkey LoadKeyFromBuf(ByteContainerView buf) {
   // load the buffer to bio
-  openssl::UniqueBio bio(BIO_new_mem_buf(buf.data(), buf.size()));
+  ossl::UniqueBio bio(BIO_new_mem_buf(buf.data(), buf.size()));
 
   // create pkey
   EVP_PKEY* pkey = nullptr;
 
   // decoding, see
   // https://www.openssl.org/docs/manmaster/man7/provider-decoder.html
-  auto decoder = openssl::UniqueDecoder(OSSL_DECODER_CTX_new_for_pkey(
+  auto decoder = ossl::UniqueDecoder(OSSL_DECODER_CTX_new_for_pkey(
       /* EVP_PKEY */ &pkey,
       /* pkey format */ nullptr,     // any format
       /* pkey structure */ nullptr,  // any structure
@@ -154,10 +154,10 @@ openssl::UniquePkey LoadKeyFromBuf(ByteContainerView buf) {
 
   OSSL_RET_1(OSSL_DECODER_from_bio(decoder.get(), bio.get()));
   // OSSL_RET_1(OSSL_DECODER_from_bio(decoder.get(), bio.get()));
-  return openssl::UniquePkey(pkey);
+  return ossl::UniquePkey(pkey);
 }
 
-openssl::UniquePkey LoadKeyFromFile(const std::string& file_path) {
+ossl::UniquePkey LoadKeyFromFile(const std::string& file_path) {
   return LoadKeyFromBuf(LoadBufFromFile(file_path));
 }
 
@@ -167,14 +167,14 @@ openssl::UniquePkey LoadKeyFromFile(const std::string& file_path) {
 
 // export public key to pem
 Buffer ExportPublicKeyToPemBuf(
-    /* public key */ const openssl::UniquePkey& pkey) {
-  openssl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
+    /* public key */ const ossl::UniquePkey& pkey) {
+  ossl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
   // export public key to bio
   OSSL_RET_1(PEM_write_bio_PUBKEY(bio.get(), pkey.get()));
   return BioToBuf(bio);
 }
 
-void ExportPublicKeyToPemFile(const openssl::UniquePkey& pkey,
+void ExportPublicKeyToPemFile(const ossl::UniquePkey& pkey,
                               const std::string& file_path) {
   ExportBufToFile(ExportPublicKeyToPemBuf(pkey), file_path);
 }
@@ -182,8 +182,8 @@ void ExportPublicKeyToPemFile(const openssl::UniquePkey& pkey,
 //  export secret key to pem (different from publick key since they may not have
 // the same structure)
 Buffer ExportSecretKeyToPemBuf(
-    /* secret key */ const openssl::UniquePkey& pkey) {
-  openssl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
+    /* secret key */ const ossl::UniquePkey& pkey) {
+  ossl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
 
   // export secret key to bio using PKCS#8 private key format, equivalent to
   // PEM_write_bio_PKCS8PrivateKey()
@@ -192,7 +192,7 @@ Buffer ExportSecretKeyToPemBuf(
   return BioToBuf(bio);
 }
 
-void ExportSecretKeyToPemBuf(const openssl::UniquePkey& pkey,
+void ExportSecretKeyToPemBuf(const ossl::UniquePkey& pkey,
                              const std::string& file_path) {
   ExportBufToFile(ExportSecretKeyToPemBuf(pkey), file_path);
 }
@@ -203,10 +203,10 @@ void ExportSecretKeyToPemBuf(const openssl::UniquePkey& pkey,
 
 // export public key to pem
 Buffer ExportPublicKeyToDerBuf(
-    /* public key */ const openssl::UniquePkey& pkey) {
-  openssl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
+    /* public key */ const ossl::UniquePkey& pkey) {
+  ossl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
   // export pkey to bio
-  auto encoder = openssl::UniqueEncoder(OSSL_ENCODER_CTX_new_for_pkey(
+  auto encoder = ossl::UniqueEncoder(OSSL_ENCODER_CTX_new_for_pkey(
       pkey.get(),
       /* selection: pk and params */ EVP_PKEY_PUBLIC_KEY,
       /* format */ "DER",
@@ -216,7 +216,7 @@ Buffer ExportPublicKeyToDerBuf(
   return BioToBuf(bio);
 }
 
-void ExportPublicKeyToDerFile(const openssl::UniquePkey& pkey,
+void ExportPublicKeyToDerFile(const ossl::UniquePkey& pkey,
                               const std::string& file_path) {
   ExportBufToFile(ExportPublicKeyToPemBuf(pkey), file_path);
 }
@@ -224,10 +224,10 @@ void ExportPublicKeyToDerFile(const openssl::UniquePkey& pkey,
 //  export secret key to pem (different from publick key since they may not have
 // the same structure)
 Buffer ExportSecretKeyToDerBuf(
-    /* secret key */ const openssl::UniquePkey& pkey) {
-  openssl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
+    /* secret key */ const ossl::UniquePkey& pkey) {
+  ossl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
   // export pkey to bio
-  auto encoder = openssl::UniqueEncoder(OSSL_ENCODER_CTX_new_for_pkey(
+  auto encoder = ossl::UniqueEncoder(OSSL_ENCODER_CTX_new_for_pkey(
       pkey.get(),
       /* selection: pk, sk and params */ EVP_PKEY_KEYPAIR,
       /* format */ "DER",
@@ -237,7 +237,7 @@ Buffer ExportSecretKeyToDerBuf(
   return BioToBuf(bio);
 }
 
-void ExportSecretKeyToDerFile(const openssl::UniquePkey& pkey,
+void ExportSecretKeyToDerFile(const ossl::UniquePkey& pkey,
                               const std::string& file_path) {
   ExportBufToFile(ExportSecretKeyToPemBuf(pkey), file_path);
 }
@@ -246,9 +246,9 @@ void ExportSecretKeyToDerFile(const openssl::UniquePkey& pkey,
 // Gen/Load/Export X509 Certificate
 // -------------------------------
 
-openssl::UniqueX509 MakeX509Cert(
-    /* issuer's pk */ const openssl::UniquePkey& pk,
-    /* issuer's sk */ const openssl::UniquePkey& sk,
+ossl::UniqueX509 MakeX509Cert(
+    /* issuer's pk */ const ossl::UniquePkey& pk,
+    /* issuer's sk */ const ossl::UniquePkey& sk,
     /* subjects info */
     const std::unordered_map<std::string, std::string>& subjects,
     /* time */ unsigned days, HashAlgorithm hash) {
@@ -268,14 +268,14 @@ openssl::UniqueX509 MakeX509Cert(
   //  ** Subject Public Key Info <= auto filled
   //  ** Public Key Algorithm <= auto filled
   //  ** Subject Public Key
-  //  ** Issuer openssl::Unique Identifier (optional)
-  //  ** Subject openssl::Unique Identifier (optional)
+  //  ** Issuer ossl::Unique Identifier (optional)
+  //  ** Subject ossl::Unique Identifier (optional)
   //  ** Extensions (optional)
   //  ** ...
   // * Certificate Signature Algorithm
   // * Certificate Signature
   // ++++++++++++++++++++++++++++++
-  openssl::UniqueX509 x509(X509_new());
+  ossl::UniqueX509 x509(X509_new());
   /* version */
   OSSL_RET_1(X509_set_version(x509.get(), kX509Version));
 
@@ -313,46 +313,46 @@ openssl::UniqueX509 MakeX509Cert(
 
   /* self signing with digest algorithm */
   auto sign_bytes = X509_sign(x509.get(), sk.get(),
-                              openssl::FetchEvpMd(ToString(hash)).get());
+                              ossl::FetchEvpMd(ToString(hash)).get());
   YACL_ENFORCE(sign_bytes > 0, "Perform self-signing failed.");
   return x509;
 }
 
 // load x509 certificate from buffer
-openssl::UniqueX509 LoadX509Cert(ByteContainerView buf) {
+ossl::UniqueX509 LoadX509Cert(ByteContainerView buf) {
   // load the buffer to bio
-  openssl::UniqueBio bio(BIO_new_mem_buf(buf.data(), buf.size()));
+  ossl::UniqueBio bio(BIO_new_mem_buf(buf.data(), buf.size()));
 
   // bio to x509 [warning]: this may be made deprecated in the future version of
   // OpenSSL, it is recommended to use OSSL_ENCODER and OSSL_DECODER instead.
-  auto cert = openssl::UniqueX509(
+  auto cert = ossl::UniqueX509(
       PEM_read_bio_X509(/* bio */ bio.get(), /* x509 ptr (optional) */ nullptr,
                         /* password */ nullptr, /* addition */ nullptr));
   YACL_ENFORCE(cert != nullptr, "No X509 from cert generated.");
   return cert;
 }
 
-openssl::UniqueX509 LoadX509CertFromFile(const std::string& file_path) {
+ossl::UniqueX509 LoadX509CertFromFile(const std::string& file_path) {
   return LoadX509Cert(LoadBufFromFile(file_path));
 }
 
 // load x509 pk from buffer
-openssl::UniquePkey LoadX509CertPublicKeyFromBuf(ByteContainerView buf) {
+ossl::UniquePkey LoadX509CertPublicKeyFromBuf(ByteContainerView buf) {
   auto x509 = LoadX509Cert(buf);
-  auto pkey = openssl::UniquePkey(X509_get_pubkey(x509.get()));
+  auto pkey = ossl::UniquePkey(X509_get_pubkey(x509.get()));
   YACL_ENFORCE(pkey != nullptr,
                "Error when reading public key in X509 certificate.");
   return pkey;  // public key only
 }
 
-openssl::UniquePkey LoadX509CertPublicKeyFromFile(
+ossl::UniquePkey LoadX509CertPublicKeyFromFile(
     const std::string& file_path) {
   return LoadX509CertPublicKeyFromBuf(LoadBufFromFile(file_path));
 }
 
 // export x509 certificate to buffer
-Buffer ExportX509CertToBuf(const openssl::UniqueX509& x509) {
-  openssl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
+Buffer ExportX509CertToBuf(const ossl::UniqueX509& x509) {
+  ossl::UniqueBio bio(BIO_new(BIO_s_mem()));  // create an empty bio
 
   // export certificate to bio
   OSSL_RET_1(PEM_write_bio_X509(bio.get(), x509.get()));
@@ -360,7 +360,7 @@ Buffer ExportX509CertToBuf(const openssl::UniqueX509& x509) {
   return BioToBuf(bio);
 }
 
-void ExportX509CertToFile(const openssl::UniqueX509& x509,
+void ExportX509CertToFile(const ossl::UniqueX509& x509,
                           const std::string& file_path) {
   ExportBufToFile(ExportX509CertToBuf(x509), file_path);
 }

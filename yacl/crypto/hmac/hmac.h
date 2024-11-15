@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "yacl/base/byte_container_view.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 /* submodules */
 #include "yacl/crypto/hash/hash_interface.h"
@@ -62,8 +62,8 @@ class Hmac {
  private:
   const HashAlgorithm hash_algo_;
   const std::vector<uint8_t> key_;
-  openssl::UniqueMac mac_;
-  openssl::UniqueMacCtx ctx_;
+  ossl::UniqueMac mac_;
+  ossl::UniqueMacCtx ctx_;
 };
 
 }  // namespace yacl::crypto

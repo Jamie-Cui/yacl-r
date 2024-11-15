@@ -19,7 +19,7 @@
 #include <string_view>
 #include <unordered_set>
 
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/drbg/drbg.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
@@ -71,7 +71,7 @@ class OpensslDrbg : public Drbg {
 
  private:
   const std::string type_;
-  openssl::UniqueRandCtx ctx_;
+  ossl::UniqueRandCtx ctx_;
 };
 
 }  // namespace yacl::crypto

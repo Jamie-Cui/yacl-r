@@ -158,3 +158,25 @@ yacl_cc_library(
     name = "aligned_vector",
     srcs = ["aligned_vector.h"],
 )
+
+yacl_cc_library(
+    name = "secparam",
+    srcs = ["secparam.cc"],
+    hdrs = [
+        "secparam.h",
+    ],
+    deps = [
+        ":exception",
+        ":int128",
+        "//yacl/math:gadget",
+        "//yacl/utils:compile_time_utils",
+    ],
+)
+
+yacl_cc_test(
+    name = "secparam_test",
+    srcs = ["secparam_test.cc"],
+    deps = [
+        ":secparam",
+    ],
+)

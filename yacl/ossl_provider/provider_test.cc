@@ -23,17 +23,17 @@
 #include "openssl/rand.h"
 #include "openssl/randerr.h"
 
-#include "yacl/crypto/openssl_wrappers.h"
-#include "yacl/crypto/ossl_provider/helper.h"
+#include "yacl/crypto/ossl_wrappers.h"
+#include "yacl/ossl_provider/helper.h"
 
 namespace yacl::crypto {
 
 TEST(OpensslTest, ShouldWork) {
-  auto libctx = openssl::UniqueLib(OSSL_LIB_CTX_new());
+  auto libctx = ossl::UniqueLib(OSSL_LIB_CTX_new());
 
   // OSSL_PROVIDER_load() loads and initializes a provider. This may simply
   // initialize a provider that was previously added with
-  auto prov = openssl::UniqueProv(
+  auto prov = ossl::UniqueProv(
       OSSL_PROVIDER_load(libctx.get(), GetProviderPath().c_str()));
   YACL_ENFORCE(prov != nullptr, ERR_error_string(ERR_get_error(), nullptr));
 

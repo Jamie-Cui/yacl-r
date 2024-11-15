@@ -25,8 +25,8 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/openssl_wrappers.h"
-#include "yacl/secparam.h"
+#include "yacl/crypto/ossl_wrappers.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("aes_all_modes", SecParam::C::k128, SecParam::S::INF);
@@ -91,8 +91,8 @@ class SymmetricCrypto {
   const uint128_t iv_;     // Initialize vector
 
   // openssl cipher contexts
-  openssl::UniqueCipherCtx enc_ctx_;
-  openssl::UniqueCipherCtx dec_ctx_;
+  ossl::UniqueCipherCtx enc_ctx_;
+  ossl::UniqueCipherCtx dec_ctx_;
 };
 
 class AesCbcCrypto : public SymmetricCrypto {

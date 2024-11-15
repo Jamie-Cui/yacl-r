@@ -22,7 +22,7 @@ yacl_cc_library(
     hdrs = ["hmac.h"],
     deps = [
         "//yacl/base:exception",
-        "//yacl/crypto:openssl_wrappers",
+        "//yacl/crypto:ossl_wrappers",
         "//yacl/crypto/hash:hash_interface",
     ],
 )

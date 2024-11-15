@@ -56,7 +56,7 @@
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 #ifndef __aarch64__
 // sse

@@ -18,7 +18,7 @@
 #include <string>
 
 #include "yacl/crypto/rand/entropy_source/entropy_source.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/spi/spi_factory.h"
 
 YACL_MODULE_DECLARE("drbg", SecParam::C::k256, SecParam::S::INF);

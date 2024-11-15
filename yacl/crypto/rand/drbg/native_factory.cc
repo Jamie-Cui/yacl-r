@@ -28,9 +28,9 @@
 #include "yacl/base/int128.h"
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"
 #include "yacl/crypto/hash/hash_utils.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/entropy_source/entropy_source.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 namespace yacl::crypto {
 
@@ -69,8 +69,8 @@ void Sm4Drbg::Instantiate(ByteContainerView nonce,
   YACL_ENFORCE(entropy_buf.size() <= kMaxEntropySize);
 
   // initialize SM4 entryption context
-  cipher_ = openssl::FetchEvpCipher(ToString(kCodeType));
-  cipher_ctx_ = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  cipher_ = ossl::FetchEvpCipher(ToString(kCodeType));
+  cipher_ctx_ = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
 
   // entropy_buf xor {H(nonce) || H(personal_string)}
   uint128_t lhf = Blake3_128(nonce);
@@ -216,7 +216,7 @@ std::array<uint8_t, Sm4Drbg::kBlockSize> Sm4Drbg::cbc_mac(
 
   /* init openssl cipher contex */
   OSSL_RET_1(EVP_CIPHER_CTX_reset(cipher_ctx_.get()));
-  auto local_ctx = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  auto local_ctx = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
   YACL_ENFORCE(EVP_CipherInit(local_ctx.get(), cipher_.get(),
                               (const unsigned char*)&key,
                               /* iv */ nullptr, /* 1 = enc, 0 = dec */ 1));

@@ -30,7 +30,7 @@ yacl_cc_library(
     hdrs = ["sm2_signing.h"],
     deps = [
         ":signing",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/crypto:key_utils",
         "//yacl/crypto/hash:hash_utils",
     ],
@@ -50,7 +50,7 @@ yacl_cc_library(
     hdrs = ["rsa_signing.h"],
     deps = [
         ":signing",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/crypto:key_utils",
         "//yacl/crypto/hash:hash_utils",
     ],

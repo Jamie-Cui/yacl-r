@@ -22,7 +22,7 @@
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/matrix_utils.h"
 
 /* submodules */

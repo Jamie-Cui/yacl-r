@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 namespace yacl::crypto {
 

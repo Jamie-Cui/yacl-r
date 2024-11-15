@@ -26,9 +26,9 @@ yacl_cc_library(
     ],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:int128",
-        "//yacl/crypto:openssl_wrappers",
+        "//yacl/crypto:ossl_wrappers",
     ],
 )
 

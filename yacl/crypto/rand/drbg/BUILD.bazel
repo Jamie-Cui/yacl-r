@@ -32,7 +32,7 @@ yacl_cc_library(
     ],
     visibility = ["//visibility:private"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:byte_container_view",
         "//yacl/base:int128",
         "//yacl/crypto/rand/entropy_source",
@@ -50,13 +50,13 @@ yacl_cc_library(
         "openssl_factory.h",
     ],
     data = [
-        "//yacl/crypto/ossl_provider:prov_shared",  # openssl provider shared lib
+        "//yacl/ossl_provider:prov_shared",  # openssl provider shared lib
     ],
     visibility = ["//visibility:private"],
     deps = [
         ":spi",
-        "//yacl/crypto:openssl_wrappers",
-        "//yacl/crypto/ossl_provider:helper",  # helper
+        "//yacl/crypto:ossl_wrappers",
+        "//yacl/ossl_provider:helper",  # helper
         "//yacl/crypto/rand/entropy_source",
     ],
     alwayslink = 1,
@@ -72,15 +72,15 @@ yacl_cc_library(
         "native_factory.h",
     ],
     data = [
-        "//yacl/crypto/ossl_provider:prov_shared",  # openssl provider shared lib
+        "//yacl/ossl_provider:prov_shared",  # openssl provider shared lib
     ],
     visibility = ["//visibility:private"],
     deps = [
         ":spi",
-        "//yacl/crypto:openssl_wrappers",
+        "//yacl/crypto:ossl_wrappers",
         "//yacl/crypto/block_cipher:symmetric_crypto",
         "//yacl/crypto/hash:hash_utils",
-        "//yacl/crypto/ossl_provider:helper",  # helper
+        "//yacl/ossl_provider:helper",  # helper
         "//yacl/crypto/rand/entropy_source",
     ],
     alwayslink = 1,

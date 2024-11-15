@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "yacl/math/gadget.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/cuckoo_index.h"
 
 /* submodules */

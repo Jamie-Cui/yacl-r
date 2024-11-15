@@ -17,9 +17,9 @@ load("//bazel:yacl.bzl", "yacl_cc_library", "yacl_cc_test")
 package(default_visibility = ["//visibility:public"])
 
 yacl_cc_library(
-    name = "openssl_wrappers",
+    name = "ossl_wrappers",
     hdrs = [
-        "openssl_wrappers.h",
+        "ossl_wrappers.h",
     ],
     deps = [
         "//yacl/base:byte_container_view",
@@ -38,8 +38,8 @@ yacl_cc_library(
         "key_utils.h",
     ],
     deps = [
-        ":openssl_wrappers",
-        "//yacl:secparam",
+        ":ossl_wrappers",
+        "//yacl/base:secparam",
         "//yacl/crypto/hash:hash_interface",
         "//yacl/io/stream",
     ],

@@ -15,14 +15,14 @@
 #include "yacl/crypto/hmac/hmac.h"
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 namespace yacl::crypto {
 
 Hmac::Hmac(HashAlgorithm hash_algo, ByteContainerView key)
     : hash_algo_(hash_algo), key_(key.begin(), key.end()) {
-  mac_ = openssl::FetchEvpHmac();
-  ctx_ = openssl::UniqueMacCtx(EVP_MAC_CTX_new(mac_.get()));
+  mac_ = ossl::FetchEvpHmac();
+  ctx_ = ossl::UniqueMacCtx(EVP_MAC_CTX_new(mac_.get()));
   YACL_ENFORCE(ctx_ != nullptr);
 
   // Set up the underlying context ctx with information given via the key
@@ -60,7 +60,7 @@ std::vector<uint8_t> Hmac::CumulativeMac() const {
   // Do not finalize the internally stored hash context. Instead, finalize a
   // copy of the current context so that the current context can be updated in
   // future calls to Update.
-  auto ctx_copy = openssl::UniqueMacCtx(EVP_MAC_CTX_dup(ctx_.get()));
+  auto ctx_copy = ossl::UniqueMacCtx(EVP_MAC_CTX_dup(ctx_.get()));
   YACL_ENFORCE(ctx_copy != nullptr);
 
   // get the outptut size

@@ -22,9 +22,9 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/drbg/drbg.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
 /* submodules */
@@ -95,8 +95,8 @@ class Sm4Drbg {
   // A: SymmetricCrypto is originally designed to be use to entrypt large amount
   // of plaintexts with the same key, and in DRBG we need to change the key
   // oftenly. It's more efficient to use openssl's native APIs.
-  openssl::UniqueCipher cipher_;
-  openssl::UniqueCipherCtx cipher_ctx_;
+  ossl::UniqueCipher cipher_;
+  ossl::UniqueCipherCtx cipher_ctx_;
   std::shared_ptr<EntropySource> es_;
   InteralWorkingState internal_state_;
 };

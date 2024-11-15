@@ -14,7 +14,7 @@
 
 #include "yacl/crypto/aead/all_gcm.h"
 
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 namespace yacl::crypto {
 
@@ -47,9 +47,9 @@ void GcmCrypto::Encrypt(ByteContainerView plaintext, ByteContainerView aad,
   YACL_ENFORCE_EQ(mac.size(), GetMacSize(schema_));
 
   // init openssl evp cipher context
-  auto ctx = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  auto ctx = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
   YACL_ENFORCE(ctx != nullptr, "Failed to new evp cipher context.");
-  const auto cipher = openssl::FetchEvpCipher(ToString(schema_));
+  const auto cipher = ossl::FetchEvpCipher(ToString(schema_));
   YACL_ENFORCE(cipher != nullptr);
   YACL_ENFORCE(key_.size() == (size_t)EVP_CIPHER_key_length(cipher.get()));
   YACL_ENFORCE(iv_.size() == (size_t)EVP_CIPHER_iv_length(cipher.get()));
@@ -83,11 +83,11 @@ void GcmCrypto::Decrypt(ByteContainerView ciphertext, ByteContainerView aad,
   YACL_ENFORCE_EQ(mac.size(), GetMacSize(schema_));
 
   // init openssl evp cipher context
-  auto ctx = openssl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
+  auto ctx = ossl::UniqueCipherCtx(EVP_CIPHER_CTX_new());
 
   YACL_ENFORCE(ctx.get(), "Failed to new evp cipher context.");
 
-  const auto cipher = openssl::FetchEvpCipher(ToString(schema_));
+  const auto cipher = ossl::FetchEvpCipher(ToString(schema_));
   YACL_ENFORCE_EQ(key_.size(), (size_t)EVP_CIPHER_key_length(cipher.get()));
   YACL_ENFORCE_EQ(iv_.size(), (size_t)EVP_CIPHER_iv_length(cipher.get()));
   YACL_ENFORCE(EVP_DecryptInit_ex(ctx.get(), cipher.get(), nullptr, key_.data(),

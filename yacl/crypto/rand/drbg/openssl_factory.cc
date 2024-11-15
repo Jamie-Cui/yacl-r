@@ -20,8 +20,8 @@
 #include <vector>
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/ossl_provider/helper.h"
-#include "yacl/secparam.h"
+#include "yacl/ossl_provider/helper.h"
+#include "yacl/base/secparam.h"
 
 namespace yacl::crypto {
 
@@ -61,20 +61,20 @@ OpensslDrbg::OpensslDrbg(std::string type,
                          const std::shared_ptr<EntropySource>& es)
     : Drbg(es), type_(std::move(type)) {
   // new entropy_source context
-  openssl::UniqueRandCtx es_ctx = nullptr;
+  ossl::UniqueRandCtx es_ctx = nullptr;
 
   // load openssl provider
-  auto libctx = openssl::UniqueLib(OSSL_LIB_CTX_new());
-  auto prov = openssl::UniqueProv(
+  auto libctx = ossl::UniqueLib(OSSL_LIB_CTX_new());
+  auto prov = ossl::UniqueProv(
       OSSL_PROVIDER_load(libctx.get(), GetProviderPath().c_str()));
 
   if (prov != nullptr) {
     // fetch provider's entropy_source algorithm
-    auto es = openssl::UniqueRand(EVP_RAND_fetch(libctx.get(), "Yes", nullptr));
+    auto es = ossl::UniqueRand(EVP_RAND_fetch(libctx.get(), "Yes", nullptr));
     YACL_ENFORCE(es != nullptr);
 
     // give es_ctx the fetched es algorithm
-    es_ctx = openssl::UniqueRandCtx(EVP_RAND_CTX_new(es.get(), nullptr));
+    es_ctx = ossl::UniqueRandCtx(EVP_RAND_CTX_new(es.get(), nullptr));
     YACL_ENFORCE(es_ctx != nullptr);
 
     // instantiate the es_ctx
@@ -86,11 +86,11 @@ OpensslDrbg::OpensslDrbg(std::string type,
   // fetch rand (drbg with the specified type) algorithm from OpenSSL's default
   // provider
   auto rand =
-      openssl::UniqueRand(EVP_RAND_fetch(nullptr, type_.c_str(), nullptr));
+      ossl::UniqueRand(EVP_RAND_fetch(nullptr, type_.c_str(), nullptr));
   YACL_ENFORCE(rand != nullptr);
 
   // give ctx_ the fetched algorithm
-  ctx_ = openssl::UniqueRandCtx(EVP_RAND_CTX_new(rand.get(), es_ctx.get()));
+  ctx_ = ossl::UniqueRandCtx(EVP_RAND_CTX_new(rand.get(), es_ctx.get()));
   YACL_ENFORCE(ctx_ != nullptr);
 
   // setup parameters

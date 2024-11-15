@@ -35,7 +35,7 @@ yacl_cc_library(
     ],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:int128",
     ] + select({
         "@platforms//cpu:aarch64": [

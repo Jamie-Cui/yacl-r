@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "yacl/base/byte_container_view.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"

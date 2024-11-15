@@ -30,7 +30,7 @@ constexpr int kRsaPadding = RSA_PKCS1_OAEP_PADDING;
 
 std::vector<uint8_t> RsaEncryptor::Encrypt(ByteContainerView plaintext) {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_encrypt.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(pk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
 
@@ -56,7 +56,7 @@ std::vector<uint8_t> RsaEncryptor::Encrypt(ByteContainerView plaintext) {
 
 std::vector<uint8_t> RsaDecryptor::Decrypt(ByteContainerView ciphertext) {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_encrypt.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(sk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
 

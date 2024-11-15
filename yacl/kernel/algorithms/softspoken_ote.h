@@ -24,7 +24,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/link/context.h"
 #include "yacl/link/link.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/rand/rand.h"

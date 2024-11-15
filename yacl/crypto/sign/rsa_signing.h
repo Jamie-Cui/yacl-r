@@ -19,7 +19,7 @@
 
 #include "yacl/crypto/key_utils.h"
 #include "yacl/crypto/sign/signing.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/hash/hash_utils.h"
@@ -33,7 +33,7 @@ namespace yacl::crypto {
 class RsaSigner final : public AsymmetricSigner {
  public:
   // constructors and destrucors
-  explicit RsaSigner(openssl::UniquePkey&& sk) : sk_(std::move(sk)) {}
+  explicit RsaSigner(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
   explicit RsaSigner(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
@@ -44,7 +44,7 @@ class RsaSigner final : public AsymmetricSigner {
   std::vector<uint8_t> Sign(ByteContainerView message) const override;
 
  private:
-  const openssl::UniquePkey sk_;
+  const ossl::UniquePkey sk_;
   const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
 };
 
@@ -52,7 +52,7 @@ class RsaSigner final : public AsymmetricSigner {
 class RsaVerifier final : public AsymmetricVerifier {
  public:
   // constructors and destrucors
-  explicit RsaVerifier(openssl::UniquePkey&& pk) : pk_(std::move(pk)) {}
+  explicit RsaVerifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
   explicit RsaVerifier(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
@@ -64,7 +64,7 @@ class RsaVerifier final : public AsymmetricVerifier {
               ByteContainerView signature) const override;
 
  private:
-  const openssl::UniquePkey pk_;
+  const ossl::UniquePkey pk_;
   const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
 };
 

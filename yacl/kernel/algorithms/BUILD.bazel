@@ -28,7 +28,7 @@ yacl_cc_library(
     hdrs = ["portable_ot_interface.h"],
     deps = [
         ":base_ot_interface",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/crypto/tools:ro",
         "//yacl/link",
@@ -46,7 +46,7 @@ yacl_cc_library(
     ],
     deps = [
         ":base_ot_interface",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/crypto/tools:ro",
         "//yacl/link",
@@ -61,7 +61,7 @@ yacl_cc_library(
     srcs = ["base_ot.cc"],
     hdrs = ["base_ot.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/kernel/type:ot_store_utils",
         "//yacl/link",
@@ -91,7 +91,7 @@ yacl_cc_library(
     srcs = ["iknp_ote.cc"],
     hdrs = ["iknp_ote.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/crypto/tools:crhash",
         "//yacl/crypto/tools:prg",
         "//yacl/crypto/tools:rp",
@@ -117,7 +117,7 @@ yacl_cc_library(
     hdrs = ["kkrt_ote.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/base:int128",
         "//yacl/crypto/aes:aes_opt",
@@ -148,7 +148,7 @@ yacl_cc_library(
     hdrs = ["sgrr_ote.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/crypto/aes:aes_opt",
         "//yacl/crypto/rand",
         "//yacl/crypto/tools:crhash",
@@ -178,7 +178,7 @@ yacl_cc_library(
     hdrs = ["gywz_ote.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:aligned_vector",
         "//yacl/crypto/aes:aes_opt",
         "//yacl/crypto/rand",
@@ -214,7 +214,7 @@ yacl_cc_library(
     ],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:exception",
         "//yacl/crypto/hash:hash_utils",
         "//yacl/crypto/rand",
@@ -248,7 +248,7 @@ yacl_cc_library(
     hdrs = ["kos_ote.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:exception",
         "//yacl/base:int128",
@@ -316,7 +316,7 @@ yacl_cc_library(
     hdrs = ["mpfss.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:aligned_vector",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:int128",
@@ -348,7 +348,7 @@ yacl_cc_library(
     hdrs = ["base_vole.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:aligned_vector",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:int128",
@@ -379,7 +379,7 @@ yacl_cc_library(
     hdrs = ["mp_vole.h"],
     copts = AES_COPT_FLAGS,
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:aligned_vector",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:int128",
@@ -415,7 +415,7 @@ yacl_cc_library(
     deps = [
         ":base_vole",
         ":mp_vole",
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:aligned_vector",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:int128",

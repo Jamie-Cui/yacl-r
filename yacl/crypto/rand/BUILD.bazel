@@ -21,7 +21,7 @@ yacl_cc_library(
     srcs = ["rand.cc"],
     hdrs = ["rand.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:dynamic_bitset",
         "//yacl/base:exception",
         "//yacl/base:int128",

@@ -18,7 +18,7 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/crypto/hash/hash_interface.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 
 namespace yacl::crypto {
 
@@ -36,8 +36,8 @@ class SslHash : public HashInterface {
 
  private:
   const HashAlgorithm hash_algo_;
-  openssl::UniqueMd md_;
-  openssl::UniqueMdCtx context_;
+  ossl::UniqueMd md_;
+  ossl::UniqueMdCtx context_;
   const size_t digest_size_;
 };
 

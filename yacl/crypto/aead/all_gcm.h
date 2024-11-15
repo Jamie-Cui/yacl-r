@@ -19,7 +19,7 @@
 #include "absl/types/span.h"
 
 #include "yacl/base/byte_container_view.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("all_gcm", SecParam::C::k128, SecParam::S::INF);

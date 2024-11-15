@@ -17,7 +17,7 @@
 #include <future>
 
 #include "yacl/crypto/experimental/dpf/ge2n.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"
 

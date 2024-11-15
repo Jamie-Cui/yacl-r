@@ -20,7 +20,7 @@
 
 #include "yacl/crypto/key_utils.h"
 #include "yacl/crypto/pke/pke_interface.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rsa_enc", SecParam::C::k128, SecParam::S::INF);
@@ -30,7 +30,7 @@ namespace yacl::crypto {
 // RSA with OAEP
 class RsaEncryptor : public PkeEncryptor {
  public:
-  explicit RsaEncryptor(openssl::UniquePkey&& pk) : pk_(std::move(pk)) {}
+  explicit RsaEncryptor(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
   explicit RsaEncryptor(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
@@ -38,13 +38,13 @@ class RsaEncryptor : public PkeEncryptor {
   std::vector<uint8_t> Encrypt(ByteContainerView plaintext) override;
 
  private:
-  const openssl::UniquePkey pk_;
+  const ossl::UniquePkey pk_;
   const PkeScheme scheme_ = PkeScheme::RSA2048_OAEP;
 };
 
 class RsaDecryptor : public PkeDecryptor {
  public:
-  explicit RsaDecryptor(openssl::UniquePkey&& sk) : sk_(std::move(sk)) {}
+  explicit RsaDecryptor(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
   explicit RsaDecryptor(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
@@ -52,7 +52,7 @@ class RsaDecryptor : public PkeDecryptor {
   std::vector<uint8_t> Decrypt(ByteContainerView ciphertext) override;
 
  private:
-  const openssl::UniquePkey sk_;
+  const ossl::UniquePkey sk_;
   const PkeScheme scheme_ = PkeScheme::RSA2048_OAEP;
 };
 

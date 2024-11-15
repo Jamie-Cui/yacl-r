@@ -19,7 +19,7 @@
 
 #include "yacl/crypto/ecc/openssl/openssl_group.h"
 
-namespace yacl::crypto::openssl {
+namespace yacl::crypto::ossl {
 
 static const std::string kLibName = "OpenSSL";
 
@@ -156,4 +156,4 @@ bool OpensslGroup::IsSupported(const CurveMeta &meta) {
 
 std::string OpensslGroup::GetLibraryName() const { return kLibName; }
 
-}  // namespace yacl::crypto::openssl
+}  // namespace yacl::crypto::ossl

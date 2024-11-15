@@ -26,11 +26,11 @@
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"
-#include "yacl/crypto/openssl_wrappers.h"
+#include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/drbg/drbg.h"
 #include "yacl/crypto/tools/prg.h"
 #include "yacl/math/mpint/mp_int.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rand", SecParam::C::k128, SecParam::S::k64);

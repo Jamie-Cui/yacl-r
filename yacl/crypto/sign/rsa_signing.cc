@@ -28,7 +28,7 @@ constexpr int kRsaPadding = RSA_PKCS1_PADDING;
 
 std::vector<uint8_t> RsaSigner::Sign(ByteContainerView message) const {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_sign.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(sk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
 
@@ -62,7 +62,7 @@ std::vector<uint8_t> RsaSigner::Sign(ByteContainerView message) const {
 bool RsaVerifier::Verify(ByteContainerView message,
                          ByteContainerView signature) const {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_sign.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(pk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
 

@@ -53,11 +53,11 @@ if(YACL_WITH_EXT_OPENSSL)
   set_target_properties(
     ExtOpenSSL_Crypto PROPERTIES IMPORTED_LOCATION
                                  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libcrypto.a)
-  add_library(ExtOpenSSL::Crypto ALIAS ExtOpenSSL_Crypto)
+  add_library(Extossl::Crypto ALIAS ExtOpenSSL_Crypto)
 
   add_library(ExtOpenSSL_SSL STATIC IMPORTED)
   set_target_properties(
     ExtOpenSSL_SSL PROPERTIES IMPORTED_LOCATION
                               ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.a)
-  add_library(ExtOpenSSL::SSL ALIAS ExtOpenSSL_SSL)
+  add_library(Extossl::SSL ALIAS ExtOpenSSL_SSL)
 endif()

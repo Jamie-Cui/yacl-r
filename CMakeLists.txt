@@ -130,7 +130,7 @@ target_link_libraries(
          ExtFourQ::fourq)
 
 if(YACL_WITH_EXT_OPENSSL)
-  target_link_libraries(yacl PUBLIC ExtOpenSSL::Crypto ExtOpenSSL::SSL)
+  target_link_libraries(yacl PUBLIC Extossl::Crypto Extossl::SSL)
 else()
-  target_link_libraries(yacl PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+  target_link_libraries(yacl PUBLIC ossl::Crypto ossl::SSL)
 endif()

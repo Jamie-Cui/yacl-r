@@ -21,7 +21,7 @@ yacl_cc_library(
     srcs = ["all_gcm.cc"],
     hdrs = ["all_gcm.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/base:int128",
         "//yacl/crypto:key_utils",
     ],
@@ -40,7 +40,7 @@ yacl_cc_library(
     srcs = ["sm4_mte.cc"],
     hdrs = ["sm4_mte.h"],
     deps = [
-        "//yacl:secparam",
+        "//yacl/base:secparam",
         "//yacl/crypto/block_cipher:symmetric_crypto",
         "//yacl/crypto/hash:ssl_hash",
         "//yacl/crypto/hmac:hmac_sm3",

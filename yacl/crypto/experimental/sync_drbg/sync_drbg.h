@@ -27,9 +27,9 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/openssl_wrappers.h"  // for TyHelper
+#include "yacl/crypto/ossl_wrappers.h"  // for TyHelper
 #include "yacl/link/context.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"
 
@@ -88,7 +88,7 @@ class SyncDrbg {
  public:
   // define general types
   using HashDrbgCtx =
-      openssl::internal::TyHelper<HASH_DRBG_CTX, hash_drbg_ctx_free>;
+      ossl::internal::TyHelper<HASH_DRBG_CTX, hash_drbg_ctx_free>;
 
   // Instantiate Sync Drbg.
   //

@@ -31,13 +31,13 @@ std::vector<uint8_t> Sm2Signer::Sign(ByteContainerView message) const {
   // That is, EVP_PKEY_sign() and EVP_PKEY_verify() does not work on sm2
   //
   // see: https://www.openssl.org/docs/man3.0/man7/EVP_PKEY-SM2.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(sk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   EVP_PKEY_CTX_set1_id(ctx.get(), kDefaultSm2Id.data(), kDefaultSm2Id.size());
 
   // create message digest context
-  auto mctx = openssl::UniqueMdCtx(EVP_MD_CTX_new());
+  auto mctx = ossl::UniqueMdCtx(EVP_MD_CTX_new());
   YACL_ENFORCE(mctx != nullptr);
   EVP_MD_CTX_set_pkey_ctx(mctx.get(), ctx.get());  // set it related to pkey ctx
 
@@ -64,13 +64,13 @@ std::vector<uint8_t> Sm2Signer::Sign(ByteContainerView message) const {
 
 bool Sm2Verifier::Verify(ByteContainerView message,
                          ByteContainerView signature) const {
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(pk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   EVP_PKEY_CTX_set1_id(ctx.get(), kDefaultSm2Id.data(), kDefaultSm2Id.size());
 
   // create message digest context
-  auto mctx = openssl::UniqueMdCtx(EVP_MD_CTX_new());
+  auto mctx = ossl::UniqueMdCtx(EVP_MD_CTX_new());
   YACL_ENFORCE(mctx != nullptr);
 
   EVP_MD_CTX_set_pkey_ctx(mctx.get(), ctx.get());

@@ -28,7 +28,7 @@ constexpr std::string_view kDefaultSm2Id = {"1234567812345678"};
 
 std::vector<uint8_t> Sm2Encryptor::Encrypt(ByteContainerView plaintext) {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_encrypt.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(pk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   EVP_PKEY_CTX_set1_id(ctx.get(), kDefaultSm2Id.data(), kDefaultSm2Id.size());
@@ -51,7 +51,7 @@ std::vector<uint8_t> Sm2Encryptor::Encrypt(ByteContainerView plaintext) {
 
 std::vector<uint8_t> Sm2Decryptor::Decrypt(ByteContainerView ciphertext) {
   // see: https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_encrypt.html
-  auto ctx = openssl::UniquePkeyCtx(
+  auto ctx = ossl::UniquePkeyCtx(
       EVP_PKEY_CTX_new(sk_.get(), /* engine = default */ nullptr));
   YACL_ENFORCE(ctx != nullptr);
   EVP_PKEY_CTX_set1_id(ctx.get(), kDefaultSm2Id.data(), kDefaultSm2Id.size());

@@ -19,7 +19,7 @@
 
 #include "yacl/crypto/key_utils.h"
 #include "yacl/crypto/sign/signing.h"
-#include "yacl/secparam.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/hash/hash_utils.h"
@@ -32,7 +32,7 @@ namespace yacl::crypto {
 class Sm2Signer final : public AsymmetricSigner {
  public:
   // constructors and destrucors
-  explicit Sm2Signer(openssl::UniquePkey&& sk) : sk_(std::move(sk)) {}
+  explicit Sm2Signer(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
   explicit Sm2Signer(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
@@ -42,7 +42,7 @@ class Sm2Signer final : public AsymmetricSigner {
   std::vector<uint8_t> Sign(ByteContainerView message) const override;
 
  private:
-  const openssl::UniquePkey sk_;
+  const ossl::UniquePkey sk_;
   const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
@@ -50,7 +50,7 @@ class Sm2Signer final : public AsymmetricSigner {
 class Sm2Verifier final : public AsymmetricVerifier {
  public:
   // constructors and destrucors
-  explicit Sm2Verifier(openssl::UniquePkey&& pk) : pk_(std::move(pk)) {}
+  explicit Sm2Verifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
   explicit Sm2Verifier(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
@@ -62,7 +62,7 @@ class Sm2Verifier final : public AsymmetricVerifier {
               ByteContainerView signature) const override;
 
  private:
-  const openssl::UniquePkey pk_;
+  const ossl::UniquePkey pk_;
   const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
