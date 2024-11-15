@@ -1,7 +1,6 @@
-# YACL-r (Yet Another Common crypto Library for cryptographic Research)
+# YACL-R (Yet Another Cryptographic Library for Research)
 
-Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https://github.com/secretflow/yacl).
-The crypto modules in Yacl implement many state-of-art secure computation protocols, including primitives like OT, VOLE, TPRE, and tools like PRG, RO. Check the full list of Yacl's supported algorithms in [ALGORITHMS.md](ALGORITHMS.md).
+Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https://github.com/secretflow/yacl). The crypto modules in Yacl implement many state-of-art secure computation protocols, including primitives like OT, VOLE, TPRE, and tools like PRG, RO. Check the full list of Yacl's supported algorithms in [ALGORITHMS.md](ALGORITHMS.md).
 
 ## Repo Layout
 
@@ -23,21 +22,6 @@ The crypto modules in Yacl implement many state-of-art secure computation protoc
 
 Yacl uses the [bazel](https://bazel.build/) build system, you may use the following codes to build and test yacl modules. For more guidelines about **how to develop on yacl**, please check the [Getting Started Guide](GETTING_STARTED.md).
 
-Extra guides for getting started with cmake:
-
-``` sh
-# x86
-mkdir -p build && cd build
-cmake ..
-make
-```
-
-``` sh
-# arm
-mkdir -p build && cd build
-cmake -DCMAKE_CXX_COMPILER=clang++ ..
-make
-```
 ## License
 
 See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)
