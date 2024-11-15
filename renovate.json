@@ -9,8 +9,5 @@
   ],
   "ignoreDeps": [
     "bazel"
-  ],
-  "reviewers": [
-    "team:yacl-dev"
   ]
 }
