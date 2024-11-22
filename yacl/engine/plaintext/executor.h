@@ -82,19 +82,6 @@ class PlainExecutor {
       total_out_bitnum += circ_->now[i];
     }
 
-    // // Make sure that the circuit output wire is full bytes
-    // YACL_ENFORCE(total_out_bitnum % 8 == 0);
-
-    // const size_t wire_size = wires_.size();
-    // dynamic_bitset<BlockType> result(total_out_bitnum);
-    // for (size_t i = 0; i < total_out_bitnum; ++i) {
-    //   result[total_out_bitnum - i - 1] = wires_[wire_size - i - 1];
-    // }
-    // YACL_ENFORCE(result.size() == total_out_bitnum);
-    // std::vector<uint8_t> out(total_out_bitnum / 8);
-    // std::memcpy(out.data(), result.data(), out.size());
-    // SPDLOG_INFO(result.to_string());
-    // return out;
 
     std::vector<uint8_t> out(total_out_bitnum / 8);
 

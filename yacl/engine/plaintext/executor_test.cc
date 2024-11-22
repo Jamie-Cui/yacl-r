@@ -210,10 +210,7 @@ TEST(CryptoTest, Aes128Test) {
 TEST(CryptoTest, Sha256Test) {
   /* GIVEN */
   auto input = crypto::FastRandBytes(crypto::RandLtN(10));
-
-  // std::array<char, 3> temp = {'a', 'b', 'c'};
-  // std::string temp = "1";
-  std::array<char, 1> message = {'1'};
+  auto message = crypto::FastRandBytes(10);
   auto in_buf = io::BuiltinBFCircuit::PrepareSha256Input(message);
 
   /* WHEN */
@@ -225,9 +222,8 @@ TEST(CryptoTest, Sha256Test) {
 
   /* THEN */
   auto compare = crypto::Sha256Hash().Update(message).CumulativeHash();
-  SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(result)));
-  SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(compare)));
   EXPECT_EQ(compare.size(), result.size());
+  EXPECT_EQ(memcmp(compare.data(), result.data(), compare.size()), 0);
 }
 
 }  // namespace yacl::engine

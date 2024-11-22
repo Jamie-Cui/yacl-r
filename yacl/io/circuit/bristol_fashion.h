@@ -185,7 +185,9 @@ class BuiltinBFCircuit {
 
     // original input message
     // auto input_reverse = ReverseBytes(absl::MakeSpan(input));  // copy here
-    std::memcpy(result.data() + offset, input.data(), input_size);
+    auto input_reverse = std::vector<uint8_t>(input.begin(), input.end());
+    std::reverse(input_reverse.begin(), input_reverse.end());
+    std::memcpy(result.data() + offset, input_reverse.data(), input_size);
     offset += input_size;
 
     // initial hash values
@@ -213,7 +215,6 @@ class BuiltinBFCircuit {
     return fmt::format("{}/yacl/io/circuit/data/sha256.txt",
                        std::filesystem::current_path().string());
   }
-
 
   static std::array<uint8_t, 32> GetSha256InitialHashValues() {
     std::array<uint8_t, 32> standard_init_array = {
