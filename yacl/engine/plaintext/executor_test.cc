@@ -209,8 +209,7 @@ TEST(CryptoTest, Aes128Test) {
 
 TEST(CryptoTest, Sha256Test) {
   /* GIVEN */
-  auto input = crypto::FastRandBytes(crypto::RandLtN(10));
-  auto message = crypto::FastRandBytes(10);
+  auto message = crypto::FastRandBytes(crypto::RandLtN(10));
   auto in_buf = io::BuiltinBFCircuit::PrepareSha256Input(message);
 
   /* WHEN */
