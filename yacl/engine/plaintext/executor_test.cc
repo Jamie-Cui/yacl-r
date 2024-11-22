@@ -1,5 +1,4 @@
-
-// Copyright 2024 Ant Group Co., Ltd.
+// Copyright 2024 Jamie Cui and Ant Group Co., Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/utils/circuit_executor.h"
-
-#include <algorithm>
+#include "yacl/engine/plaintext/executor.h"
 
 #include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
@@ -23,10 +20,11 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"
+#include "yacl/crypto/hash/ssl_hash.h"
 #include "yacl/crypto/rand/rand.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 
-namespace yacl {
+namespace yacl::engine {
 
 namespace {
 inline uint64_t Add64(uint64_t in1, uint64_t in2) { return in1 + in2; }
@@ -64,11 +62,11 @@ uint128_t ReverseBytes(uint128_t x) {
 
 TEST(ArithmaticTest, Add64Test) {
   /* GIVEN */
-  std::vector<uint64_t> inputs = {crypto::FastRandU64(), crypto::FastRandU64()};
+  std::vector<uint64_t> inputs = {1, 3};
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Add64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -84,7 +82,7 @@ TEST(ArithmaticTest, Sub64Test) {
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Sub64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -100,7 +98,7 @@ TEST(ArithmaticTest, Neg64Test) {
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Neg64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -116,7 +114,7 @@ TEST(ArithmaticTest, Mul64Test) {
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Mul64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -132,7 +130,7 @@ TEST(ArithmaticTest, Div64Test) {
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Div64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -149,7 +147,7 @@ TEST(ArithmaticTest, UDiv64Test) {
 
   /* WHEN */
 
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::UDiv64Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -165,7 +163,7 @@ TEST(ArithmaticTest, EqzTest) {
   std::vector<uint64_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint64_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::EqzPath());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -188,7 +186,7 @@ TEST(CryptoTest, Aes128Test) {
   std::vector<uint128_t> result(1);
 
   /* WHEN */
-  PlainExecutor<uint128_t> exec;
+  PlainExecutor exec;
   exec.LoadCircuitFile(io::BuiltinBFCircuit::Aes128Path());
   exec.SetupInputs(absl::MakeSpan(inputs));
   exec.Exec();
@@ -208,4 +206,22 @@ TEST(CryptoTest, Aes128Test) {
   EXPECT_EQ(ReverseBytes(result[0]), compare);
 }
 
-}  // namespace yacl
+TEST(CryptoTest, Sha256Test) {
+  /* GIVEN */
+  auto message = crypto::FastRandBytes(crypto::RandLtN(10));
+  auto in_buf = io::BuiltinBFCircuit::PrepareSha256Input(message);
+
+  /* WHEN */
+  PlainExecutor exec;
+  exec.LoadCircuitFile(io::BuiltinBFCircuit::Sha256Path());
+  exec.SetupInputBytes(in_buf);
+  exec.Exec();
+  auto result = exec.FinalizeBytes();
+
+  /* THEN */
+  auto compare = crypto::Sha256Hash().Update(message).CumulativeHash();
+  EXPECT_EQ(compare.size(), result.size());
+  EXPECT_EQ(memcmp(compare.data(), result.data(), compare.size()), 0);
+}
+
+}  // namespace yacl::engine

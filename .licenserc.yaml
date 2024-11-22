@@ -46,6 +46,10 @@ header: # <1>
     - 'yacl/crypto/aes/aes_opt.h'
     - 'yacl/io/circuit/data/**.txt'
     - 'docs/requirements.txt'
+    - '.whitesource'
+    - 'MODULE.bazel'
+    - 'MODULE.bazel.lock'
+    - 'examples/cmake-project/.keep'
 
   comment: never # <9>
 

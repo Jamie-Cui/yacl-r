@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "yacl/base/aligned_vector.h"
-#include "yacl/utils/cuckoo_index.h"
+#include "yacl/crypto/tools/cuckoo_index.h"
 #include "yacl/utils/serialize.h"
 
 namespace yacl::crypto {

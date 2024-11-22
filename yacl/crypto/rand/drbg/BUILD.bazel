@@ -32,9 +32,9 @@ yacl_cc_library(
     ],
     visibility = ["//visibility:private"],
     deps = [
-        "//yacl/base:secparam",
         "//yacl/base:byte_container_view",
         "//yacl/base:int128",
+        "//yacl/base:secparam",
         "//yacl/crypto/rand/entropy_source",
         "//yacl/utils/spi",
     ],
@@ -56,8 +56,8 @@ yacl_cc_library(
     deps = [
         ":spi",
         "//yacl/crypto:ossl_wrappers",
-        "//yacl/ossl_provider:helper",  # helper
         "//yacl/crypto/rand/entropy_source",
+        "//yacl/ossl_provider:helper",  # helper
     ],
     alwayslink = 1,
 )
@@ -80,8 +80,8 @@ yacl_cc_library(
         "//yacl/crypto:ossl_wrappers",
         "//yacl/crypto/block_cipher:symmetric_crypto",
         "//yacl/crypto/hash:hash_utils",
-        "//yacl/ossl_provider:helper",  # helper
         "//yacl/crypto/rand/entropy_source",
+        "//yacl/ossl_provider:helper",  # helper
     ],
     alwayslink = 1,
 )

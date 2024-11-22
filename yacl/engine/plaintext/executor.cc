@@ -1,4 +1,4 @@
-// Copyright 2024 Ant Group Co., Ltd.
+// Copyright 2024 Jamie Cui and Ant Group Co., Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/utils/circuit_executor.h"
+#include "yacl/engine/plaintext/executor.h"
 
-namespace yacl {
+namespace yacl::engine {
 
 namespace {
 class PlaintextCore {
@@ -25,24 +25,13 @@ class PlaintextCore {
 };
 }  // namespace
 
-template <typename T>
-void PlainExecutor<T>::LoadCircuitFile(const std::string& path) {
+void PlainExecutor::LoadCircuitFile(const std::string& path) {
   io::CircuitReader reader(path);
   reader.ReadAll();
   circ_ = reader.StealCirc();
 }
 
-template <typename T>
-void PlainExecutor<T>::SetupInputs(absl::Span<T> inputs) {
-  YACL_ENFORCE(inputs.size() == circ_->niv);
-  for (auto input : inputs) {
-    wires_.append(input);
-  }
-  wires_.resize(circ_->nw);
-}
-
-template <typename T>
-void PlainExecutor<T>::Exec() {
+void PlainExecutor::Exec() {
   // Evaluate all gates, sequentially
   for (const auto& gate : circ_->gates) {
     switch (gate.op) {
@@ -82,22 +71,5 @@ void PlainExecutor<T>::Exec() {
   }
 }
 
-template <typename T>
-void PlainExecutor<T>::Finalize(absl::Span<T> outputs) {
-  YACL_ENFORCE(outputs.size() >= circ_->nov);
 
-  size_t index = wires_.size();
-  for (size_t i = 0; i < circ_->nov; ++i) {
-    dynamic_bitset<T> result(circ_->now[i]);
-    for (size_t j = 0; j < circ_->now[i]; ++j) {
-      result[j] = wires_[index - circ_->now[i] + j];
-    }
-    outputs[circ_->nov - i - 1] = *(T*)result.data();
-    index -= circ_->now[i];
-  }
-}
-
-template class PlainExecutor<uint64_t>;
-template class PlainExecutor<uint128_t>;
-
-}  // namespace yacl
+}  // namespace yacl::engine

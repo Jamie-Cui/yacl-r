@@ -21,8 +21,8 @@ yacl_cc_library(
     srcs = ["all_gcm.cc"],
     hdrs = ["all_gcm.h"],
     deps = [
-        "//yacl/base:secparam",
         "//yacl/base:int128",
+        "//yacl/base:secparam",
         "//yacl/crypto:key_utils",
     ],
 )
