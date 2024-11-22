@@ -49,6 +49,7 @@ header: # <1>
     - '.whitesource'
     - 'MODULE.bazel'
     - 'MODULE.bazel.lock'
+    - 'examples/cmake-project/.keep'
 
   comment: never # <9>
 
