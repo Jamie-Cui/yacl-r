@@ -69,8 +69,8 @@ yacl_cc_library(
     name = "hash_interface",
     srcs = ["hash_interface.h"],
     deps = [
-        "//yacl/base:secparam",
         "//yacl/base:byte_container_view",
+        "//yacl/base:secparam",
         "//yacl/crypto:ossl_wrappers",
     ],
 )
