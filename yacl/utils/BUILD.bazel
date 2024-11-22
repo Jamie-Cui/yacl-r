@@ -17,28 +17,6 @@ load("//bazel:yacl.bzl", "OMP_CFLAGS", "OMP_DEPS", "OMP_LINKFLAGS", "yacl_cc_bin
 package(default_visibility = ["//visibility:public"])
 
 yacl_cc_library(
-    name = "circuit_executor",
-    srcs = ["circuit_executor.cc"],
-    hdrs = ["circuit_executor.h"],
-    deps = [
-        "//yacl/base:dynamic_bitset",
-        "//yacl/base:int128",
-        "//yacl/io/circuit:bristol_fashion",
-    ],
-)
-
-yacl_cc_test(
-    name = "circuit_executor_test",
-    srcs = ["circuit_executor_test.cc"],
-    data = ["//yacl/io/circuit:circuit_data"],
-    deps = [
-        "circuit_executor",
-        "//yacl/crypto/block_cipher:symmetric_crypto",
-        "//yacl/crypto/rand",
-    ],
-)
-
-yacl_cc_library(
     name = "hamming",
     hdrs = ["hamming.h"],
     deps = [
@@ -207,27 +185,6 @@ yacl_cc_binary(
         ":matrix_utils",
         "//yacl/crypto/tools:prg",
         "@com_github_google_benchmark//:benchmark_main",
-    ],
-)
-
-yacl_cc_library(
-    name = "cuckoo_index",
-    srcs = ["cuckoo_index.cc"],
-    hdrs = ["cuckoo_index.h"],
-    linkopts = ["-lm"],
-    deps = [
-        "//yacl/base:exception",
-        "//yacl/base:int128",
-        "@com_google_absl//absl/types:span",
-    ],
-)
-
-yacl_cc_test(
-    name = "cuckoo_index_test",
-    srcs = ["cuckoo_index_test.cc"],
-    deps = [
-        ":cuckoo_index",
-        "//yacl/crypto/rand",
     ],
 )
 

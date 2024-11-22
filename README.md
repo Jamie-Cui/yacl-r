@@ -14,7 +14,6 @@ Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https
 
 - **bazel**: [.bazelversion](.bazelversion) file describes the recommended version of bazel. We recommend to use the official [bazelisk](https://github.com/bazelbuild/bazelisk?tab=readme-ov-file#installation) to manage bazel version.
 - **gcc >= 10.3**
-- **[cmake](https://cmake.org/getting-started/)**
 - **[ninja/ninja-build](https://ninja-build.org/)**
 - **Perl 5 with core modules** (Required by [OpenSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites))
 

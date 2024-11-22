@@ -219,6 +219,7 @@ yacl_cc_library(
         "//yacl/crypto/hash:hash_utils",
         "//yacl/crypto/rand",
         "//yacl/crypto/tools:common",
+        "//yacl/crypto/tools:cuckoo_index",
         "//yacl/crypto/tools:prg",
         "//yacl/crypto/tools:rp",
         "//yacl/kernel/algorithms:gywz_ote",
@@ -228,7 +229,6 @@ yacl_cc_library(
         "//yacl/link",
         "//yacl/math:gadget",
         "//yacl/math/galois_field:gf_intrinsic",
-        "//yacl/utils:cuckoo_index",
     ],
 )
 
