@@ -21,12 +21,14 @@
 #include <string>
 #include <vector>
 
+#include "absl/strings/escaping.h"
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
 #include "yacl/io/stream/file_io.h"
 #include "yacl/io/stream/interface.h"
+#include "yacl/utils/spi/type_traits.h"
 
 namespace yacl::io {
 
@@ -137,48 +139,59 @@ class BuiltinBFCircuit {
                        std::filesystem::current_path().string());
   }
 
-  constexpr static std::array<uint8_t, 32> GetSha256InitialHashValues() {
-    return {0x6a, 0x09, 0xe6, 0x67, 0xbb, 0x67, 0xae, 0x85, 0x3c, 0x6e, 0xf3,
-            0x72, 0xa5, 0x4f, 0xf5, 0x3a, 0x51, 0x0e, 0x52, 0x7f, 0x9b, 0x05,
-            0x68, 0x8c, 0x1f, 0x83, 0xd9, 0xab, 0x5b, 0xe0, 0xcd, 0x19};
-  }
-
+  // Prepare (append & tweak) the input sha256 message before fed to the sha256
+  // bristol circuit.
+  //
+  // For more details, please check:
+  // https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
+  //
+  // NOTE since we are using dynamic_bitset for bristol format circuit
+  // representation, the actual bit operation here is slightly different from
+  // the standards.
   static std::vector<uint8_t> PrepareSha256Input(ByteContainerView input) {
-    constexpr size_t kSha256FixPadSize = 1;         // in bytes
-    constexpr size_t kSha256MessageBlockSize = 64;  // in bytes
+    constexpr size_t kFixPadSize = 1;                 // in bytes
+    constexpr size_t kMsgLenSize = sizeof(uint64_t);  // in bytes
+    constexpr size_t kMsgBlockSize = 64;              // in bytes
+    auto kInitSha256Bytes = GetSha256InitialHashValues();
 
-    uint64_t input_size = input.size();
-    constexpr auto kInitSha256Bytes = GetSha256InitialHashValues();
+    uint64_t input_size = input.size();  // in bits
     uint64_t zero_padding_size =
-        (input_size + kSha256FixPadSize) % kSha256MessageBlockSize == 0
+        (input_size + kFixPadSize + kMsgLenSize) % kMsgBlockSize == 0
             ? 0
-            : kSha256MessageBlockSize -
-                  (input_size + kSha256FixPadSize) % kSha256MessageBlockSize;
-    uint64_t message_size = input_size + kSha256FixPadSize + zero_padding_size;
+            : kMsgBlockSize -
+                  (input_size + kFixPadSize + kMsgLenSize) % kMsgBlockSize;
+    uint64_t message_size =
+        input_size + kFixPadSize + zero_padding_size + kMsgLenSize;
     uint64_t result_size = message_size + kInitSha256Bytes.size();
 
-    YACL_ENFORCE(message_size % kSha256MessageBlockSize == 0);
+    YACL_ENFORCE(message_size % kMsgBlockSize == 0);
 
-    // Declare the resut byte-vector
+    // Declare the result byte-vector
+    size_t offset = 0;
     std::vector<uint8_t> result(result_size);
 
-    // original input message
-    size_t offset = kInitSha256Bytes.size();
-    std::memcpy(result.data() + offset, input.data(), input_size);
-
-    // additional padding (as a mark)
-    offset = kInitSha256Bytes.size() + input_size;
-    result[offset] = 0x80;
+    // the next 64 bits should be the byte length of input message
+    uint64_t input_bitnum = input_size * 8;  // in bytes
+    std::memcpy(result.data() + offset, &input_bitnum, sizeof(input_bitnum));
+    offset += sizeof(uint64_t);
 
     // zero padding (result vector has zero initialization)
     // ... should doing nothing ...
+    offset += zero_padding_size;
 
-    // the last 64 bits should be the byte length of input message
-    offset = kInitSha256Bytes.size() + input_size + kSha256FixPadSize;
-    std::memcpy(result.data() + offset, &input_size, sizeof(uint64_t));
+    // additional padding bit-'1' (as a mark)
+    result[offset] = 0x80;
+    offset += kFixPadSize;
+
+    // original input message
+    // auto input_reverse = ReverseBytes(absl::MakeSpan(input));  // copy here
+    std::memcpy(result.data() + offset, input.data(), input_size);
+    offset += input_size;
 
     // initial hash values
-    std::memcpy(result.data(), kInitSha256Bytes.data(), kInitSha256Bytes.size());
+    std::memcpy(result.data() + offset, kInitSha256Bytes.data(),
+                kInitSha256Bytes.size());
+    offset += kInitSha256Bytes.size();
 
     return result;
   }
@@ -199,6 +212,16 @@ class BuiltinBFCircuit {
   static std::string Sha256Path() {
     return fmt::format("{}/yacl/io/circuit/data/sha256.txt",
                        std::filesystem::current_path().string());
+  }
+
+
+  static std::array<uint8_t, 32> GetSha256InitialHashValues() {
+    std::array<uint8_t, 32> standard_init_array = {
+        0x6a, 0x09, 0xe6, 0x67, 0xbb, 0x67, 0xae, 0x85, 0x3c, 0x6e, 0xf3,
+        0x72, 0xa5, 0x4f, 0xf5, 0x3a, 0x51, 0x0e, 0x52, 0x7f, 0x9b, 0x05,
+        0x68, 0x8c, 0x1f, 0x83, 0xd9, 0xab, 0x5b, 0xe0, 0xcd, 0x19};
+    std::reverse(standard_init_array.begin(), standard_init_array.end());
+    return standard_init_array;
   }
 };
 

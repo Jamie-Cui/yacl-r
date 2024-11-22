@@ -27,6 +27,8 @@ namespace yacl::engine {
 
 class PlainExecutor {
  public:
+  using BlockType = uint8_t;
+
   // Constructor
   explicit PlainExecutor() = default;
 
@@ -38,7 +40,7 @@ class PlainExecutor {
   void SetupInputs(absl::Span<T> inputs) {
     YACL_ENFORCE(inputs.size() == circ_->niv);
 
-    dynamic_bitset<uint128_t> input_wires;
+    dynamic_bitset<BlockType> input_wires;
     input_wires.resize(sizeof(T) * 8 * inputs.size());
     std::memcpy(input_wires.data(), inputs.data(), inputs.size() * sizeof(T));
     wires_.append(input_wires);
@@ -46,9 +48,13 @@ class PlainExecutor {
   }
 
   // Setup the input wire
+  //
+  // NOTE internally this function simply copies the memory of bytes to internal
+  // dynamic_bitset
   void SetupInputBytes(ByteContainerView bytes) {
-    wires_.resize(circ_->nw);
+    wires_.resize(bytes.size() * 8);
     std::memcpy(wires_.data(), bytes.data(), bytes.size());
+    wires_.resize(circ_->nw);
   }
 
   // Execute the circuit
@@ -60,7 +66,7 @@ class PlainExecutor {
     YACL_ENFORCE(outputs.size() >= circ_->nov);
     size_t index = wires_.size();
     for (size_t i = 0; i < circ_->nov; ++i) {
-      dynamic_bitset<T> result(circ_->now[i]);
+      dynamic_bitset<BlockType> result(circ_->now[i]);
       for (size_t j = 0; j < circ_->now[i]; ++j) {
         result[j] = wires_[index - circ_->now[i] + j];
       }
@@ -76,23 +82,38 @@ class PlainExecutor {
       total_out_bitnum += circ_->now[i];
     }
 
-    // Make sure that the circuit output wire is full bytes
-    YACL_ENFORCE(total_out_bitnum % 8 == 0);
+    // // Make sure that the circuit output wire is full bytes
+    // YACL_ENFORCE(total_out_bitnum % 8 == 0);
 
-    const size_t wire_size = wires_.size();
-    dynamic_bitset<uint128_t> result(total_out_bitnum);
-    for (size_t i = 0; i < total_out_bitnum; ++i) {
-      result[total_out_bitnum - i - 1] = wires_[wire_size - i - 1];
-    }
-    YACL_ENFORCE(result.size() == total_out_bitnum);
+    // const size_t wire_size = wires_.size();
+    // dynamic_bitset<BlockType> result(total_out_bitnum);
+    // for (size_t i = 0; i < total_out_bitnum; ++i) {
+    //   result[total_out_bitnum - i - 1] = wires_[wire_size - i - 1];
+    // }
+    // YACL_ENFORCE(result.size() == total_out_bitnum);
+    // std::vector<uint8_t> out(total_out_bitnum / 8);
+    // std::memcpy(out.data(), result.data(), out.size());
+    // SPDLOG_INFO(result.to_string());
+    // return out;
+
     std::vector<uint8_t> out(total_out_bitnum / 8);
-    std::memcpy(out.data(), result.data(), out.size());
+
+    size_t index = wires_.size();
+    for (size_t i = 0; i < 32; ++i) {
+      dynamic_bitset<BlockType> result(8);
+      for (size_t j = 0; j < 8; ++j) {
+        result[j] = wires_[index - 8 + j];
+      }
+      out[32 - i - 1] = *(uint8_t *)result.data();
+      index -= 8;
+    }
+    std::reverse(out.begin(), out.end());
     return out;
   }
 
  private:
   // NOTE: please make sure you use the correct order of wires
-  dynamic_bitset<uint128_t> wires_;      // shares
+  dynamic_bitset<BlockType> wires_;      // shares
   std::shared_ptr<io::BFCircuit> circ_;  // bristol fashion circuit
 };
 

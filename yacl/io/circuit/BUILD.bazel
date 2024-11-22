@@ -28,6 +28,7 @@ yacl_cc_library(
     deps = [
         "//yacl/io/stream:file_io",
         "//yacl/link:context",
+        "//yacl/utils/spi:type_traits",
     ],
 )
 

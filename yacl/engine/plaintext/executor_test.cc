@@ -211,21 +211,23 @@ TEST(CryptoTest, Sha256Test) {
   /* GIVEN */
   auto input = crypto::FastRandBytes(crypto::RandLtN(10));
 
-  std::string temp = "1";
-  SPDLOG_INFO(absl::BytesToHexString(
-      ByteContainerView(io::BuiltinBFCircuit::PrepareSha256Input(temp))));
+  // std::array<char, 3> temp = {'a', 'b', 'c'};
+  // std::string temp = "1";
+  std::array<char, 1> message = {'1'};
+  auto in_buf = io::BuiltinBFCircuit::PrepareSha256Input(message);
 
   /* WHEN */
-  // PlainExecutor exec;
-  // exec.LoadCircuitFile(io::BuiltinBFCircuit::Sha256Path());
-  // exec.SetupInputBytes(io::BuiltinBFCircuit::PrepareSha256Input(input));
-  // exec.Exec();
-  // auto result = exec.FinalizeBytes();
+  PlainExecutor exec;
+  exec.LoadCircuitFile(io::BuiltinBFCircuit::Sha256Path());
+  exec.SetupInputBytes(in_buf);
+  exec.Exec();
+  auto result = exec.FinalizeBytes();
 
   /* THEN */
-  // auto compare = crypto::Sha256Hash().Update(input).CumulativeHash();
-  // SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(result)));
-  // SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(compare)));
+  auto compare = crypto::Sha256Hash().Update(message).CumulativeHash();
+  SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(result)));
+  SPDLOG_INFO(absl::BytesToHexString(ByteContainerView(compare)));
+  EXPECT_EQ(compare.size(), result.size());
 }
 
 }  // namespace yacl::engine
