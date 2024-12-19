@@ -160,3 +160,6 @@ target_link_libraries(yacl PUBLIC
   # ExtLibtommath::libtommath
   # ExtFourQ::fourq
 )
+
+# HACK for header only libraries, we need manually add dependencies
+add_dependencies(yacl spdlog)

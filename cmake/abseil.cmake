@@ -30,7 +30,8 @@ ExternalProject_Add(abseil
 add_library(libabseil SHARED IMPORTED)
 set_property(
   TARGET libabseil PROPERTY
-  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libabseil_dll.dylib)
+  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libabseil_dll${CMAKE_SHARED_LIBRARY_SUFFIX})
+
 add_dependencies(libabseil abseil)
 
 add_library(External::absl ALIAS libabseil)
