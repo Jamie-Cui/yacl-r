@@ -29,15 +29,3 @@ function(add_compiler_flags flag)
   endif()
 endfunction()
 
-add_compiler_flags("-Wall")
-add_compiler_flags("-Wextra")
-add_compiler_flags("-Werror")
-
-# FIXME remove this flag
-add_compiler_flags("-Wno-unused-function")
-add_compiler_flags("-Wno-vla") # no variable length error warning
-
-# For cryptos
-add_compiler_flags("-maes")
-add_compiler_flags("-mavx")
-add_compiler_flags("-mpclmul")

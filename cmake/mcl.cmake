@@ -12,16 +12,14 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
-  sse2neon
-  PREFIX "external_sse2neon"
-  URL https://github.com/DLTcollab/sse2neon/archive/8df2f48dbd0674ae5087f7a6281af6f55fa5a8e2.tar.gz
+FetchContent_Declare(
+  mcl
+  URL https://github.com/herumi/mcl/archive/refs/tags/v1.99.tar.gz
   URL_HASH
-    SHA256=787e0a7a64f1461b48232a7f9b9e9c14fa4a35a30875f2fb91aec6ddeaddfc0f
-  BUILD_IN_SOURCE true
-  CONFIGURE_COMMAND ""
-  INSTALL_COMMAND "")
+    SHA256=5ff9702c1f1b021925d1334ca0a03c87783174075aeaf87801842d3c08b3d39e
+    EXCLUDE_FROM_ALL)
 
-ExternalProject_Get_Property(sse2neon SOURCE_DIR)
-include_directories(${SOURCE_DIR})
-unset(SOURCE_DIR)
+
+FetchContent_MakeAvailable(mcl)
+
+include_directories(${mcl_SOURCE_DIR}/include)

@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FetchContent_Declare(
-    abseil
-    URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz
-    URL_HASH SHA256=f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
-)
-
-SET(ABSL_PROPAGATE_CXX_STD ON CACHE INTERNAL "")
-SET(ABSL_USE_SYSTEM_INCLUDES ON CACHE INTERNAL "")
-FetchContent_MakeAvailable(abseil)
-
-include_directories(${abseil_SOURCE_DIR})
+ExternalProject_Add(gflags
+  URL
+     https://github.com/gflags/gflags/archive/v2.2.2.tar.gz
+  URL_HASH
+     SHA256=34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf
+  CMAKE_ARGS ${CMAKE_ARGS}
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+    -DSPDLOG_FMT_EXTERNAL=On
+    -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+  LOG_DOWNLOAD On
+  LOG_CONFIGURE On
+  LOG_BUILD On
+  LOG_INSTALL On)

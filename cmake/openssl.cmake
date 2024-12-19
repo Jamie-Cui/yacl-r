@@ -47,7 +47,7 @@ if(YACL_WITH_EXT_OPENSSL)
       -w
     BUILD_COMMAND make -j4 build_sw
     INSTALL_COMMAND make install_sw
-    EXCLUDE_FROM_ALL)
+    EXCLUDE_FROM_ALL true)
 
   add_library(ExtOpenSSL_Crypto STATIC IMPORTED)
   set_target_properties(

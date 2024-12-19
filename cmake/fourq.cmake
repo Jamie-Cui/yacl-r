@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -34,6 +34,7 @@ ExternalProject_Add(
   PATCH_COMMAND patch -p1 -l --binary -i
                 ${PROJECT_SOURCE_DIR}/bazel/patches/FourQlib.patch
   CONFIGURE_COMMAND "" # no configure
+  EXCLUDE_FROM_ALL true
   BUILD_COMMAND ${YACL_EXT_FOURQ_BUILD_COMMAND}
   INSTALL_COMMAND ${YACL_EXT_FOURQ_INSTALL_COMMAND})
 

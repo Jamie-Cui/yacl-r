@@ -2,6 +2,9 @@
 
 Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https://github.com/secretflow/yacl). The crypto modules in Yacl implement many state-of-art secure computation protocols, including primitives like OT, VOLE, TPRE, and tools like PRG, RO. Check the full list of Yacl's supported algorithms in [ALGORITHMS.md](ALGORITHMS.md).
 
+> [!WARNING]
+> Yacl-r is under heavy development, please use at your own risk
+
 ## Repo Layout
 
 - [base](yacl/base/): some basic types and utils in yacl.

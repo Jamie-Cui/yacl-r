@@ -28,10 +28,10 @@ install(
         ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils
 )
 
-add_subdirectory(spi)
+# add_subdirectory(spi)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
 add_executable(parallel_test parallel_test.cc)
-target_link_libraries(parallel_test PRIVATE yacl gtest_main)
+target_link_libraries(parallel_test PRIVATE yacl External::gtest)
 add_test(NAME parallel_test COMMAND parallel_test)

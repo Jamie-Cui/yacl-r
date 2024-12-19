@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -12,14 +12,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FetchContent_Declare(
-  blake3
-  URL https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz
+ExternalProject_Add(blake3
+  URL
+    https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz
   URL_HASH
     SHA256=ddd24f26a31d23373e63d9be2e723263ac46c8b6d49902ab08024b573fd2a416
-  SOURCE_SUBDIR c)
+  CMAKE_ARGS
+    ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+  SOURCE_SUBDIR c
+  LOG_DOWNLOAD On
+  LOG_CONFIGURE On
+  LOG_BUILD On
+  LOG_INSTALL On)
 
-FetchContent_MakeAvailable(blake3)
+add_library(libblake3 STATIC IMPORTED)
+set_property(
+  TARGET libblake3 PROPERTY
+  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libblake3.a)
+add_dependencies(libblake3 blake3)
 
-include_directories(${blake3_SOURCE_DIR})
-
+add_library(External::blake3 ALIAS libblake3)

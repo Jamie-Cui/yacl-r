@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -14,17 +14,17 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-project(
-  yacl
+project(yacl_r
   VERSION 0.4.5
-  DESCRIPTION
-    "YACL (Yet Another Common crypto library) is a C++ library that contains cryptography, network and io modules which other SecretFlow code depends on."
-  HOMEPAGE_URL "https://github.com/secretflow/yacl"
+  DESCRIPTION "YACL-r (Yet Another Crypto Library for Research)"
+  HOMEPAGE_URL "https://github.com/Jamie-Cui/yacl-r"
   LANGUAGES CXX C)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+# ------------------------------------------------------------------------------
+# Project Generic Configuration
+# ------------------------------------------------------------------------------
 
+# Configure build type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE
       "Release"
@@ -34,103 +34,129 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type (CMAKE_BUILD_TYPE): ${CMAKE_BUILD_TYPE}")
 
+# Set module path
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+
+# Enable compile_commands.json for lsp
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 # This policy was introduced in CMake 3.13; OLD by default until CMake 3.21
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0135 NEW)
 
-# CMake modules
+# Generic CMake modules
+include(AddCompilerFlags)
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
 include(CheckLanguage)
-include(FetchContent)
 include(ExternalProject)
+include(GNUInstallDirs)
 
-# Always build position-independent-code
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# ------------------------------------------------------------------------------
+# Toolchain Configuration
+# ------------------------------------------------------------------------------
 
-# Enable C++17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED YES)
+# CMake arguments
+set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
+set(CMAKE_CXX_STANDARD 17)              # Enable C++17
+set(CMAKE_C_STANDARD_REQUIRED Yes)      # Force C standard to be present
+
+# HACK CMAKE_ARGS should only be used in external project to reuse main
+# project's cmake args
+set(CMAKE_ARGS
+  -DCMAKE_POSITION_INDEPENDENT_CODE=On
+  -DCMAKE_CXX_STANDARD=17
+  -DCMAKE_C_STANDARD_REQUIRED=Yes)
+
 # set(CMAKE_EXE_LINKER_FLAGS
 #    "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup")
 
-include(GNUInstallDirs)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
-include(AddCompilerFlags)
+# Additional compiler flags
+add_compiler_flags("-Wall")
+add_compiler_flags("-Wextra")
+add_compiler_flags("-Werror")
+
+add_compiler_flags("-Wno-sign-compare")
+
+# FIXME remove this flag
+add_compiler_flags("-Wno-unused-function")
+add_compiler_flags("-Wno-vla") # no variable length error warning
+
+# For cryptos
+add_compiler_flags("-maes")
+add_compiler_flags("-mavx")
+add_compiler_flags("-mpclmul")
 
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
   add_compiler_flags(-fdiagnostics-color=always)
 endif()
 
-# set fetch content base directory
-set(FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/external_cmake)
+# ------------------------------------------------------------------------------
+# External Dependencies Configuration
+# ------------------------------------------------------------------------------
 
 # prefer -pthread instead of -lpthread or -lpthreads
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-include(ExternalAbseil)
-include(ExternalBlake3)
-include(ExternalFmt)
-include(ExternalSPDLog)
-include(ExternalGTest)
-include(ExternalGflags)
-include(ExternalMsgpack)
-include(ExternalOpenSSL)
-include(ExternalLibTommath)
-include(ExternalSse2neon)
-include(ExternalMcl)
-include(ExternalFourQ)
-include(ExternalLibSodium)
+set(CMAKE_THIRDPARTY_PREFIX
+  ${CMAKE_BINARY_DIR}/thirdparty)
+set(CMAKE_THIRDPARTY_LIBDIR
+  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_THIRDPARTY_BINDIR
+  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_BINDIR})
+set(CMAKE_THIRDPARTY_INCLUDEDIR
+  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+
+include(abseil)
+include(blake3)
+include(fmt)
+include(gtest)
+include(gflags)
+include(spdlog)
+include(msgpack)
+
+# ----------------------------
+# Project Target Configuration
+# ----------------------------
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
 add_library(yacl STATIC)
 
-target_include_directories(
-  yacl
-  PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>" # these dirs are only used
-                                                   # when building inside the
-                                                   # build tree
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>" # these dirs are only
-                                                       # used when linking
-                                                       # against a prebuilt
-                                                       # version of your package
-)
+target_include_directories(yacl PUBLIC
+    # these dirs are only used when building inside the build tree
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>"
+    # these dirs are only used when linking against a prebuilt package
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_include_directories(yacl PUBLIC ${CMAKE_BINARY_DIR}/include)
+target_include_directories(yacl PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR})
 
 set(YACL_SOURCE_FILES "")
 
-add_subdirectory(yacl)
+# add_subdirectory(yacl)
 add_subdirectory(yacl/base)
-add_subdirectory(yacl/crypto)
+# add_subdirectory(yacl/crypto)
 add_subdirectory(yacl/io)
 add_subdirectory(yacl/utils)
-add_subdirectory(yacl/math)
+# add_subdirectory(yacl/math)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
-target_link_libraries(
-  yacl
-  PUBLIC fmt::fmt
-         absl::stacktrace
-         absl::symbolize
-         absl::int128
-         BLAKE3::blake3
-         mcl::mcl
-         ExtLibsodium::libsodium
-         ExtLibtommath::libtommath
-         ExtFourQ::fourq)
-
-if(YACL_WITH_EXT_OPENSSL)
-  target_link_libraries(yacl PUBLIC Extossl::Crypto Extossl::SSL)
-else()
-  target_link_libraries(yacl PUBLIC ossl::Crypto ossl::SSL)
-endif()
+target_link_libraries(yacl PUBLIC
+  External::absl
+  External::fmt
+  External::spdlog
+  External::blake3
+  # mcl::mcl
+  # ExtLibsodium::libsodium
+  # ExtLibtommath::libtommath
+  # ExtFourQ::fourq
+)

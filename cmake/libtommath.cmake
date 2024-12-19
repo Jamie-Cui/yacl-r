@@ -19,6 +19,9 @@ ExternalProject_Add(
   URL https://github.com/libtom/libtommath/archive/42b3fb07e7d504f61a04c7fca12e996d76a25251.tar.gz
   URL_HASH
     SHA256=7cfbdb64431129de4257e7d3349200fdbd4f229b470ff3417b30d0f39beed41f
+  BUILD_IN_SOURCE true
+  DOWNLOAD_NO_PROGRESS true
+  EXCLUDE_FROM_ALL true
   INSTALL_COMMAND cmake --install . --prefix ${CMAKE_BINARY_DIR}
   EXCLUDE_FROM_ALL)
 
