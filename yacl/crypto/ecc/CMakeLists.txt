@@ -29,7 +29,7 @@ install(
 # add_subdirectory(benchmark) # TODO
 
 add_subdirectory(FourQlib)
-add_subdirectory(libsodium)
+# add_subdirectory(libsodium)
 add_subdirectory(mcl)
 add_subdirectory(openssl)
 add_subdirectory(toy)

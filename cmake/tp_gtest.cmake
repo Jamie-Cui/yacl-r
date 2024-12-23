@@ -13,10 +13,14 @@
 # limitations under the License.
 
 ExternalProject_Add(googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
-  URL_HASH SHA256=7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926
+  URL
+    https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+  URL_HASH
+    SHA256=7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926
   CMAKE_ARGS
-    ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX} -DBUILD_GMOCK=Off
+    ${CMAKE_ARGS}
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+    -DBUILD_GMOCK=Off
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -38,4 +42,8 @@ add_dependencies(libgtest_main googletest)
 add_library(libgtest_interface INTERFACE)
 target_link_libraries(libgtest_interface
   INTERFACE libgtest_main libgtest)
-add_library(External::gtest ALIAS libgtest_interface)
+
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Thirdparty::gtest ALIAS libgtest_interface)

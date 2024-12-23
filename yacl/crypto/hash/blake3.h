@@ -16,13 +16,14 @@
 
 #include <vector>
 
-#include "c/blake3.h"
+#include "blake3.h"
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/crypto/hash/hash_interface.h"
 
 namespace yacl::crypto {
-// specification document of the blake3 hash function
+
+// Specification document of the blake3 hash function
 // https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf
 // https://github.com/BLAKE3-team/BLAKE3
 // blake3 hash implements HashInterface.

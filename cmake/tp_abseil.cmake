@@ -14,7 +14,8 @@
 
 ExternalProject_Add(abseil
   URL
-    https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz
+    "https://github.com/abseil/abseil-cpp/archive/refs/tags/\
+20240722.0.tar.gz"
   URL_HASH
     SHA256=f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
   CMAKE_ARGS ${CMAKE_ARGS}
@@ -31,7 +32,9 @@ add_library(libabseil SHARED IMPORTED)
 set_property(
   TARGET libabseil PROPERTY
   IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libabseil_dll${CMAKE_SHARED_LIBRARY_SUFFIX})
-
 add_dependencies(libabseil abseil)
 
-add_library(External::absl ALIAS libabseil)
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Thirdparty::absl ALIAS libabseil)

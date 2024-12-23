@@ -34,9 +34,9 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 add_executable(buffer_test buffer_test.cc)
-target_link_libraries(buffer_test PRIVATE yacl External::gtest)
+target_link_libraries(buffer_test PRIVATE yacl Thirdparty::gtest)
 add_test(NAME buffer_test COMMAND buffer_test)
 
 add_executable(secparam_test secparam_test.cc)
-target_link_libraries(secparam_test PRIVATE yacl External::gtest)
+target_link_libraries(secparam_test PRIVATE yacl Thirdparty::gtest)
 add_test(NAME secparam_test COMMAND secparam_test)

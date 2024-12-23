@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(msgpack
+ExternalProject_Add(fmt
   URL
-    https://github.com/msgpack/msgpack-c/archive/refs/tags/cpp-6.1.0.tar.gz
+    "https://github.com/fmtlib/fmt/archive/refs/tags/11.0.2.tar.gz"
   URL_HASH
-    SHA256=5e63e4d9b12ab528fccf197f7e6908031039b1fc89cd8da0e97fbcbf5a6c6d3a
-  CMAKE_ARGS ${CMAKE_ARGS}
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DMSGPACK_CXX17=On
-    -DMSGPACK_USE_BOOST=Off
-    -DMSGPACK_BUILD_EXAMPLES=Off
-    -DMSGPACK_BUILD_EXAMPLES=Off
-    -DBUILD_SHARED_LIBS=Off
-    -DMSGPACK_BUILD_TESTS=Off
+    SHA256=6cb1e6d37bdcb756dbbe59be438790db409cdb4868c66e888d5df9f13f7c027f
+  CMAKE_ARGS
+    ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On
   LOG_INSTALL On)
 
-# msgpack is header-only, therefore no need to link
+add_library(libfmt STATIC IMPORTED)
+set_property(
+  TARGET libfmt PROPERTY
+  IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libfmt${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libfmt fmt)
 
-# HACK
-add_compile_definitions(MSGPACK_NO_BOOST)
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Thirdparty::fmt ALIAS libfmt)

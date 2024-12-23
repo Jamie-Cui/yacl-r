@@ -89,6 +89,9 @@ add_compiler_flags("-maes")
 add_compiler_flags("-mavx")
 add_compiler_flags("-mpclmul")
 
+add_compiler_flags("-Wno-shift-count-overflow")
+
+
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
   add_compiler_flags(-fdiagnostics-color=always)
@@ -111,13 +114,19 @@ set(CMAKE_THIRDPARTY_BINDIR
 set(CMAKE_THIRDPARTY_INCLUDEDIR
   ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 
-include(abseil)
-include(blake3)
-include(fmt)
-include(gtest)
-include(gflags)
-include(spdlog)
-include(msgpack)
+include(tp_abseil)
+include(tp_blake3)
+include(tp_fmt)
+include(tp_fourq)
+include(tp_gtest)
+include(tp_gflags)
+include(tp_libsodium)
+include(tp_libtommath)
+include(tp_mcl)
+include(tp_msgpack)
+include(tp_openssl)
+include(tp_spdlog)
+include(tp_sse2neon)
 
 # ----------------------------
 # Project Target Configuration
@@ -141,25 +150,35 @@ target_include_directories(yacl PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR})
 
 set(YACL_SOURCE_FILES "")
 
-# add_subdirectory(yacl)
 add_subdirectory(yacl/base)
-# add_subdirectory(yacl/crypto)
+add_subdirectory(yacl/crypto)
 add_subdirectory(yacl/io)
 add_subdirectory(yacl/utils)
-# add_subdirectory(yacl/math)
+add_subdirectory(yacl/math)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
 target_link_libraries(yacl PUBLIC
-  External::absl
-  External::fmt
-  External::spdlog
-  External::blake3
-  # mcl::mcl
-  # ExtLibsodium::libsodium
-  # ExtLibtommath::libtommath
-  # ExtFourQ::fourq
+  Thirdparty::absl
+  Thirdparty::blake3
+  Thirdparty::fmt
+  Thirdparty::fourq
+  Thirdparty::spdlog
+  Thirdparty::msgpack
+  Thirdparty::openssl
+  Thirdparty::sse2neon
+  Thirdparty::mcl
 )
 
 # HACK for header only libraries, we need manually add dependencies
-add_dependencies(yacl spdlog)
+add_dependencies(yacl
+  Thirdparty::absl
+  Thirdparty::blake3
+  Thirdparty::fmt
+  Thirdparty::fourq
+  Thirdparty::spdlog
+  Thirdparty::msgpack
+  Thirdparty::openssl
+  Thirdparty::sse2neon
+  Thirdparty::mcl
+)

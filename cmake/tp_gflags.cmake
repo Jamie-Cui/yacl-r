@@ -12,23 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(fmt
+ExternalProject_Add(gflags
   URL
-    https://github.com/fmtlib/fmt/archive/refs/tags/11.0.2.tar.gz
+     https://github.com/gflags/gflags/archive/v2.2.2.tar.gz
   URL_HASH
-    SHA256=6cb1e6d37bdcb756dbbe59be438790db409cdb4868c66e888d5df9f13f7c027f
-  CMAKE_ARGS
-    ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+     SHA256=34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf
+  CMAKE_ARGS ${CMAKE_ARGS}
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+    -DSPDLOG_FMT_EXTERNAL=On
+    -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libfmt STATIC IMPORTED)
-set_property(
-  TARGET libfmt PROPERTY
-  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libfmt.a)
-add_dependencies(libfmt fmt)
+add_library(libgflags INTERFACE)
+add_dependencies(libgflags gflags)
 
-add_library(External::fmt ALIAS libfmt)
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Thirdparty::gflags ALIAS libgflags)

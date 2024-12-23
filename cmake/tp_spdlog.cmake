@@ -35,7 +35,11 @@ set_property(
   IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libspdlog.a)
 add_dependencies(libspdlog spdlog)
 
-add_library(External::spdlog ALIAS libspdlog)
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Thirdparty::spdlog ALIAS libspdlog)
 
 # HACK https://github.com/gabime/spdlog/issues/1897
 add_compile_definitions(SPDLOG_FMT_EXTERNAL)
+
