@@ -17,9 +17,9 @@
 #include "yacl/math/mpint/tommath_ext_features.h"
 #include "yacl/math/mpint/tommath_ext_types.h"
 
-extern "C" {
-#include "libtommath/tommath_private.h"
-}
+// extern "C" {
+// #include "libtommath/tommath_private.h"
+// }
 
 yacl::math::MPInt operator""_mp(const char *sz, size_t n) {
   return yacl::math::MPInt(std::string(sz, n));

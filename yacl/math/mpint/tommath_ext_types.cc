@@ -18,9 +18,9 @@
 
 #include "yacl/math/mpint/mp_int_enforce.h"
 
-extern "C" {
-#include "libtommath/tommath_private.h"
-}
+// extern "C" {
+// #include "libtommath/tommath_private.h"
+// }
 
 // Following macros are copied from tommath_private.h
 #define MP_MIN(x, y) (((x) < (y)) ? (x) : (y))

@@ -105,8 +105,7 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 
-set(CMAKE_THIRDPARTY_PREFIX
-  ${CMAKE_BINARY_DIR}/thirdparty)
+set(CMAKE_THIRDPARTY_PREFIX ${CMAKE_BINARY_DIR}/thirdparty)
 set(CMAKE_THIRDPARTY_LIBDIR
   ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_THIRDPARTY_BINDIR
@@ -167,18 +166,4 @@ target_link_libraries(yacl PUBLIC
   Thirdparty::msgpack
   Thirdparty::openssl
   Thirdparty::sse2neon
-  Thirdparty::mcl
-)
-
-# HACK for header only libraries, we need manually add dependencies
-add_dependencies(yacl
-  Thirdparty::absl
-  Thirdparty::blake3
-  Thirdparty::fmt
-  Thirdparty::fourq
-  Thirdparty::spdlog
-  Thirdparty::msgpack
-  Thirdparty::openssl
-  Thirdparty::sse2neon
-  Thirdparty::mcl
-)
+  Thirdparty::mcl)

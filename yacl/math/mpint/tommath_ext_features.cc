@@ -19,9 +19,9 @@
 
 #include "libtommath/tommath.h"
 
-extern "C" {
-#include "libtommath/tommath_private.h"
-}
+// extern "C" {
+// #include "libtommath/tommath_private.h"
+// }
 
 #include "yacl/base/buffer.h"
 #include "yacl/base/exception.h"

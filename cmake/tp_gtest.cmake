@@ -30,13 +30,15 @@ ExternalProject_Add(googletest
 add_library(libgtest STATIC IMPORTED)
 set_property(
   TARGET libgtest PROPERTY
-  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libgtest.a)
+  IMPORTED_LOCATION
+  ${CMAKE_THIRDPARTY_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest googletest)
 
 add_library(libgtest_main STATIC IMPORTED)
 set_property(
   TARGET libgtest_main PROPERTY
-  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libgtest_main.a)
+  IMPORTED_LOCATION
+  ${CMAKE_THIRDPARTY_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest_main googletest)
 
 add_library(libgtest_interface INTERFACE)

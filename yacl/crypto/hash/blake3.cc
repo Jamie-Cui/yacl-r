@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/crypto/hash/blake3_adaptor.h"
+#include "yacl/crypto/hash/blake3.h"
 
 #include <vector>
 

@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "yacl/crypto/hash/blake3_adaptor.h"
+#include "yacl/crypto/hash/blake3.h"
 #include "yacl/crypto/hash/ssl_hash.h"
 #include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/utils/scope_guard.h"

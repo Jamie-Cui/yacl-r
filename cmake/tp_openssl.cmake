@@ -33,11 +33,15 @@ ExternalProject_Add(
 
 add_library(libcrypto STATIC IMPORTED)
 set_target_properties(libcrypto
-  PROPERTIES IMPORTED_LOCATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libcrypto.a)
+  PROPERTIES IMPORTED_LOCATION
+  ${CMAKE_THIRDPARTY_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libcrypto openssl)
 
 add_library(libssl STATIC IMPORTED)
-set_target_properties(libssl PROPERTIES IMPORTED_LOCATION
-                            ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libssl.a)
+set_target_properties(libssl
+  PROPERTIES IMPORTED_LOCATION
+  ${CMAKE_THIRDPARTY_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libcrypto openssl)
 
 add_library(libopenssl_interface INTERFACE)
 target_link_libraries(libopenssl_interface

@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "blake3.h"
+#include "blake3/blake3.h"
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/crypto/hash/hash_interface.h"
