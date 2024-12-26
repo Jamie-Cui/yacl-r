@@ -5,34 +5,31 @@
 # Usage: copy all your libs to a single directory and call this script.
 #
 if [[ $# -ne 3 ]]; then
-  echo "Usage: unify-static-libs.sh output-name path-to-libs pattern"
+  echo "Usage: unify-static-libs.sh <OUTLIB> <WORKING_DIR> <PATTERN>"
   exit 2
 fi
 
 # Inputs
-LIBNAME=$1
-LIBSDIR=$2
+OUTLIB=$1
+WORKING_DIR=$2
 PATTERN=$3
 
-# Tmp dir
-OBJDIR=/tmp/unify-static-libs
-mkdir -p ${OBJDIR}
-cd ${OBJDIR}
-# Extract .o
-echo "Extracting objects to ${OBJDIR}..."
-for i in ${LIBSDIR}/${PATTERN}
+UNIFY_CMD="ar -crs $OUTLIB "
+CLEAN_CMD="rm -rf "
+
+for EACH_LIB in ${WORKING_DIR}/${PATTERN}
 do
-    echo $i
-    ar -x $i
+    echo "Extracting objects from $EACH_LIB to ${EACH_LIB%??}"
+    mkdir -p ${EACH_LIB%??}
+    ar -x $EACH_LIB && mv *.o ${EACH_LIB%??}
+    UNIFY_CMD="$UNIFY_CMD ${EACH_LIB%??}/*.o"
+    CLEAN_CMD="$CLEAN_CMD ${EACH_LIB%??}"
 done
+
 # Link objects into a single lib
-echo "Creating $LIBNAME from objects..."
-ar -crs $LIBNAME $OBJDIR/*.o
+echo "Creating $OUTLIB from objects..."
+$UNIFY_CMD
 
-mv $LIBNAME ${LIBSDIR}
+echo "Cleaning with $CLEAN_CMD"
+$CLEAN_CMD
 
-# Clean up
-rm -rf ${OBJDIR}
-rm -rf ${LIBSDIR}/${PATTERN}
-
-echo "Done."
