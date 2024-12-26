@@ -19,7 +19,6 @@ ExternalProject_Add(spdlog
     SHA256=1586508029a7d0670dfcb2d97575dcdc242d3868a259742b69f100801ab4e16b
   CMAKE_ARGS ${CMAKE_ARGS}
     -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DSPDLOG_FMT_EXTERNAL=On
     -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   LOG_DOWNLOAD On
@@ -32,7 +31,8 @@ add_dependencies(spdlog fmt)
 add_library(libspdlog STATIC IMPORTED)
 set_property(
   TARGET libspdlog PROPERTY
-  IMPORTED_LOCATION ${CMAKE_THIRDPARTY_LIBDIR}/libspdlog.a)
+  IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libspdlog${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libspdlog spdlog)
 
 # -----------------------------
