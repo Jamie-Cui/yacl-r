@@ -19,6 +19,8 @@
 
 #include "libtommath/tommath.h"
 
+#include "yacl/math/mpint/mp_int_private.h"
+
 // extern "C" {
 // #include "libtommath/tommath_private.h"
 // }

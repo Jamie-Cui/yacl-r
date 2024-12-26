@@ -26,12 +26,11 @@ libsodium-1.0.18.tar.gz"
   LOG_BUILD On
   LOG_INSTALL On)
 
-
 add_library(liblibsodium STATIC IMPORTED)
 set_target_properties(
   liblibsodium PROPERTIES
   IMPORTED_LOCATION
-    ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libsodium${CMAKE_STATIC_LIBRARY_SUFFIX})
+    ${CMAKE_THIRDPARTY_LIBDIR}/libsodium${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibsodium libsodium)
 
 # -----------------------------

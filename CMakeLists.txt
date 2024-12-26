@@ -104,6 +104,7 @@ endif()
 # prefer -pthread instead of -lpthread or -lpthreads
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
+find_package(GMP REQUIRED)
 
 set(CMAKE_THIRDPARTY_PREFIX ${CMAKE_BINARY_DIR}/thirdparty)
 set(CMAKE_THIRDPARTY_LIBDIR
@@ -115,6 +116,7 @@ set(CMAKE_THIRDPARTY_INCLUDEDIR
 
 include(tp_abseil)
 include(tp_blake3)
+include(tp_cpu_features)
 include(tp_fmt)
 include(tp_fourq)
 include(tp_gtest)
@@ -131,6 +133,8 @@ include(tp_sse2neon)
 # Project Target Configuration
 # ----------------------------
 
+include(yacl_custom_def)
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
@@ -145,13 +149,16 @@ target_include_directories(yacl PUBLIC
     # these dirs are only used when linking against a prebuilt package
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_include_directories(yacl PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR})
+target_include_directories(yacl PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  ${GMP_INCLUDE_DIR}
+)
 
 set(YACL_SOURCE_FILES "")
 
 add_subdirectory(yacl/base)
-add_subdirectory(yacl/crypto)
-add_subdirectory(yacl/io)
+# add_subdirectory(yacl/crypto)
+# add_subdirectory(yacl/io)
 add_subdirectory(yacl/utils)
 add_subdirectory(yacl/math)
 
@@ -160,10 +167,16 @@ target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 target_link_libraries(yacl PUBLIC
   Thirdparty::absl
   Thirdparty::blake3
+  Thirdparty::cpu_features
   Thirdparty::fmt
   Thirdparty::fourq
-  Thirdparty::spdlog
+  Thirdparty::gflags
+  Thirdparty::libsodium
+  Thirdparty::libtommath
+  Thirdparty::mcl
   Thirdparty::msgpack
   Thirdparty::openssl
+  Thirdparty::spdlog
   Thirdparty::sse2neon
-  Thirdparty::mcl)
+  ${GMP_LIBRARIES}
+)

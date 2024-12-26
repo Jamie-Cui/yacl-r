@@ -34,17 +34,17 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 add_executable(mcl_factory_test mcl_factory_test.cc)
-target_link_libraries(mcl_factory_test PRIVATE yacl gtest_main)
+target_link_libraries(mcl_factory_test PRIVATE yacl Thirdparty::gtest)
 target_link_options(mcl_factory_test PRIVATE "-all_load") # for spi
 add_test(NAME mcl_factory_test COMMAND mcl_factory_test)
 
 add_executable(mpint_factory_test mpint_factory_test.cc)
-target_link_libraries(mpint_factory_test PRIVATE yacl gtest_main)
+target_link_libraries(mpint_factory_test PRIVATE yacl Thirdparty::gtest)
 target_link_options(mpint_factory_test PRIVATE "-all_load") # for spi
 add_test(NAME mpint_factory_test COMMAND mpint_factory_test)
 
 add_executable(intel_factory_test intel_factory_test.cc)
-target_link_libraries(intel_factory_test PRIVATE yacl gtest_main)
+target_link_libraries(intel_factory_test PRIVATE yacl Thirdparty::gtest)
 target_link_options(intel_factory_test PRIVATE "-all_load") # for spi
 add_link_options("-lc++") # for spi
 add_test(NAME intel_factory_test COMMAND intel_factory_test)

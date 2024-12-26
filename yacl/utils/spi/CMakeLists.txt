@@ -39,11 +39,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(util_test argument/util_test.cc)
-target_link_libraries(util_test PRIVATE yacl gtest_main)
-add_test(NAME util_test COMMAND util_test)
-
-add_executable(spi_factory_test spi_factory_test.cc)
-target_link_libraries(spi_factory_test PRIVATE yacl gtest_main)
-add_test(NAME
-spi_factory_test COMMAND spi_factory_test)
+add_yacl_test(spi_factory_test)
