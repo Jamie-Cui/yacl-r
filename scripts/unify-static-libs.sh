@@ -17,6 +17,8 @@ PATTERN=$3
 UNIFY_CMD="ar -crs $OUTLIB "
 CLEAN_CMD="rm -rf "
 
+cd $WORKING_DIR
+
 for EACH_LIB in ${WORKING_DIR}/${PATTERN}
 do
     echo "Extracting objects from $EACH_LIB to ${EACH_LIB%??}"
