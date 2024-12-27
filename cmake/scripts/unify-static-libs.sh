@@ -1,3 +1,8 @@
+# Copyright Jamie Cui and *Another Author*
+#
+# From Jamie: I can't recall the exact github repo link, so please do contact me
+# if you found the original author.
+#
 #!/bin/bash
 #
 # Creates one static library from several.
@@ -25,11 +30,11 @@ do
     mkdir -p ${EACH_LIB%??}
     ar -x $EACH_LIB && mv *.o ${EACH_LIB%??}
     UNIFY_CMD="$UNIFY_CMD ${EACH_LIB%??}/*.o"
-    CLEAN_CMD="$CLEAN_CMD ${EACH_LIB%??}"
+    CLEAN_CMD="$CLEAN_CMD ${EACH_LIB%??} ${EACH_LIB}"
 done
 
 # Link objects into a single lib
-echo "Creating $OUTLIB from objects..."
+echo "Creating $OUTLIB from extracted objects..."
 $UNIFY_CMD
 
 echo "Cleaning with $CLEAN_CMD"

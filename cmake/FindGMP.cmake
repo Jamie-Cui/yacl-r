@@ -1,5 +1,5 @@
-# Copyright (c) 2006, Laurent Montel, <montel@kde.org>
-# Copyright (c) 2007, Francesco Biscani, <bluescarni@gmail.com>
+# Copyright 2006, Laurent Montel, <montel@kde.org>
+# Copyright 2007, Francesco Biscani, <bluescarni@gmail.com>
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions

@@ -44,8 +44,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0135 NEW)
 
-# Generic CMake modules
+# Generic this project's CMake modules
 include(AddCompilerFlags)
+include(AddYaclTest)
+
+# Generic CMake modules
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
@@ -68,10 +71,6 @@ set(CMAKE_ARGS
   -DCMAKE_POSITION_INDEPENDENT_CODE=On
   -DCMAKE_CXX_STANDARD=17
   -DCMAKE_C_STANDARD_REQUIRED=Yes)
-
-# set(CMAKE_EXE_LINKER_FLAGS
-#    "${CMAKE_EXE_LINKER_FLAGS} -undefined dynamic_lookup")
-
 
 # Additional compiler flags
 add_compiler_flags("-Wall")
@@ -106,7 +105,8 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(GMP REQUIRED)
 
-set(CMAKE_THIRDPARTY_PREFIX ${CMAKE_BINARY_DIR}/thirdparty)
+set(CMAKE_THIRDPARTY_PREFIX
+  ${CMAKE_BINARY_DIR}/thirdparty)
 set(CMAKE_THIRDPARTY_LIBDIR
   ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_THIRDPARTY_BINDIR
@@ -114,26 +114,24 @@ set(CMAKE_THIRDPARTY_BINDIR
 set(CMAKE_THIRDPARTY_INCLUDEDIR
   ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 
-include(tp_abseil)
-include(tp_blake3)
-include(tp_cpu_features)
-include(tp_fmt)
-include(tp_fourq)
-include(tp_gtest)
-include(tp_gflags)
-include(tp_libsodium)
-include(tp_libtommath)
-include(tp_mcl)
-include(tp_msgpack)
-include(tp_openssl)
-include(tp_spdlog)
-include(tp_sse2neon)
+include(deps/abseil)
+include(deps/blake3)
+include(deps/cpu_features)
+include(deps/fmt)
+include(deps/fourq)
+include(deps/gtest)
+include(deps/gflags)
+include(deps/libsodium)
+include(deps/libtommath)
+include(deps/mcl)
+include(deps/msgpack)
+include(deps/openssl)
+include(deps/spdlog)
+include(deps/sse2neon)
 
-# ----------------------------
+# ------------------------------------------------------------------------------
 # Project Target Configuration
-# ----------------------------
-
-include(yacl_custom_def)
+# ------------------------------------------------------------------------------
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
@@ -156,11 +154,11 @@ target_include_directories(yacl PUBLIC
 
 set(YACL_SOURCE_FILES "")
 
-add_subdirectory(yacl/base)
+# add_subdirectory(yacl/base)
 # add_subdirectory(yacl/crypto)
 # add_subdirectory(yacl/io)
-add_subdirectory(yacl/utils)
-add_subdirectory(yacl/math)
+# add_subdirectory(yacl/utils)
+# add_subdirectory(yacl/math)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
