@@ -1,4 +1,4 @@
-# Copyright Jamie Cui and *Another Author*
+# Copyright 2024 Jamie Cui and *Another Author*
 #
 # From Jamie: I can't recall the exact github repo link, so please do contact me
 # if you found the original author.
