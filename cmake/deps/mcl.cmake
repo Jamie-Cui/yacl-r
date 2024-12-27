@@ -26,6 +26,8 @@ ExternalProject_Add(mcl
   LOG_BUILD On
   LOG_INSTALL On)
 
+add_library(libmcl_interface INTERFACE)
+
 add_library(libmcl STATIC IMPORTED)
 set_property(
   TARGET libmcl PROPERTY
@@ -33,7 +35,25 @@ set_property(
     ${CMAKE_THIRDPARTY_LIBDIR}/libmcl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmcl mcl)
 
+add_library(libmclbn256 SHARED IMPORTED)
+set_property(
+  TARGET libmclbn256 PROPERTY
+  IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn256${CMAKE_SHARED_LIBRARY_SUFFIX})
+add_dependencies(libmclbn256 mcl)
+
+add_library(libmclbn384 SHARED IMPORTED)
+set_property(
+  TARGET libmclbn384 PROPERTY
+  IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn384${CMAKE_SHARED_LIBRARY_SUFFIX})
+add_dependencies(libmclbn384 mcl)
+
+target_link_libraries(libmcl_interface
+  INTERFACE libmcl libmclbn256 libmclbn384)
+
+
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::mcl ALIAS libmcl)
+add_library(Thirdparty::mcl ALIAS libmcl_interface)

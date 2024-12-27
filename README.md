@@ -1,4 +1,4 @@
-# YACL-R (Yet Another Cryptographic Library for Research)
+# Yet Another Cryptographic Library for Research
 
 ```
 ██╗   ██╗ █████╗  ██████╗██╗           ██████╗ 

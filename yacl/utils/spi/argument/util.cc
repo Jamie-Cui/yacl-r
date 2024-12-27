@@ -20,7 +20,7 @@
 #include "absl/strings/str_join.h"
 #include "fmt/core.h"
 
-namespace yacl::util {
+namespace yacl {
 
 std::string ToSnakeCase(const std::string& str) {
   std::regex reg("[A-Z]?[a-z0-9]*");

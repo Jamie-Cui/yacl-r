@@ -28,8 +28,8 @@ install(
         ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils
 )
 
-add_subdirectory(spi)
-
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
 add_yacl_test(parallel_test)
+
+add_subdirectory(spi)

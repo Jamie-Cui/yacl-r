@@ -143,22 +143,21 @@ add_library(yacl STATIC)
 
 target_include_directories(yacl PUBLIC
     # these dirs are only used when building inside the build tree
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
     # these dirs are only used when linking against a prebuilt package
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
-target_include_directories(yacl PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  ${GMP_INCLUDE_DIR}
-)
+target_include_directories(yacl PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR})
 
 set(YACL_SOURCE_FILES "")
 
-# add_subdirectory(yacl/base)
-# add_subdirectory(yacl/crypto)
-# add_subdirectory(yacl/io)
-# add_subdirectory(yacl/utils)
-# add_subdirectory(yacl/math)
+add_subdirectory(yacl/base)
+add_subdirectory(yacl/crypto)
+# add_subdirectory(yacl/engine)
+add_subdirectory(yacl/io)
+# add_subdirectory(yacl/kernel)
+add_subdirectory(yacl/math)
+add_subdirectory(yacl/utils)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
@@ -175,6 +174,4 @@ target_link_libraries(yacl PUBLIC
   Thirdparty::msgpack
   Thirdparty::openssl
   Thirdparty::spdlog
-  Thirdparty::sse2neon
-  ${GMP_LIBRARIES}
-)
+  Thirdparty::sse2neon)

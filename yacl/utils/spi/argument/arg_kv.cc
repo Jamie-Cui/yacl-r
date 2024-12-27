@@ -14,7 +14,7 @@
 
 #include "yacl/utils/spi/argument/arg_kv.h"
 
-#include "yacl/math/mpint/mp_int.h"
+// #include "yacl/math/mpint/mp_int.h"
 
 namespace yacl {
 
@@ -55,7 +55,7 @@ std::string SpiArg::ToString() const {
   TRY_TYPE(float);
   TRY_TYPE(char);
   TRY_TYPE(unsigned char);
-  TRY_TYPE(yacl::math::MPInt);  // MPInt is a first-class citizen in SPI
+  // TRY_TYPE(yacl::math::MPInt);  // MPInt is a first-class citizen in SPI
   return fmt::format("{}=Object<{}>", key_, t.name());
 }
 

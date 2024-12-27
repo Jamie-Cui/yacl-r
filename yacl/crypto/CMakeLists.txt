@@ -28,6 +28,7 @@ add_subdirectory(envelope)
 # add_subdirectory(experimental)
 add_subdirectory(hash)
 add_subdirectory(hmac)
+add_subdirectory(ossl_provider)
 # add_subdirectory(pairing)
 add_subdirectory(pke)
 add_subdirectory(rand)
@@ -38,7 +39,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(key_utils_test key_utils_test.cc)
-target_link_libraries(key_utils_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(key_utils_test PRIVATE "-all_load") # for spi
-add_test(NAME key_utils_test COMMAND key_utils_test)
+add_yacl_test(key_utils_test)

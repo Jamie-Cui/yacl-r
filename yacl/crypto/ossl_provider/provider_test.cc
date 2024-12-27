@@ -24,7 +24,7 @@
 #include "openssl/randerr.h"
 
 #include "yacl/crypto/ossl_wrappers.h"
-#include "yacl/ossl_provider/helper.h"
+#include "yacl/crypto/ossl_provider/helper.h"
 
 namespace yacl::crypto {
 

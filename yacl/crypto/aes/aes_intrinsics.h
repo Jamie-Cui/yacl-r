@@ -65,7 +65,7 @@
 // pclmul
 #include <wmmintrin.h>
 #else
-#include "sse2neon.h"
+#include "sse2neon/sse2neon.h"
 #endif
 
 /* security parameter declaration */

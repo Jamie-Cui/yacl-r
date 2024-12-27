@@ -16,7 +16,7 @@
 
 #include <string>
 
-namespace yacl::util {
+namespace yacl {
 
 std::string ToSnakeCase(const std::string& str);
 

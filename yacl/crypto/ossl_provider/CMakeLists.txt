@@ -12,30 +12,22 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# Add header files for installation
-install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/drbg.h
-        ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
-
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
-
-add_yacl_test(drbg_test)
+install(FILES
+  ${CMAKE_CURRENT_LIST_DIR}/helper.h
+  ${CMAKE_CURRENT_LIST_DIR}/rand_impl.h
+  ${CMAKE_CURRENT_LIST_DIR}/version.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ossl_provider)
 
 # ------------------------------------------------------------------------------
-# For libspi_drbg
+# For libossl_provider.so
 # ------------------------------------------------------------------------------
 
-add_library(spi_drbg STATIC
-    ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
+add_library(ossl_provider SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/provider.cc)
 
-target_include_directories(spi_drbg PUBLIC
+target_include_directories(ossl_provider PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_drbg>)
+target_link_libraries(ossl_provider PUBLIC yacl)

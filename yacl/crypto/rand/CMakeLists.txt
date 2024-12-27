@@ -12,7 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rand.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/rand.cc)
 
 # Add header files for installation
 install(FILES ${CMAKE_CURRENT_LIST_DIR}/rand.h
@@ -25,9 +26,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(rand_test rand_test.cc)
-target_link_libraries(rand_test PRIVATE yacl gtest_main)
-target_link_options(rand_test PRIVATE "-all_load") # for spi
-add_test(NAME rand_test COMMAND rand_test)
-
-# TODO Add benchmark target
+add_yacl_test(rand_test)

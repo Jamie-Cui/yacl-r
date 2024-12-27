@@ -12,39 +12,36 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mp_int.cc
-    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.cc
-    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
-
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.h
         ${CMAKE_CURRENT_LIST_DIR}/mp_int.h
         ${CMAKE_CURRENT_LIST_DIR}/mp_int_enforce.h
+        ${CMAKE_CURRENT_LIST_DIR}/mp_int_private.h
         ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.h
         ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/mpint)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+add_yacl_test(montgomery_math_test)
+add_yacl_test(mp_int_test)
+add_yacl_test(tommath_ext_test)
 
-add_executable(montgomery_math_test montgomery_math_test.cc)
-target_link_libraries(montgomery_math_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(montgomery_math_test PRIVATE "-all_load") # for spi
-add_test(NAME montgomery_math_test COMMAND montgomery_math_test)
+# ------------------------------------------------------------------------------
+# For libspi_mpint
+# ------------------------------------------------------------------------------
 
-add_executable(mp_int_test mp_int_test.cc)
-target_link_libraries(mp_int_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(mp_int_test PRIVATE "-all_load") # for spi
-add_test(NAME mp_int_test COMMAND mp_int_test)
+add_library(spi_mpint STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.cc
+    ${CMAKE_CURRENT_LIST_DIR}/mp_int.cc
+    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.cc
+    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
 
-add_executable(tommath_ext_test tommath_ext_test.cc)
-target_link_libraries(tommath_ext_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(tommath_ext_test PRIVATE "-all_load") # for spi
-add_test(NAME tommath_ext_test COMMAND tommath_ext_test)
+target_include_directories(spi_mpint PUBLIC
+  ${GMP_INCLUDE_DIR}
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-# TODO add benchmark target
+target_link_libraries(yacl PUBLIC
+  ${GMP_LIBRARIES}
+  $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_mpint>)

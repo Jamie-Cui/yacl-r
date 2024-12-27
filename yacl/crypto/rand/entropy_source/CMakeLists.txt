@@ -12,10 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
-
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
@@ -23,11 +19,20 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+add_yacl_test(entropy_source_test)
 
-add_executable(es_test factory_test.cc)
-target_link_libraries(es_test PRIVATE yacl gtest_main)
-target_link_options(es_test PRIVATE "-all_load") # for spi
-add_test(NAME es_test COMMAND es_test)
+# ------------------------------------------------------------------------------
+# For libspi_drbg
+# ------------------------------------------------------------------------------
+
+add_library(spi_entropy_source STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
+    ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
+
+target_include_directories(spi_entropy_source PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+target_link_libraries(yacl PUBLIC
+  $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_entropy_source>)

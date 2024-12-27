@@ -16,7 +16,7 @@
 
 #include "fmt/ranges.h"
 
-#include "yacl/math/mpint/mp_int.h"
+// #include "yacl/math/mpint/mp_int.h"
 
 namespace yacl {
 
@@ -54,7 +54,7 @@ std::string TryRead(const std::any &v) {
   TRY_TYPE(float);
   TRY_TYPE(char);
   TRY_TYPE(unsigned char);
-  TRY_TYPE(math::MPInt);  // MPInt is a first-class citizen in SPI
+  // TRY_TYPE(math::MPInt);  // MPInt is a first-class citizen in SPI
   return "<object>";
 }
 

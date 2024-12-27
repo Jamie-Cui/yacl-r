@@ -26,12 +26,5 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(gf_test gf_test.cc)
-target_link_libraries(gf_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(gf_test PRIVATE "-all_load") # for spi
-add_test(NAME gf_test COMMAND gf_test)
-
-add_executable(gf_intrinsic_test gf_intrinsic_test.cc)
-target_link_libraries(gf_intrinsic_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(gf_intrinsic_test PRIVATE "-all_load") # for spi
-add_test(NAME gf_intrinsic_test COMMAND gf_intrinsic_test)
+add_yacl_test(gf_test)
+add_yacl_test(gf_intrinsic_test)

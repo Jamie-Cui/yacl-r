@@ -23,7 +23,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(symmetric_crypto_test symmetric_crypto_test.cc)
-target_link_libraries(symmetric_crypto_test PRIVATE yacl gtest_main)
-target_link_options(symmetric_crypto_test PRIVATE "-all_load") # for spi
-add_test(NAME symmetric_crypto_test COMMAND symmetric_crypto_test)
+add_yacl_test(symmetric_crypto_test)

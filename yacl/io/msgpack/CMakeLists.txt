@@ -27,6 +27,4 @@ install(
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_executable(msgpack_buffer_test buffer_test.cc)
-target_link_libraries(msgpack_buffer_test PRIVATE yacl Thirdparty::gtest)
-add_test(NAME msgpack_buffer_test COMMAND msgpack_buffer_test)
+add_yacl_test(msgpack_buffer_test)

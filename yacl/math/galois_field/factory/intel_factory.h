@@ -20,8 +20,8 @@
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/rand/rand.h"
 #include "yacl/math/galois_field/factory/gf_scalar.h"
+#include "yacl/crypto/rand/rand.h"
 
 namespace yacl::math {
 

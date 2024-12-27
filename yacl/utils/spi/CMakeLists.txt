@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -12,13 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/item.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
+add_yacl_test(spi_factory_test)
 
 # Add header files for installation
 install(
@@ -35,8 +29,21 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+# ------------------------------------------------------------------------------
+# For libspi
+# ------------------------------------------------------------------------------
 
-add_yacl_test(spi_factory_test)
+add_library(spi STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/item.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
+
+target_include_directories(spi PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  ${GMP_INCLUDE_DIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+target_link_libraries(yacl PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,spi>)

@@ -12,20 +12,13 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/gf_spi.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/intel_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mpint_factory.cc)
-
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/gf_scalar.h
         ${CMAKE_CURRENT_LIST_DIR}/gf_vector.h
         ${CMAKE_CURRENT_LIST_DIR}/gf_spi.h
         ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/intel_factory.h
+        # ${CMAKE_CURRENT_LIST_DIR}/intel_factory.h
         ${CMAKE_CURRENT_LIST_DIR}/mpint_factory.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field/factory)
 
@@ -33,18 +26,27 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_executable(mcl_factory_test mcl_factory_test.cc)
-target_link_libraries(mcl_factory_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(mcl_factory_test PRIVATE "-all_load") # for spi
-add_test(NAME mcl_factory_test COMMAND mcl_factory_test)
+add_yacl_test(mcl_factory_test)
+add_yacl_test(mpint_factory_test)
+# add_yacl_test(intel_factory_test)
 
-add_executable(mpint_factory_test mpint_factory_test.cc)
-target_link_libraries(mpint_factory_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(mpint_factory_test PRIVATE "-all_load") # for spi
-add_test(NAME mpint_factory_test COMMAND mpint_factory_test)
+# ------------------------------------------------------------------------------
+# For libspi_galois_field
+# ------------------------------------------------------------------------------
 
-add_executable(intel_factory_test intel_factory_test.cc)
-target_link_libraries(intel_factory_test PRIVATE yacl Thirdparty::gtest)
-target_link_options(intel_factory_test PRIVATE "-all_load") # for spi
-add_link_options("-lc++") # for spi
-add_test(NAME intel_factory_test COMMAND intel_factory_test)
+add_library(spi_galois_field STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/gf_spi.cc
+    ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.cc
+    # ${CMAKE_CURRENT_LIST_DIR}/intel_factory.cc
+    ${CMAKE_CURRENT_LIST_DIR}/mpint_factory.cc)
+
+target_include_directories(spi_galois_field PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+target_link_libraries(spi_galois_field PUBLIC
+    $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_ecc>)
+
+target_link_libraries(yacl PUBLIC
+    $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_galois_field>)

@@ -29,6 +29,4 @@ install(
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_executable(io_stream_test test.cc)
-target_link_libraries(io_stream_test PRIVATE yacl Thirdparty::gtest)
-add_test(NAME io_stream_test COMMAND io_stream_test)
+add_yacl_test(io_stream_test)
