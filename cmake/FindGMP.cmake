@@ -1,3 +1,4 @@
+# Copyright 2024 Jamie Cui
 # Copyright 2006 Laurent Montel, <montel@kde.org>
 # Copyright 2007, Francesco Biscani, <bluescarni@gmail.com>
 #
