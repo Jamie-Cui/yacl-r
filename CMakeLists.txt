@@ -79,17 +79,15 @@ add_compiler_flags("-Werror")
 
 add_compiler_flags("-Wno-sign-compare")
 
-# FIXME remove this flag
+# FIXME try removing the following flags
 add_compiler_flags("-Wno-unused-function")
 add_compiler_flags("-Wno-vla") # no variable length error warning
+add_compiler_flags("-Wno-shift-count-overflow")
 
 # For cryptos
 add_compiler_flags("-maes")
 add_compiler_flags("-mavx")
 add_compiler_flags("-mpclmul")
-
-add_compiler_flags("-Wno-shift-count-overflow")
-
 
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
@@ -139,15 +137,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
-add_library(yacl STATIC)
+add_library(yacl_no_spi STATIC)
 
-target_include_directories(yacl PUBLIC
-    # these dirs are only used when building inside the build tree
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
-    # these dirs are only used when linking against a prebuilt package
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
-
-target_include_directories(yacl PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR})
+target_include_directories(yacl_no_spi PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+  # these dirs are only used when linking against a prebuilt package
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 set(YACL_SOURCE_FILES "")
 
@@ -159,9 +156,9 @@ add_subdirectory(yacl/io)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
-target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
+target_sources(yacl_no_spi PRIVATE ${YACL_SOURCE_FILES})
 
-target_link_libraries(yacl PUBLIC
+target_link_libraries(yacl_no_spi PUBLIC
   Thirdparty::absl
   Thirdparty::blake3
   Thirdparty::cpu_features

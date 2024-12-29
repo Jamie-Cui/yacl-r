@@ -13,7 +13,8 @@
 # the License.
 
 set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/FourQ_factory.cc
+    ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/FourQ_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/FourQ_group.cc)
 
 

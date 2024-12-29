@@ -12,8 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/mcl_ec_factory.cc
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/mcl_ec_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/mcl_ec_group.cc
     ${CMAKE_CURRENT_LIST_DIR}/mcl_util.cc)
 

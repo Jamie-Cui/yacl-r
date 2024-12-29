@@ -12,8 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/openssl_group.cc)
 
 # Add header files for installation
