@@ -39,7 +39,7 @@ class UrandomEntropySource : public EntropySource {
            absl::AsciiStrToLower(type) == "auto";
   }
 
-  Buffer GetEntropy(uint32_t num_bytes) override;
+  Buffer GetEntropy(uint32_t bits_of_entropy) override;
 
   std::string Name() override { return "urandom entropy source"; }
 };

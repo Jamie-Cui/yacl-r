@@ -138,6 +138,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 enable_testing()
 
 add_library(yacl_no_spi STATIC)
+add_library(yacl_spi STATIC)
+
+target_include_directories(yacl_no_spi PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  # these dirs are only used when building inside the build tree
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+  # these dirs are only used when linking against a prebuilt package
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 target_include_directories(yacl_no_spi PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
@@ -147,6 +155,7 @@ target_include_directories(yacl_no_spi PUBLIC
   "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 set(YACL_SOURCE_FILES "")
+set(YACL_SPI_SOURCE_FILES "")
 
 add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
@@ -158,7 +167,8 @@ add_subdirectory(yacl/utils)
 
 target_sources(yacl_no_spi PRIVATE ${YACL_SOURCE_FILES})
 
-target_link_libraries(yacl_no_spi PUBLIC
+target_link_libraries(yacl_no_spi
+  PUBLIC
   Thirdparty::absl
   Thirdparty::blake3
   Thirdparty::cpu_features
@@ -172,3 +182,11 @@ target_link_libraries(yacl_no_spi PUBLIC
   Thirdparty::openssl
   Thirdparty::spdlog
   Thirdparty::sse2neon)
+
+# add_custom_command(libyacl
+#   COMMAND
+#   bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh libyacl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_INSTALL_LIBDIR} libyacl_*.a
+#   WORKING_DIRECTORY ${CMAKE_INSTALL_LIBDIR}
+#   DEPENDS
+#   yacl_no_spi
+# )

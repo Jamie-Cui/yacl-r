@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-add_yacl_test(spi_factory_test)
+add_yacl_test(yacl_spi_factory_test)
 
 # Add header files for installation
 install(

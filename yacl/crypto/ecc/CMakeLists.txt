@@ -35,7 +35,7 @@ add_yacl_test(ecc_test)
 # For libspi_ecc
 # ------------------------------------------------------------------------------
 
-add_library(spi_ecc STATIC
+add_library(yacl_spi_ecc STATIC
     ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
     ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
     ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
@@ -48,7 +48,7 @@ add_library(spi_ecc STATIC
     ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc)
 
-target_include_directories(spi_ecc PUBLIC
+target_include_directories(yacl_spi_ecc PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")

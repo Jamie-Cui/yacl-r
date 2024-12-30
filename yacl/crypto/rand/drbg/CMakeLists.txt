@@ -29,11 +29,11 @@ add_yacl_test(drbg_test)
 # For libspi_drbg
 # ------------------------------------------------------------------------------
 
-add_library(spi_drbg STATIC
+add_library(yacl_spi_drbg STATIC
     ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
 
-target_include_directories(spi_drbg PUBLIC
+target_include_directories(yacl_spi_drbg PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")

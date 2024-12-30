@@ -25,11 +25,11 @@ add_yacl_test(entropy_source_test)
 # For libspi_drbg
 # ------------------------------------------------------------------------------
 
-add_library(spi_entropy_source STATIC
+add_library(yacl_spi_entropy_source STATIC
     ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
 
-target_include_directories(spi_entropy_source PUBLIC
+target_include_directories(yacl_spi_entropy_source PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")

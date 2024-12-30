@@ -21,11 +21,13 @@
 
 namespace yacl::crypto {
 
-Buffer UrandomEntropySource::GetEntropy(uint32_t num_bytes) {
+Buffer UrandomEntropySource::GetEntropy(uint32_t bits_of_entropy) {
   YACL_ENFORCE(num_bytes != 0);
 
   Buffer out(num_bytes);
   std::random_device rd("/dev/urandom");
+
+  auto num_bytes = (bits_of_entropy + 7) / 8;
 
   // Batched Random Entropy Generation
   size_t batch_size = sizeof(uint32_t);

@@ -30,13 +30,13 @@ add_yacl_test(tommath_ext_test)
 # For libspi_mpint
 # ------------------------------------------------------------------------------
 
-add_library(spi_mpint STATIC
+add_library(yacl_spi_mpint STATIC
     ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.cc
     ${CMAKE_CURRENT_LIST_DIR}/mp_int.cc
     ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.cc
     ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
 
-target_include_directories(spi_mpint PUBLIC
+target_include_directories(yacl_spi_mpint PUBLIC
   ${GMP_INCLUDE_DIR}
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
