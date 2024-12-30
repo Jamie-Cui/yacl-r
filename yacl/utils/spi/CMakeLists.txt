@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-add_yacl_test(yacl_spi_factory_test)
+add_yacl_test(spi_factory_test)
 
 # Add header files for installation
 install(
@@ -42,8 +42,9 @@ add_library(spi STATIC
 
 target_include_directories(spi PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  ${GMP_INCLUDE_DIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+target_link_libraries(spi PUBLIC yacl_interface)
 
 target_link_libraries(yacl PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,spi>)

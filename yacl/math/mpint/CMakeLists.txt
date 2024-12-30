@@ -42,6 +42,8 @@ target_include_directories(yacl_spi_mpint PUBLIC
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
+target_link_libraries(yacl_spi_mpint PUBLIC yacl_interface)
+
 target_link_libraries(yacl PUBLIC
   ${GMP_LIBRARIES}
-  $<LINK_LIBRARY:WHOLE_ARCHIVE,spi_mpint>)
+  $<LINK_LIBRARY:WHOLE_ARCHIVE,yacl_spi_mpint>)
