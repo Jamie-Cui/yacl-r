@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -32,10 +32,10 @@ install(FILES
 add_yacl_test(ecc_test)
 
 # ------------------------------------------------------------------------------
-# For libspi_ecc
+# For libyacl_spi_ecc.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_ecc STATIC
+add_library(yacl_spi_ecc SHARED
     ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
     ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
     ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
@@ -50,10 +50,9 @@ add_library(yacl_spi_ecc STATIC
 
 target_include_directories(yacl_spi_ecc PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_ecc PUBLIC yacl_interface)
+# NOTE yacl_spi_ecc requires yacl_spi_mpint
+target_link_libraries(yacl_spi_ecc PRIVATE yacl yacl_spi_mpint yacl_spi_utils)
 
-target_link_libraries(yacl PUBLIC
-    $<LINK_LIBRARY:WHOLE_ARCHIVE,yacl_spi_ecc>)
+target_link_libraries(yacl_all INTERFACE yacl_spi_ecc)

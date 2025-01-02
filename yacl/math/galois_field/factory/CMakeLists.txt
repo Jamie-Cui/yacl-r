@@ -34,18 +34,19 @@ add_yacl_test(mpint_factory_test)
 # For libspi_galois_field
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_galois_field STATIC
+add_library(yacl_spi_galois_field SHARED
     ${CMAKE_CURRENT_LIST_DIR}/gf_spi.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.cc
+    # ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.cc
     # ${CMAKE_CURRENT_LIST_DIR}/intel_factory.cc
     ${CMAKE_CURRENT_LIST_DIR}/mpint_factory.cc)
 
 target_include_directories(yacl_spi_galois_field PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_galois_field PUBLIC yacl_interface)
+# NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
+target_link_libraries(yacl_spi_galois_field PRIVATE yacl yacl_spi_utils
+  yacl_spi_mpint
+)
 
-target_link_libraries(yacl INTERFACE
-    $<LINK_LIBRARY:WHOLE_ARCHIVE,yacl_spi_galois_field>)
+target_link_libraries(yacl_all INTERFACE yacl_spi_galois_field)

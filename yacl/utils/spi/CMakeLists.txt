@@ -12,7 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-add_yacl_test(spi_factory_test)
 
 # Add header files for installation
 install(
@@ -30,21 +29,24 @@ install(
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
 # ------------------------------------------------------------------------------
-# For libspi
+# For libyacl_spi_utils
 # ------------------------------------------------------------------------------
 
-add_library(spi STATIC
+add_library(yacl_spi_utils SHARED
     ${CMAKE_CURRENT_LIST_DIR}/item.cc
     ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
     ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
     ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
     ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
 
-target_include_directories(spi PUBLIC
+target_include_directories(yacl_spi_utils PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(spi PUBLIC yacl_interface)
+# NOTE libyacl_spi_mpint requires gmp
+target_link_libraries(yacl_spi_utils PUBLIC yacl)
 
-target_link_libraries(yacl PUBLIC $<LINK_LIBRARY:WHOLE_ARCHIVE,spi>)
+target_link_libraries(yacl_all INTERFACE yacl_spi_utils)
+
+add_yacl_test(spi_factory_test)
+

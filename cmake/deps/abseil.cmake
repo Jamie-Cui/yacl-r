@@ -25,6 +25,7 @@ ExternalProject_Add(abseil
     ${CMAKE_MAKE_PROGRAM} install
   COMMAND
     bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh libabsl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_THIRDPARTY_LIBDIR} libabsl_*
+  EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

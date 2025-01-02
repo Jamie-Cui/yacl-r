@@ -20,6 +20,8 @@ project(yacl_r
   HOMEPAGE_URL "https://github.com/Jamie-Cui/yacl-r"
   LANGUAGES CXX C)
 
+# option(BUILD_TESTING "Build the testing binaries (On/Off)." On)
+
 # ------------------------------------------------------------------------------
 # Project Generic Configuration
 # ------------------------------------------------------------------------------
@@ -49,10 +51,11 @@ include(AddCompilerFlags)
 include(AddYaclTest)
 
 # Generic CMake modules
-include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceRuns)
 include(CheckLanguage)
+include(CMakeDependentOption)
+include(CTest)
 include(ExternalProject)
 include(GNUInstallDirs)
 
@@ -137,15 +140,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
-# ----------------------------------------------
 add_library(yacl STATIC)
-target_sources(yacl PUBLIC ${YACL_SOURCE_FILES})
-target_link_libraries(yacl INTERFACE yacl_interface)
-# -----------------------------------------------
 
-add_library(yacl_interface INTERFACE)
+add_library(yacl_all INTERFACE)
 
-target_include_directories(yacl_interface INTERFACE
+target_link_libraries(yacl_all INTERFACE yacl)
+
+target_include_directories(yacl PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   # these dirs are only used when building inside the build tree
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
@@ -162,9 +163,9 @@ add_subdirectory(yacl/io)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
-target_sources(yacl_interface INTERFACE ${YACL_SOURCE_FILES})
+target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
-target_link_libraries(yacl_interface INTERFACE
+target_link_libraries(yacl PUBLIC
   Thirdparty::absl
   Thirdparty::blake3
   Thirdparty::cpu_features
@@ -179,3 +180,4 @@ target_link_libraries(yacl_interface INTERFACE
   Thirdparty::spdlog
   Thirdparty::sse2neon)
 
+add_library(Yacl::yacl ALIAS yacl_all)

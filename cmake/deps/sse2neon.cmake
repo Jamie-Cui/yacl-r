@@ -26,6 +26,7 @@ ExternalProject_Add(sse2neon
     mkdir -p ${CMAKE_THIRDPARTY_INCLUDEDIR}/sse2neon
   COMMAND
     cp -a sse2neon.h ${CMAKE_THIRDPARTY_INCLUDEDIR}/sse2neon
+  EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

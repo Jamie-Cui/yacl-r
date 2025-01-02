@@ -13,7 +13,7 @@
 # the License.
 
 macro(add_yacl_test NAME)
-    add_executable(${NAME} ${NAME}.cc)
-    target_link_libraries(${NAME} PRIVATE yacl Thirdparty::gtest)
-    add_test(NAME ${NAME} COMMAND ${NAME})
+  add_executable(${NAME} ${NAME}.cc)
+  target_link_libraries(${NAME} PRIVATE Yacl::yacl Thirdparty::gtest)
+  add_test(NAME ${NAME} COMMAND ${NAME})
 endmacro()

@@ -12,21 +12,21 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/lib25519_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/ed25519_group.cc
-    ${CMAKE_CURRENT_LIST_DIR}/lib25519_group.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/lib25519_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/ed25519_group.cc
+  ${CMAKE_CURRENT_LIST_DIR}/lib25519_group.cc)
 
 # Add header files for installation
-install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/ed25519_group.h
-        ${CMAKE_CURRENT_LIST_DIR}/lib25519_group.h
-        ${CMAKE_CURRENT_LIST_DIR}/lib25519_private.h
+install(FILES
+  ${CMAKE_CURRENT_LIST_DIR}/ed25519_group.h
+  ${CMAKE_CURRENT_LIST_DIR}/lib25519_group.h
+  ${CMAKE_CURRENT_LIST_DIR}/lib25519_private.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc/lib25519)
 
 set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+  ${YACL_SOURCE_FILES}
+  PARENT_SCOPE)
 
 add_executable(ecc_lib25519_ed25519_test ed25519_test.cc)
 target_link_libraries(ecc_lib25519_ed25519_test PRIVATE yacl gtest_main)
