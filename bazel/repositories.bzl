@@ -50,6 +50,9 @@ def yacl_deps():
     _simplest_ot()
     _org_interconnection()
 
+    # gmp
+    _libgmp()
+
 def _simplest_ot():
     maybe(
         http_archive,
@@ -425,4 +428,17 @@ def _build_bazel_apple_support():
         name = "build_bazel_apple_support",
         sha256 = "b53f6491e742549f13866628ddffcc75d1f3b2d6987dc4f14a16b242113c890b",
         url = "https://github.com/bazelbuild/apple_support/releases/download/1.17.1/apple_support.1.17.1.tar.gz",
+    )
+
+def _libgmp():
+    maybe(
+        http_archive,
+        name = "libgmp",
+        sha256 = "fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2",
+        strip_prefix = "gmp-6.2.1",
+        urls = [
+            "https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz",
+            "https://ftp.gnu.org/gnu/gmp/gmp-6.2.1.tar.xz",
+        ],
+        build_file = "@yacl//bazel:libgmp.BUILD",
     )

@@ -36,6 +36,7 @@ cc_library(
         "c/blake3_impl.h",
     ],
     defines = ["BLAKE3_C_EXTERNAL"],
-    includes = ["include"],
+    include_prefix = "blake3",
+    strip_include_prefix = "c",
     visibility = ["//visibility:public"],
 )

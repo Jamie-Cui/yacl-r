@@ -12,9 +12,10 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/ssl_hash.cc
-    ${CMAKE_CURRENT_LIST_DIR}/blake3.cc ${CMAKE_CURRENT_LIST_DIR}/hash_utils.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/ssl_hash.cc
+  ${CMAKE_CURRENT_LIST_DIR}/blake3.cc
+  ${CMAKE_CURRENT_LIST_DIR}/hash_utils.cc)
 
 # Add header files for installation
 install(

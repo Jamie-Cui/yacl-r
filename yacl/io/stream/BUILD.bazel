@@ -53,8 +53,8 @@ yacl_cc_library(
 )
 
 yacl_cc_test(
-    name = "test",
-    srcs = ["test.cc"],
+    name = "io_stream_test",
+    srcs = ["io_stream_test.cc"],
     deps = [
         ":stream",
     ],

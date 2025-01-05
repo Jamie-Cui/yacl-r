@@ -18,7 +18,7 @@
 #include <iostream>
 #include <vector>
 
-#include "blake3.h"
+#include "blake3/blake3.h"
 
 #include "yacl/base/exception.h"
 

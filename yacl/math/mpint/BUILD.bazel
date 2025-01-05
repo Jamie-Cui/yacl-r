@@ -48,18 +48,25 @@ yacl_cc_library(
 yacl_cc_library(
     name = "tommath_ext_types",
     srcs = ["tommath_ext_types.cc"],
-    hdrs = ["tommath_ext_types.h"],
+    hdrs = [
+        "mp_int_private.h",
+        "tommath_ext_types.h",
+    ],
     deps = [
         ":mp_int_enforce",
         "//yacl/base:int128",
         "@com_github_libtom_libtommath//:libtommath",
+        "@libgmp//:gmp",
     ],
 )
 
 yacl_cc_library(
     name = "tommath_ext_features",
     srcs = ["tommath_ext_features.cc"],
-    hdrs = ["tommath_ext_features.h"],
+    hdrs = [
+        "mp_int_private.h",
+        "tommath_ext_features.h",
+    ],
     deps = [
         ":mp_int_enforce",
         "//yacl/base:buffer",
@@ -67,6 +74,7 @@ yacl_cc_library(
         "//yacl/utils:scope_guard",
         "//yacl/utils/spi:type_traits",
         "@com_github_libtom_libtommath//:libtommath",
+        "@libgmp//:gmp",
     ],
 )
 

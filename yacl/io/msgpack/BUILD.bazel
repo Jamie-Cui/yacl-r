@@ -31,8 +31,8 @@ yacl_cc_library(
 )
 
 yacl_cc_test(
-    name = "buffer_test",
-    srcs = ["buffer_test.cc"],
+    name = "msgpack_buffer_test",
+    srcs = ["msgpack_buffer_test.cc"],
     deps = [
         ":buffer",
         "@com_github_msgpack_msgpack//:msgpack",
