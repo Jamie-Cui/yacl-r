@@ -87,8 +87,8 @@ yacl_cc_library(
 )
 
 yacl_cc_test(
-    name = "factory_test",
-    srcs = ["factory_test.cc"],
+    name = "drbg_test",
+    srcs = ["drbg_test.cc"],
     deps = [
         ":drbg",
     ],

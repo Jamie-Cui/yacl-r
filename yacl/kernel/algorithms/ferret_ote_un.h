@@ -21,7 +21,7 @@
 
 #include "yacl/math/gadget.h"
 #include "yacl/base/secparam.h"
-#include "yacl/utils/cuckoo_index.h"
+#include "yacl/crypto/tools/cuckoo_index.h"
 
 /* submodules */
 #include "yacl/crypto/tools/rp.h"

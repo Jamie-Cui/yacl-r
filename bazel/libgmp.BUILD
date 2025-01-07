@@ -30,6 +30,11 @@ configure_make_variant(
     name = "gmp",
     configure_options = ["--with-pic"],
     copts = ["-w"],
+    # HACK fix macos build
+    # see: https://github.com/bazel-contrib/rules_foreign_cc/issues/338
+    env = {
+        "AR": "",
+    },
     lib_name = "libgmp",
     lib_source = ":sources",
     out_static_libs = [

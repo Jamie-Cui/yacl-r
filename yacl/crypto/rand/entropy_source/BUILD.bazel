@@ -75,9 +75,9 @@ yacl_cc_library(
 )
 
 yacl_cc_test(
-    name = "factory_test",
+    name = "entropy_source_test",
     srcs = [
-        "factory_test.cc",
+        "entropy_source_test.cc",
     ],
     deps = [
         ":entropy_source",

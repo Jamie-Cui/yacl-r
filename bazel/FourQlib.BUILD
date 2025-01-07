@@ -62,6 +62,7 @@ make(
     }),
     lib_source = ":all_srcs",
     out_static_libs = ["libFourQ.a"],
+    # FIXME try to install header in include/fourq/*.h
     targets = [
         "libFourQ",
         "install",

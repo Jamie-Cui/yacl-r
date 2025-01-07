@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "fourq/FourQ_internal.h"
+#include "FourQ_internal.h"
 
 #include "yacl/crypto/ecc/group_sketch.h"
 
