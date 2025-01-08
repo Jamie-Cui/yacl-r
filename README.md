@@ -14,20 +14,25 @@ Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https
 > [!WARNING]
 > Yacl-r is under heavy development, please use at your own risk
 
+Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch64.
+
 ## Repo Layout
 
 - [base](yacl/base/): some basic types and utils in yacl.
 - [crypto](yacl/crypto/): **crypto algorithms** without [link](yacl/link/).
-- [kernel](yacl/kernel/): **crypto kernel** that includes [link](yacl/link/) with (WIP) multi-thread support, i.e. OT, DPF.
+- [engine](yacl/engine/): **interactive engines** that is desgined for a purpose.
 - [io](yacl/io/): a simple streaming-based io library.
+- [kernel](yacl/kernel/): **crypto kernel** that includes [link](yacl/link/) with (WIP) multi-thread support, i.e. OT, DPF.
 - [link](yacl/link/): a simple rpc-based MPI framework, providing the [SPMD](https://en.wikipedia.org/wiki/SPMD) parallel programming capability.
+- [math](yacl/math/): a simplified math lib (or interface), supporting big integer.
+- [utils](yacl/utils/): other good-to-have utilities
 
 ## Prerequisites
 
-- **bazel**: [.bazelversion](.bazelversion) file describes the recommended version of bazel. We recommend to use the official [bazelisk](https://github.com/bazelbuild/bazelisk?tab=readme-ov-file#installation) to manage bazel version.
 - **gcc >= 10.3**
 - **[ninja/ninja-build](https://ninja-build.org/)**
 - **Perl 5 with core modules** (Required by [OpenSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites))
+- TODO **others**
 
 ## Getting Started
 
