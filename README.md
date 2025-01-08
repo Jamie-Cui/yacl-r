@@ -31,7 +31,20 @@ Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https
 
 ## Getting Started
 
-Yacl uses the [bazel](https://bazel.build/) build system, you may use the following codes to build and test yacl modules. For more guidelines about **how to develop on yacl**, please check the [Getting Started Guide](GETTING_STARTED.md).
+Yacl-r tries to support both [cmake](https://cmake.org/) and [bazel](https://bazel.build/) build system. For more guidelines about **how to develop on yacl**, please check the [Getting Started Guide](GETTING_STARTED.md).
+
+**TL; DR**
+
+``` sh
+# for cmake
+mkdir -p build
+cd build
+cmake ..
+make -j8
+
+# for bazel
+bazel build //...
+```
 
 ## License
 
