@@ -42,6 +42,6 @@ target_include_directories(yacl_spi_mpint PUBLIC
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_mpint requires gmp
-target_link_libraries(yacl_spi_mpint PUBLIC yacl_spi_utils ${GMP_LIBRARIES})
+target_link_libraries(yacl_spi_mpint PRIVATE yacl_spi_utils ${GMP_LIBRARIES})
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_mpint)

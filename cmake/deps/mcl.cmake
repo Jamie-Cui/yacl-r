@@ -21,6 +21,7 @@ ExternalProject_Add(mcl
   CMAKE_ARGS ${CMAKE_ARGS}
     -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
     -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -Wno-shift-count-overflow
+    -DMCL_STATIC_LIB=On
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -36,23 +37,26 @@ set_property(
     ${CMAKE_THIRDPARTY_LIBDIR}/libmcl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmcl mcl)
 
-add_library(libmclbn256 SHARED IMPORTED)
+add_library(libmclbn256 STATIC IMPORTED)
 set_property(
   TARGET libmclbn256 PROPERTY
   IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn256${CMAKE_SHARED_LIBRARY_SUFFIX})
+    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn256${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmclbn256 mcl)
 
-add_library(libmclbn384 SHARED IMPORTED)
+add_library(libmclbn384 STATIC IMPORTED)
 set_property(
   TARGET libmclbn384 PROPERTY
   IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn384${CMAKE_SHARED_LIBRARY_SUFFIX})
+    ${CMAKE_THIRDPARTY_LIBDIR}/libmclbn384${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmclbn384 mcl)
 
 target_link_libraries(libmcl_interface
-  INTERFACE libmcl libmclbn256 libmclbn384)
-
+  INTERFACE
+  libmcl
+  libmclbn256
+  libmclbn384
+)
 
 # -----------------------------
 # Alias Target for External Use

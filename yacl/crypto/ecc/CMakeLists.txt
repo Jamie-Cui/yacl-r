@@ -23,6 +23,9 @@ install(FILES
     ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.h
     ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.h
     ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.h
+    ${CMAKE_CURRENT_LIST_DIR}/toy/common.h
+    ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.h
+    ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
 
 # add_subdirectory(benchmark) # TODO
@@ -46,7 +49,12 @@ add_library(yacl_spi_ecc SHARED
     ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.cc
     ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc
     ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc)
+    ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc
+    ${CMAKE_CURRENT_LIST_DIR}/toy/common.cc
+    ${CMAKE_CURRENT_LIST_DIR}/toy/factory.cc
+    ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.cc
+    ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc
+)
 
 target_include_directories(yacl_spi_ecc PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}

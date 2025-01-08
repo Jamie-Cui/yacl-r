@@ -17,7 +17,7 @@ install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/gf_scalar.h
         ${CMAKE_CURRENT_LIST_DIR}/gf_vector.h
         ${CMAKE_CURRENT_LIST_DIR}/gf_spi.h
-        ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.h
+        # ${CMAKE_CURRENT_LIST_DIR}/mcl_factory.h
         # ${CMAKE_CURRENT_LIST_DIR}/intel_factory.h
         ${CMAKE_CURRENT_LIST_DIR}/mpint_factory.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field/factory)
@@ -26,7 +26,7 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(mcl_factory_test)
+# add_yacl_test(mcl_factory_test)
 add_yacl_test(mpint_factory_test)
 # add_yacl_test(intel_factory_test)
 
@@ -45,7 +45,8 @@ target_include_directories(yacl_spi_galois_field PUBLIC
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
-target_link_libraries(yacl_spi_galois_field PRIVATE yacl yacl_spi_utils
+target_link_libraries(yacl_spi_galois_field PRIVATE
+  yacl_spi_utils
   yacl_spi_mpint
 )
 
