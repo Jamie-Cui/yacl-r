@@ -61,6 +61,10 @@ target_include_directories(yacl_spi_ecc PUBLIC
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
-target_link_libraries(yacl_spi_ecc PRIVATE yacl yacl_spi_mpint yacl_spi_utils)
+target_link_libraries(yacl_spi_ecc
+    PRIVATE
+    yacl
+    yacl_spi_mpint
+    yacl_spi_utils)
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_ecc)

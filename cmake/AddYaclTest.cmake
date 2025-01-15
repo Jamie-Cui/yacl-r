@@ -16,4 +16,6 @@ macro(add_yacl_test NAME)
   add_executable(${NAME} ${NAME}.cc)
   target_link_libraries(${NAME} PRIVATE Yacl::yacl Thirdparty::gtest)
   add_test(NAME ${NAME} COMMAND ${NAME})
+  set_tests_properties(${NAME} PROPERTIES
+    ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 endmacro()
