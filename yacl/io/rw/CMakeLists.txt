@@ -13,23 +13,21 @@
 # limitations under the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/csv_reader.cc
-    ${CMAKE_CURRENT_LIST_DIR}/csv_writer.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mmapped_file.cc
-)
+  ${CMAKE_CURRENT_LIST_DIR}/csv_reader.cc
+  ${CMAKE_CURRENT_LIST_DIR}/csv_writer.cc
+  ${CMAKE_CURRENT_LIST_DIR}/mmapped_file.cc)
 
 # Add header files for installation
 install(
-    FILES
-        ${CMAKE_CURRENT_LIST_DIR}/csv_reader.h
-        ${CMAKE_CURRENT_LIST_DIR}/csv_writer.h
-        ${CMAKE_CURRENT_LIST_DIR}/mmapped_file.h
-        ${CMAKE_CURRENT_LIST_DIR}/reader.h
-        ${CMAKE_CURRENT_LIST_DIR}/writer.h
-        ${CMAKE_CURRENT_LIST_DIR}/schema.h
-    DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream
-)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/csv_reader.h
+    ${CMAKE_CURRENT_LIST_DIR}/csv_writer.h
+    ${CMAKE_CURRENT_LIST_DIR}/mmapped_file.h
+    ${CMAKE_CURRENT_LIST_DIR}/reader.h
+    ${CMAKE_CURRENT_LIST_DIR}/writer.h
+    ${CMAKE_CURRENT_LIST_DIR}/schema.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 

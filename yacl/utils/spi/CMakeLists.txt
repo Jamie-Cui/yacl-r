@@ -15,36 +15,38 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/item.h
-        ${CMAKE_CURRENT_LIST_DIR}/spi_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/type_traits.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/item.h
+    ${CMAKE_CURRENT_LIST_DIR}/spi_factory.h
+    ${CMAKE_CURRENT_LIST_DIR}/type_traits.h
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
+    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
+    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
+    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
+    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
+    ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_utils
 # ------------------------------------------------------------------------------
 
 add_library(yacl_spi_utils SHARED
-    ${CMAKE_CURRENT_LIST_DIR}/item.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
-    ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/item.cc
+  ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
+  ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
+  ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
+  ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
 
 target_include_directories(yacl_spi_utils PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_mpint requires gmp
-target_link_libraries(yacl_spi_utils PUBLIC yacl)
+target_link_libraries(yacl_spi_utils PRIVATE yacl)
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_utils)
 

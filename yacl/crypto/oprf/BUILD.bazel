@@ -12,19 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/file_io.cc
-  ${CMAKE_CURRENT_LIST_DIR}/mem_io.cc)
+load("//bazel:yacl.bzl", "yacl_cc_library", "yacl_cc_test")
 
-# Add header files for installation
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/file_io.h
-    ${CMAKE_CURRENT_LIST_DIR}/interface.h
-    ${CMAKE_CURRENT_LIST_DIR}/mem_io.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream)
+package(default_visibility = ["//visibility:public"])
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+yacl_cc_library(
+    name = "oprf_ctx",
+    srcs = ["oprf_ctx.cc"],
+    hdrs = ["oprf_ctx.h"],
+    deps = [
+        "//yacl/base:exception",
+        "//yacl/crypto/ecc",
+        "//yacl/crypto/hash:ssl_hash",
+    ],
+)
 
-add_yacl_test(io_stream_test)
+yacl_cc_library(
+    name = "oprf",
+    # srcs = ["oprf.cc"],
+    hdrs = ["oprf.h"],
+    deps = [
+        ":oprf_ctx",
+    ],
+)
+
+yacl_cc_test(
+    name = "oprf_test",
+    srcs = ["oprf_test.cc"],
+    deps = [
+        ":oprf",
+    ],
+)

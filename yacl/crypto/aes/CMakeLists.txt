@@ -14,12 +14,16 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/aes_intrinsics.h
-        ${CMAKE_CURRENT_LIST_DIR}/aes_opt.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aes)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/aes_intrinsics.h
+    ${CMAKE_CURRENT_LIST_DIR}/aes_opt.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aes)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(aes_test)

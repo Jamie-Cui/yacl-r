@@ -46,6 +46,7 @@ target_include_directories(yacl_spi_galois_field PUBLIC
 
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
 target_link_libraries(yacl_spi_galois_field PRIVATE
+  yacl
   yacl_spi_utils
   yacl_spi_mpint
 )

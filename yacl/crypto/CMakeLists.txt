@@ -13,12 +13,15 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/key_utils.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/key_utils.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/key_utils.h
-              ${CMAKE_CURRENT_LIST_DIR}/ossl_wrappers.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/key_utils.h
+    ${CMAKE_CURRENT_LIST_DIR}/ossl_wrappers.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
 
 add_subdirectory(aead)
 add_subdirectory(aes)
@@ -28,6 +31,7 @@ add_subdirectory(envelope)
 # add_subdirectory(experimental)
 add_subdirectory(hash)
 add_subdirectory(hmac)
+add_subdirectory(oprf)
 add_subdirectory(ossl_provider)
 # add_subdirectory(pairing)
 add_subdirectory(pke)
@@ -35,8 +39,10 @@ add_subdirectory(rand)
 add_subdirectory(sign)
 add_subdirectory(tools)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(key_utils_test)

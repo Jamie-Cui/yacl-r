@@ -13,17 +13,15 @@
 # limitations under the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/spec_traits.cc
-)
+  ${CMAKE_CURRENT_LIST_DIR}/spec_traits.cc)
 
 # Add header files for installation
 install(
-    FILES
-        ${CMAKE_CURRENT_LIST_DIR}/buffer.h
-        ${CMAKE_CURRENT_LIST_DIR}/spec_traits.h
-    DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream
-)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/buffer.h
+    ${CMAKE_CURRENT_LIST_DIR}/spec_traits.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 

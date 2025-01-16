@@ -12,14 +12,21 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.cc)
+
 # Add header files for installation
 install(
   FILES
-    ${CMAKE_CURRENT_LIST_DIR}/gadget.h
+    ${CMAKE_CURRENT_LIST_DIR}/oprf.h
+    ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.h
   DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math)
-
-add_subdirectory(galois_field)
-add_subdirectory(mpint)
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/oprf)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
+
+add_yacl_test(oprf_test)

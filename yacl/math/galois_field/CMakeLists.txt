@@ -13,18 +13,50 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/gf.h
-              ${CMAKE_CURRENT_LIST_DIR}/gf_instrinsic.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field)
-
-add_subdirectory(factory)
+# NOTE no install for factory folder files
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/gf.h
+    ${CMAKE_CURRENT_LIST_DIR}/gf_instrinsic.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
+# ------------------------------------------------------------------------------
+# For libspi_galois_field
+# ------------------------------------------------------------------------------
+
+add_library(yacl_spi_galois_field SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/factory/gf_spi.cc
+    # ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_factory.cc
+    # ${CMAKE_CURRENT_LIST_DIR}/factory/intel_factory.cc
+    ${CMAKE_CURRENT_LIST_DIR}/factory/mpint_factory.cc)
+
+target_include_directories(yacl_spi_galois_field PUBLIC
+  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+# NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
+target_link_libraries(yacl_spi_galois_field PRIVATE
+  yacl
+  yacl_spi_utils
+  yacl_spi_mpint
+)
+
+target_link_libraries(yacl_all INTERFACE yacl_spi_galois_field)
+
+# ------------------------------------------------------------------------------
+# For tests
+# ------------------------------------------------------------------------------
+
 add_yacl_test(gf_test)
 add_yacl_test(gf_intrinsic_test)
+# add_yacl_test(mpint_factory_test)
+# add_yacl_test(mcl_factory_test)
+# add_yacl_test(intel_factory_test)

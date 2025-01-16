@@ -12,20 +12,27 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
-    ${CMAKE_CURRENT_LIST_DIR}/prg.cc ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
+  ${CMAKE_CURRENT_LIST_DIR}/prg.cc
+  ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/common.h ${CMAKE_CURRENT_LIST_DIR}/crhash.h
-        ${CMAKE_CURRENT_LIST_DIR}/prg.h ${CMAKE_CURRENT_LIST_DIR}/ro.h
-        ${CMAKE_CURRENT_LIST_DIR}/rp.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/tools)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/common.h
+    ${CMAKE_CURRENT_LIST_DIR}/crhash.h
+    ${CMAKE_CURRENT_LIST_DIR}/prg.h
+    ${CMAKE_CURRENT_LIST_DIR}/ro.h
+    ${CMAKE_CURRENT_LIST_DIR}/rp.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/tools)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(crhash_test)
 add_yacl_test(prg_test)

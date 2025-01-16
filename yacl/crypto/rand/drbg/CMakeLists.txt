@@ -15,13 +15,16 @@
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/drbg.h
-        ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
+    ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
+    ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(drbg_test)
 
@@ -30,8 +33,8 @@ add_yacl_test(drbg_test)
 # ------------------------------------------------------------------------------
 
 add_library(yacl_spi_drbg SHARED
-    ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
 
 target_include_directories(yacl_spi_drbg PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}

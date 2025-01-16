@@ -12,19 +12,23 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.cc
-                      ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.cc
+  ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.cc)
 
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.h
-        ${CMAKE_CURRENT_LIST_DIR}/pke_interface.h
-        ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/pke)
+    ${CMAKE_CURRENT_LIST_DIR}/pke_interface.h
+    ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/pke)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(rsa_enc_test)
 add_yacl_test(sm2_enc_test)

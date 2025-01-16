@@ -12,26 +12,29 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/exception.cc
-    ${CMAKE_CURRENT_LIST_DIR}/int128.cc
-    ${CMAKE_CURRENT_LIST_DIR}/secparam.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/exception.cc
+  ${CMAKE_CURRENT_LIST_DIR}/int128.cc
+  ${CMAKE_CURRENT_LIST_DIR}/secparam.cc)
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/aligened_vector.h
-        ${CMAKE_CURRENT_LIST_DIR}/block.h
-        ${CMAKE_CURRENT_LIST_DIR}/secparam.h
-        ${CMAKE_CURRENT_LIST_DIR}/buffer.h
-        ${CMAKE_CURRENT_LIST_DIR}/byte_container_view.h
-        ${CMAKE_CURRENT_LIST_DIR}/dynamic_bitset.h
-        ${CMAKE_CURRENT_LIST_DIR}/exception.h
-        ${CMAKE_CURRENT_LIST_DIR}/int128.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/base)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/aligened_vector.h
+    ${CMAKE_CURRENT_LIST_DIR}/block.h
+    ${CMAKE_CURRENT_LIST_DIR}/secparam.h
+    ${CMAKE_CURRENT_LIST_DIR}/buffer.h
+    ${CMAKE_CURRENT_LIST_DIR}/byte_container_view.h
+    ${CMAKE_CURRENT_LIST_DIR}/dynamic_bitset.h
+    ${CMAKE_CURRENT_LIST_DIR}/exception.h
+    ${CMAKE_CURRENT_LIST_DIR}/int128.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/base)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
+# ------------
+# Test
+# ------------
 add_yacl_test(buffer_test)
 add_yacl_test(secparam_test)

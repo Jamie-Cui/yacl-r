@@ -14,10 +14,16 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
-        ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
+    ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.h
+    ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(entropy_source_test)
 
@@ -26,8 +32,8 @@ add_yacl_test(entropy_source_test)
 # ------------------------------------------------------------------------------
 
 add_library(yacl_spi_entropy_source SHARED
-    ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
 
 target_include_directories(yacl_spi_entropy_source PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}

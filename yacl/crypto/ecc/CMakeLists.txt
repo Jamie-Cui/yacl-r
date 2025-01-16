@@ -13,8 +13,8 @@
 # the License.
 
 # Add header files for installation
-install(FILES
-    ${CMAKE_CURRENT_LIST_DIR}/curve_meta.h
+install(
+  FILES ${CMAKE_CURRENT_LIST_DIR}/curve_meta.h
     ${CMAKE_CURRENT_LIST_DIR}/ec_point.h
     ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.h
     ${CMAKE_CURRENT_LIST_DIR}/group_sketch.h
@@ -26,34 +26,30 @@ install(FILES
     ${CMAKE_CURRENT_LIST_DIR}/toy/common.h
     ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.h
     ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
 
-# add_subdirectory(benchmark) # TODO
-# add_subdirectory(libsodium)
-# add_subdirectory(toy)
-
-add_yacl_test(ecc_test)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_ecc.so
 # ------------------------------------------------------------------------------
 
 add_library(yacl_spi_ecc SHARED
-    ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
-    ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
-    ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
-    ${CMAKE_CURRENT_LIST_DIR}/group_sketch.cc
-    ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc
-    ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc
-    ${CMAKE_CURRENT_LIST_DIR}/toy/common.cc
-    ${CMAKE_CURRENT_LIST_DIR}/toy/factory.cc
-    ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.cc
-    ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc
+  ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
+  ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
+  ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
+  ${CMAKE_CURRENT_LIST_DIR}/group_sketch.cc
+  ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.cc
+  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.cc
+  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc
+  ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc
+  ${CMAKE_CURRENT_LIST_DIR}/toy/common.cc
+  ${CMAKE_CURRENT_LIST_DIR}/toy/factory.cc
+  ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.cc
+  ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc
 )
 
 target_include_directories(yacl_spi_ecc PUBLIC
@@ -62,9 +58,15 @@ target_include_directories(yacl_spi_ecc PUBLIC
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
 target_link_libraries(yacl_spi_ecc
-    PRIVATE
-    yacl
-    yacl_spi_mpint
-    yacl_spi_utils)
+  PRIVATE
+  yacl
+  yacl_spi_mpint
+  yacl_spi_utils)
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_ecc)
+
+# ------------
+# Test
+# ------------
+
+add_yacl_test(ecc_test)

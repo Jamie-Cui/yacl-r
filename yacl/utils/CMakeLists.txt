@@ -13,20 +13,18 @@
 # limitations under the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
-    ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
-    ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.cc
-)
+  ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
+  ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
+  ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.cc)
 
 # Add header files for installation
 install(
-    FILES
-        ${CMAKE_CURRENT_LIST_DIR}/parallel.h
-        ${CMAKE_CURRENT_LIST_DIR}/thread_pool.h
-        ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.h
-    DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils
-)
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/parallel.h
+    ${CMAKE_CURRENT_LIST_DIR}/thread_pool.h
+    ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 

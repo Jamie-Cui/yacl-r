@@ -16,14 +16,19 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
   ${CMAKE_CURRENT_LIST_DIR}/rand.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/rand.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand)
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/rand.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand)
 
 add_subdirectory(drbg)
 add_subdirectory(entropy_source)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(rand_test)

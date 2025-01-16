@@ -13,14 +13,19 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/block_cipher)
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/block_cipher)
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
 
 add_yacl_test(symmetric_crypto_test)
