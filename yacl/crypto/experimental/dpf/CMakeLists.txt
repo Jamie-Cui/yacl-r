@@ -13,32 +13,23 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/key_utils.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/dcf.cc
+  ${CMAKE_CURRENT_LIST_DIR}/dpf.cc
+  ${CMAKE_CURRENT_LIST_DIR}/pprf.cc
+)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/key_utils.h
-              ${CMAKE_CURRENT_LIST_DIR}/ossl_wrappers.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/dcf.h
+    ${CMAKE_CURRENT_LIST_DIR}/dpf.h
+    ${CMAKE_CURRENT_LIST_DIR}/pprf.h
+    ${CMAKE_CURRENT_LIST_DIR}/ge2n.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/dpf)
 
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_subdirectory(aead)
-add_subdirectory(aes)
-add_subdirectory(block_cipher)
-# add_subdirectory(ecc)
-add_subdirectory(envelope)
-# add_subdirectory(experimental)
-add_subdirectory(hash)
-add_subdirectory(hmac)
-# add_subdirectory(pairing)
-add_subdirectory(pke)
-add_subdirectory(rand)
-add_subdirectory(sign)
-add_subdirectory(tools)
-
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
-
-add_executable(key_utils_test key_utils_test.cc)
-target_link_libraries(key_utils_test PRIVATE yacl gtest_main)
-add_test(NAME key_utils_test COMMAND key_utils_test)
+add_yacl_test(dcf_test)
+add_yacl_test(dpf_test)
+add_yacl_test(pprf_test)

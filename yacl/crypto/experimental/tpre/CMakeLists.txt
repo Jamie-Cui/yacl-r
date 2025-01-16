@@ -13,32 +13,28 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/key_utils.cc)
+  ${CMAKE_CURRENT_LIST_DIR}/capsule.cc
+  ${CMAKE_CURRENT_LIST_DIR}/hash.cc
+  ${CMAKE_CURRENT_LIST_DIR}/kdf.cc
+  ${CMAKE_CURRENT_LIST_DIR}/keys.cc
+  ${CMAKE_CURRENT_LIST_DIR}/tpre.cc
+)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/key_utils.h
-              ${CMAKE_CURRENT_LIST_DIR}/ossl_wrappers.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
+install(
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/capsule.h
+    ${CMAKE_CURRENT_LIST_DIR}/hash.h
+    ${CMAKE_CURRENT_LIST_DIR}/kdf.h
+    ${CMAKE_CURRENT_LIST_DIR}/keys.h
+    ${CMAKE_CURRENT_LIST_DIR}/tpre.h
+  DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/tpre)
 
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_subdirectory(aead)
-add_subdirectory(aes)
-add_subdirectory(block_cipher)
-# add_subdirectory(ecc)
-add_subdirectory(envelope)
-# add_subdirectory(experimental)
-add_subdirectory(hash)
-add_subdirectory(hmac)
-# add_subdirectory(pairing)
-add_subdirectory(pke)
-add_subdirectory(rand)
-add_subdirectory(sign)
-add_subdirectory(tools)
-
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
-
-add_executable(key_utils_test key_utils_test.cc)
-target_link_libraries(key_utils_test PRIVATE yacl gtest_main)
-add_test(NAME key_utils_test COMMAND key_utils_test)
+add_yacl_test(capsule_test)
+add_yacl_test(hash_test)
+add_yacl_test(kdf_test)
+add_yacl_test(keys_test)
+add_yacl_test(tpre_test)

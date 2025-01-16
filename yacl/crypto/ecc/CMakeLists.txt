@@ -12,6 +12,11 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc)
+
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/curve_meta.h
@@ -41,9 +46,17 @@ add_library(yacl_spi_ecc SHARED
   ${CMAKE_CURRENT_LIST_DIR}/group_sketch.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.cc
+  # FIXME ecc with lib25519
+  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/ed25519_group.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_factory.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_group.cc
+  # FIXME ecc with libsodium
+  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/ed25519_group.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/x25519_group.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_factory.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_grop.cc
   ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.cc
-  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc
   ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.cc
   ${CMAKE_CURRENT_LIST_DIR}/toy/common.cc
@@ -64,6 +77,13 @@ target_link_libraries(yacl_spi_ecc
   yacl_spi_utils)
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_ecc)
+
+# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
+# 1. ecc_spi
+# 2. galois_field_spi
+# 3. paring_spi
+target_compile_definitions(yacl_spi_ecc PUBLIC
+  MCL_ALL_PAIRING_FOR_YACL)
 
 # ------------
 # Test
