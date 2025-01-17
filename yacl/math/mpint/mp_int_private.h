@@ -144,8 +144,6 @@ extern void MP_FREE(void *mem, size_t size);
 
 #define MP_IS_2EXPT(x) (((x) != 0u) && (((x) & ((x) - 1u)) == 0u))
 
-/* TODO: same as above for bigint, merge (is it used elsewhere?) or change name
- */
 #define MP_IS_POWER_OF_TWO(a) (((mp_count_bits((a)) - 1) == mp_cnt_lsb((a))))
 
 /* Static assertion */

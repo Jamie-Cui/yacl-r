@@ -56,7 +56,8 @@ std::vector<uint8_t> Sm2Signer::Sign(ByteContainerView message) const {
   std::vector<uint8_t> out(outlen);
   OSSL_RET_1(EVP_DigestSignFinal(mctx.get(), out.data(), &outlen));
 
-  // Correct the signature size (this is necessary! TODO: find out why)
+  // Correct the signature size (this is necessary!)
+  // TODO find out why
   out.resize(outlen);
 
   return out;

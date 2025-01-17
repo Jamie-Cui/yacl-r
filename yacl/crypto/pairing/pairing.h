@@ -68,10 +68,8 @@ class PairingGroup {
   // Group1 x Group2 -> Gt
   virtual GtElement Pairing(const EcPoint &group1_point,
                             const EcPoint &group2_point) const = 0;
-  // multi_miller_loop
-  // TODO: @banqiang
-  // multi_pairing
-  // TODO: @banqiang
+  // TODO multi_miller_loop
+  // TODO multi_pairing
 };
 
 // Give pairing meta, return pairing instance.

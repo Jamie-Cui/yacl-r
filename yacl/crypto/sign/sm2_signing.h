@@ -66,6 +66,5 @@ class Sm2Verifier final : public AsymmetricVerifier {
   const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
-// TODO(@raofei, @shanzhu): support sm2 certificate
 
 }  // namespace yacl::crypto

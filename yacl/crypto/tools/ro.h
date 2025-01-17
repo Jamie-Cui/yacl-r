@@ -51,7 +51,7 @@ namespace yacl::crypto {
 //  2. SM3 (with 32 bytes output)
 //  3. BLAKE3 (with 32 bytes output)
 //
-// TODO(@shanzhu): Implement RO by a function ensemble
+// TODO Implement RO by a function ensemble
 
 class RandomOracle {
  public:

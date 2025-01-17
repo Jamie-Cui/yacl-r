@@ -128,8 +128,7 @@ std::shared_ptr<LinearCodeInterface> GetEncoder(const VoleParam<T>& param) {
     case CodeType::ExAcc40:
       encoder = std::make_shared<ExAccCode<40>>(vole_num, mp_vole_size);
       break;
-    // TODO(@wenfan)
-    // support ExConv Code
+    // TODO support ExConv Code
     default:
       break;
   }

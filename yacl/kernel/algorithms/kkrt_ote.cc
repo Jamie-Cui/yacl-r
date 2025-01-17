@@ -29,7 +29,7 @@ namespace {
 
 constexpr int kKappa = YACL_MODULE_SECPARAM_C_UINT("kkrt_ote");
 constexpr int kIknpWidth = kKkrtWidth * kKappa;  // IKNP OT Extension Width
-// TODO(shuyan.ycf): switch to 1024 when we have efficient 1024x128 transpose.
+// NOTE switch to 1024 when we have efficient 1024x128 transpose.
 constexpr int kBatchSize = 128;  // How many blocks do we have.
 constexpr int kNumBlockPerBatch = kBatchSize / kKappa;
 constexpr int kPrgBatchSize = kBatchSize * kNumBlockPerBatch;

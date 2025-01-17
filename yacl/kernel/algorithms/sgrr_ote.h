@@ -18,9 +18,9 @@
 
 #include "absl/types/span.h"
 
+#include "yacl/base/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
-#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/aes/aes_opt.h"
@@ -101,14 +101,12 @@ void SgrrOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                absl::Span<uint128_t> output, bool mal = false);
 
 // non-interactive function, Receiver should receive "recv_msgs" from Sender
-// TODO: use `ByteContainerView` instead.
 void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
                                absl::Span<uint128_t> output,
                                absl::Span<const uint8_t> recv_buf,
                                bool mal = false);
 
 // non-interactive function, Sender should send "send_msg" to Receiver
-// TODO:
 void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
                                absl::Span<uint128_t> output,
                                absl::Span<uint8_t> send_buf, bool mal = false);

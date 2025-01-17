@@ -111,12 +111,6 @@ class IGroupPRF {
 // allocate a `2^128` vector (which is impossible due to memory requirements).
 // Nowadays, OT Extension are actually same as OPRF for `N-Choose-One` settings
 // if N is big enough.
-//
-// TODO(shuyan.ycf):
-//   - Abstract IKNP core with customizable width & coding method, rewrite IKNP
-//     as repetition codes and KKRT as pseudo random codes.
-//   - This function requires base ot width to 512 now. Let us cut this to 128
-//     by implicitly calling IKNP inside KKRT.
 
 std::unique_ptr<IGroupPRF> KkrtOtExtSend(
     const std::shared_ptr<link::Context>& ctx, const OtRecvStore& base_ot,
