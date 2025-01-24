@@ -68,3 +68,6 @@ CheckOptions:
 
   - key: readability-identifier-naming.FunctionCase
     value: "CamelBack"
+
+  - key: readability-function-cognitive-complexity.IgnoreMacros
+    value: 1
