@@ -30,25 +30,14 @@ install(
   DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
-# ------------------------------------------------------------------------------
-# For libyacl_spi_utils
-# ------------------------------------------------------------------------------
-
-add_library(yacl_spi_utils SHARED
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
   ${CMAKE_CURRENT_LIST_DIR}/item.cc
   ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
   ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
   ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
   ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
 
-target_include_directories(yacl_spi_utils PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
-
-# NOTE libyacl_spi_mpint requires gmp
-target_link_libraries(yacl_spi_utils PRIVATE yacl)
-
-target_link_libraries(yacl_all INTERFACE yacl_spi_utils)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
 add_yacl_test(spi_factory_test)
 

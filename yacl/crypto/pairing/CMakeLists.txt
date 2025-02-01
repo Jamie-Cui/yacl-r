@@ -17,7 +17,7 @@
 # For libyacl_spi_pairing.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_pairing SHARED
+add_library(yacl_spi_pairing OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_bls12_381.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_pairing_group.cc
@@ -31,7 +31,6 @@ target_include_directories(yacl_spi_pairing PUBLIC
 target_link_libraries(yacl_spi_pairing
   PRIVATE
   yacl
-  yacl_spi_utils
   yacl_spi_mpint # NOTE pairing need spi_mpint
   yacl_spi_galois_field # NOTE pairing need spi_galois_field
   yacl_spi_ecc # NOTE pairing need spi_ecc
@@ -44,7 +43,9 @@ target_link_libraries(yacl_spi_pairing
 target_compile_definitions(yacl_spi_pairing PUBLIC
   MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl_all INTERFACE yacl_spi_pairing)
+target_link_libraries(yacl_all INTERFACE
+  $<TARGET_OBJECTS:yacl_spi_pairing>)
+add_dependencies(yacl_all yacl_spi_pairing)
 
 # ------------
 # Test

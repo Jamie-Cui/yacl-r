@@ -29,7 +29,9 @@ ExternalProject_Add(brpc
   # LOG_BUILD On
   LOG_INSTALL On)
 
-add_dependencies(brpc protobuf)
+add_dependencies(brpc Thirdparty::protobuf)
+add_dependencies(brpc Thirdparty::gflags)
+add_dependencies(brpc Thirdparty::leveldb)
 
 add_library(libbrpc STATIC IMPORTED)
 set_property(

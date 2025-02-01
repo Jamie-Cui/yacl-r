@@ -33,7 +33,7 @@ add_yacl_test(drbg_test)
 # For libyacl_spi_drbg.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_drbg SHARED
+add_library(yacl_spi_drbg OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
 
@@ -41,9 +41,8 @@ target_include_directories(yacl_spi_drbg PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_drbg
-  PRIVATE
-  yacl
-  yacl_spi_utils)
+target_link_libraries(yacl_spi_drbg PRIVATE yacl)
 
-target_link_libraries(yacl_all INTERFACE yacl_spi_drbg)
+target_link_libraries(yacl_all INTERFACE
+  $<TARGET_OBJECTS:yacl_spi_drbg>)
+add_dependencies(yacl_all yacl_spi_drbg)

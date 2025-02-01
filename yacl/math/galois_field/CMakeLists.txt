@@ -30,24 +30,18 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 # For libspi_galois_field
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_galois_field SHARED
+add_library(yacl_spi_galois_field OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/factory/gf_spi.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_factory.cc
   # ${CMAKE_CURRENT_LIST_DIR}/factory/intel_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mpint_factory.cc)
 
 target_include_directories(yacl_spi_galois_field PUBLIC
-  ${GMP_INCLUDE_DIR}
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
-target_link_libraries(yacl_spi_galois_field PRIVATE
-  ${GMP_LIBRARIES}
-  yacl
-  yacl_spi_utils
-  yacl_spi_mpint
-)
+target_link_libraries(yacl_spi_galois_field PRIVATE yacl yacl_spi_mpint)
 
 # NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
 # 1. ecc_spi
@@ -56,7 +50,9 @@ target_link_libraries(yacl_spi_galois_field PRIVATE
 target_compile_definitions(yacl_spi_galois_field PUBLIC
   MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl_all INTERFACE yacl_spi_galois_field)
+target_link_libraries(yacl_all INTERFACE
+  $<TARGET_OBJECTS:yacl_spi_galois_field>)
+add_dependencies(yacl_all yacl_spi_galois_field)
 
 # ------------------------------------------------------------------------------
 # For tests

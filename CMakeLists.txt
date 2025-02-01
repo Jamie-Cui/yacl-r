@@ -60,6 +60,7 @@ include(CMakeDependentOption)
 include(CTest)
 include(ExternalProject)
 include(GNUInstallDirs)
+include(FetchContent)
 
 # ------------------------------------------------------------------------------
 # Toolchain Configuration
@@ -141,10 +142,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 enable_testing()
 
 add_library(yacl STATIC)
-
 add_library(yacl_all INTERFACE)
-
-target_link_libraries(yacl_all INTERFACE yacl)
 
 target_include_directories(yacl PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
@@ -173,7 +171,6 @@ target_link_libraries(yacl
     Thirdparty::cpu_features
     Thirdparty::fmt
     Thirdparty::fourq
-    # Thirdparty::gflags
     Thirdparty::leveldb
     Thirdparty::libsodium
     Thirdparty::libtommath
@@ -184,6 +181,8 @@ target_link_libraries(yacl
     Thirdparty::spdlog
     Thirdparty::sse2neon
     Thirdparty::brpc
+    Thirdparty::gmp
 )
 
+target_link_libraries(yacl_all INTERFACE yacl)
 add_library(Yacl::yacl ALIAS yacl_all)

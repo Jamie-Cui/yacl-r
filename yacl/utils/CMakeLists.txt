@@ -29,6 +29,8 @@ install(
   DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
 
+add_subdirectory(spi)
+
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
 add_yacl_test(elapsed_timer_test)
@@ -40,4 +42,3 @@ add_yacl_test(scope_guard_test)
 add_yacl_test(segment_tree_test)
 add_yacl_test(serializer_test)
 
-add_subdirectory(spi)

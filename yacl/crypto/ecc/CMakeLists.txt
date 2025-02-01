@@ -36,10 +36,10 @@ install(
 
 
 # ------------------------------------------------------------------------------
-# For libyacl_spi_ecc.so
+# For libyacl_spi_ecc
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_ecc SHARED
+add_library(yacl_spi_ecc OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
   ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
   ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
@@ -70,13 +70,11 @@ target_include_directories(yacl_spi_ecc PUBLIC
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
-target_link_libraries(yacl_spi_ecc
-  PRIVATE
-  yacl
-  yacl_spi_mpint
-  yacl_spi_utils)
+target_link_libraries(yacl_spi_ecc PRIVATE yacl yacl_spi_mpint)
 
-target_link_libraries(yacl_all INTERFACE yacl_spi_ecc)
+target_link_libraries(yacl_all INTERFACE
+  $<TARGET_OBJECTS:yacl_spi_ecc>)
+add_dependencies(yacl_all yacl_spi_ecc)
 
 # NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
 # 1. ecc_spi

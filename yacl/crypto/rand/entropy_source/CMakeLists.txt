@@ -31,7 +31,7 @@ add_yacl_test(entropy_source_test)
 # For libyacl_spi_entropy_source.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_entropy_source SHARED
+add_library(yacl_spi_entropy_source OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
 
@@ -39,9 +39,8 @@ target_include_directories(yacl_spi_entropy_source PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_entropy_source PRIVATE
-  yacl
-  yacl_spi_utils)
+target_link_libraries(yacl_spi_entropy_source PRIVATE yacl)
 
 target_link_libraries(yacl_all INTERFACE
-  yacl_spi_entropy_source)
+  $<TARGET_OBJECTS:yacl_spi_entropy_source>)
+add_dependencies(yacl_all yacl_spi_entropy_source)
