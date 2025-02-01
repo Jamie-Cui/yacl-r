@@ -12,22 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(abseil
+ExternalProject_Add(protobuf
   URL
-    "https://github.com/abseil/abseil-cpp/archive/refs/tags/\
-20240722.0.tar.gz"
+    "https://github.com/protocolbuffers/protobuf/releases/download/\
+v21.12/protobuf-all-21.12.tar.gz"
   URL_HASH
-    SHA256=f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
+    SHA256=2c6a36c7b5a55accae063667ef3c55f2642e67476d96d355ff0acb13dbb47f09
   CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
+    -Dprotobuf_BUILD_PROTOBUF_BINARIES=Off
+    -Dprotobuf_BUILD_PROTOC_BINARIES=On
+    -Dprotobuf_BUILD_LIBPROTOC=On
+    -Dprotobuf_BUILD_TESTS=Off
+    -DBUILD_SHARED_LIBS=Off
     -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
-  INSTALL_COMMAND
-    ${CMAKE_MAKE_PROGRAM} install
-  COMMAND
-    bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh libabsl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_THIRDPARTY_LIBDIR} libabsl_*
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -35,17 +33,24 @@ ExternalProject_Add(abseil
   LOG_INSTALL On)
 
 # ------------------------------------------------------------------------------
-# How to use absl?
+# How to use protobuf?
 # ------------------------------------------------------------------------------
 
-add_library(liblibabsl STATIC IMPORTED)
+add_library(libprotobuf STATIC IMPORTED)
 set_property(
-  TARGET liblibabsl
+  TARGET libprotobuf
   PROPERTY IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(liblibabsl abseil)
+    ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libprotobuf protobuf)
+
+# add_library(libprotobuf STATIC IMPORTED)
+# set_property(
+#   TARGET libprotobuf
+#   PROPERTY IMPORTED_LOCATION
+#     ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+# add_dependencies(libprotobuf protobuf)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::absl ALIAS liblibabsl)
+add_library(Thirdparty::protobuf ALIAS libprotobuf)

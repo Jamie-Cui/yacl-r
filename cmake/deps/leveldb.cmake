@@ -1,4 +1,4 @@
-# Copyright 2024 Ant Group Co., Ltd.
+# Copyright 2024 Jamie Cui
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(msgpack
+ExternalProject_Add(leveldb
   URL
-    https://github.com/msgpack/msgpack-c/archive/refs/tags/cpp-6.1.0.tar.gz
+    "https://github.com/google/leveldb/archive/refs/tags/1.23.tar.gz"
   URL_HASH
-    SHA256=5e63e4d9b12ab528fccf197f7e6908031039b1fc89cd8da0e97fbcbf5a6c6d3a
+    SHA256=9a37f8a6174f09bd622bc723b55881dc541cd50747cbd08831c2a82d620f6d76
   CMAKE_ARGS
+    -DLEVELDB_BUILD_TESTS=Off
+    -DLEVELDB_BUILD_BENCHMARKS=Off
+    -DLEVELDB_INSTALL=On
     -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DMSGPACK_CXX17=On
-    -DMSGPACK_USE_BOOST=Off
-    -DMSGPACK_BUILD_EXAMPLES=Off
-    -DMSGPACK_BUILD_EXAMPLES=Off
-    -DBUILD_SHARED_LIBS=Off
-    -DMSGPACK_BUILD_TESTS=Off
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -32,15 +29,18 @@ ExternalProject_Add(msgpack
   LOG_BUILD On
   LOG_INSTALL On)
 
-# msgpack is header-only, we need some magic
-add_library(libmsgpack INTERFACE)
-add_dependencies(libmsgpack msgpack)
+# ------------------------------------------------------------------------------
+# How to use leveldb?
+# ------------------------------------------------------------------------------
+
+add_library(libleveldb STATIC IMPORTED)
+set_property(
+  TARGET libleveldb
+  PROPERTY IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libleveldb leveldb)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::msgpack ALIAS libmsgpack)
-
-# HACK msgpack read the following macro from cmake definitions
-add_compile_definitions(MSGPACK_NO_BOOST)
-
+add_library(Thirdparty::leveldb ALIAS libleveldb)

@@ -14,6 +14,7 @@
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES})
 
+add_subdirectory(kv)
 add_subdirectory(msgpack)
 add_subdirectory(rw)
 add_subdirectory(stream)

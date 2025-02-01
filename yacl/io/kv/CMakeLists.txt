@@ -13,31 +13,19 @@
 # limitations under the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.cc
-  ${CMAKE_CURRENT_LIST_DIR}/matrix_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
-  ${CMAKE_CURRENT_LIST_DIR}/platform_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
+  ${CMAKE_CURRENT_LIST_DIR}/leveldb_kvstore.cc
+  ${CMAKE_CURRENT_LIST_DIR}/memory_kvstore.cc
 )
-
-file(GLOB SRC_H *.h)
 
 # Add header files for installation
 install(
   FILES
-    ${SRC_H}
+    ${CMAKE_CURRENT_LIST_DIR}/kv_store.h
+    ${CMAKE_CURRENT_LIST_DIR}/leveldb_kvstore.h
+    ${CMAKE_CURRENT_LIST_DIR}/memory_kvstore.h
   DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/kv)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_yacl_test(elapsed_timer_test)
-add_yacl_test(hamming_test)
-add_yacl_test(matrix_transpose_test)
-add_yacl_test(parallel_test)
-add_yacl_test(platform_utils_test)
-add_yacl_test(scope_guard_test)
-add_yacl_test(segment_tree_test)
-add_yacl_test(serializer_test)
-
-add_subdirectory(spi)
+add_yacl_test(kvstore_test)

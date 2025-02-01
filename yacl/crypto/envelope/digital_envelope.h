@@ -59,27 +59,27 @@ void SmEnvOpen(ByteContainerView pri_key, ByteContainerView iv,
                ByteContainerView encrypted_key, ByteContainerView ciphertext,
                std::vector<uint8_t>* plaintext);
 
-/// Rsa envelope sealing with aes-128-gcm.
+// Rsa envelope sealing with aes-128-gcm.
 //
-/// @param pub_key[in] rsa public key.
-/// @param iv[in] initial vector.
-/// @param plaintext[in] plaintext to be sealed.
-/// @param encrypted_key[out] the symmetric key encrypted by pub_key.
-/// @param ciphertext[out] the encrypted plaintext.
-/// @param mac[out] the gcm mac.
+// @param pub_key[in] rsa public key.
+// @param iv[in] initial vector.
+// @param plaintext[in] plaintext to be sealed.
+// @param encrypted_key[out] the symmetric key encrypted by pub_key.
+// @param ciphertext[out] the encrypted plaintext.
+// @param mac[out] the gcm mac.
 void RsaEnvSeal(ByteContainerView pub_key, ByteContainerView iv,
                 ByteContainerView plaintext,
                 std::vector<uint8_t>* encrypted_key,
                 std::vector<uint8_t>* ciphertext, std::vector<uint8_t>* mac);
 
-/// Rsa envelope open with aes-128-gcm
-///
-/// @param pri_key[in] the rsa private key.
-/// @param iv[in] the initial vector.
-/// @param encrypted_key[in] the symmetric key encrypted by rsa public key.
-/// @param ciphertext[in] the encrypted plaintext.
-/// @param mac[in] the gcm mac.
-/// @param plaintext[out] the decryption of ciphertext.
+// Rsa envelope open with aes-128-gcm
+//
+// @param pri_key[in] the rsa private key.
+// @param iv[in] the initial vector.
+// @param encrypted_key[in] the symmetric key encrypted by rsa public key.
+// @param ciphertext[in] the encrypted plaintext.
+// @param mac[in] the gcm mac.
+// @param plaintext[out] the decryption of ciphertext.
 void RsaEnvOpen(ByteContainerView pri_key, ByteContainerView iv,
                 ByteContainerView encrypted_key, ByteContainerView ciphertext,
                 ByteContainerView mac, std::vector<uint8_t>* plaintext);

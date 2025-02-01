@@ -12,32 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.cc
-  ${CMAKE_CURRENT_LIST_DIR}/matrix_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
-  ${CMAKE_CURRENT_LIST_DIR}/platform_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
-)
-
+file(GLOB SRC_CC *.cc)
 file(GLOB SRC_H *.h)
+file(GLOB SRC_PROTO *.proto)
+
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${SRC_CC})
 
 # Add header files for installation
 install(
   FILES
     ${SRC_H}
   DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
+
+add_subdirectory(algorithm)
+add_subdirectory(transport)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_yacl_test(elapsed_timer_test)
-add_yacl_test(hamming_test)
-add_yacl_test(matrix_transpose_test)
-add_yacl_test(parallel_test)
-add_yacl_test(platform_utils_test)
-add_yacl_test(scope_guard_test)
-add_yacl_test(segment_tree_test)
-add_yacl_test(serializer_test)
+add_yacl_test(context_test)
+add_yacl_test(factory_test)
 
-add_subdirectory(spi)
+protobuf_generate()

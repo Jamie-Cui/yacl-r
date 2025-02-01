@@ -13,31 +13,17 @@
 # limitations under the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/elapsed_timer.cc
-  ${CMAKE_CURRENT_LIST_DIR}/matrix_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
-  ${CMAKE_CURRENT_LIST_DIR}/platform_utils.cc
-  ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
+  ${CMAKE_CURRENT_LIST_DIR}/bristol_fashion.cc
 )
-
-file(GLOB SRC_H *.h)
 
 # Add header files for installation
 install(
   FILES
-    ${SRC_H}
+    ${CMAKE_CURRENT_LIST_DIR}/bristol_fashion.h
   DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
+    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/circuit)
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
 
-add_yacl_test(elapsed_timer_test)
-add_yacl_test(hamming_test)
-add_yacl_test(matrix_transpose_test)
-add_yacl_test(parallel_test)
-add_yacl_test(platform_utils_test)
-add_yacl_test(scope_guard_test)
-add_yacl_test(segment_tree_test)
-add_yacl_test(serializer_test)
-
-add_subdirectory(spi)
+# FIXME example data path
+# add_yacl_test(bristol_fashion_test)

@@ -39,6 +39,9 @@ target_include_directories(yacl_spi_entropy_source PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_entropy_source PRIVATE yacl yacl_spi_utils)
+target_link_libraries(yacl_spi_entropy_source PRIVATE
+  yacl
+  yacl_spi_utils)
 
-target_link_libraries(yacl_all INTERFACE yacl_spi_entropy_source)
+target_link_libraries(yacl_all INTERFACE
+  yacl_spi_entropy_source)

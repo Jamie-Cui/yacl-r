@@ -14,7 +14,8 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/drbg.h
+  FILES
+    ${CMAKE_CURRENT_LIST_DIR}/drbg.h
     ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
     ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
   DESTINATION
@@ -40,6 +41,9 @@ target_include_directories(yacl_spi_drbg PUBLIC
   ${CMAKE_THIRDPARTY_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_drbg PUBLIC yacl yacl_spi_utils)
+target_link_libraries(yacl_spi_drbg
+  PRIVATE
+  yacl
+  yacl_spi_utils)
 
 target_link_libraries(yacl_all INTERFACE yacl_spi_drbg)
