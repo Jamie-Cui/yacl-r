@@ -21,7 +21,7 @@ ExternalProject_Add(
     SHA256=bedbb16955555f99b1a7b1ba90fc97879eb41025081be359ecd6a9fcbdf1c8d2
   CONFIGURE_COMMAND
     ./Configure no-legacy no-weak-ssl-ciphers no-tests no-shared no-ui-console
-    no-docs no-apps --banner=Finished --release
+    no-docs no-apps --banner=Finished --release --libdir=${CMAKE_INSTALL_LIBDIR}
     --prefix=${CMAKE_THIRDPARTY_PREFIX} -w
   BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} build_sw
   INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install_sw
