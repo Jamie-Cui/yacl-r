@@ -17,4 +17,6 @@ add_subdirectory(dpf)
 add_subdirectory(tpre)
 # add_subdirectory(vss)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)

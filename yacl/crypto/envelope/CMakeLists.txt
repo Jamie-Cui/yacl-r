@@ -13,16 +13,15 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.cc)
 
 # Add header files for installation
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/digital_envelope)
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/digital_envelope)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------
 # Test

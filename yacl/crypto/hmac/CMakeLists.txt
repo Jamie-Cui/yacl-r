@@ -12,19 +12,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/hmac.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/hmac.cc)
 
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/hmac.h
-    ${CMAKE_CURRENT_LIST_DIR}/hmac_sha256.h
-    ${CMAKE_CURRENT_LIST_DIR}/hmac_sm3.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/hmac)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/hmac.h ${CMAKE_CURRENT_LIST_DIR}/hmac_sha256.h
+        ${CMAKE_CURRENT_LIST_DIR}/hmac_sm3.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/hmac)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------
 # Test

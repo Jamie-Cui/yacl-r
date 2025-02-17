@@ -13,17 +13,16 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.cc)
 
 # Add header files for installation
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/oprf.h
-    ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/oprf)
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/oprf.h
+              ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/oprf)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------
 # Test

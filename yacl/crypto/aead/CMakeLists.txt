@@ -12,21 +12,19 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/aead.cc
-  ${CMAKE_CURRENT_LIST_DIR}/all_gcm.cc
-  ${CMAKE_CURRENT_LIST_DIR}/sm4_mte.cc)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/aead.cc
+    ${CMAKE_CURRENT_LIST_DIR}/all_gcm.cc ${CMAKE_CURRENT_LIST_DIR}/sm4_mte.cc)
 
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/aead.h
-    ${CMAKE_CURRENT_LIST_DIR}/all_gcm.h
-    ${CMAKE_CURRENT_LIST_DIR}/sm4_mte.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aead)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/aead.h ${CMAKE_CURRENT_LIST_DIR}/all_gcm.h
+        ${CMAKE_CURRENT_LIST_DIR}/sm4_mte.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aead)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------
 # Test

@@ -12,19 +12,15 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/poly.cc
-  ${CMAKE_CURRENT_LIST_DIR}/vss.cc
-)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/poly.cc
+                      ${CMAKE_CURRENT_LIST_DIR}/vss.cc)
 
 # Add header files for installation
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/poly.h
-    ${CMAKE_CURRENT_LIST_DIR}/vss.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/vss)
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/poly.h ${CMAKE_CURRENT_LIST_DIR}/vss.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/vss)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 add_yacl_test(vss_test)

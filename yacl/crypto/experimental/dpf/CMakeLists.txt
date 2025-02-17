@@ -12,23 +12,18 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/dcf.cc
-  ${CMAKE_CURRENT_LIST_DIR}/dpf.cc
-  ${CMAKE_CURRENT_LIST_DIR}/pprf.cc
-)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/dcf.cc
+    ${CMAKE_CURRENT_LIST_DIR}/dpf.cc ${CMAKE_CURRENT_LIST_DIR}/pprf.cc)
 
 # Add header files for installation
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/dcf.h
-    ${CMAKE_CURRENT_LIST_DIR}/dpf.h
-    ${CMAKE_CURRENT_LIST_DIR}/pprf.h
-    ${CMAKE_CURRENT_LIST_DIR}/ge2n.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/dpf)
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/dcf.h ${CMAKE_CURRENT_LIST_DIR}/dpf.h
+              ${CMAKE_CURRENT_LIST_DIR}/pprf.h ${CMAKE_CURRENT_LIST_DIR}/ge2n.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/dpf)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 add_yacl_test(dcf_test)
 add_yacl_test(dpf_test)

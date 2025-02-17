@@ -14,14 +14,14 @@
 
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/drbg.h
-    ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
-    ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/drbg.h
+        ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
+        ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------
 # Test
@@ -33,16 +33,14 @@ add_yacl_test(drbg_test)
 # For libyacl_spi_drbg.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_drbg OBJECT
-  ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
-  ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
+add_library(yacl_spi_drbg OBJECT ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
+                                 ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
 
-target_include_directories(yacl_spi_drbg PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+target_include_directories(
+  yacl_spi_drbg PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+                       "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 target_link_libraries(yacl_spi_drbg PRIVATE yacl)
 
-target_link_libraries(yacl_all INTERFACE
-  $<TARGET_OBJECTS:yacl_spi_drbg>)
+target_link_libraries(yacl_all INTERFACE $<TARGET_OBJECTS:yacl_spi_drbg>)
 add_dependencies(yacl_all yacl_spi_drbg)

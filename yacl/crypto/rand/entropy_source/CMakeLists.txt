@@ -14,12 +14,10 @@
 
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
-    ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.h
-    ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
+        ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.h
+        ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
 
 # ------------
 # Test
@@ -31,16 +29,16 @@ add_yacl_test(entropy_source_test)
 # For libyacl_spi_entropy_source.so
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_entropy_source OBJECT
-  ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
-  ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
+add_library(
+  yacl_spi_entropy_source OBJECT ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
+                                 ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
 
-target_include_directories(yacl_spi_entropy_source PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+target_include_directories(
+  yacl_spi_entropy_source PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+                                 "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 target_link_libraries(yacl_spi_entropy_source PRIVATE yacl)
 
-target_link_libraries(yacl_all INTERFACE
-  $<TARGET_OBJECTS:yacl_spi_entropy_source>)
+target_link_libraries(yacl_all
+                      INTERFACE $<TARGET_OBJECTS:yacl_spi_entropy_source>)
 add_dependencies(yacl_all yacl_spi_entropy_source)

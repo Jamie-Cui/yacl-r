@@ -12,22 +12,19 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-install(FILES
-  ${CMAKE_CURRENT_LIST_DIR}/helper.h
-  ${CMAKE_CURRENT_LIST_DIR}/rand_impl.h
-  ${CMAKE_CURRENT_LIST_DIR}/version.h
+install(
+  FILES ${CMAKE_CURRENT_LIST_DIR}/helper.h ${CMAKE_CURRENT_LIST_DIR}/rand_impl.h
+        ${CMAKE_CURRENT_LIST_DIR}/version.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ossl_provider)
 
 # ------------------------------------------------------------------------------
 # For libossl_provider.so
 # ------------------------------------------------------------------------------
 
-# add_library(ossl_provider SHARED
-#     ${CMAKE_CURRENT_LIST_DIR}/provider.cc)
+# add_library(ossl_provider SHARED ${CMAKE_CURRENT_LIST_DIR}/provider.cc)
 
-# target_include_directories(ossl_provider PUBLIC
-#   ${CMAKE_THIRDPARTY_INCLUDEDIR}
-#   # these dirs are only used when building inside the build tree
-#   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+# target_include_directories(ossl_provider PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+# # these dirs are only used when building inside the build tree
+# "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # target_link_libraries(ossl_provider PUBLIC yacl)

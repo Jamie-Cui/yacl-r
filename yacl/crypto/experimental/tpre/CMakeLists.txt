@@ -12,26 +12,21 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/capsule.cc
-  ${CMAKE_CURRENT_LIST_DIR}/hash.cc
-  ${CMAKE_CURRENT_LIST_DIR}/kdf.cc
-  ${CMAKE_CURRENT_LIST_DIR}/keys.cc
-  ${CMAKE_CURRENT_LIST_DIR}/tpre.cc
-)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/capsule.cc
+    ${CMAKE_CURRENT_LIST_DIR}/hash.cc ${CMAKE_CURRENT_LIST_DIR}/kdf.cc
+    ${CMAKE_CURRENT_LIST_DIR}/keys.cc ${CMAKE_CURRENT_LIST_DIR}/tpre.cc)
 
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/capsule.h
-    ${CMAKE_CURRENT_LIST_DIR}/hash.h
-    ${CMAKE_CURRENT_LIST_DIR}/kdf.h
-    ${CMAKE_CURRENT_LIST_DIR}/keys.h
-    ${CMAKE_CURRENT_LIST_DIR}/tpre.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/tpre)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/capsule.h ${CMAKE_CURRENT_LIST_DIR}/hash.h
+        ${CMAKE_CURRENT_LIST_DIR}/kdf.h ${CMAKE_CURRENT_LIST_DIR}/keys.h
+        ${CMAKE_CURRENT_LIST_DIR}/tpre.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/tpre)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 add_yacl_test(capsule_test)
 add_yacl_test(hash_test)

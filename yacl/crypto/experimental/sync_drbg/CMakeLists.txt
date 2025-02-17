@@ -20,7 +20,6 @@ install(FILES ${CMAKE_CURRENT_LIST_DIR}/key_utils.h
               ${CMAKE_CURRENT_LIST_DIR}/ossl_wrappers.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
 
-
 add_subdirectory(aead)
 add_subdirectory(aes)
 add_subdirectory(block_cipher)

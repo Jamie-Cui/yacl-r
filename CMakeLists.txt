@@ -14,15 +14,12 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-project(yacl_r
-  VERSION
-    0.4.5
-  DESCRIPTION
-    "YACL-r (Yet Another Crypto Library for Research)"
-  HOMEPAGE_URL
-    "https://github.com/Jamie-Cui/yacl-r"
-  LANGUAGES
-    CXX C)
+project(
+  yacl_r
+  VERSION 0.4.5
+  DESCRIPTION "YACL-r (Yet Another Crypto Library for Research)"
+  HOMEPAGE_URL "https://github.com/Jamie-Cui/yacl-r"
+  LANGUAGES CXX C)
 
 # option(BUILD_TESTING "Build the testing binaries (On/Off)." On)
 
@@ -32,9 +29,11 @@ project(yacl_r
 
 # Configure build type
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-    "Release" "Debug" "MinSizeRel" "RelWithDebInfo")
+  set(CMAKE_BUILD_TYPE
+      "Release"
+      CACHE STRING "Build type" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Release" "Debug"
+                                               "MinSizeRel" "RelWithDebInfo")
 endif()
 message(STATUS "Build type (CMAKE_BUILD_TYPE): ${CMAKE_BUILD_TYPE}")
 
@@ -68,8 +67,8 @@ include(FetchContent)
 
 # CMake arguments
 set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
-set(CMAKE_CXX_STANDARD 17)              # Enable C++17
-set(CMAKE_C_STANDARD_REQUIRED Yes)      # Force C standard to be present
+set(CMAKE_CXX_STANDARD 17) # Enable C++17
+set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
 
 # Additional compiler flags
 add_compiler_flags("-Wall")
@@ -104,14 +103,11 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(GMP REQUIRED)
 
-set(CMAKE_THIRDPARTY_PREFIX
-  ${CMAKE_BINARY_DIR}/thirdparty)
-set(CMAKE_THIRDPARTY_LIBDIR
-  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_THIRDPARTY_BINDIR
-  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_BINDIR})
+set(CMAKE_THIRDPARTY_PREFIX ${CMAKE_BINARY_DIR}/thirdparty)
+set(CMAKE_THIRDPARTY_LIBDIR ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_THIRDPARTY_BINDIR ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_THIRDPARTY_INCLUDEDIR
-  ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+    ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 
 include(deps/abseil)
 include(deps/blake3)
@@ -144,12 +140,13 @@ enable_testing()
 add_library(yacl STATIC)
 add_library(yacl_all INTERFACE)
 
-target_include_directories(yacl PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  # these dirs are only used when building inside the build tree
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
-  # these dirs are only used when linking against a prebuilt package
-  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_include_directories(
+  yacl
+  PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+         # these dirs are only used when building inside the build tree
+         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+         # these dirs are only used when linking against a prebuilt package
+         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 set(YACL_SOURCE_FILES "")
 
@@ -157,32 +154,30 @@ add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
 # add_subdirectory(yacl/engine)
 add_subdirectory(yacl/io)
-# add_subdirectory(yacl/kernel)
-# add_subdirectory(yacl/link)
+# add_subdirectory(yacl/kernel) add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
-target_link_libraries(yacl
-  PUBLIC
-    Thirdparty::absl
-    Thirdparty::blake3
-    Thirdparty::cpu_features
-    Thirdparty::fmt
-    Thirdparty::fourq
-    Thirdparty::leveldb
-    Thirdparty::libsodium
-    Thirdparty::libtommath
-    Thirdparty::mcl
-    Thirdparty::msgpack
-    Thirdparty::openssl
-    Thirdparty::protobuf
-    Thirdparty::spdlog
-    Thirdparty::sse2neon
-    Thirdparty::brpc
-    Thirdparty::gmp
-)
+target_link_libraries(
+  yacl
+  PUBLIC Thirdparty::absl
+         Thirdparty::blake3
+         Thirdparty::cpu_features
+         Thirdparty::fmt
+         Thirdparty::fourq
+         Thirdparty::leveldb
+         Thirdparty::libsodium
+         Thirdparty::libtommath
+         Thirdparty::mcl
+         Thirdparty::msgpack
+         Thirdparty::openssl
+         Thirdparty::protobuf
+         Thirdparty::spdlog
+         Thirdparty::sse2neon
+         Thirdparty::brpc
+         Thirdparty::gmp)
 
 target_link_libraries(yacl_all INTERFACE yacl)
 add_library(Yacl::yacl ALIAS yacl_all)

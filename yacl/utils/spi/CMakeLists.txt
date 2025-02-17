@@ -12,32 +12,31 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-
 # Add header files for installation
 install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/item.h
-    ${CMAKE_CURRENT_LIST_DIR}/spi_factory.h
-    ${CMAKE_CURRENT_LIST_DIR}/type_traits.h
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
-    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
-    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
-    ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
-    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
-    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
-    ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/item.h
+        ${CMAKE_CURRENT_LIST_DIR}/spi_factory.h
+        ${CMAKE_CURRENT_LIST_DIR}/type_traits.h
+        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
+        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
+        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
+        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
+        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
+        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
+        ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
+        ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/item.cc
-  ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
-  ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
-  ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
-  ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/item.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/argument.cc
+    ${CMAKE_CURRENT_LIST_DIR}/argument/util.cc)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 add_yacl_test(spi_factory_test)
-

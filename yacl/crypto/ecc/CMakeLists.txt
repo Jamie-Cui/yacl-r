@@ -13,45 +13,44 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.cc)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # Add header files for installation
 install(
   FILES ${CMAKE_CURRENT_LIST_DIR}/curve_meta.h
-    ${CMAKE_CURRENT_LIST_DIR}/ec_point.h
-    ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.h
-    ${CMAKE_CURRENT_LIST_DIR}/group_sketch.h
-    ${CMAKE_CURRENT_LIST_DIR}/any_ptr.h
-    ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.h
-    ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.h
-    ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.h
-    ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.h
-    ${CMAKE_CURRENT_LIST_DIR}/toy/common.h
-    ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.h
-    ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
-
+        ${CMAKE_CURRENT_LIST_DIR}/ec_point.h
+        ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.h
+        ${CMAKE_CURRENT_LIST_DIR}/group_sketch.h
+        ${CMAKE_CURRENT_LIST_DIR}/any_ptr.h
+        ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.h
+        ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.h
+        ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.h
+        ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.h
+        ${CMAKE_CURRENT_LIST_DIR}/toy/common.h
+        ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.h
+        ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_ecc
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_ecc OBJECT
+add_library(
+  yacl_spi_ecc OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/curve_meta.cc
   ${CMAKE_CURRENT_LIST_DIR}/ec_point.cc
   ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.cc
   ${CMAKE_CURRENT_LIST_DIR}/group_sketch.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.cc
-  # FIXME ecc with lib25519
-  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/ed25519_group.cc
+  # FIXME ecc with lib25519 ${CMAKE_CURRENT_LIST_DIR}/lib25519/ed25519_group.cc
   # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_factory.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_group.cc
-  # FIXME ecc with libsodium
-  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/ed25519_group.cc
+  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_group.cc FIXME ecc with
+  # libsodium ${CMAKE_CURRENT_LIST_DIR}/libsodium/ed25519_group.cc
   # ${CMAKE_CURRENT_LIST_DIR}/libsodium/x25519_group.cc
   # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_factory.cc
   # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_grop.cc
@@ -62,26 +61,21 @@ add_library(yacl_spi_ecc OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/toy/common.cc
   ${CMAKE_CURRENT_LIST_DIR}/toy/factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.cc
-  ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc
-)
+  ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc)
 
-target_include_directories(yacl_spi_ecc PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+target_include_directories(
+  yacl_spi_ecc PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+                      "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
 target_link_libraries(yacl_spi_ecc PRIVATE yacl yacl_spi_mpint)
 
-target_link_libraries(yacl_all INTERFACE
-  $<TARGET_OBJECTS:yacl_spi_ecc>)
+target_link_libraries(yacl_all INTERFACE $<TARGET_OBJECTS:yacl_spi_ecc>)
 add_dependencies(yacl_all yacl_spi_ecc)
 
-# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
-# 1. ecc_spi
-# 2. galois_field_spi
-# 3. paring_spi
-target_compile_definitions(yacl_spi_ecc PUBLIC
-  MCL_ALL_PAIRING_FOR_YACL)
+# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in: 1. ecc_spi 2.
+# galois_field_spi 3. paring_spi
+target_compile_definitions(yacl_spi_ecc PUBLIC MCL_ALL_PAIRING_FOR_YACL)
 
 # ------------
 # Test

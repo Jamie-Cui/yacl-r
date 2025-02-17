@@ -46,7 +46,7 @@ CheckOptions:
     value: "CamelCase"
 
   - key: readability-identifier-naming.EnumConstantCase
-    value: "CamelCase"
+    value: "UPPER_CASE"
 
   - key: readability-identifier-naming.ParameterCase
     value: "lower_case"
