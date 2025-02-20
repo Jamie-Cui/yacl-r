@@ -12,16 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(cpu_features
-  URL
-    https://github.com/google/cpu_features/archive/refs/tags/v0.9.0.tar.gz
+ExternalProject_Add(
+  cpu_features
+  URL https://github.com/google/cpu_features/archive/refs/tags/v0.9.0.tar.gz
   URL_HASH
     SHA256=bdb3484de8297c49b59955c3b22dba834401bc2df984ef5cfc17acbe69c5018e
-  CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+  CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
+             -DCMAKE_C_STANDARD_REQUIRED=Yes
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -31,8 +29,9 @@ ExternalProject_Add(cpu_features
 
 add_library(libcpu_features STATIC IMPORTED)
 set_property(
-  TARGET libcpu_features PROPERTY
-  IMPORTED_LOCATION
+  TARGET libcpu_features
+  PROPERTY
+    IMPORTED_LOCATION
     ${CMAKE_THIRDPARTY_LIBDIR}/libcpu_features${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libcpu_features cpu_features)
 

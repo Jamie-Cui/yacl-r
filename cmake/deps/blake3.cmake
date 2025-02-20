@@ -12,17 +12,16 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(blake3
-  URL
-    "https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz"
+ExternalProject_Add(
+  blake3
+  URL https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz
   URL_HASH
     SHA256=ddd24f26a31d23373e63d9be2e723263ac46c8b6d49902ab08024b573fd2a416
-  CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_THIRDPARTY_INCLUDEDIR}/blake3
+  CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On
+             -DCMAKE_CXX_STANDARD=17
+             -DCMAKE_C_STANDARD_REQUIRED=Yes
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_THIRDPARTY_INCLUDEDIR}/blake3
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   SOURCE_SUBDIR c
   EXCLUDE_FROM_ALL true
@@ -33,9 +32,9 @@ ExternalProject_Add(blake3
 
 add_library(libblake3 STATIC IMPORTED)
 set_property(
-  TARGET libblake3 PROPERTY
-  IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX})
+  TARGET libblake3
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_THIRDPARTY_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libblake3 blake3)
 
 # -----------------------------

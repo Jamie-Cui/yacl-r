@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(spdlog
-  URL
-    https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.tar.gz
+ExternalProject_Add(
+  spdlog
+  URL https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.tar.gz
   URL_HASH
     SHA256=1586508029a7d0670dfcb2d97575dcdc242d3868a259742b69f100801ab4e16b
-  CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On
+             -DCMAKE_CXX_STANDARD=17
+             -DCMAKE_C_STANDARD_REQUIRED=Yes
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -34,9 +33,9 @@ add_dependencies(spdlog fmt)
 
 add_library(libspdlog STATIC IMPORTED)
 set_property(
-  TARGET libspdlog PROPERTY
-  IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libspdlog${CMAKE_STATIC_LIBRARY_SUFFIX})
+  TARGET libspdlog
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_THIRDPARTY_LIBDIR}/libspdlog${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libspdlog spdlog)
 
 # -----------------------------
@@ -46,4 +45,3 @@ add_library(Thirdparty::spdlog ALIAS libspdlog)
 
 # HACK https://github.com/gabime/spdlog/issues/1897
 add_compile_definitions(SPDLOG_FMT_EXTERNAL)
-

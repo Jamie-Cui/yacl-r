@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(googletest
-  URL
-    https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+ExternalProject_Add(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
   URL_HASH
     SHA256=7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926
-  CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-    -DBUILD_GMOCK=On
+  CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
+             -DCMAKE_C_STANDARD_REQUIRED=Yes
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX} -DBUILD_GMOCK=On
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -32,21 +29,21 @@ ExternalProject_Add(googletest
 
 add_library(libgtest STATIC IMPORTED)
 set_property(
-  TARGET libgtest PROPERTY
-  IMPORTED_LOCATION
-  ${CMAKE_THIRDPARTY_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+  TARGET libgtest
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_THIRDPARTY_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest googletest)
 
 add_library(libgtest_main STATIC IMPORTED)
 set_property(
-  TARGET libgtest_main PROPERTY
-  IMPORTED_LOCATION
-  ${CMAKE_THIRDPARTY_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+  TARGET libgtest_main
+  PROPERTY
+    IMPORTED_LOCATION
+    ${CMAKE_THIRDPARTY_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest_main googletest)
 
 add_library(libgtest_interface INTERFACE)
-target_link_libraries(libgtest_interface
-  INTERFACE libgtest_main libgtest)
+target_link_libraries(libgtest_interface INTERFACE libgtest_main libgtest)
 
 # -----------------------------
 # Alias Target for External Use

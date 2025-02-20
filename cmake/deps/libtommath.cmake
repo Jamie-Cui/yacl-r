@@ -12,17 +12,14 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(libtommath
-  URL
-    "https://github.com/libtom/libtommath/archive/\
-42b3fb07e7d504f61a04c7fca12e996d76a25251.tar.gz"
+ExternalProject_Add(
+  libtommath
+  URL https://github.com/libtom/libtommath/archive/42b3fb07e7d504f61a04c7fca12e996d76a25251.tar.gz
   URL_HASH
     SHA256=7cfbdb64431129de4257e7d3349200fdbd4f229b470ff3417b30d0f39beed41f
-  CMAKE_ARGS
-    -DCMAKE_POSITION_INDEPENDENT_CODE=On
-    -DCMAKE_CXX_STANDARD=17
-    -DCMAKE_C_STANDARD_REQUIRED=Yes
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+  CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
+             -DCMAKE_C_STANDARD_REQUIRED=Yes
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -32,13 +29,12 @@ ExternalProject_Add(libtommath
 
 add_library(liblibtommath STATIC IMPORTED)
 set_property(
-  TARGET liblibtommath PROPERTY
-  IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
+  TARGET liblibtommath
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_THIRDPARTY_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibtommath libtommath)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
 add_library(Thirdparty::libtommath ALIAS liblibtommath)
-

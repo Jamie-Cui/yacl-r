@@ -12,16 +12,15 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(libsodium
-  URL
-    "https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/\
-libsodium-1.0.18.tar.gz"
+ExternalProject_Add(
+  libsodium
+  URL https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz
   URL_HASH
     SHA256=6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   BUILD_IN_SOURCE On
-  CONFIGURE_COMMAND
-    ./configure --prefix=${CMAKE_THIRDPARTY_PREFIX} --enable-shared=no
+  CONFIGURE_COMMAND ./configure --prefix=${CMAKE_THIRDPARTY_PREFIX}
+                    --enable-shared=no
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -30,9 +29,9 @@ libsodium-1.0.18.tar.gz"
 
 add_library(liblibsodium STATIC IMPORTED)
 set_target_properties(
-  liblibsodium PROPERTIES
-  IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libsodium${CMAKE_STATIC_LIBRARY_SUFFIX})
+  liblibsodium
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_THIRDPARTY_LIBDIR}/libsodium${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibsodium libsodium)
 
 # -----------------------------

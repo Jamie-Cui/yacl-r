@@ -12,19 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(protobuf
-  URL
-    "https://github.com/protocolbuffers/protobuf/releases/download/\
-v21.12/protobuf-all-21.12.tar.gz"
+ExternalProject_Add(
+  protobuf
+  URL https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-all-21.12.tar.gz
   URL_HASH
     SHA256=2c6a36c7b5a55accae063667ef3c55f2642e67476d96d355ff0acb13dbb47f09
-  CMAKE_ARGS
-    -Dprotobuf_BUILD_PROTOBUF_BINARIES=Off
-    -Dprotobuf_BUILD_PROTOC_BINARIES=On
-    -Dprotobuf_BUILD_LIBPROTOC=On
-    -Dprotobuf_BUILD_TESTS=Off
-    -DBUILD_SHARED_LIBS=Off
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+  CMAKE_ARGS -Dprotobuf_BUILD_PROTOBUF_BINARIES=Off
+             -Dprotobuf_BUILD_PROTOC_BINARIES=On
+             -Dprotobuf_BUILD_LIBPROTOC=On
+             -Dprotobuf_BUILD_TESTS=Off
+             -DBUILD_SHARED_LIBS=Off
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -40,14 +38,12 @@ add_library(libprotobuf STATIC IMPORTED)
 set_property(
   TARGET libprotobuf
   PROPERTY IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libprotobuf protobuf)
 
-# add_library(libprotobuf STATIC IMPORTED)
-# set_property(
-#   TARGET libprotobuf
-#   PROPERTY IMPORTED_LOCATION
-#     ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+# add_library(libprotobuf STATIC IMPORTED) set_property( TARGET libprotobuf
+# PROPERTY IMPORTED_LOCATION
+# ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
 # add_dependencies(libprotobuf protobuf)
 
 # -----------------------------

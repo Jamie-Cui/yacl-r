@@ -15,8 +15,7 @@
 ExternalProject_Add(
   openssl
   PREFIX ${CMAKE_THIRDPARTY_PREFIX}
-  URL
-     https://github.com/openssl/openssl/archive/refs/tags/openssl-3.3.2.tar.gz
+  URL https://github.com/openssl/openssl/archive/refs/tags/openssl-3.3.2.tar.gz
   URL_HASH
     SHA256=bedbb16955555f99b1a7b1ba90fc97879eb41025081be359ecd6a9fcbdf1c8d2
   CONFIGURE_COMMAND
@@ -33,20 +32,21 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 add_library(libcrypto STATIC IMPORTED)
-set_target_properties(libcrypto
+set_target_properties(
+  libcrypto
   PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_THIRDPARTY_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX})
+             ${CMAKE_THIRDPARTY_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libcrypto openssl)
 
 add_library(libssl STATIC IMPORTED)
-set_target_properties(libssl
+set_target_properties(
+  libssl
   PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_THIRDPARTY_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX})
+             ${CMAKE_THIRDPARTY_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libcrypto openssl)
 
 add_library(libopenssl_interface INTERFACE)
-target_link_libraries(libopenssl_interface
-  INTERFACE libssl libcrypto)
+target_link_libraries(libopenssl_interface INTERFACE libssl libcrypto)
 
 # -----------------------------
 # Alias Target for External Use
