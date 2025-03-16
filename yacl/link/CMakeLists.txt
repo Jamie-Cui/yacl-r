@@ -31,4 +31,4 @@ set(YACL_SOURCE_FILES
 add_yacl_test(context_test)
 add_yacl_test(factory_test)
 
-protobuf_generate()
+# protobuf_generate()

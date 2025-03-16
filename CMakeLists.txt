@@ -107,6 +107,7 @@ set(CMAKE_DEPS_LIBDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 
+# HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
 include(deps/abseil)
@@ -155,7 +156,7 @@ add_subdirectory(yacl/crypto)
 # add_subdirectory(yacl/engine)
 add_subdirectory(yacl/io)
 # add_subdirectory(yacl/kernel)
-#
+
 # add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
