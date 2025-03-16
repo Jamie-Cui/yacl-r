@@ -19,8 +19,8 @@ ExternalProject_Add(
     SHA256=7cfbdb64431129de4257e7d3349200fdbd4f229b470ff3417b30d0f39beed41f
   CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
              -DCMAKE_C_STANDARD_REQUIRED=Yes
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -31,10 +31,10 @@ add_library(liblibtommath STATIC IMPORTED)
 set_property(
   TARGET liblibtommath
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibtommath libtommath)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::libtommath ALIAS liblibtommath)
+add_library(Deps::libtommath ALIAS liblibtommath)

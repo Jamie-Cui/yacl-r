@@ -17,12 +17,12 @@ ExternalProject_Add(
   URL https://github.com/DLTcollab/sse2neon/archive/8df2f48dbd0674ae5087f7a6281af6f55fa5a8e2.tar.gz
   URL_HASH
     SHA256=787e0a7a64f1461b48232a7f9b9e9c14fa4a35a30875f2fb91aec6ddeaddfc0f
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
   BUILD_IN_SOURCE On
-  INSTALL_COMMAND mkdir -p ${CMAKE_THIRDPARTY_INCLUDEDIR}/sse2neon
-  COMMAND cp -a sse2neon.h ${CMAKE_THIRDPARTY_INCLUDEDIR}/sse2neon
+  INSTALL_COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}/sse2neon
+  COMMAND cp -a sse2neon.h ${CMAKE_DEPS_INCLUDEDIR}/sse2neon
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -35,4 +35,4 @@ add_dependencies(libsse2neon sse2neon)
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::sse2neon ALIAS libsse2neon)
+add_library(Deps::sse2neon ALIAS libsse2neon)

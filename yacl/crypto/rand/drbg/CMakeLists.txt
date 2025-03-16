@@ -37,7 +37,7 @@ add_library(yacl_spi_drbg OBJECT ${CMAKE_CURRENT_LIST_DIR}/native_factory.cc
                                  ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.cc)
 
 target_include_directories(
-  yacl_spi_drbg PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  yacl_spi_drbg PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
                        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 target_link_libraries(yacl_spi_drbg PRIVATE yacl)

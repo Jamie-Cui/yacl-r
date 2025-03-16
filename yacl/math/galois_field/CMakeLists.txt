@@ -37,7 +37,7 @@ add_library(yacl_spi_galois_field OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/factory/mpint_factory.cc)
 
 target_include_directories(yacl_spi_galois_field PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  ${CMAKE_DEPS_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint

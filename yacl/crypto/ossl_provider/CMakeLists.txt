@@ -23,7 +23,7 @@ install(
 
 # add_library(ossl_provider SHARED ${CMAKE_CURRENT_LIST_DIR}/provider.cc)
 
-# target_include_directories(ossl_provider PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+# target_include_directories(ossl_provider PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
 # # these dirs are only used when building inside the build tree
 # "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 

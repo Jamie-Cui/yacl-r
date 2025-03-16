@@ -18,9 +18,8 @@ ExternalProject_Add(
   URL_HASH
     SHA256=9a37f8a6174f09bd622bc723b55881dc541cd50747cbd08831c2a82d620f6d76
   CMAKE_ARGS -DLEVELDB_BUILD_TESTS=Off -DLEVELDB_BUILD_BENCHMARKS=Off
-             -DLEVELDB_INSTALL=On
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DLEVELDB_INSTALL=On -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -35,10 +34,10 @@ add_library(libleveldb STATIC IMPORTED)
 set_property(
   TARGET libleveldb
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libleveldb leveldb)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::leveldb ALIAS libleveldb)
+add_library(Deps::leveldb ALIAS libleveldb)

@@ -24,10 +24,10 @@ ExternalProject_Add(
              -DCMAKE_POSITION_INDEPENDENT_CODE=On
              -DCMAKE_CXX_STANDARD=17
              -DCMAKE_C_STANDARD_REQUIRED=Yes
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
              -DSPDLOG_FMT_EXTERNAL=On
-             -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_THIRDPARTY_INCLUDEDIR}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_DEPS_INCLUDEDIR}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -38,10 +38,10 @@ add_library(libgflags STATIC IMPORTED)
 set_property(
   TARGET libgflags
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgflags gflags)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::gflags ALIAS libgflags)
+add_library(Deps::gflags ALIAS libgflags)

@@ -37,7 +37,7 @@ add_library(yacl_spi_mpint OBJECT
     ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
 
 target_include_directories(yacl_spi_mpint PUBLIC
-  ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  ${CMAKE_DEPS_INCLUDEDIR}
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_mpint requires gmp

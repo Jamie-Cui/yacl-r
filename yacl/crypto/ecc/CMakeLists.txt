@@ -64,7 +64,7 @@ add_library(
   ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.cc)
 
 target_include_directories(
-  yacl_spi_ecc PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  yacl_spi_ecc PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
                       "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint

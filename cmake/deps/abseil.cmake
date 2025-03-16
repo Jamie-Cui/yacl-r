@@ -19,12 +19,11 @@ ExternalProject_Add(
     SHA256=f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
   CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
              -DCMAKE_C_STANDARD_REQUIRED=Yes
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install
-  COMMAND
-    bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh
-    libabsl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_THIRDPARTY_LIBDIR} libabsl_*
+  COMMAND bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh
+          libabsl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_DEPS_LIBDIR} libabsl_*
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -39,10 +38,10 @@ add_library(liblibabsl STATIC IMPORTED)
 set_property(
   TARGET liblibabsl
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibabsl abseil)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::absl ALIAS liblibabsl)
+add_library(Deps::absl ALIAS liblibabsl)

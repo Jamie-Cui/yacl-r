@@ -17,14 +17,14 @@ ExternalProject_Add(
   URL https://github.com/msgpack/msgpack-c/archive/refs/tags/cpp-6.1.0.tar.gz
   URL_HASH
     SHA256=5e63e4d9b12ab528fccf197f7e6908031039b1fc89cd8da0e97fbcbf5a6c6d3a
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
              -DMSGPACK_CXX17=On
              -DMSGPACK_USE_BOOST=Off
              -DMSGPACK_BUILD_EXAMPLES=Off
              -DMSGPACK_BUILD_EXAMPLES=Off
              -DBUILD_SHARED_LIBS=Off
              -DMSGPACK_BUILD_TESTS=Off
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -38,7 +38,7 @@ add_dependencies(libmsgpack msgpack)
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::msgpack ALIAS libmsgpack)
+add_library(Deps::msgpack ALIAS libmsgpack)
 
 # HACK msgpack read the following macro from cmake definitions
 add_compile_definitions(MSGPACK_NO_BOOST)

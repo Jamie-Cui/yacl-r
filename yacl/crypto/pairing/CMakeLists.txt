@@ -24,7 +24,7 @@ add_library(
   ${CMAKE_CURRENT_LIST_DIR}/factory/pairing_spi.cc)
 
 target_include_directories(
-  yacl_spi_pairing PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  yacl_spi_pairing PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
                           "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 target_link_libraries(

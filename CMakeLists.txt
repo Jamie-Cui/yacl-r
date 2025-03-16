@@ -75,9 +75,8 @@ add_compiler_flags("-Wall")
 add_compiler_flags("-Wextra")
 add_compiler_flags("-Werror")
 
-add_compiler_flags("-Wno-sign-compare")
-
 # FIXME try removing the following flags
+add_compiler_flags("-Wno-sign-compare")
 add_compiler_flags("-Wno-unused-function")
 add_compiler_flags("-Wno-vla") # no variable length error warning
 add_compiler_flags("-Wno-shift-count-overflow")
@@ -103,11 +102,12 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(GMP REQUIRED)
 
-set(CMAKE_THIRDPARTY_PREFIX ${CMAKE_BINARY_DIR}/thirdparty)
-set(CMAKE_THIRDPARTY_LIBDIR ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_THIRDPARTY_BINDIR ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_BINDIR})
-set(CMAKE_THIRDPARTY_INCLUDEDIR
-    ${CMAKE_THIRDPARTY_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+set(CMAKE_DEPS_PREFIX ${CMAKE_BINARY_DIR}/deps)
+set(CMAKE_DEPS_LIBDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
+set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+
+set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
 include(deps/abseil)
 include(deps/blake3)
@@ -142,7 +142,7 @@ add_library(yacl_all INTERFACE)
 
 target_include_directories(
   yacl
-  PUBLIC ${CMAKE_THIRDPARTY_INCLUDEDIR}
+  PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
          # these dirs are only used when building inside the build tree
          "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
          # these dirs are only used when linking against a prebuilt package
@@ -154,7 +154,9 @@ add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
 # add_subdirectory(yacl/engine)
 add_subdirectory(yacl/io)
-# add_subdirectory(yacl/kernel) add_subdirectory(yacl/link)
+# add_subdirectory(yacl/kernel)
+#
+# add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
@@ -162,22 +164,22 @@ target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 
 target_link_libraries(
   yacl
-  PUBLIC Thirdparty::absl
-         Thirdparty::blake3
-         Thirdparty::cpu_features
-         Thirdparty::fmt
-         Thirdparty::fourq
-         Thirdparty::leveldb
-         Thirdparty::libsodium
-         Thirdparty::libtommath
-         Thirdparty::mcl
-         Thirdparty::msgpack
-         Thirdparty::openssl
-         Thirdparty::protobuf
-         Thirdparty::spdlog
-         Thirdparty::sse2neon
-         Thirdparty::brpc
-         Thirdparty::gmp)
+  PUBLIC Deps::absl
+         Deps::blake3
+         Deps::cpu_features
+         Deps::fmt
+         Deps::fourq
+         Deps::leveldb
+         Deps::libsodium
+         Deps::libtommath
+         Deps::mcl
+         Deps::msgpack
+         Deps::openssl
+         Deps::spdlog
+         Deps::sse2neon
+         Deps::brpc
+         Deps::protobuf
+         Deps::gmp)
 
 target_link_libraries(yacl_all INTERFACE yacl)
 add_library(Yacl::yacl ALIAS yacl_all)

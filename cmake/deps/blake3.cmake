@@ -20,9 +20,9 @@ ExternalProject_Add(
   CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On
              -DCMAKE_CXX_STANDARD=17
              -DCMAKE_C_STANDARD_REQUIRED=Yes
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-             -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_THIRDPARTY_INCLUDEDIR}/blake3
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+             -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_DEPS_INCLUDEDIR}/blake3
+  PREFIX ${CMAKE_DEPS_PREFIX}
   SOURCE_SUBDIR c
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -34,10 +34,10 @@ add_library(libblake3 STATIC IMPORTED)
 set_property(
   TARGET libblake3
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libblake3 blake3)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::blake3 ALIAS libblake3)
+add_library(Deps::blake3 ALIAS libblake3)

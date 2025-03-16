@@ -22,8 +22,8 @@ ExternalProject_Add(
              -Dprotobuf_BUILD_LIBPROTOC=On
              -Dprotobuf_BUILD_TESTS=Off
              -DBUILD_SHARED_LIBS=Off
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -38,15 +38,15 @@ add_library(libprotobuf STATIC IMPORTED)
 set_property(
   TARGET libprotobuf
   PROPERTY IMPORTED_LOCATION
-           ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+           ${CMAKE_DEPS_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libprotobuf protobuf)
 
 # add_library(libprotobuf STATIC IMPORTED) set_property( TARGET libprotobuf
 # PROPERTY IMPORTED_LOCATION
-# ${CMAKE_THIRDPARTY_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
+# ${CMAKE_DEPS_LIBDIR}/libprotobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
 # add_dependencies(libprotobuf protobuf)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::protobuf ALIAS libprotobuf)
+add_library(Deps::protobuf ALIAS libprotobuf)

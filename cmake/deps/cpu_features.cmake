@@ -19,8 +19,8 @@ ExternalProject_Add(
     SHA256=bdb3484de8297c49b59955c3b22dba834401bc2df984ef5cfc17acbe69c5018e
   CMAKE_ARGS -DCMAKE_POSITION_INDEPENDENT_CODE=On -DCMAKE_CXX_STANDARD=17
              -DCMAKE_C_STANDARD_REQUIRED=Yes
-             -DCMAKE_INSTALL_PREFIX=${CMAKE_THIRDPARTY_PREFIX}
-  PREFIX ${CMAKE_THIRDPARTY_PREFIX}
+             -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
+  PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
@@ -30,12 +30,11 @@ ExternalProject_Add(
 add_library(libcpu_features STATIC IMPORTED)
 set_property(
   TARGET libcpu_features
-  PROPERTY
-    IMPORTED_LOCATION
-    ${CMAKE_THIRDPARTY_LIBDIR}/libcpu_features${CMAKE_STATIC_LIBRARY_SUFFIX})
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_DEPS_LIBDIR}/libcpu_features${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libcpu_features cpu_features)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Thirdparty::cpu_features ALIAS libcpu_features)
+add_library(Deps::cpu_features ALIAS libcpu_features)
