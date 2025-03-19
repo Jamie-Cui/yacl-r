@@ -21,7 +21,7 @@ ExternalProject_Add(
              -DWITH_DEBUG_SYMBOLS=Off #
              -DDOWNLOAD_GTEST=Off #
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX} #
-             -DCMAKE_PREFIX_PATH=${CMAKE_DEPS_PREFIX} #
+             -DCMAKE_PREFIX_PATH=${CMAKE_DEPS_PREFIX} # brpc should deps on this
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
@@ -35,6 +35,7 @@ ExternalProject_Add(
 #
 add_dependencies(brpc Deps::gflags)
 add_dependencies(brpc Deps::leveldb)
+add_dependencies(brpc Deps::protobuf)
 
 add_library(libbrpc STATIC IMPORTED)
 set_property(

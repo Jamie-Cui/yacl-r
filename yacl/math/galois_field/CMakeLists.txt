@@ -13,45 +13,42 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.cc)
 
-# Add header files for installation
-# NOTE no install for factory folder files
-install(
-  FILES
-    ${CMAKE_CURRENT_LIST_DIR}/gf.h
-    ${CMAKE_CURRENT_LIST_DIR}/gf_instrinsic.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field)
+# Add header files for installation NOTE no install for factory folder files
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/gf.h
+              ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
 
 # ------------------------------------------------------------------------------
 # For libspi_galois_field
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_galois_field OBJECT
+add_library(
+  yacl_spi_galois_field OBJECT
   ${CMAKE_CURRENT_LIST_DIR}/factory/gf_spi.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mcl_factory.cc
   # ${CMAKE_CURRENT_LIST_DIR}/factory/intel_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/factory/mpint_factory.cc)
 
-target_include_directories(yacl_spi_galois_field PUBLIC
-  ${CMAKE_DEPS_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+target_include_directories(
+  yacl_spi_galois_field PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
+                               "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
 target_link_libraries(yacl_spi_galois_field PRIVATE yacl yacl_spi_mpint)
 
-# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
-# 1. ecc_spi
-# 2. galois_field_spi
-# 3. paring_spi
-target_compile_definitions(yacl_spi_galois_field PUBLIC
-  MCL_ALL_PAIRING_FOR_YACL)
+# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in: 1. ecc_spi 2.
+# galois_field_spi 3. paring_spi
+target_compile_definitions(yacl_spi_galois_field
+                           PUBLIC MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl_all INTERFACE
-  $<TARGET_OBJECTS:yacl_spi_galois_field>)
+target_link_libraries(yacl_all
+                      INTERFACE $<TARGET_OBJECTS:yacl_spi_galois_field>)
 add_dependencies(yacl_all yacl_spi_galois_field)
 
 # ------------------------------------------------------------------------------
@@ -60,6 +57,5 @@ add_dependencies(yacl_all yacl_spi_galois_field)
 
 add_yacl_test(gf_test)
 add_yacl_test(gf_intrinsic_test)
-# add_yacl_test(mpint_factory_test)
-# add_yacl_test(mcl_factory_test)
+# add_yacl_test(mpint_factory_test) add_yacl_test(mcl_factory_test)
 # add_yacl_test(intel_factory_test)

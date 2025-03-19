@@ -143,11 +143,11 @@ add_library(yacl_all INTERFACE)
 
 target_include_directories(
   yacl
-  PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
-         # these dirs are only used when building inside the build tree
+  PUBLIC # these dirs are only used when building inside the build tree
          "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
          # these dirs are only used when linking against a prebuilt package
-         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+         ${CMAKE_DEPS_INCLUDEDIR})
 
 set(YACL_SOURCE_FILES "")
 
@@ -181,6 +181,12 @@ target_link_libraries(
          Deps::brpc
          Deps::protobuf
          Deps::gmp)
+
+install(
+  TARGETS yacl
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
 target_link_libraries(yacl_all INTERFACE yacl)
 add_library(Yacl::yacl ALIAS yacl_all)

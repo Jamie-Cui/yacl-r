@@ -18,7 +18,7 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/aligened_vector.h
+  FILES ${CMAKE_CURRENT_LIST_DIR}/aligned_vector.h
         ${CMAKE_CURRENT_LIST_DIR}/block.h
         ${CMAKE_CURRENT_LIST_DIR}/secparam.h
         ${CMAKE_CURRENT_LIST_DIR}/buffer.h

@@ -1,5 +1,6 @@
 # devtools
 .idea/
+output/*
 *.plist
 clion/
 *.swp
