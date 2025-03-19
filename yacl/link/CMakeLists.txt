@@ -19,7 +19,7 @@ file(GLOB SRC_PROTO *.proto)
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${SRC_CC})
 
 # Add header files for installation
-install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
+install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)
 
 add_subdirectory(algorithm)
 add_subdirectory(transport)
@@ -31,4 +31,32 @@ set(YACL_SOURCE_FILES
 add_yacl_test(context_test)
 add_yacl_test(factory_test)
 
-# protobuf_generate()
+protobuf_generate(
+  LANGUAGE
+  cpp
+  TARGET
+  yacl
+  PROTOS
+  ${CMAKE_CURRENT_LIST_DIR}/link.proto
+  PROTOC_OUT_DIR
+  ${CMAKE_CURRENT_BINARY_DIR})
+
+protobuf_generate(
+  LANGUAGE
+  cpp
+  TARGET
+  yacl
+  PROTOS
+  ${CMAKE_CURRENT_LIST_DIR}/blackbox_interconnect/blackbox_dummy_service.proto
+  PROTOC_OUT_DIR
+  ${CMAKE_CURRENT_BINARY_DIR}/blackbox_interconnect)
+
+protobuf_generate(
+  LANGUAGE
+  cpp
+  TARGET
+  yacl
+  PROTOS
+  ${CMAKE_CURRENT_LIST_DIR}/blackbox_interconnect/blackbox_service.proto
+  PROTOC_OUT_DIR
+  ${CMAKE_CURRENT_BINARY_DIR}/blackbox_interconnect)

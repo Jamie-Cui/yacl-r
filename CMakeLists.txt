@@ -38,7 +38,7 @@ endif()
 message(STATUS "Build type (CMAKE_BUILD_TYPE): ${CMAKE_BUILD_TYPE}")
 
 # Set module path
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # Enable compile_commands.json for lsp
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -46,6 +46,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 # This policy was introduced in CMake 3.13; OLD by default until CMake 3.21
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0135 NEW)
+cmake_policy(SET CMP0168 NEW)
+cmake_policy(SET CMP0169 OLD)
 
 # Generic this project's CMake modules
 include(AddCompilerFlags)
@@ -106,6 +108,7 @@ set(CMAKE_DEPS_PREFIX ${CMAKE_BINARY_DIR}/deps)
 set(CMAKE_DEPS_LIBDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
 
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
@@ -157,7 +160,7 @@ add_subdirectory(yacl/crypto)
 add_subdirectory(yacl/io)
 # add_subdirectory(yacl/kernel)
 
-# add_subdirectory(yacl/link)
+add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
