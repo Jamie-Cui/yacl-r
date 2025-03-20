@@ -86,6 +86,10 @@ add_compiler_flags("-Wno-deprecated-declarations") # for butil
 add_compiler_flags("-Wno-unused-parameter") # for butil
 add_compiler_flags("-Wno-inconsistent-missing-override") # context_test
 
+# HACK we need to add the following global compiler flag in order to use fourq
+add_compiler_flags("-D __LINUX__")
+add_compiler_flags("-D _ARM64_")
+
 # For cryptos
 add_compiler_flags("-maes")
 add_compiler_flags("-mavx")
@@ -149,8 +153,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 enable_testing()
 
 add_library(yacl_proto OBJECT) # object lib for protobuf
-add_library(yacl STATIC) # main static lib
-add_library(yacl_all INTERFACE) # main static lib
+add_library(yacl OBJECT) # main static lib
+add_library(yacl_all STATIC) # main static lib
 
 set(YACL_SOURCE_FILES "")
 set(YACL_PROTO_SOURCE_FILES "")
@@ -177,7 +181,7 @@ protobuf_generate(
   PROTOC_OUT_DIR
   ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(yacl_proto PUBLIC protobuf::libprotobuf)
+target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
 target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_include_directories(
@@ -191,8 +195,7 @@ target_include_directories(
 
 target_link_libraries(
   yacl
-  PUBLIC yacl_proto
-         Deps::absl
+  PUBLIC Deps::absl
          Deps::blake3
          Deps::cpu_features
          Deps::fmt
@@ -206,19 +209,17 @@ target_link_libraries(
          Deps::spdlog
          Deps::sse2neon
          Deps::brpc
-         Deps::protobuf
-         Deps::interconnection
          Deps::simplest_ot
          Deps::gmp)
 
 install(
-  TARGETS yacl
+  TARGETS yacl_all
   ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
-target_include_directories(yacl_all INTERFACE ${PROJECT_SOURCE_DIR}
-                                              ${CMAKE_DEPS_INCLUDEDIR})
-target_link_libraries(yacl_all INTERFACE yacl)
+target_include_directories(yacl_all PUBLIC ${PROJECT_SOURCE_DIR}
+                                           ${CMAKE_DEPS_INCLUDEDIR})
+target_link_libraries(yacl_all PUBLIC yacl yacl_proto Deps::interconnection)
 
 add_library(Yacl::yacl ALIAS yacl_all)

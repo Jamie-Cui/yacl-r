@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+message(STATUS "Downloading simplest_ot")
+
 FetchContent_Declare(
   simplest_ot
   URL https://github.com/secretflow/simplest-ot/archive/60197bc7dad327bb55759e8e854885411e999167.tar.gz
   URL_HASH
     SHA256=c8816bf147e320f51c516f4c511f2d1a732ac0d0f171d29f442cbe2b5173ddba
   SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/simplest_ot)
+
+message(STATUS "Downloading simplest_ot - Success")
+
+FetchContent_GetProperties(simplest_ot)
 
 if(NOT simplest_ot_POPULATED)
   FetchContent_Populate(simplest_ot)

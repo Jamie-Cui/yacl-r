@@ -54,7 +54,3 @@ add_dependencies(libfourq fourq)
 # Alias Target for External Use
 # -----------------------------
 add_library(Deps::fourq ALIAS libfourq)
-
-# HACK we need to add the following global compiler flag in order to use fourq
-add_compiler_flags("-D __LINUX__")
-add_compiler_flags("-D _ARM64_")

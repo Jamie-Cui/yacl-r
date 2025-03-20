@@ -42,5 +42,5 @@ target_include_directories(
 
 target_link_libraries(yacl_spi_drbg PRIVATE yacl)
 
-target_link_libraries(yacl_all INTERFACE $<TARGET_OBJECTS:yacl_spi_drbg>)
+target_link_libraries(yacl_all PUBLIC $<TARGET_OBJECTS:yacl_spi_drbg>)
 add_dependencies(yacl_all yacl_spi_drbg)

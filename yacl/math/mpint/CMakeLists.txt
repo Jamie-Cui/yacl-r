@@ -30,19 +30,19 @@ add_yacl_test(tommath_ext_test)
 # For libyacl_spi_mpint
 # ------------------------------------------------------------------------------
 
-add_library(yacl_spi_mpint OBJECT
-    ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.cc
-    ${CMAKE_CURRENT_LIST_DIR}/mp_int.cc
-    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.cc
-    ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
+add_library(
+  yacl_spi_mpint OBJECT
+  ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.cc
+  ${CMAKE_CURRENT_LIST_DIR}/mp_int.cc
+  ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.cc
+  ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.cc)
 
-target_include_directories(yacl_spi_mpint PUBLIC
-  ${CMAKE_DEPS_INCLUDEDIR}
-  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+target_include_directories(
+  yacl_spi_mpint PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
+                        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE libyacl_spi_mpint requires gmp
 target_link_libraries(yacl_spi_mpint PRIVATE yacl)
 
-target_link_libraries(yacl_all INTERFACE
-  $<TARGET_OBJECTS:yacl_spi_mpint>)
+target_link_libraries(yacl_all PUBLIC $<TARGET_OBJECTS:yacl_spi_mpint>)
 add_dependencies(yacl_all yacl_spi_mpint)
