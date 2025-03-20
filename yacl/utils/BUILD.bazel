@@ -168,25 +168,25 @@ yacl_cc_test(
     ],
 )
 
-yacl_cc_binary(
-    name = "matrix_transpose_bench",
-    srcs = ["matrix_transpose_bench.cc"],
-    deps = [
-        ":matrix_utils",
-        "//yacl/crypto/tools:prg",
-        "@com_github_google_benchmark//:benchmark_main",
-    ],
-)
+# yacl_cc_binary(
+#     name = "matrix_transpose_bench",
+#     srcs = ["matrix_transpose_bench.cc"],
+#     deps = [
+#         ":matrix_utils",
+#         "//yacl/crypto/tools:prg",
+#         "@com_github_google_benchmark//:benchmark_main",
+#     ],
+# )
 
-yacl_cc_binary(
-    name = "matrix_uint128_bench",
-    srcs = ["matrix_uint128_bench.cc"],
-    deps = [
-        ":matrix_utils",
-        "//yacl/crypto/tools:prg",
-        "@com_github_google_benchmark//:benchmark_main",
-    ],
-)
+# yacl_cc_binary(
+#     name = "matrix_uint128_bench",
+#     srcs = ["matrix_uint128_bench.cc"],
+#     deps = [
+#         ":matrix_utils",
+#         "//yacl/crypto/tools:prg",
+#         "@com_github_google_benchmark//:benchmark_main",
+#     ],
+# )
 
 yacl_cc_library(
     name = "platform_utils",
@@ -224,16 +224,16 @@ yacl_cc_test(
     ],
 )
 
-yacl_cc_binary(
-    name = "parallel_bench",
-    srcs = ["parallel_bench.cc"],
-    copts = OMP_CFLAGS,
-    linkopts = OMP_LINKFLAGS,
-    deps = [
-        ":parallel",
-        "@com_github_google_benchmark//:benchmark",
-    ] + OMP_DEPS,
-)
+# yacl_cc_binary(
+#     name = "parallel_bench",
+#     srcs = ["parallel_bench.cc"],
+#     copts = OMP_CFLAGS,
+#     linkopts = OMP_LINKFLAGS,
+#     deps = [
+#         ":parallel",
+#         "@com_github_google_benchmark//:benchmark",
+#     ] + OMP_DEPS,
+# )
 
 yacl_cc_library(
     name = "thread_pool",
