@@ -136,6 +136,7 @@ include(deps/msgpack)
 include(deps/openssl)
 include(deps/spdlog)
 include(deps/sse2neon)
+include(deps/simplest_ot)
 
 # ------------------------------------------------------------------------------
 # Project Target Configuration
@@ -156,9 +157,9 @@ set(YACL_PROTO_SOURCE_FILES "")
 
 add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
-# add_subdirectory(yacl/engine)
+add_subdirectory(yacl/engine)
 add_subdirectory(yacl/io)
-# add_subdirectory(yacl/kernel)
+add_subdirectory(yacl/kernel)
 add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
@@ -207,6 +208,7 @@ target_link_libraries(
          Deps::brpc
          Deps::protobuf
          Deps::interconnection
+         Deps::simplest_ot
          Deps::gmp)
 
 install(
