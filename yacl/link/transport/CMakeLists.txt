@@ -15,16 +15,23 @@
 file(GLOB SRC_CC *.cc)
 file(GLOB SRC_H *.h)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-  ${SRC_CC}
-)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/brpc_blackbox_link.cc
+    ${CMAKE_CURRENT_LIST_DIR}/interconnection_link.cc
+    ${CMAKE_CURRENT_LIST_DIR}/brpc_link.cc
+    ${CMAKE_CURRENT_LIST_DIR}/channel.cc
+    ${CMAKE_CURRENT_LIST_DIR}/channel_mem.cc)
 
 # Add header files for installation
 install(
-  FILES
-    ${SRC_H}
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
+  FILES ${CMAKE_CURRENT_LIST_DIR}/brpc_blackbox_link.h
+        ${CMAKE_CURRENT_LIST_DIR}/interconnection_link.h
+        ${CMAKE_CURRENT_LIST_DIR}/brpc_link.h
+        ${CMAKE_CURRENT_LIST_DIR}/channel.h
+        ${CMAKE_CURRENT_LIST_DIR}/channel_mem.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} PARENT_SCOPE)
-
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)

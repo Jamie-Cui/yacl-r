@@ -84,6 +84,7 @@ add_compiler_flags("-Wno-vla") # no variable length error warning
 add_compiler_flags("-Wno-shift-count-overflow")
 add_compiler_flags("-Wno-deprecated-declarations") # for butil
 add_compiler_flags("-Wno-unused-parameter") # for butil
+add_compiler_flags("-Wno-inconsistent-missing-override") # context_test
 
 # For cryptos
 add_compiler_flags("-maes")
@@ -113,6 +114,12 @@ set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
+# Protobuf must be placed before all dependencies
+include(deps/protobuf)
+
+# Interconnection should be built after protobuf
+include(deps/interconnection)
+
 include(deps/abseil)
 include(deps/blake3)
 include(deps/brpc)
@@ -120,7 +127,6 @@ include(deps/cpu_features)
 include(deps/fmt)
 include(deps/fourq)
 include(deps/gtest)
-include(deps/protobuf)
 include(deps/gflags)
 include(deps/leveldb)
 include(deps/libsodium)
@@ -141,34 +147,51 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
-add_library(yacl STATIC)
-add_library(yacl_all INTERFACE)
-
-target_include_directories(
-  yacl
-  PUBLIC # these dirs are only used when building inside the build tree
-         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
-         # these dirs are only used when linking against a prebuilt package
-         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-         ${CMAKE_DEPS_INCLUDEDIR})
+add_library(yacl_proto OBJECT) # object lib for protobuf
+add_library(yacl STATIC) # main static lib
+add_library(yacl_all INTERFACE) # main static lib
 
 set(YACL_SOURCE_FILES "")
+set(YACL_PROTO_SOURCE_FILES "")
 
 add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
 # add_subdirectory(yacl/engine)
 add_subdirectory(yacl/io)
 # add_subdirectory(yacl/kernel)
-
 add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
+target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
+
+protobuf_generate(
+  LANGUAGE
+  cpp
+  TARGET
+  yacl_proto
+  IMPORT_DIRS
+  ${CMAKE_CURRENT_LIST_DIR}
+  PROTOC_OUT_DIR
+  ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(yacl_proto PUBLIC protobuf::libprotobuf)
+target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+target_include_directories(
+  yacl
+  PUBLIC # these dirs are only used when building inside the build tree
+         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+         "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
+         # these dirs are only used when linking against a prebuilt package
+         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+         ${CMAKE_DEPS_INCLUDEDIR})
 
 target_link_libraries(
   yacl
-  PUBLIC Deps::absl
+  PUBLIC yacl_proto
+         Deps::absl
          Deps::blake3
          Deps::cpu_features
          Deps::fmt
@@ -183,6 +206,7 @@ target_link_libraries(
          Deps::sse2neon
          Deps::brpc
          Deps::protobuf
+         Deps::interconnection
          Deps::gmp)
 
 install(
@@ -191,5 +215,8 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
+target_include_directories(yacl_all INTERFACE ${PROJECT_SOURCE_DIR}
+                                              ${CMAKE_DEPS_INCLUDEDIR})
 target_link_libraries(yacl_all INTERFACE yacl)
+
 add_library(Yacl::yacl ALIAS yacl_all)

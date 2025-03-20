@@ -1,4 +1,4 @@
-# Copyright 2024 Jamie Cui
+# Copyright 2024 Ant Group Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -12,8 +12,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-macro(add_yacl_test NAME)
-  add_executable(${NAME} ${NAME}.cc)
-  target_link_libraries(${NAME} PRIVATE Yacl::yacl Deps::gtest)
-  add_test(NAME ${NAME} COMMAND ${NAME})
-endmacro()
+file(GLOB_RECURSE SRC_CC *.cc)
+file(GLOB_RECURSE SRC_H *.h)
+
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${SRC_CC})
+
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
+
+add_yacl_test(ot_kernel_test)
+add_yacl_test(svole_kernel_test)
+
+# Add header files for installation
+install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/kernel)

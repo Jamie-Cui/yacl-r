@@ -14,7 +14,8 @@
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/exception.cc
-    ${CMAKE_CURRENT_LIST_DIR}/int128.cc ${CMAKE_CURRENT_LIST_DIR}/secparam.cc)
+    ${CMAKE_CURRENT_LIST_DIR}/buffer.cc ${CMAKE_CURRENT_LIST_DIR}/int128.cc
+    ${CMAKE_CURRENT_LIST_DIR}/secparam.cc)
 
 # Add header files for installation
 install(

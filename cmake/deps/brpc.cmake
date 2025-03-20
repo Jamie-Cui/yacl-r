@@ -67,7 +67,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
               "-Wl,-U,__Z13GetStackTracePPvii"
               "-Wl,-U,_RegisterThriftProtocol"
               "-Wl,-U,_mallctl"
-              "-Wl,-U,_malloc_stats_print")
+              "-Wl,-U,_malloc_stats_print"
+              "-Wl,-U,_MallocExtension_ReleaseFreeMemory")
 endif()
 
 # -----------------------------

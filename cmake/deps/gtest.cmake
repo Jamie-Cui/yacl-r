@@ -43,8 +43,23 @@ set_property(
            ${CMAKE_DEPS_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest_main googletest)
 
+add_library(libgmock_main STATIC IMPORTED)
+set_property(
+  TARGET libgmock_main
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_DEPS_LIBDIR}/libgmock_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libgmock_main googletest)
+
+add_library(libgmock STATIC IMPORTED)
+set_property(
+  TARGET libgmock
+  PROPERTY IMPORTED_LOCATION
+           ${CMAKE_DEPS_LIBDIR}/libgmock${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libgmock googletest)
+
 add_library(libgtest_interface INTERFACE)
-target_link_libraries(libgtest_interface INTERFACE libgtest_main libgtest)
+target_link_libraries(libgtest_interface INTERFACE libgtest_main libgtest
+                                                   libgtest_main libgmock)
 
 # -----------------------------
 # Alias Target for External Use

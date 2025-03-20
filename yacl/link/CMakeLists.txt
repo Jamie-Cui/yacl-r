@@ -12,14 +12,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-file(GLOB SRC_CC *.cc)
-file(GLOB SRC_H *.h)
-file(GLOB SRC_PROTO *.proto)
+file(GLOB_RECURSE SRC_PROTO *.proto)
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${SRC_CC})
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    ${CMAKE_CURRENT_LIST_DIR}/context.cc
+    ${CMAKE_CURRENT_LIST_DIR}/factory_brpc.cc
+    ${CMAKE_CURRENT_LIST_DIR}/factory_brpc_blackbox.cc
+    ${CMAKE_CURRENT_LIST_DIR}/factory_mem.cc
+    ${CMAKE_CURRENT_LIST_DIR}/trace.cc)
 
-# Add header files for installation
-install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)
+set(YACL_PROTO_SOURCE_FILES ${YACL_PROTO_SOURCE_FILES} ${SRC_PROTO})
 
 add_subdirectory(algorithm)
 add_subdirectory(transport)
@@ -27,36 +30,20 @@ add_subdirectory(transport)
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
+set(YACL_PROTO_SOURCE_FILES
+    ${YACL_PROTO_SOURCE_FILES}
+    PARENT_SCOPE)
 
 add_yacl_test(context_test)
 add_yacl_test(factory_test)
 
-protobuf_generate(
-  LANGUAGE
-  cpp
-  TARGET
-  yacl
-  PROTOS
-  ${CMAKE_CURRENT_LIST_DIR}/link.proto
-  PROTOC_OUT_DIR
-  ${CMAKE_CURRENT_BINARY_DIR})
-
-protobuf_generate(
-  LANGUAGE
-  cpp
-  TARGET
-  yacl
-  PROTOS
-  ${CMAKE_CURRENT_LIST_DIR}/blackbox_interconnect/blackbox_dummy_service.proto
-  PROTOC_OUT_DIR
-  ${CMAKE_CURRENT_BINARY_DIR}/blackbox_interconnect)
-
-protobuf_generate(
-  LANGUAGE
-  cpp
-  TARGET
-  yacl
-  PROTOS
-  ${CMAKE_CURRENT_LIST_DIR}/blackbox_interconnect/blackbox_service.proto
-  PROTOC_OUT_DIR
-  ${CMAKE_CURRENT_BINARY_DIR}/blackbox_interconnect)
+# Add header files for installation
+install(
+  FILES ${CMAKE_CURRENT_LIST_DIR}/context.h
+        ${CMAKE_CURRENT_LIST_DIR}/factory_brpc.h
+        ${CMAKE_CURRENT_LIST_DIR}/factory_mem.h
+        ${CMAKE_CURRENT_LIST_DIR}/trace.h
+        ${CMAKE_CURRENT_LIST_DIR}/link.h
+        ${CMAKE_CURRENT_LIST_DIR}/retry_options.h
+        ${CMAKE_CURRENT_LIST_DIR}/ssl_options.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)
