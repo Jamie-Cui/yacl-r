@@ -36,10 +36,10 @@ ExternalProject_Add(
 # ------------------------------------------------------------------------------
 
 add_library(liblibabsl STATIC IMPORTED)
-set_property(
-  TARGET liblibabsl
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  liblibabsl
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibabsl abseil)
 
 # -----------------------------

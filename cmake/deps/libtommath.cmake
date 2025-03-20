@@ -28,10 +28,10 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 add_library(liblibtommath STATIC IMPORTED)
-set_property(
-  TARGET liblibtommath
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  liblibtommath
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(liblibtommath libtommath)
 
 # -----------------------------

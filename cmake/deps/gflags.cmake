@@ -35,10 +35,10 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 add_library(libgflags STATIC IMPORTED)
-set_property(
-  TARGET libgflags
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libgflags
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgflags gflags)
 
 # -----------------------------

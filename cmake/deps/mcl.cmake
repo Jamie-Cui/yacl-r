@@ -34,24 +34,23 @@ ExternalProject_Add(
 add_library(libmcl_interface INTERFACE)
 
 add_library(libmcl STATIC IMPORTED)
-set_property(
-  TARGET libmcl
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libmcl${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libmcl PROPERTIES IMPORTED_LOCATION
+                    ${CMAKE_DEPS_LIBDIR}/libmcl${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmcl mcl)
 
 add_library(libmclbn256 STATIC IMPORTED)
-set_property(
-  TARGET libmclbn256
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libmclbn256${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libmclbn256
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libmclbn256${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmclbn256 mcl)
 
 add_library(libmclbn384 STATIC IMPORTED)
-set_property(
-  TARGET libmclbn384
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libmclbn384${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libmclbn384
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libmclbn384${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libmclbn384 mcl)
 
 target_link_libraries(libmcl_interface INTERFACE libmcl libmclbn256 libmclbn384)

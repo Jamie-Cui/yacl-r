@@ -38,22 +38,16 @@ add_dependencies(brpc Deps::leveldb)
 add_dependencies(brpc Deps::protobuf)
 
 add_library(libbrpc STATIC IMPORTED)
-set_property(
-  TARGET libbrpc
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libbrpc${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libbrpc PROPERTIES IMPORTED_LOCATION
+                     ${CMAKE_DEPS_LIBDIR}/libbrpc${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libbrpc brpc)
-
-add_library(libbrpc_interface INTERFACE)
-
-target_link_libraries(libbrpc_interface INTERFACE libbrpc Deps::gflags
-                                                  Deps::leveldb Deps::openssl)
 
 # HACK for macos see:
 # https://github.com/apache/brpc/blob/c93d0e06f50182bf41d973cad6f8714f4b1d021e/BUILD.bazel#L59
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   target_link_libraries(
-    libbrpc_interface
+    libbrpc
     INTERFACE "-framework CoreFoundation"
               "-framework CoreGraphics"
               "-framework CoreData"
@@ -74,4 +68,4 @@ endif()
 # Alias Target for External Use
 # -----------------------------
 
-add_library(Deps::brpc ALIAS libbrpc_interface)
+add_library(Deps::brpc ALIAS libbrpc)

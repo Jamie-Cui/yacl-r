@@ -31,10 +31,10 @@ ExternalProject_Add(
 # ------------------------------------------------------------------------------
 
 add_library(libleveldb STATIC IMPORTED)
-set_property(
-  TARGET libleveldb
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libleveldb
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libleveldb leveldb)
 
 # -----------------------------

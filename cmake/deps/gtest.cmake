@@ -30,31 +30,31 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 add_library(libgtest STATIC IMPORTED)
-set_property(
-  TARGET libgtest
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libgtest
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest googletest)
 
 add_library(libgtest_main STATIC IMPORTED)
-set_property(
-  TARGET libgtest_main
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libgtest_main
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgtest_main googletest)
 
 add_library(libgmock_main STATIC IMPORTED)
-set_property(
-  TARGET libgmock_main
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libgmock_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libgmock_main
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libgmock_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgmock_main googletest)
 
 add_library(libgmock STATIC IMPORTED)
-set_property(
-  TARGET libgmock
-  PROPERTY IMPORTED_LOCATION
-           ${CMAKE_DEPS_LIBDIR}/libgmock${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(
+  libgmock
+  PROPERTIES IMPORTED_LOCATION
+             ${CMAKE_DEPS_LIBDIR}/libgmock${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_dependencies(libgmock googletest)
 
 add_library(libgtest_interface INTERFACE)

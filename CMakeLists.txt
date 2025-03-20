@@ -206,6 +206,7 @@ target_link_libraries(
          Deps::mcl
          Deps::msgpack
          Deps::openssl
+         Deps::gflags
          Deps::spdlog
          Deps::sse2neon
          Deps::brpc
