@@ -200,7 +200,8 @@ target_include_directories(
 
 target_link_libraries(
   yacl
-  PUBLIC Deps::absl
+  PUBLIC Deps::brpc
+         Deps::absl
          Deps::blake3
          Deps::cpu_features
          Deps::fmt
@@ -214,7 +215,6 @@ target_link_libraries(
          Deps::gflags
          Deps::spdlog
          Deps::sse2neon
-         Deps::brpc
          Deps::simplest_ot
          Deps::gmp)
 
