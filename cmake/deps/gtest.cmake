@@ -60,6 +60,8 @@ add_dependencies(libgmock googletest)
 add_library(libgtest_interface INTERFACE)
 target_link_libraries(libgtest_interface INTERFACE libgtest_main libgtest
                                                    libgtest_main libgmock)
+target_include_directories(libgtest_interface
+                           INTERFACE ${CMAKE_DEPS_INCLUDEDIR})
 
 # -----------------------------
 # Alias Target for External Use
