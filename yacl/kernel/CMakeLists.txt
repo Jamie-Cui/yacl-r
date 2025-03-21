@@ -14,9 +14,12 @@
 
 file(GLOB_RECURSE SRC_CC *.cc)
 file(GLOB_RECURSE SRC_H *.h)
+file(GLOB_RECURSE SRC_TEST_CC *_test.cc)
+
 list(
   REMOVE_ITEM
   SRC_CC
+  ${SRC_TEST_CC}
   ${CMAKE_CURRENT_LIST_DIR}/ot_kernel_bench.cc
   ${CMAKE_CURRENT_LIST_DIR}/svole_kernel_bench.cc
   ${CMAKE_CURRENT_LIST_DIR}/benchmark/ot_bench.cc

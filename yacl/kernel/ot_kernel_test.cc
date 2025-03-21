@@ -14,8 +14,6 @@
 
 #include "yacl/kernel/ot_kernel.h"
 
-#include <gtest/gtest.h>
-
 #include <future>
 #include <vector>
 
