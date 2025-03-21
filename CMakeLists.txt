@@ -73,27 +73,32 @@ set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
 
 # Additional compiler flags
-add_compiler_flags("-Wall")
-add_compiler_flags("-Wextra")
-add_compiler_flags("-Werror")
+add_compiler_flags(-Wall)
+add_compiler_flags(-Wextra)
+add_compiler_flags(-Werror)
 
-# FIXME try removing the following flags
-add_compiler_flags("-Wno-sign-compare")
-add_compiler_flags("-Wno-unused-function")
-add_compiler_flags("-Wno-vla") # no variable length error warning
-add_compiler_flags("-Wno-shift-count-overflow")
-add_compiler_flags("-Wno-deprecated-declarations") # for butil
-add_compiler_flags("-Wno-unused-parameter") # for butil
-add_compiler_flags("-Wno-inconsistent-missing-override") # context_test
-
-# HACK we need to add the following global compiler flag in order to use fourq
-add_compiler_flags("-D __LINUX__")
-add_compiler_flags("-D _ARM64_")
+# For platform_utils
+add_compiler_flags(-mbmi2)
 
 # For cryptos
-add_compiler_flags("-maes")
-add_compiler_flags("-mavx")
-add_compiler_flags("-mpclmul")
+add_compiler_flags(-maes)
+add_compiler_flags(-mavx)
+add_compiler_flags(-mpclmul)
+
+# FIXME try removing the following flags
+add_compiler_flags(-Wno-sign-compare)
+add_compiler_flags(-Wno-unused-function)
+add_compiler_flags(-Wno-vla) # no variable length error warning
+add_compiler_flags(-Wno-shift-count-overflow)
+add_compiler_flags(-Wno-deprecated-declarations) # for butil
+add_compiler_flags(-Wno-unused-parameter) # for butil
+add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
+add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
+add_compiler_flags(-Wno-stringop-overflow) # mcl
+
+# HACK we need to add the following global compiler flag in order to use fourq
+add_compile_definitions(__LINUX__)
+add_compile_definitions(_ARM64_)
 
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
