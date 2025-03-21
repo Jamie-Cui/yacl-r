@@ -17,12 +17,13 @@ name: cpp-linter
 
 on:
   push:
-    paths:
-      - "docs/examples/demo/*"
+    branches:
+    - main
   pull_request:
-    paths:
-      - "docs/examples/demo/*"
-
+    branches:
+    - main
+permissions:
+  contents: read
 
 jobs:
   cpp-linter:
