@@ -38,10 +38,18 @@ if(NOT simplest_ot_POPULATED)
 
     execute_process(
       COMMAND ${CMAKE_MAKE_PROGRAM} libsimpleot
-      OUTPUT_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-out.log
-      ERROR_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-err.log
+      OUTPUT_FILE
+        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-out.log
+      ERROR_FILE
+        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-err.log
       WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/simplest_ot/simplest_ot_x86_asm
-      RESULT_VARIABLE PROTOBUF_BUILD_FAIL)
+      RESULT_VARIABLE SIMPLEST_OT_BUILD_FAIL)
+
+    if(SIMPLEST_OT_BUILD_FAIL AND NOT SIMPLEST_OT_BUILD_FAIL EQUAL 0)
+      message(FATAL_ERROR "Building simplest_ot x86 asm - Failed")
+    else()
+      message(STATUS "Building simplest_ot x86 asm - Success")
+    endif()
 
     set_target_properties(
       libsimplest_ot_x86
@@ -51,12 +59,6 @@ if(NOT simplest_ot_POPULATED)
     )
 
     target_link_libraries(libsimplest_ot_itf INTERFACE libsimplest_ot_x86)
-
-    if(PROTOBUF_BUILD_FAIL AND NOT PROTOBUF_BUILD_FAIL EQUAL 0)
-      message(FATAL_ERROR "Building simplest_ot x86 asm - Failed")
-    else()
-      message(STATUS "Building simplest_ot x86 asm - Success")
-    endif()
 
   endif()
 endif()
