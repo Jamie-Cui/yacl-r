@@ -29,7 +29,7 @@ target_include_directories(
 
 target_link_libraries(
   yacl_spi_pairing
-  PRIVATE yacl yacl_spi_mpint # NOTE pairing need spi_mpint
+  PRIVATE yacl_obj yacl_spi_mpint # NOTE pairing need spi_mpint
           yacl_spi_galois_field # NOTE pairing need spi_galois_field
           yacl_spi_ecc # NOTE pairing need spi_ecc
 )
@@ -38,8 +38,8 @@ target_link_libraries(
 # galois_field_spi 3. paring_spi
 target_compile_definitions(yacl_spi_pairing PUBLIC MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl_all PUBLIC $<TARGET_OBJECTS:yacl_spi_pairing>)
-add_dependencies(yacl_all yacl_spi_pairing)
+target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:yacl_spi_pairing>)
+add_dependencies(yacl yacl_spi_pairing)
 
 # ------------
 # Test

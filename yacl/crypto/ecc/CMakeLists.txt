@@ -68,10 +68,10 @@ target_include_directories(
                       "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
-target_link_libraries(yacl_spi_ecc PRIVATE yacl yacl_spi_mpint)
+target_link_libraries(yacl_spi_ecc PRIVATE yacl_obj yacl_spi_mpint)
 
-target_link_libraries(yacl_all PUBLIC $<TARGET_OBJECTS:yacl_spi_ecc>)
-add_dependencies(yacl_all yacl_spi_ecc)
+target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:yacl_spi_ecc>)
+add_dependencies(yacl yacl_spi_ecc)
 
 # NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in: 1. ecc_spi 2.
 # galois_field_spi 3. paring_spi
