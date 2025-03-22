@@ -150,6 +150,8 @@ include(deps/simplest_ot)
 # Project Target Configuration
 # ------------------------------------------------------------------------------
 
+message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
@@ -175,6 +177,10 @@ add_subdirectory(yacl/kernel)
 add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
+
+# Remove all test files from ${YACL_SOURCE_FILES}
+file(GLOB_RECURSE SRC_TEST_CC *_test.cc)
+list(REMOVE_ITEM YACL_SOURCE_FILES ${SRC_TEST_CC})
 
 target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
 target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
