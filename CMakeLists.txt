@@ -94,6 +94,7 @@ add_compiler_flags(-Wno-unused-parameter) # for butil
 add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
 add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-stringop-overflow) # mcl
+add_compiler_flags(-Wno-array-bounds) # mcl
 
 # HACK we need to add the following global compiler flag in order to use fourq
 add_compile_definitions(__LINUX__)
