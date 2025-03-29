@@ -35,8 +35,10 @@ if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
     fetchcontent_populate(protobuf)
 
     message(STATUS "Configuring Protobuf")
+
+    file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR}/protobuf-stamp)
+
     execute_process(
-      COMMAND mkdir -p ${CMAKE_DEPS_SRCDIR}/protobuf-stamp
       COMMAND
         cmake ${CMAKE_DEPS_SRCDIR}/protobuf
         -Dprotobuf_BUILD_PROTOBUF_BINARIES=Off #
@@ -58,7 +60,7 @@ if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
 
     message(STATUS "Building Protobuf (this may takes a while)")
     execute_process(
-      COMMAND cmake --build . --parallel
+      COMMAND cmake --build .
       OUTPUT_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-out.log
       ERROR_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-err.log
       WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/protobuf-build
