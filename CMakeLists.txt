@@ -43,10 +43,18 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # This policy was introduced in CMake 3.13; OLD by default until CMake 3.21
-cmake_policy(SET CMP0077 NEW)
-cmake_policy(SET CMP0135 NEW)
-cmake_policy(SET CMP0168 NEW)
-cmake_policy(SET CMP0169 OLD)
+if(${CMAKE_VERSION} VERSION_GREATER "3.13")
+  cmake_policy(SET CMP0077 NEW)
+endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER "3.24")
+  cmake_policy(SET CMP0135 NEW)
+endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER "3.30")
+  cmake_policy(SET CMP0168 NEW)
+  cmake_policy(SET CMP0169 OLD)
+endif()
 
 # Generic this project's CMake modules
 include(AddCompilerFlags)
@@ -120,11 +128,10 @@ set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
 
-execute_process(
-  COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_BINDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_SRCDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_LIBDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_BINDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_INCLUDEDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR})
 
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)

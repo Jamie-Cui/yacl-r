@@ -16,9 +16,9 @@ message(STATUS "Downloading simplest_ot")
 
 FetchContent_Declare(
   simplest_ot
-  URL https://github.com/secretflow/simplest-ot/archive/60197bc7dad327bb55759e8e854885411e999167.tar.gz
-  URL_HASH
-    SHA256=c8816bf147e320f51c516f4c511f2d1a732ac0d0f171d29f442cbe2b5173ddba
+  GIT_REPOSITORY https://github.com/Jamie-Cui/simplest-ot
+  GIT_TAG main
+  GIT_SHALLOW On
   SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/simplest_ot)
 
 message(STATUS "Downloading simplest_ot - Success")
@@ -35,6 +35,8 @@ if(NOT simplest_ot_POPULATED)
     message(STATUS "Building simplest_ot x86 asm (this may takes a while)")
 
     add_library(libsimplest_ot_x86 STATIC IMPORTED)
+
+    file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp)
 
     execute_process(
       COMMAND ${CMAKE_MAKE_PROGRAM} libsimpleot

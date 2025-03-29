@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+file(MAKE_DIRECTORY ${CMAKE_DEPS_INCLUDEDIR}/sse2neon)
+
 ExternalProject_Add(
   sse2neon
   URL https://github.com/DLTcollab/sse2neon/archive/8df2f48dbd0674ae5087f7a6281af6f55fa5a8e2.tar.gz
@@ -21,7 +23,6 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
   BUILD_IN_SOURCE On
-  INSTALL_COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}/sse2neon
   COMMAND cp -a sse2neon.h ${CMAKE_DEPS_INCLUDEDIR}/sse2neon
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On

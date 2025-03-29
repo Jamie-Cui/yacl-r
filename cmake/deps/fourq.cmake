@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+file(MAKE_DIRECTORY ${CMAKE_DEPS_INCLUDEDIR}/fourq)
+
 ExternalProject_Add(
   fourq
   URL https://github.com/microsoft/FourQlib/archive/1031567f23278e1135b35cc04e5d74c2ac88c029.tar.gz
@@ -24,10 +26,8 @@ ExternalProject_Add(
   BUILD_IN_SOURCE On
   BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} ARCH=x64 GENERIC=TRUE EXTENDED_SET=FALSE
                 -C FourQ_64bit_and_portable libFourQ
-  INSTALL_COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}/fourq
-  COMMAND ${CMAKE_MAKE_PROGRAM} PREFIX=${CMAKE_DEPS_PREFIX} -C
-          FourQ_64bit_and_portable install
+  INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} PREFIX=${CMAKE_DEPS_PREFIX} -C
+                  FourQ_64bit_and_portable install
   #
   # FIXME wait for bazel try to install header in include/fourq/*.h see:
   # fourq.BUILD
