@@ -94,6 +94,7 @@ add_compiler_flags(-Wno-unused-parameter) # for butil
 add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
 add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-stringop-overflow) # mcl
+add_compiler_flags(-Wno-array-bounds) # mcl
 
 # HACK we need to add the following global compiler flag in order to use fourq
 add_compile_definitions(__LINUX__)
@@ -118,6 +119,12 @@ set(CMAKE_DEPS_LIBDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
+
+execute_process(
+  COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
+  COMMAND mkdir -p ${CMAKE_DEPS_BINDIR}
+  COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}
+  COMMAND mkdir -p ${CMAKE_DEPS_SRCDIR})
 
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
@@ -150,9 +157,13 @@ include(deps/simplest_ot)
 # Project Target Configuration
 # ------------------------------------------------------------------------------
 
+message(STATUS "--------------------------------------------------------------")
+message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+message(STATUS "--------------------------------------------------------------")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
@@ -161,8 +172,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 enable_testing()
 
 add_library(yacl_proto OBJECT) # object lib for protobuf
-add_library(yacl OBJECT) # main static lib
-add_library(yacl_all STATIC) # main static lib
+add_library(yacl_obj OBJECT) # main static lib
+add_library(yacl STATIC) # main static lib
 
 set(YACL_SOURCE_FILES "")
 set(YACL_PROTO_SOURCE_FILES "")
@@ -176,7 +187,11 @@ add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 
-target_sources(yacl PRIVATE ${YACL_SOURCE_FILES})
+# Remove all test files from ${YACL_SOURCE_FILES}
+file(GLOB_RECURSE SRC_TEST_CC *_test.cc)
+list(REMOVE_ITEM YACL_SOURCE_FILES ${SRC_TEST_CC})
+
+target_sources(yacl_obj PRIVATE ${YACL_SOURCE_FILES})
 target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
 
 protobuf_generate(
@@ -193,7 +208,7 @@ target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
 target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_include_directories(
-  yacl
+  yacl_obj
   PUBLIC # these dirs are only used when building inside the build tree
          "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
          "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
@@ -202,7 +217,7 @@ target_include_directories(
          ${CMAKE_DEPS_INCLUDEDIR})
 
 target_link_libraries(
-  yacl
+  yacl_obj
   PUBLIC Deps::brpc
          Deps::absl
          Deps::blake3
@@ -221,14 +236,14 @@ target_link_libraries(
          Deps::simplest_ot
          Deps::gmp)
 
+target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
+                                       ${CMAKE_DEPS_INCLUDEDIR})
+target_link_libraries(yacl PUBLIC yacl_obj yacl_proto Deps::interconnection)
+
+add_library(Yacl::yacl ALIAS yacl)
+
 install(
-  TARGETS yacl_all
+  TARGETS yacl
   ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-
-target_include_directories(yacl_all PUBLIC ${PROJECT_SOURCE_DIR}
-                                           ${CMAKE_DEPS_INCLUDEDIR})
-target_link_libraries(yacl_all PUBLIC yacl yacl_proto Deps::interconnection)
-
-add_library(Yacl::yacl ALIAS yacl_all)

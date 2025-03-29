@@ -44,6 +44,10 @@ protobuf_generate(
   PROTOC_OUT_DIR
   ${CMAKE_DEPS_INCLUDEDIR})
 
+target_include_directories(
+  interconnection_proto PRIVATE
+  ${CMAKE_DEPS_INCLUDEDIR})
+
 target_link_libraries(interconnection_proto PUBLIC protobuf::libprotobuf)
 
 # -----------------------------

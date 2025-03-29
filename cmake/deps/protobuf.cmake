@@ -14,13 +14,13 @@
 
 set(Protobuf_DIR "${CMAKE_DEPS_LIBDIR}/cmake/protobuf")
 
-find_package(Protobuf HINTS ${CMAKE_DEPS_LIBDIR})
+find_package(Protobuf PATHS ${CMAKE_DEPS_LIBDIR})
 
-if(NOT Protobuf_FOUND)
+if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
 
   message(STATUS "Downloading Protobuf")
 
-  FetchContent_Declare(
+  fetchcontent_declare(
     protobuf
     URL https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-all-21.12.tar.gz
     URL_HASH
@@ -29,10 +29,10 @@ if(NOT Protobuf_FOUND)
 
   message(STATUS "Downloading Protobuf - Success")
 
-  FetchContent_GetProperties(protobuf)
+  fetchcontent_getproperties(protobuf)
 
   if(NOT protobuf_POPULATED)
-    FetchContent_Populate(protobuf)
+    fetchcontent_populate(protobuf)
 
     message(STATUS "Configuring Protobuf")
     execute_process(
@@ -86,8 +86,18 @@ if(NOT Protobuf_FOUND)
 
     set(Protobuf_DIR "${CMAKE_DEPS_LIBDIR}/cmake/protobuf")
     find_package(Protobuf REQUIRED PATHS ${CMAKE_DEPS_LIBDIR})
+
+    if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
+      message(
+        FATAL_ERROR
+          "Somthing is wrong ... Protobuf_FOUND: ${Protobuf_FOUND}, and Protobuf version: ${Protobuf_VERSION}"
+      )
+    endif()
   endif()
 
+else()
+  message(STATUS "Protobuf found")
+  message(STATUS "Protobuf version: ${Protobuf_VERSION}")
 endif()
 
 # ------------------------------------------------------------------------------

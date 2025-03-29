@@ -40,7 +40,7 @@ target_include_directories(
   yacl_spi_drbg PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
                        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
 
-target_link_libraries(yacl_spi_drbg PRIVATE yacl)
+target_link_libraries(yacl_spi_drbg PRIVATE yacl_obj)
 
-target_link_libraries(yacl_all PUBLIC $<TARGET_OBJECTS:yacl_spi_drbg>)
-add_dependencies(yacl_all yacl_spi_drbg)
+target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:yacl_spi_drbg>)
+add_dependencies(yacl yacl_spi_drbg)

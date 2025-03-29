@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   brpc
   URL https://github.com/apache/brpc/archive/refs/tags/1.10.0.tar.gz
   URL_HASH
@@ -21,7 +21,9 @@ ExternalProject_Add(
              -DWITH_DEBUG_SYMBOLS=Off #
              -DDOWNLOAD_GTEST=Off #
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX} #
-             -DCMAKE_PREFIX_PATH=${CMAKE_DEPS_PREFIX} # brpc should deps on this
+             -DCMAKE_PREFIX_PATH=${CMAKE_DEPS_PREFIX} #
+             -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_DEPS_INCLUDEDIR} # includes
+             -DCMAKE_CPP_FLAGS=-isystem\ ${CMAKE_DEPS_INCLUDEDIR} # includes
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On

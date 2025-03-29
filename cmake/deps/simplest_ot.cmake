@@ -25,8 +25,42 @@ message(STATUS "Downloading simplest_ot - Success")
 
 FetchContent_GetProperties(simplest_ot)
 
+add_library(libsimplest_ot_itf INTERFACE)
+
 if(NOT simplest_ot_POPULATED)
   FetchContent_Populate(simplest_ot)
+
+  # Build x86 lib
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
+    message(STATUS "Building simplest_ot x86 asm (this may takes a while)")
+
+    add_library(libsimplest_ot_x86 STATIC IMPORTED)
+
+    execute_process(
+      COMMAND ${CMAKE_MAKE_PROGRAM} libsimpleot
+      OUTPUT_FILE
+        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-out.log
+      ERROR_FILE
+        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-err.log
+      WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/simplest_ot/simplest_ot_x86_asm
+      RESULT_VARIABLE SIMPLEST_OT_BUILD_FAIL)
+
+    if(SIMPLEST_OT_BUILD_FAIL AND NOT SIMPLEST_OT_BUILD_FAIL EQUAL 0)
+      message(FATAL_ERROR "Building simplest_ot x86 asm - Failed")
+    else()
+      message(STATUS "Building simplest_ot x86 asm - Success")
+    endif()
+
+    set_target_properties(
+      libsimplest_ot_x86
+      PROPERTIES
+        IMPORTED_LOCATION
+        ${CMAKE_DEPS_LIBDIR}/simplest_ot/simplest_ot_x86_asm/libsimplest_ot_x86${CMAKE_STATIC_LIBRARY_SUFFIX}
+    )
+
+    target_link_libraries(libsimplest_ot_itf INTERFACE libsimplest_ot_x86)
+
+  endif()
 endif()
 
 # Build portable simplest ot just for now
@@ -97,7 +131,9 @@ add_library(
 target_include_directories(libsimplest_ot
                            PUBLIC ${CMAKE_DEPS_SRCDIR}/simplest_ot)
 
+target_link_libraries(libsimplest_ot_itf INTERFACE libsimplest_ot)
+
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::simplest_ot ALIAS libsimplest_ot)
+add_library(Deps::simplest_ot ALIAS libsimplest_ot_itf)
