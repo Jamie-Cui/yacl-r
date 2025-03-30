@@ -11,7 +11,7 @@ line_width: 80
 tab_size: 2
 
 # Format command names consistently as 'lower' or 'upper' case
-command_case: "lower"
+# command_case: "lower"
 
 first_comment_is_literal: False
 
