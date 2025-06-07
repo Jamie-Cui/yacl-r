@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: Intall Dependencies
-          command: apt install install libgmp3-dev -y
+          command: apt update && apt install install libgmp3-dev -y
       - run:
           name: Run CMake
           command: cmake -S . -B build
