@@ -29,7 +29,7 @@ jobs:
           command: apt update && apt install libgmp-dev -y
       - run:
           name: Create Build Dir
-          command: mkdir -p build
+          command: mkdir -p build && mkdir -p build/deps
       - run:
           name: Run CMake
           command: cmake -S . -B build
