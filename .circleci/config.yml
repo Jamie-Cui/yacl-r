@@ -21,7 +21,7 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: ubuntu-latest
+      - image: cimg/base:stable # Use a suitable base image with CMake
     steps:
       - checkout
       - run:
