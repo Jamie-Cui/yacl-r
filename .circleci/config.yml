@@ -21,9 +21,18 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: cimg/base:stable # Use a suitable base image with CMake
+      - image: ubuntu-latest
     steps:
       - checkout
+      - run:
+          name: "Install specific CMake version"
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install cmake=3.24.1 -y
+            echo $PATH
+      - run:
+          name: "Verify CMake version"
+          command: cmake --version
       - run:
           name: Create build directory
           command: mkdir build
