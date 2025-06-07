@@ -14,15 +14,40 @@
 
 #include "yacl/io/kv/leveldb_kvstore.h"
 
-#include "butil/file_util.h"
-#include "butil/files/temp_file.h"
-#include "butil/strings/string_split.h"
-#include "butil/strings/string_util.h"
+#include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <random>
+
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/exception.h"
 
 namespace yacl::io {
+
+namespace {
+
+namespace fs = std::filesystem;
+
+std::string FindAvaliableTempFileName() {
+  fs::path temp_dir = fs::current_path();  // save tmp file to current path
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> distrib(0, 999999);
+  fs::path temp_file;
+  do {
+    temp_file = temp_dir / ("temp_" + std::to_string(distrib(gen)) + ".txt");
+  } while (fs::exists(temp_file));
+
+  std::ofstream ofs(temp_file);
+  if (!ofs.is_open()) {
+    // almost impossible
+    throw std::runtime_error("Failed to create temp file");
+  }
+  std::remove(temp_file.c_str());
+  return temp_file.filename();
+}
+}  // namespace
 
 LeveldbKVStore::LeveldbKVStore(bool is_temp, const std::string &file_path)
     : is_temp_(is_temp) {
@@ -31,8 +56,7 @@ LeveldbKVStore::LeveldbKVStore(bool is_temp, const std::string &file_path)
 
   std::string db_path = file_path;
   if (db_path.empty()) {
-    butil::TempFile temp_file;
-    db_path = std::string(temp_file.fname());
+    db_path = FindAvaliableTempFileName();
   }
 
   leveldb::DB *db_ptr = nullptr;
@@ -48,11 +72,14 @@ LeveldbKVStore::~LeveldbKVStore() {
   if (is_open_) {
     // this is a temporary db.
     // delete db before remove it from disk.
-    if (db_) delete db_.release();
+    if (db_) {
+      db_ = nullptr;
+    }
     if (is_temp_) {
       try {
-        butil::FilePath file_path(path_);
-        butil::DeleteFile(file_path, true);
+        std::remove(path_.c_str());
+        // butil::FilePath file_path(path_);
+        // butil::DeleteFile(file_path, true);
       } catch (const std::exception &e) {
         // Nothing we can do here.
         SPDLOG_INFO("Delete tmp file:{} exception {}", path_,

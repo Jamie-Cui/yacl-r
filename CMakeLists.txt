@@ -21,11 +21,41 @@ project(
   HOMEPAGE_URL "https://github.com/Jamie-Cui/yacl-r"
   LANGUAGES CXX C)
 
-# option(BUILD_TESTING "Build the testing binaries (On/Off)." On)
+# --------------------------------------------------------------------
+# User options
+# --------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
+# Toggle different modules
+option(ENABLE_ENGINE "Enabel the engine module (On/Off)." Off)
+option(ENABLE_KERNEL "Enable the kernel module (On/Off)." Off)
+option(ENABLE_LINK "Enable the link (network) module (On/Off)." Off)
+
+# TODO: add test option
+# option(BUILD_TESTS "Build the testing binaries (On/Off)." On)
+
+# Check for options
+if(ENABLE_ENGINE AND NOT ENABLE_KERNEL)
+  message(
+    WARNING
+      "Engine enabled, but kernels disabled. Turn on kernel automatically.")
+  set(ENABLE_KERNEL On)
+endif()
+
+if(ENABLE_ENGINE AND NOT ENABLE_LINK)
+  message(
+    WARNING "Engine enabled, but link disabled. Turn on link automatically.")
+  set(ENABLE_LINK On)
+endif()
+
+if(ENABLE_KERNEL AND NOT ENABLE_LINK)
+  message(
+    WARNING "Kernel enabled, but link disabled. Turn on link automatically.")
+  set(ENABLE_LINK On)
+endif()
+
+# --------------------------------------------------------------------
 # Project Generic Configuration
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------
 
 # Configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -62,6 +92,8 @@ include(ExternalProject)
 include(GNUInstallDirs)
 include(FetchContent)
 
+set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+
 # ------------------------------------------------------------------------------
 # Toolchain Configuration
 # ------------------------------------------------------------------------------
@@ -84,7 +116,7 @@ add_compiler_flags(-maes)
 add_compiler_flags(-mavx)
 add_compiler_flags(-mpclmul)
 
-# FIXME try removing the following flags
+#
 add_compiler_flags(-Wno-sign-compare)
 add_compiler_flags(-Wno-unused-function)
 add_compiler_flags(-Wno-vla) # no variable length error warning
@@ -129,15 +161,17 @@ execute_process(
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
-# Protobuf must be placed before all dependencies
-include(deps/protobuf)
-
-# Interconnection should be built after protobuf
-include(deps/interconnection)
+if(ENABLE_LINK)
+  # Protobuf must be placed before all dependencies
+  include(deps/protobuf)
+  # Interconnection should be built after protobuf
+  include(deps/interconnection)
+  include(deps/simplest_ot)
+  include(deps/brpc)
+endif()
 
 include(deps/abseil)
 include(deps/blake3)
-include(deps/brpc)
 include(deps/cpu_features)
 include(deps/fmt)
 include(deps/fourq)
@@ -151,19 +185,23 @@ include(deps/msgpack)
 include(deps/openssl)
 include(deps/spdlog)
 include(deps/sse2neon)
-include(deps/simplest_ot)
 
 # ------------------------------------------------------------------------------
 # Project Target Configuration
 # ------------------------------------------------------------------------------
 
-message(STATUS "--------------------------------------------------------------")
-message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
-message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
-message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
-message(STATUS "--------------------------------------------------------------")
+message(STATUS "==============================================================")
+message(STATUS "User Options and Configurations")
+message(STATUS "==============================================================")
+message(STATUS "Cmake Version       : ${CMAKE_VERSION}")
+message(STATUS "Compiler            : ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "Compiler Version    : ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "Compiler Flags      : ${CMAKE_CXX_FLAGS}")
+message(STATUS "Build Type          : ${CMAKE_BUILD_TYPE}")
+message(STATUS "(opt) Engine Module : ${ENABLE_ENGINE}")
+message(STATUS "(opt) Kernel Module : ${ENABLE_KERNEL}")
+message(STATUS "(opt) Link Module   : ${ENABLE_LINK}")
+message(STATUS "==============================================================")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
@@ -171,41 +209,41 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
-add_library(yacl_proto OBJECT) # object lib for protobuf
-add_library(yacl_obj OBJECT) # main static lib
-add_library(yacl STATIC) # main static lib
+#
+# Iteracte all files
+#
 
-set(YACL_SOURCE_FILES "")
 set(YACL_PROTO_SOURCE_FILES "")
+set(YACL_SOURCE_FILES "")
+set(YACL_SPI_LIBS "")
 
 add_subdirectory(yacl/base)
 add_subdirectory(yacl/crypto)
-add_subdirectory(yacl/engine)
-add_subdirectory(yacl/io)
-add_subdirectory(yacl/kernel)
-add_subdirectory(yacl/link)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
+add_subdirectory(yacl/io)
 
-# Remove all test files from ${YACL_SOURCE_FILES}
+if(ENABLE_ENGINE)
+  add_subdirectory(yacl/engine)
+endif()
+
+if(ENABLE_KERNEL)
+  add_subdirectory(yacl/kernel)
+endif()
+
+if(ENABLE_LINK)
+  add_subdirectory(yacl/link)
+endif()
+
+# TODO Remove all test files from ${YACL_SOURCE_FILES}
 file(GLOB_RECURSE SRC_TEST_CC *_test.cc)
 list(REMOVE_ITEM YACL_SOURCE_FILES ${SRC_TEST_CC})
 
-target_sources(yacl_obj PRIVATE ${YACL_SOURCE_FILES})
-target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
+#
+# Object Library: yacl_obj
+#
 
-protobuf_generate(
-  LANGUAGE
-  cpp
-  TARGET
-  yacl_proto
-  IMPORT_DIRS
-  ${CMAKE_CURRENT_LIST_DIR}
-  PROTOC_OUT_DIR
-  ${CMAKE_CURRENT_BINARY_DIR})
-
-target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
-target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+add_library(yacl_obj OBJECT ${YACL_SOURCE_FILES}) # main object lib
 
 target_include_directories(
   yacl_obj
@@ -218,8 +256,7 @@ target_include_directories(
 
 target_link_libraries(
   yacl_obj
-  PUBLIC Deps::brpc
-         Deps::absl
+  PUBLIC Deps::absl
          Deps::blake3
          Deps::cpu_features
          Deps::fmt
@@ -228,19 +265,62 @@ target_link_libraries(
          Deps::libsodium
          Deps::libtommath
          Deps::mcl
-         Deps::msgpack
          Deps::openssl
          Deps::gflags
          Deps::spdlog
          Deps::sse2neon
-         Deps::simplest_ot
-         Deps::gmp)
+         Deps::gmp
+         Deps::msgpack)
+
+#
+# Object Library: yacl_proto
+#
+
+if(ENABLE_LINK)
+  # build yacl_proto target
+  add_library(yacl_proto OBJECT) # object lib for protobuf
+  target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
+  protobuf_generate(
+    LANGUAGE
+    cpp
+    TARGET
+    yacl_proto
+    IMPORT_DIRS
+    ${CMAKE_CURRENT_LIST_DIR}
+    PROTOC_OUT_DIR
+    ${CMAKE_CURRENT_BINARY_DIR})
+  target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
+  target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+#
+# Static Library: yacl
+#
+
+add_library(yacl STATIC) # main static lib
 
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
                                        ${CMAKE_DEPS_INCLUDEDIR})
-target_link_libraries(yacl PUBLIC yacl_obj yacl_proto Deps::interconnection)
+
+target_link_libraries(yacl PUBLIC yacl_obj)
+
+# NOTE it's IMPORTANT to link all spi libs in PUBLIC scope.
+# All spi libs must be included in binaries.
+foreach(spilib IN LISTS YACL_SPI_LIBS)
+  target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:${spilib}>)
+endforeach()
+
+# target_link_libraries(yacl PUBLIC yacl_proto)
+# target_link_libraries(yacl PUBLIC Deps::msgpack)
+# target_link_libraries(yacl PUBLIC Deps::brpc)
+# target_link_libraries(yacl PUBLIC Deps::simplest_ot)
+# target_link_libraries(yacl PUBLIC Deps::interconnection)
 
 add_library(Yacl::yacl ALIAS yacl)
+
+#
+# Install headers
+#
 
 install(
   TARGETS yacl

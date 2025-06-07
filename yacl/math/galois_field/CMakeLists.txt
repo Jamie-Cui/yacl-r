@@ -42,13 +42,18 @@ target_include_directories(
 # NOTE libyacl_spi_galois_field requires libyacl_spi_mpint
 target_link_libraries(yacl_spi_galois_field PRIVATE yacl_obj yacl_spi_mpint)
 
-# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in: 1. ecc_spi 2.
-# galois_field_spi 3. paring_spi
+# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
+# 1. ecc_spi
+# 2. galois_field_spi
+# 3. paring_spi
 target_compile_definitions(yacl_spi_galois_field
                            PUBLIC MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl INTERFACE $<TARGET_OBJECTS:yacl_spi_galois_field>)
-add_dependencies(yacl yacl_spi_galois_field)
+list(APPEND YACL_SPI_LIBS yacl_spi_galois_field)
+
+set(YACL_SPI_LIBS
+    ${YACL_SPI_LIBS}
+    PARENT_SCOPE)
 
 # ------------------------------------------------------------------------------
 # For tests

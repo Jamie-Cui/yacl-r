@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   fmt
   URL https://github.com/fmtlib/fmt/archive/refs/tags/11.0.2.tar.gz
   URL_HASH
@@ -21,6 +21,8 @@ ExternalProject_Add(
              -DCMAKE_CXX_STANDARD=17 #
              -DCMAKE_C_STANDARD_REQUIRED=Yes #
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX} #
+             -DFMT_TEST=Off
+             -DFMT_DOC=Off
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On

@@ -28,4 +28,3 @@ function(add_compiler_flags flag)
     unset(flag_supported CACHE)
   endif()
 endfunction()
-
