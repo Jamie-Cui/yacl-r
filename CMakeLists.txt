@@ -73,10 +73,10 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # This policy was introduced in CMake 3.13; OLD by default until CMake 3.21
-cmake_policy(SET CMP0077 NEW)
-cmake_policy(SET CMP0135 NEW)
-cmake_policy(SET CMP0168 NEW)
-cmake_policy(SET CMP0169 OLD)
+# cmake_policy(SET CMP0077 NEW)
+# cmake_policy(SET CMP0135 NEW)
+# cmake_policy(SET CMP0168 NEW)
+# cmake_policy(SET CMP0169 OLD)
 
 # Generic this project's CMake modules
 include(AddCompilerFlags)

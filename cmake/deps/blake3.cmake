@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   blake3
   URL https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz
   URL_HASH
@@ -24,6 +24,7 @@ ExternalProject_Add(
              -DCMAKE_INSTALL_INCLUDEDIR=${CMAKE_DEPS_INCLUDEDIR}/blake3
   PREFIX ${CMAKE_DEPS_PREFIX}
   SOURCE_SUBDIR c
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On

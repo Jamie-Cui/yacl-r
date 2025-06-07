@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   libsodium
   URL https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz
   URL_HASH
@@ -21,6 +21,7 @@ ExternalProject_Add(
   BUILD_IN_SOURCE On
   CONFIGURE_COMMAND ./configure --prefix=${CMAKE_DEPS_PREFIX} --enable-shared=no
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

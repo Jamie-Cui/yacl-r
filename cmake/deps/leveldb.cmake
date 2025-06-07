@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   leveldb
   URL https://github.com/google/leveldb/archive/refs/tags/1.23.tar.gz
   URL_HASH
@@ -21,6 +21,7 @@ ExternalProject_Add(
              -DLEVELDB_INSTALL=On -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

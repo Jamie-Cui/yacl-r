@@ -27,6 +27,7 @@ externalproject_add(
              # HACK make msgpack always configure, weird
              -DCMAKE_POLICY_VERSION_MINIMUM=3.5
   PREFIX ${CMAKE_DEPS_PREFIX}
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On

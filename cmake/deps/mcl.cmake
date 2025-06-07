@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   mcl
   URL https://github.com/herumi/mcl/archive/refs/tags/v1.99.tar.gz
   URL_HASH
@@ -25,8 +25,9 @@ ExternalProject_Add(
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
              -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
              -Wno-shift-count-overflow
-  EXCLUDE_FROM_ALL LOG_DOWNLOAD
-  On
+  EXCLUDE_FROM_ALL On
+  DOWNLOAD_EXTRACT_TIMESTAMP On
+  LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On
   LOG_INSTALL On)

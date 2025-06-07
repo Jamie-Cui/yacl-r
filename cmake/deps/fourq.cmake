@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   fourq
   URL https://github.com/microsoft/FourQlib/archive/1031567f23278e1135b35cc04e5d74c2ac88c029.tar.gz
   URL_HASH
@@ -38,6 +38,7 @@ ExternalProject_Add(
   # ${CMAKE_DEPS_INCLUDEDIR}/FourQ_internal.h ${CMAKE_DEPS_INCLUDEDIR}/fourq/
   # COMMAND mv ${CMAKE_DEPS_INCLUDEDIR}/random.h ${CMAKE_DEPS_INCLUDEDIR}/fourq/
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On
