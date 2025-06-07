@@ -28,6 +28,9 @@ jobs:
           name: Intall Dependencies
           command: apt update && apt install libgmp-dev -y
       - run:
+          name: Create Build Dir
+          command: mkdir -p build
+      - run:
           name: Run CMake
           command: cmake -S . -B build
       - run:
