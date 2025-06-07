@@ -28,7 +28,7 @@ jobs:
           name: "Install specific CMake version"
           command: |
             sudo apt-get update -y
-            sudo apt-get install cmake=3.24.1 -y
+            sudo apt-get install cmake -y
             echo $PATH
       - run:
           name: "Verify CMake version"
