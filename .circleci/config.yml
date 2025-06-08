@@ -29,7 +29,7 @@ jobs:
           command: apt update && apt install libgmp-dev -y
       - run:
           name: Check Working Dir
-          command: pwd && ll
+          command: pwd && ls -l
       - run:
           name: Create Build Dir
           command: mkdir -p build && mkdir -p build/deps
