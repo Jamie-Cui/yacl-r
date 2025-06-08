@@ -26,13 +26,13 @@ jobs:
       - checkout
       - run:
           name: Intall Dependencies
-          command: apt update && apt install libgmp-dev -y
-      - run:
-          name: Check Working Dir
-          command: pwd && ls -l
+          command: apt update && apt install libgmp-dev tree -y
       - run:
           name: Create Build Dir
           command: mkdir -p build && mkdir -p build/deps
+      - run:
+          name: Check Working Dir
+          command: pwd || ls -l || tree .
       - run:
           name: Run CMake
           command: cmake -S . -B build
