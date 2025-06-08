@@ -32,7 +32,7 @@ jobs:
           command: mkdir -p build && mkdir -p build/deps
       - run:
           name: Check Working Dir
-          command: pwd || ls -l || tree .
+          command: pwd && tree .
       - run:
           name: Run CMake
           command: cmake -S . -B build
