@@ -32,7 +32,7 @@ jobs:
           command: mkdir -p build && mkdir -p build/deps
       - run:
           name: Check System Info
-          command: uname -a && whoami && pwd
+          command: uname -a && whoami && pwd && ls -l
       - run:
           name: Run CMake
           command: cmake -S . -B build
