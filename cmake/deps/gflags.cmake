@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   gflags
   URL https://github.com/gflags/gflags/archive/v2.2.2.tar.gz
   URL_HASH
     SHA256=34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf
-  CMAKE_ARGS -DBUILD_gflags_nothreads_LIB=Off
+  CMAKE_ARGS -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+             -DBUILD_gflags_nothreads_LIB=Off
              -DGFLAGS_BUILD_SHARED_LIBS=Off # NOTE brpc requires shared lib
              -DGFLAGS_BUILD_STATIC_LIBS=On # NOTE brpc requires shared lib
              -DGFLAGS_BUILD_TESTING=Off
@@ -29,6 +30,7 @@ ExternalProject_Add(
              -DCMAKE_CXX_FLAGS=-isystem\ ${CMAKE_DEPS_INCLUDEDIR}
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

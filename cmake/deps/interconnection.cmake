@@ -14,19 +14,19 @@
 
 message(STATUS "Downloading interconnection")
 
-FetchContent_Declare(
+fetchcontent_declare(
   interconnection
   URL https://github.com/secretflow/interconnection/archive/30e4220b7444d0bb077a9040f1b428632124e31a.tar.gz
   URL_HASH
     SHA256=341f6de0fa7dd618f9723009b9cb5b1da1788aacb9e12acfb0c9b19e5c5a7354
-  SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/interconnection)
+  DOWNLOAD_EXTRACT_TIMESTAMP On SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/interconnection)
 
 message(STATUS "Downloading interconnection - Success")
 
-FetchContent_GetProperties(interconnection)
+fetchcontent_getproperties(interconnection)
 
 if(NOT interconnection_POPULATED)
-  FetchContent_Populate(interconnection)
+  fetchcontent_populate(interconnection)
 endif()
 
 add_library(
@@ -44,9 +44,8 @@ protobuf_generate(
   PROTOC_OUT_DIR
   ${CMAKE_DEPS_INCLUDEDIR})
 
-target_include_directories(
-  interconnection_proto PRIVATE
-  ${CMAKE_DEPS_INCLUDEDIR})
+target_include_directories(interconnection_proto
+                           PRIVATE ${CMAKE_DEPS_INCLUDEDIR})
 
 target_link_libraries(interconnection_proto PUBLIC protobuf::libprotobuf)
 

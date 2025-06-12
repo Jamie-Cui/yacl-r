@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   openssl
   PREFIX ${CMAKE_DEPS_PREFIX}
   URL https://github.com/openssl/openssl/archive/refs/tags/openssl-3.3.2.tar.gz
@@ -25,6 +25,7 @@ ExternalProject_Add(
   BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} build_sw
   INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install_sw
   BUILD_IN_SOURCE On
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On

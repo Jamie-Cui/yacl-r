@@ -70,12 +70,17 @@ target_include_directories(
 # NOTE yacl_spi_ecc requires yacl_spi_mpint
 target_link_libraries(yacl_spi_ecc PRIVATE yacl_obj yacl_spi_mpint)
 
-target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:yacl_spi_ecc>)
-add_dependencies(yacl yacl_spi_ecc)
-
-# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in: 1. ecc_spi 2.
-# galois_field_spi 3. paring_spi
+# NOTE MCL_ALL_PAIRING_FOR_YACL need to be defined in:
+# 1. ecc_spi
+# 2. galois_field_spi
+# 3. paring_spi
 target_compile_definitions(yacl_spi_ecc PUBLIC MCL_ALL_PAIRING_FOR_YACL)
+
+list(APPEND YACL_SPI_LIBS yacl_spi_ecc)
+
+set(YACL_SPI_LIBS
+    ${YACL_SPI_LIBS}
+    PARENT_SCOPE)
 
 # ------------
 # Test

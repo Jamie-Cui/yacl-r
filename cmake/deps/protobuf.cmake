@@ -58,9 +58,9 @@ if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
 
     message(STATUS "Building Protobuf (this may takes a while)")
     execute_process(
-      COMMAND cmake --build . --parallel
-      OUTPUT_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-out.log
-      ERROR_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-err.log
+      COMMAND cmake --build .
+      # OUTPUT_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-out.log
+      # ERROR_FILE ${CMAKE_DEPS_SRCDIR}/protobuf-stamp/protobuf-build-err.log
       WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/protobuf-build
       RESULT_VARIABLE PROTOBUF_BUILD_FAIL)
 

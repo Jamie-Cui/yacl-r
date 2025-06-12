@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   cpu_features
   URL https://github.com/google/cpu_features/archive/refs/tags/v0.9.0.tar.gz
   URL_HASH
@@ -21,8 +21,12 @@ ExternalProject_Add(
              -DCMAKE_CXX_STANDARD=17 #
              -DCMAKE_C_STANDARD_REQUIRED=Yes #
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX} #
+             -DBUILD_TESTING=Off
+             -DENABLE_INSTALL=On
+             -DBUILD_EXECUTABLE=Off
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ExternalProject_Add(
+externalproject_add(
   abseil
   URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz
   URL_HASH
@@ -26,6 +26,7 @@ ExternalProject_Add(
   COMMAND bash ${PROJECT_SOURCE_DIR}/cmake/scripts/unify-static-libs.sh
           libabsl${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_DEPS_LIBDIR} libabsl_*
   EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On

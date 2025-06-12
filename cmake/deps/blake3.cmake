@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ExternalProject_Add(
+externalproject_add(
   blake3
   URL https://github.com/BLAKE3-team/BLAKE3/archive/refs/tags/1.5.4.tar.gz
   URL_HASH
@@ -28,7 +28,8 @@ ExternalProject_Add(
   LOG_DOWNLOAD On
   LOG_CONFIGURE On
   LOG_BUILD On
-  LOG_INSTALL On)
+  LOG_INSTALL On
+  DOWNLOAD_EXTRACT_TIMESTAMP On)
 
 add_library(libblake3 STATIC IMPORTED)
 set_target_properties(

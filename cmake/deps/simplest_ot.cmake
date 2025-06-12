@@ -14,21 +14,21 @@
 
 message(STATUS "Downloading simplest_ot")
 
-FetchContent_Declare(
+fetchcontent_declare(
   simplest_ot
   URL https://github.com/secretflow/simplest-ot/archive/60197bc7dad327bb55759e8e854885411e999167.tar.gz
   URL_HASH
     SHA256=c8816bf147e320f51c516f4c511f2d1a732ac0d0f171d29f442cbe2b5173ddba
-  SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/simplest_ot)
+  DOWNLOAD_EXTRACT_TIMESTAMP On SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/simplest_ot)
 
 message(STATUS "Downloading simplest_ot - Success")
 
-FetchContent_GetProperties(simplest_ot)
+fetchcontent_getproperties(simplest_ot)
 
 add_library(libsimplest_ot_itf INTERFACE)
 
 if(NOT simplest_ot_POPULATED)
-  FetchContent_Populate(simplest_ot)
+  fetchcontent_populate(simplest_ot)
 
   # Build x86 lib
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")

@@ -38,8 +38,11 @@ target_link_libraries(
 # galois_field_spi 3. paring_spi
 target_compile_definitions(yacl_spi_pairing PUBLIC MCL_ALL_PAIRING_FOR_YACL)
 
-target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:yacl_spi_pairing>)
-add_dependencies(yacl yacl_spi_pairing)
+list(APPEND YACL_SPI_LIBS yacl_spi_pairing)
+
+set(YACL_SPI_LIBS
+    ${YACL_SPI_LIBS}
+    PARENT_SCOPE)
 
 # ------------
 # Test

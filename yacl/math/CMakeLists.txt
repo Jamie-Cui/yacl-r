@@ -22,3 +22,7 @@ add_subdirectory(mpint)
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
+
+set(YACL_SPI_LIBS
+    ${YACL_SPI_LIBS}
+    PARENT_SCOPE)
