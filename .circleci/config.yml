@@ -29,13 +29,13 @@ jobs:
           command: apt update && apt install libgmp-dev tree -y
       - run:
           name: Create Build Dir
-          command: mkdir -p build && mkdir -p build/deps
+          command: mkdir -p build
       - run:
           name: Check System Info
           command: uname -a && whoami && pwd && ls -l
       - run:
           name: Run CMake
-          command: cmake -S . -B build
+          command: cd build && cmake ..
       - run:
           name: Build
           command: cmake --build build
