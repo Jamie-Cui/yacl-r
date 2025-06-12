@@ -44,7 +44,7 @@ jobs:
           command: cmake --build build --target test # If your project has tests
       - run:
           name: Collecting Error Logs
-          command: mkdir -p /tmp/deps-stamp && cp -r build/deps/src/*-stamp /tmp/deps-stamp
+          command: mkdir -p /tmp/deps-stamp && cp -r build/deps/src/*-stamp /tmp/deps-stamp && tar -cf /tmp/deps-stamp.tar.gz /tmp/deps-stamp
           when: on_fail
       - store_artifacts:
           path: /tmp/deps-stamp
