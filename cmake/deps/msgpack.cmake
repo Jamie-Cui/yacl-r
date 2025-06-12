@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   msgpack
   URL https://github.com/msgpack/msgpack-c/archive/refs/tags/cpp-6.1.0.tar.gz
   URL_HASH
@@ -24,8 +24,6 @@ externalproject_add(
              -DMSGPACK_BUILD_EXAMPLES=Off
              -DBUILD_SHARED_LIBS=Off
              -DMSGPACK_BUILD_TESTS=Off
-             # HACK make msgpack always configure, weird
-             -DCMAKE_POLICY_VERSION_MINIMUM=3.5
   PREFIX ${CMAKE_DEPS_PREFIX}
   DOWNLOAD_EXTRACT_TIMESTAMP On
   EXCLUDE_FROM_ALL true

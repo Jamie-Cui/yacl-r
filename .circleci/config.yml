@@ -31,8 +31,8 @@ jobs:
           name: Create Build Dir
           command: mkdir -p build && mkdir -p build/deps
       - run:
-          name: Check Working Dir
-          command: pwd && tree .
+          name: Check System Info
+          command: uname -a && whoami && pwd
       - run:
           name: Run CMake
           command: cmake -S . -B build
