@@ -42,6 +42,12 @@ jobs:
       - run:
           name: Run Tests
           command: cmake --build build --target test # If your project has tests
+      - run:
+          name: Collecting Error Logs
+          command: cp -r build/deps/src/*-stamp /tmp/deps-stamp
+          when: on_fail
+      - store_artifacts:
+          path: /tmp/deps-stamp
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
