@@ -28,14 +28,14 @@ jobs:
           name: Intall Dependencies
           command: apt update && apt install libgmp-dev tree -y
       - run:
-          name: Create Build Dir
-          command: mkdir -p build
-      - run:
           name: Check System Info
           command: uname -a && whoami && pwd && ls -l
+      - restore_cache:
+          keys:
+            - cmake-{{ checksum "CMakeLists.txt" }}
       - run:
-          name: Run CMake
-          command: cd build && cmake ..
+          name: Configure
+          command: cmake -S . -B build
       - run:
           name: Build
           command: cmake --build build
@@ -48,6 +48,10 @@ jobs:
           when: on_fail
       - store_artifacts:
           path: /tmp/deps-stamp
+      - save_cache:
+          paths:
+            - build
+          key: cmake-{{ checksum "CMakeLists.txt" }}
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
