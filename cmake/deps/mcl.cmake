@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-externalproject_add(
+ExternalProject_Add(
   mcl
   URL https://github.com/herumi/mcl/archive/refs/tags/v1.99.tar.gz
   URL_HASH
