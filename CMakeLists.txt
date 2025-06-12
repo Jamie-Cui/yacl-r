@@ -310,7 +310,7 @@ target_link_libraries(yacl PUBLIC yacl_obj)
 # NOTE it's IMPORTANT to link all spi libs in PUBLIC scope.
 # All spi libs must be included in binaries.
 foreach(spilib IN LISTS YACL_SPI_LIBS)
-  target_link_libraries(yacl PUBLIC $<TARGET_OBJECTS:${spilib}>)
+  target_link_libraries(yacl PRIVATE $<TARGET_OBJECTS:${spilib}>)
 endforeach()
 
 # target_link_libraries(yacl PUBLIC yacl_proto)
