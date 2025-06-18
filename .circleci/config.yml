@@ -38,7 +38,7 @@ jobs:
           command: cmake -S . -B build
       - run:
           name: Build
-          command: cmake --build build
+          command: cmake --build build --parallel
       - run:
           name: Run Tests
           command: cmake --build build --target test # If your project has tests
