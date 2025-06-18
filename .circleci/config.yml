@@ -29,7 +29,7 @@ jobs:
           command: apt update && apt install libgmp-dev tree -y
       - run:
           name: Check System Info
-          command: uname -a && whoami && pwd && ls -l
+          command: uname -a && lscpu && whoami && pwd && ls -l
       - restore_cache:
           keys:
             - cmake-{{ checksum "CMakeLists.txt" }}
@@ -38,7 +38,7 @@ jobs:
           command: cmake -S . -B build
       - run:
           name: Build
-          command: cmake --build build --parallel
+          command: cmake --build build --parallel 4
       - run:
           name: Run Tests
           command: cmake --build build --target test # If your project has tests
