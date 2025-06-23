@@ -12,14 +12,14 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-externalproject_add(
+ExternalProject_Add(
   fourq
   URL https://github.com/microsoft/FourQlib/archive/1031567f23278e1135b35cc04e5d74c2ac88c029.tar.gz
   URL_HASH
     SHA256=7417c829d7933facda568c7a08924dfefb0c83dd1dab411e597af4c0cc0417f0
   PREFIX ${CMAKE_DEPS_PREFIX}
   PATCH_COMMAND patch -p1 -l --binary -i
-                ${PROJECT_SOURCE_DIR}/bazel/patches/FourQlib.patch
+                ${PROJECT_SOURCE_DIR}/cmake/patches/FourQlib.patch
   CONFIGURE_COMMAND "" # no configure
   BUILD_IN_SOURCE On
   BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} ARCH=x64 GENERIC=TRUE EXTENDED_SET=FALSE
