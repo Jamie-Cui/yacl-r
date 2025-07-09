@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   leveldb
   URL https://github.com/google/leveldb/archive/refs/tags/1.23.tar.gz
   URL_HASH

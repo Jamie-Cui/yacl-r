@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   brpc
   URL https://github.com/apache/brpc/archive/refs/tags/1.10.0.tar.gz
   URL_HASH

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   abseil
   URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz
   URL_HASH

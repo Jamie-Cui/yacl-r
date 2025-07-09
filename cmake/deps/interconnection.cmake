@@ -14,7 +14,7 @@
 
 message(STATUS "Downloading interconnection")
 
-fetchcontent_declare(
+FetchContent_Declare(
   interconnection
   URL https://github.com/secretflow/interconnection/archive/30e4220b7444d0bb077a9040f1b428632124e31a.tar.gz
   URL_HASH
@@ -23,10 +23,10 @@ fetchcontent_declare(
 
 message(STATUS "Downloading interconnection - Success")
 
-fetchcontent_getproperties(interconnection)
+FetchContent_GetProperties(interconnection)
 
 if(NOT interconnection_POPULATED)
-  fetchcontent_populate(interconnection)
+  FetchContent_Populate(interconnection)
 endif()
 
 add_library(

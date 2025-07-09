@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   spdlog
   URL https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.tar.gz
   URL_HASH
@@ -22,6 +22,7 @@ externalproject_add(
              -DCMAKE_C_STANDARD_REQUIRED=Yes
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX}
              -DCMAKE_CPP_FLAGS=-isystem\ ${CMAKE_DEPS_INCLUDEDIR}
+             -DSPDLOG_FMT_EXTERNAL=On
   PREFIX ${CMAKE_DEPS_PREFIX}
   EXCLUDE_FROM_ALL true
   DOWNLOAD_EXTRACT_TIMESTAMP On
