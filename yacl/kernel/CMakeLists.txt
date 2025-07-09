@@ -32,8 +32,8 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(ot_kernel_test)
-add_yacl_test(svole_kernel_test)
+add_yacl_test_if(ot_kernel_test)
+add_yacl_test_if(svole_kernel_test)
 
 # Add header files for installation
 install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/kernel)

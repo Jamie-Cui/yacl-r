@@ -86,4 +86,4 @@ set(YACL_SPI_LIBS
 # Test
 # ------------
 
-add_yacl_test(ecc_test)
+add_yacl_test_if(ecc_test)

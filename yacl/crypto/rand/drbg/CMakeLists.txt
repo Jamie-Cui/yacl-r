@@ -27,7 +27,7 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(drbg_test)
+add_yacl_test_if(drbg_test)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_drbg.so

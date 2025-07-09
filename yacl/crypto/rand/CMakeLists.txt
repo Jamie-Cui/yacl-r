@@ -33,4 +33,4 @@ set(YACL_SPI_LIBS
 # Test
 # ------------
 
-add_yacl_test(rand_test)
+add_yacl_test_if(rand_test)

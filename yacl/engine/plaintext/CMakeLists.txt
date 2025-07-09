@@ -20,7 +20,7 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 # FIXME executor_test fails
-# add_yacl_test(executor_test)
+# add_yacl_test_if(executor_test)
 
 # Add header files for installation
 install(FILES ${CMAKE_CURRENT_LIST_DIR}/executor.h

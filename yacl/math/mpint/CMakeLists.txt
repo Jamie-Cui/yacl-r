@@ -22,9 +22,9 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/mpint)
 
-add_yacl_test(montgomery_math_test)
-add_yacl_test(mp_int_test)
-add_yacl_test(tommath_ext_test)
+add_yacl_test_if(montgomery_math_test)
+add_yacl_test_if(mp_int_test)
+add_yacl_test_if(tommath_ext_test)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_mpint

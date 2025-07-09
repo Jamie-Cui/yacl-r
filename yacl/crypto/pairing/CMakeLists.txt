@@ -48,4 +48,4 @@ set(YACL_SPI_LIBS
 # Test
 # ------------
 
-add_yacl_test(pairing_test)
+add_yacl_test_if(pairing_test)

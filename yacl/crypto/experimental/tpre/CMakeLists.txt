@@ -28,8 +28,8 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(capsule_test)
-add_yacl_test(hash_test)
-add_yacl_test(kdf_test)
-add_yacl_test(keys_test)
-add_yacl_test(tpre_test)
+add_yacl_test_if(capsule_test)
+add_yacl_test_if(hash_test)
+add_yacl_test_if(kdf_test)
+add_yacl_test_if(keys_test)
+add_yacl_test_if(tpre_test)

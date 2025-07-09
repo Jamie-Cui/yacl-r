@@ -27,4 +27,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(symmetric_crypto_test)
+add_yacl_test_if(symmetric_crypto_test)

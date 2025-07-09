@@ -34,8 +34,8 @@ set(YACL_PROTO_SOURCE_FILES
     ${YACL_PROTO_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(context_test)
-add_yacl_test(factory_test)
+add_yacl_test_if(context_test)
+add_yacl_test_if(factory_test)
 
 # Add header files for installation
 install(

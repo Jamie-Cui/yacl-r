@@ -59,7 +59,7 @@ set(YACL_SPI_LIBS
 # For tests
 # ------------------------------------------------------------------------------
 
-add_yacl_test(gf_test)
-add_yacl_test(gf_intrinsic_test)
-# add_yacl_test(mpint_factory_test) add_yacl_test(mcl_factory_test)
-# add_yacl_test(intel_factory_test)
+add_yacl_test_if(gf_test)
+add_yacl_test_if(gf_intrinsic_test)
+# add_yacl_test_if(mpint_factory_test) add_yacl_test_if(mcl_factory_test)
+# add_yacl_test_if(intel_factory_test)

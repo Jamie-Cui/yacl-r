@@ -25,4 +25,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(aes_test)
+add_yacl_test_if(aes_test)

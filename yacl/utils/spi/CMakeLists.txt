@@ -53,4 +53,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(spi_factory_test)
+add_yacl_test_if(spi_factory_test)

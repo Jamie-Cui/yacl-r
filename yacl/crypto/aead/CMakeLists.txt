@@ -30,5 +30,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(all_gcm_test)
-add_yacl_test(sm4_mte_test)
+add_yacl_test_if(all_gcm_test)
+add_yacl_test_if(sm4_mte_test)

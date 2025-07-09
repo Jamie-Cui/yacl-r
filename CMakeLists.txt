@@ -30,8 +30,7 @@ option(ENABLE_ENGINE "Enabel the engine module (On/Off)." Off)
 option(ENABLE_KERNEL "Enable the kernel module (On/Off)." Off)
 option(ENABLE_LINK "Enable the link (network) module (On/Off)." Off)
 
-# TODO: add test option
-# option(BUILD_TESTS "Build the testing binaries (On/Off)." On)
+option(BUILD_TEST "Build the testing binaries (On/Off)." Off)
 
 # Check for options
 if(ENABLE_ENGINE AND NOT ENABLE_KERNEL)
@@ -202,6 +201,7 @@ message(STATUS "Build Type          : ${CMAKE_BUILD_TYPE}")
 message(STATUS "(opt) Engine Module : ${ENABLE_ENGINE}")
 message(STATUS "(opt) Kernel Module : ${ENABLE_KERNEL}")
 message(STATUS "(opt) Link Module   : ${ENABLE_LINK}")
+message(STATUS "(opt) Build Test    : ${BUILD_TEST}")
 message(STATUS "==============================================================")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})

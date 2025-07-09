@@ -31,5 +31,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(rsa_signing_test)
-add_yacl_test(sm2_signing_test)
+add_yacl_test_if(rsa_signing_test)
+add_yacl_test_if(sm2_signing_test)

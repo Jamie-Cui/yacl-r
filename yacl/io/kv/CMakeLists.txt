@@ -27,4 +27,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(kvstore_test)
+add_yacl_test_if(kvstore_test)
