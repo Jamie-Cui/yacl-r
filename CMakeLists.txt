@@ -260,7 +260,7 @@ target_link_libraries(
   PUBLIC Deps::absl
          Deps::blake3
          Deps::cpu_features
-         $<LINK_LIBRARY:WHOLE_ARCHIVE,Deps::fmt>
+         Deps::fmt
          Deps::fourq
          Deps::leveldb
          Deps::libsodium
@@ -303,7 +303,8 @@ add_library(yacl SHARED) # main shared lib
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
                                        ${CMAKE_DEPS_INCLUDEDIR})
 
-target_link_libraries(yacl PUBLIC yacl_obj)
+target_link_libraries(yacl PUBLIC yacl_obj
+                                  $<LINK_LIBRARY:WHOLE_ARCHIVE,Deps::fmt>)
 
 # NOTE it's IMPORTANT to link all spi libs in PUBLIC scope.
 # All spi libs must be included in binaries.
