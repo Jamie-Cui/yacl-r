@@ -25,6 +25,6 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(dcf_test)
-add_yacl_test(dpf_test)
-add_yacl_test(pprf_test)
+add_yacl_test_if(dcf_test)
+add_yacl_test_if(dpf_test)
+add_yacl_test_if(pprf_test)

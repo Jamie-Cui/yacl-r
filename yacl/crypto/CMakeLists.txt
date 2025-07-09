@@ -48,4 +48,4 @@ set(YACL_SPI_LIBS
 # Test
 # ------------
 
-add_yacl_test(key_utils_test)
+add_yacl_test_if(key_utils_test)

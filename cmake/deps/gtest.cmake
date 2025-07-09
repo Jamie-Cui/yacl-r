@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
   URL_HASH

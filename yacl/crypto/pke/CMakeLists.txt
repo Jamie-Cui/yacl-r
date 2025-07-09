@@ -30,5 +30,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(rsa_enc_test)
-add_yacl_test(sm2_enc_test)
+add_yacl_test_if(rsa_enc_test)
+add_yacl_test_if(sm2_enc_test)

@@ -36,5 +36,5 @@ set(YACL_SOURCE_FILES
 # ------------
 # Test
 # ------------
-add_yacl_test(buffer_test)
-add_yacl_test(secparam_test)
+add_yacl_test_if(buffer_test)
+add_yacl_test_if(secparam_test)

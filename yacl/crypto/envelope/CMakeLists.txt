@@ -27,4 +27,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(digital_envelope_test)
+add_yacl_test_if(digital_envelope_test)

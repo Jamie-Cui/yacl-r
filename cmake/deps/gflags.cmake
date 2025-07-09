@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   gflags
   URL https://github.com/gflags/gflags/archive/v2.2.2.tar.gz
   URL_HASH

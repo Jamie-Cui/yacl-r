@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-externalproject_add(
+ExternalProject_Add(
   cpu_features
   URL https://github.com/google/cpu_features/archive/refs/tags/v0.9.0.tar.gz
   URL_HASH

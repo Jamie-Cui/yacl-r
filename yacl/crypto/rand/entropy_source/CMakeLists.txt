@@ -23,7 +23,7 @@ install(
 # Test
 # ------------
 
-add_yacl_test(entropy_source_test)
+add_yacl_test_if(entropy_source_test)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_entropy_source.so

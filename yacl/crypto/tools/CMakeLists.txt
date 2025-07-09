@@ -31,7 +31,7 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(crhash_test)
-add_yacl_test(prg_test)
-add_yacl_test(ro_test)
-add_yacl_test(rp_test)
+add_yacl_test_if(crhash_test)
+add_yacl_test_if(prg_test)
+add_yacl_test_if(ro_test)
+add_yacl_test_if(rp_test)

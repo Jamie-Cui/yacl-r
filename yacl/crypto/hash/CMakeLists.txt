@@ -32,5 +32,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(blake3_test)
-add_yacl_test(ssl_hash_all_test)
+add_yacl_test_if(blake3_test)
+add_yacl_test_if(ssl_hash_all_test)

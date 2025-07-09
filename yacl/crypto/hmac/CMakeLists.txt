@@ -28,4 +28,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test(hmac_all_test)
+add_yacl_test_if(hmac_all_test)

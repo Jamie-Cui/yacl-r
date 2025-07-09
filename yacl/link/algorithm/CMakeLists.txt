@@ -25,8 +25,8 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test(allgather_test)
-add_yacl_test(barrier_test)
-add_yacl_test(broadcast_test)
-add_yacl_test(gather_test)
-add_yacl_test(scatter_test)
+add_yacl_test_if(allgather_test)
+add_yacl_test_if(barrier_test)
+add_yacl_test_if(broadcast_test)
+add_yacl_test_if(gather_test)
+add_yacl_test_if(scatter_test)

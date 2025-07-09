@@ -23,4 +23,4 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-# FIXME example data path add_yacl_test(bristol_fashion_test)
+# FIXME example data path add_yacl_test_if(bristol_fashion_test)

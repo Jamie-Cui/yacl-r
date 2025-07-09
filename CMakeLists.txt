@@ -30,8 +30,7 @@ option(ENABLE_ENGINE "Enabel the engine module (On/Off)." Off)
 option(ENABLE_KERNEL "Enable the kernel module (On/Off)." Off)
 option(ENABLE_LINK "Enable the link (network) module (On/Off)." Off)
 
-# TODO: add test option
-# option(BUILD_TESTS "Build the testing binaries (On/Off)." On)
+option(BUILD_TEST "Build the testing binaries (On/Off)." Off)
 
 # Check for options
 if(ENABLE_ENGINE AND NOT ENABLE_KERNEL)
@@ -94,9 +93,9 @@ include(FetchContent)
 
 set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Toolchain Configuration
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 # CMake arguments
 set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
@@ -137,9 +136,9 @@ if(CMAKE_GENERATOR STREQUAL Ninja)
   add_compiler_flags(-fdiagnostics-color=always)
 endif()
 
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # External Dependencies Configuration
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 # prefer -pthread instead of -lpthread or -lpthreads
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
@@ -154,12 +153,10 @@ set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
 
 # Explicitly create build/deps directory
 file(MAKE_DIRECTORY ${CMAKE_DEPS_PREFIX})
-
-execute_process(
-  COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_BINDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}
-  COMMAND mkdir -p ${CMAKE_DEPS_SRCDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_LIBDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_BINDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_INCLUDEDIR})
+file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR})
 
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
@@ -189,9 +186,9 @@ include(deps/openssl)
 include(deps/spdlog)
 include(deps/sse2neon)
 
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # Project Target Configuration
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 message(STATUS "==============================================================")
 message(STATUS "User Options and Configurations")
@@ -204,6 +201,7 @@ message(STATUS "Build Type          : ${CMAKE_BUILD_TYPE}")
 message(STATUS "(opt) Engine Module : ${ENABLE_ENGINE}")
 message(STATUS "(opt) Kernel Module : ${ENABLE_KERNEL}")
 message(STATUS "(opt) Link Module   : ${ENABLE_LINK}")
+message(STATUS "(opt) Build Test    : ${BUILD_TEST}")
 message(STATUS "==============================================================")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
@@ -300,7 +298,7 @@ endif()
 # Static Library: yacl
 #
 
-add_library(yacl STATIC) # main static lib
+add_library(yacl SHARED) # main shared lib
 
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
                                        ${CMAKE_DEPS_INCLUDEDIR})

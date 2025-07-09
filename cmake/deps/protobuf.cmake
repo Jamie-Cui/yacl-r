@@ -20,7 +20,7 @@ if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
 
   message(STATUS "Downloading Protobuf")
 
-  fetchcontent_declare(
+  FetchContent_Declare(
     protobuf
     URL https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-all-21.12.tar.gz
     URL_HASH
@@ -29,10 +29,10 @@ if(NOT Protobuf_FOUND OR (NOT Protobuf_VERSION VERSION_EQUAL 3.21.12.0))
 
   message(STATUS "Downloading Protobuf - Success")
 
-  fetchcontent_getproperties(protobuf)
+  FetchContent_GetProperties(protobuf)
 
   if(NOT protobuf_POPULATED)
-    fetchcontent_populate(protobuf)
+    FetchContent_Populate(protobuf)
 
     message(STATUS "Configuring Protobuf")
     execute_process(
