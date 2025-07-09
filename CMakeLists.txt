@@ -298,7 +298,7 @@ endif()
 # Static Library: yacl
 #
 
-add_library(yacl STATIC) # main static lib
+add_library(yacl SHARED) # main shared lib
 
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
                                        ${CMAKE_DEPS_INCLUDEDIR})
