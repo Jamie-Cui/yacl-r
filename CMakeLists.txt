@@ -303,8 +303,7 @@ add_library(yacl SHARED) # main shared lib
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
                                        ${CMAKE_DEPS_INCLUDEDIR})
 
-target_link_libraries(yacl PUBLIC yacl_obj
-                                  $<LINK_LIBRARY:WHOLE_ARCHIVE,Deps::fmt>)
+target_link_libraries(yacl PUBLIC yacl_obj)
 
 # NOTE it's IMPORTANT to link all spi libs in PUBLIC scope.
 # All spi libs must be included in binaries.
