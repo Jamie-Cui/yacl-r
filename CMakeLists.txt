@@ -131,6 +131,9 @@ add_compiler_flags(-Wno-array-bounds) # mcl
 add_compile_definitions(__LINUX__)
 add_compile_definitions(_ARM64_)
 
+# HACK for x86
+add_compiler_flags(-fPIC)
+
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
   add_compiler_flags(-fdiagnostics-color=always)
