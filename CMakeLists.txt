@@ -260,7 +260,7 @@ target_link_libraries(
   PUBLIC Deps::absl
          Deps::blake3
          Deps::cpu_features
-         Deps::fmt
+         $<LINK_LIBRARY:WHOLE_ARCHIVE,Deps::fmt>
          Deps::fourq
          Deps::leveldb
          Deps::libsodium
