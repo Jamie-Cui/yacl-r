@@ -101,6 +101,7 @@ set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
 set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
+set(CMAKE_SKIP_RPATH TRUE) # Do not use RPATH
 
 # Additional compiler flags
 add_compiler_flags(-Wall)
@@ -115,7 +116,13 @@ add_compiler_flags(-maes)
 add_compiler_flags(-mavx)
 add_compiler_flags(-mpclmul)
 
-#
+# Security flags
+set(CMAKE_POSITION_INDEPENDENT_CODE ON) # fpic
+add_compiler_flags(-fstack-protector-strong) # stack protection
+add_compiler_flags(-D_FORTIFY_SOURCE=2 -O2)
+add_linker_flags(-s) # strip
+
+# HACK supress warnings
 add_compiler_flags(-Wno-sign-compare)
 add_compiler_flags(-Wno-unused-function)
 add_compiler_flags(-Wno-vla) # no variable length error warning
@@ -127,7 +134,7 @@ add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-stringop-overflow) # mcl
 add_compiler_flags(-Wno-array-bounds) # mcl
 
-# HACK we need to add the following global compiler flag in order to use fourq
+# HACK we need to add the following global compiler flag in order to compile fourq
 add_compile_definitions(__LINUX__)
 add_compile_definitions(_ARM64_)
 
@@ -193,11 +200,12 @@ include(deps/sse2neon)
 message(STATUS "==============================================================")
 message(STATUS "User Options and Configurations")
 message(STATUS "==============================================================")
+message(STATUS "Build Type          : ${CMAKE_BUILD_TYPE}")
 message(STATUS "Cmake Version       : ${CMAKE_VERSION}")
 message(STATUS "Compiler            : ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "Compiler Version    : ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "Compiler Flags      : ${CMAKE_CXX_FLAGS}")
-message(STATUS "Build Type          : ${CMAKE_BUILD_TYPE}")
+message(STATUS "Linker Flags        : ${LINK_OPTIONS}")
 message(STATUS "(opt) Engine Module : ${ENABLE_ENGINE}")
 message(STATUS "(opt) Kernel Module : ${ENABLE_KERNEL}")
 message(STATUS "(opt) Link Module   : ${ENABLE_LINK}")
