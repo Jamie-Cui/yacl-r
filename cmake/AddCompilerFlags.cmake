@@ -13,6 +13,7 @@
 # the License.
 
 include(CheckCXXCompilerFlag)
+include(CheckLinkerFlag)
 
 # For easier adding of CXX compiler flags
 function(add_compiler_flags flag)
@@ -23,6 +24,20 @@ function(add_compiler_flags flag)
     if(flag_supported)
       set(CMAKE_CXX_FLAGS
           "${CMAKE_CXX_FLAGS} ${flag}"
+          PARENT_SCOPE)
+    endif()
+    unset(flag_supported CACHE)
+  endif()
+endfunction()
+
+function(add_linker_flags flag)
+  string(FIND "${LINK_OPTIONS}" "${flag}" flag_already_set)
+  if(flag_already_set EQUAL -1)
+    message(STATUS "Adding linker flag: ${flag} ...")
+    check_linker_flag(CXX "${flag}" flag_supported)
+    if(flag_supported)
+      set(LINK_OPTIONS
+          "${LINK_OPTIONS} ${flag}"
           PARENT_SCOPE)
     endif()
     unset(flag_supported CACHE)
