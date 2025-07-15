@@ -35,15 +35,9 @@ ExternalProject_Add(
 # ------------------------------------------------------------------------------
 # How to use absl?
 # ------------------------------------------------------------------------------
-
-add_library(liblibabsl STATIC IMPORTED)
-set_target_properties(
-  liblibabsl
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libabsl${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(liblibabsl abseil)
+import_static_lib_from(libabsl abseil)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::absl ALIAS liblibabsl)
+add_library(Deps::absl ALIAS libabsl)

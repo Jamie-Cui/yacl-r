@@ -31,12 +31,7 @@ ExternalProject_Add(
   LOG_INSTALL On
   DOWNLOAD_EXTRACT_TIMESTAMP On)
 
-add_library(libblake3 STATIC IMPORTED)
-set_target_properties(
-  libblake3
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libblake3 blake3)
+import_static_lib_from(libblake3 blake3)
 
 # -----------------------------
 # Alias Target for External Use

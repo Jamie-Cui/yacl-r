@@ -36,12 +36,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libgflags STATIC IMPORTED)
-set_target_properties(
-  libgflags
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libgflags gflags)
+import_static_lib_from(libgflags gflags)
 
 # -----------------------------
 # Alias Target for External Use

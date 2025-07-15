@@ -44,14 +44,9 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libfourq STATIC IMPORTED)
-set_target_properties(
-  libfourq
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libFourQ${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libfourq fourq)
+import_static_lib_from(libFourQ fourq)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::fourq ALIAS libfourq)
+add_library(Deps::fourq ALIAS libFourQ)

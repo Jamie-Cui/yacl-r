@@ -32,23 +32,12 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libcrypto STATIC IMPORTED)
-set_target_properties(
-  libcrypto
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libcrypto openssl)
+import_static_lib_from(libcrypto openssl)
+import_static_lib_from(libssl openssl)
 
-add_library(libssl STATIC IMPORTED)
-set_target_properties(
-  libssl PROPERTIES IMPORTED_LOCATION
-                    ${CMAKE_DEPS_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libcrypto openssl)
-
-add_library(libopenssl_interface INTERFACE)
-target_link_libraries(libopenssl_interface INTERFACE libssl libcrypto)
+target_link_libraries(libssl INTERFACE libcrypto)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::openssl ALIAS libopenssl_interface)
+add_library(Deps::openssl ALIAS libssl)

@@ -13,7 +13,7 @@
 # the License.
 
 ExternalProject_Add(
-  libtommath
+  libtommath_repo # HACK avoid name conflicts
   URL https://github.com/libtom/libtommath/archive/42b3fb07e7d504f61a04c7fca12e996d76a25251.tar.gz
   URL_HASH
     SHA256=7cfbdb64431129de4257e7d3349200fdbd4f229b470ff3417b30d0f39beed41f
@@ -28,14 +28,9 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(liblibtommath STATIC IMPORTED)
-set_target_properties(
-  liblibtommath
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(liblibtommath libtommath)
+import_static_lib_from(libtommath libtommath_repo)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::libtommath ALIAS liblibtommath)
+add_library(Deps::libtommath ALIAS libtommath)
