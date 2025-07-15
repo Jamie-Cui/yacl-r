@@ -24,15 +24,6 @@ repos:
     hooks:
       - id: trailing-whitespace
 
-  # buildifier
-  - repo: local
-    hooks:
-      - id: buildifier
-        name: buildifier
-        entry: buildifier # -mode check
-        language: system
-        files: '^(.*/)?(BUILD\.bazel|BUILD|WORKSPACE|WORKSPACE\.bazel|WORKSPACE\.bzlmod|MODULE\.bazel)$|\.BUILD$|\.bzl$'
-
   # clang-format
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: "v16.0.6"

@@ -8,6 +8,5 @@
     "dependencies"
   ],
   "ignoreDeps": [
-    "bazel"
   ]
 }
