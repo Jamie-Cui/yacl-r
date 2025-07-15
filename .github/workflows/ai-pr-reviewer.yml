@@ -28,3 +28,4 @@ jobs:
           debug: false
           review_simple_changes: false
           review_comment_lgtm: false
+          openai_base_url: "dashscope.aliyuncs.com/compatible-mode/v1"
