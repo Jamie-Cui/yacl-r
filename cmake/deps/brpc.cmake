@@ -40,11 +40,7 @@ add_dependencies(brpc Deps::gflags)
 add_dependencies(brpc Deps::leveldb)
 add_dependencies(brpc Deps::protobuf)
 
-add_library(libbrpc STATIC IMPORTED)
-set_target_properties(
-  libbrpc PROPERTIES IMPORTED_LOCATION
-                     ${CMAKE_DEPS_LIBDIR}/libbrpc${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libbrpc brpc)
+import_static_lib_from(libbrpc brpc)
 
 # HACK for macos see:
 # https://github.com/apache/brpc/blob/c93d0e06f50182bf41d973cad6f8714f4b1d021e/BUILD.bazel#L59

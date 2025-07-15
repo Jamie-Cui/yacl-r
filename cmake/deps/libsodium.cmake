@@ -13,7 +13,7 @@
 # the License.
 
 ExternalProject_Add(
-  libsodium
+  libsodium_repo # HACK avoid name conflicts
   URL https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz
   URL_HASH
     SHA256=6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1
@@ -27,14 +27,9 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(liblibsodium STATIC IMPORTED)
-set_target_properties(
-  liblibsodium
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libsodium${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(liblibsodium libsodium)
+import_static_lib_from(libsodium libsodium_repo)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::libsodium ALIAS liblibsodium)
+add_library(Deps::libsodium ALIAS libsodium)

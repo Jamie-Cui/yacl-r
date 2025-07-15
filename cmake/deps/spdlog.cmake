@@ -32,12 +32,7 @@ ExternalProject_Add(
 
 add_dependencies(spdlog fmt)
 
-add_library(libspdlog STATIC IMPORTED)
-set_target_properties(
-  libspdlog
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libspdlog${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libspdlog spdlog)
+import_static_lib_from(libspdlog spdlog)
 
 # -----------------------------
 # Alias Target for External Use

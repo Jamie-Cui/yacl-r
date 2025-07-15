@@ -30,41 +30,16 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libgtest STATIC IMPORTED)
-set_target_properties(
-  libgtest
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libgtest${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libgtest googletest)
+import_static_lib_from(libgtest googletest)
+import_static_lib_from(libgtest_main googletest)
+import_static_lib_from(libgmock_main googletest)
+import_static_lib_from(libgmock googletest)
 
-add_library(libgtest_main STATIC IMPORTED)
-set_target_properties(
-  libgtest_main
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libgtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libgtest_main googletest)
-
-add_library(libgmock_main STATIC IMPORTED)
-set_target_properties(
-  libgmock_main
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libgmock_main${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libgmock_main googletest)
-
-add_library(libgmock STATIC IMPORTED)
-set_target_properties(
-  libgmock
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libgmock${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libgmock googletest)
-
-add_library(libgtest_interface INTERFACE)
-target_link_libraries(libgtest_interface INTERFACE libgtest_main libgtest
-                                                   libgtest_main libgmock)
-target_include_directories(libgtest_interface
-                           INTERFACE ${CMAKE_DEPS_INCLUDEDIR})
+target_link_libraries(libgtest_main INTERFACE libgtest)
+target_link_libraries(libgmock_main INTERFACE libgmock)
 
 # -----------------------------
 # Alias Target for External Use
 # -----------------------------
-add_library(Deps::gtest ALIAS libgtest_interface)
+add_library(Deps::gtest ALIAS libgtest_main)
+add_library(Deps::gmock ALIAS libgmock_main)

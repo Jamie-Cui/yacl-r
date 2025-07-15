@@ -31,11 +31,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libfmt STATIC IMPORTED)
-set_target_properties(
-  libfmt PROPERTIES IMPORTED_LOCATION
-                    ${CMAKE_DEPS_LIBDIR}/libfmt${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libfmt fmt)
+import_static_lib_from(libfmt fmt)
 
 # -----------------------------
 # Alias Target for External Use

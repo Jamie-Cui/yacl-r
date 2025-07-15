@@ -29,8 +29,7 @@ project(
 option(ENABLE_ENGINE "Enabel the engine module (On/Off)." Off)
 option(ENABLE_KERNEL "Enable the kernel module (On/Off)." Off)
 option(ENABLE_LINK "Enable the link (network) module (On/Off)." Off)
-
-option(BUILD_TEST "Build the testing binaries (On/Off)." Off)
+option(BUILD_TEST "Build the testing binaries (On/Off)." On)
 
 # Check for options
 if(ENABLE_ENGINE AND NOT ENABLE_KERNEL)
@@ -80,6 +79,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 # Generic this project's CMake modules
 include(AddCompilerFlags)
 include(AddYaclTest)
+include(ImportLib)
 
 # Generic CMake modules
 include(CheckCXXCompilerFlag)
@@ -102,6 +102,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
 set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
 set(CMAKE_SKIP_RPATH TRUE) # Do not use RPATH
+
+if(NOT BUILD_TEST)
+  set(CMAKE_SKIP_RPATH TRUE) # Do not use RPATH for testing
+endif()
 
 # Additional compiler flags
 add_compiler_flags(-Wall)

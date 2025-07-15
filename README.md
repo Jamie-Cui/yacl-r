@@ -67,4 +67,4 @@ cmake --build build
 
 ## License
 
-See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md)
+See [LICENSE](LICENSE) 

@@ -32,12 +32,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libcpu_features STATIC IMPORTED)
-set_target_properties(
-  libcpu_features
-  PROPERTIES IMPORTED_LOCATION
-             ${CMAKE_DEPS_LIBDIR}/libcpu_features${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libcpu_features cpu_features)
+import_static_lib_from(libcpu_features cpu_features)
 
 # -----------------------------
 # Alias Target for External Use
