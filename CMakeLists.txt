@@ -101,7 +101,6 @@ set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
 set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
-set(CMAKE_SKIP_RPATH TRUE) # Do not use RPATH
 
 if(NOT BUILD_TEST)
   set(CMAKE_SKIP_RPATH TRUE) # Do not use RPATH for testing
@@ -201,6 +200,10 @@ include(deps/sse2neon)
 # Project Target Configuration
 # --------------------------------------------------------------------------
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
+
 message(STATUS "==============================================================")
 message(STATUS "User Options and Configurations")
 message(STATUS "==============================================================")
@@ -215,10 +218,6 @@ message(STATUS "(opt) Kernel Module : ${ENABLE_KERNEL}")
 message(STATUS "(opt) Link Module   : ${ENABLE_LINK}")
 message(STATUS "(opt) Build Test    : ${BUILD_TEST}")
 message(STATUS "==============================================================")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 enable_testing()
 
