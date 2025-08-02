@@ -66,7 +66,8 @@ OpensslDrbg::OpensslDrbg(std::string type,
   // load openssl provider
   auto libctx = ossl::UniqueLib(OSSL_LIB_CTX_new());
   auto prov = ossl::UniqueProv(
-      OSSL_PROVIDER_load(libctx.get(), GetProviderPath().c_str()));
+      OSSL_PROVIDER_try_load(libctx.get(), GetProviderPath().c_str(),
+                             /* allow retain fallback provider */ 1));
 
   if (prov != nullptr) {
     // fetch provider's entropy_source algorithm

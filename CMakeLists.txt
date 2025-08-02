@@ -132,7 +132,7 @@ add_compiler_flags(-Wno-vla) # no variable length error warning
 add_compiler_flags(-Wno-shift-count-overflow)
 add_compiler_flags(-Wno-deprecated-declarations) # for butil
 add_compiler_flags(-Wno-unused-parameter) # for butil
-add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
+# add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
 add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-stringop-overflow) # mcl
 add_compiler_flags(-Wno-array-bounds) # mcl
