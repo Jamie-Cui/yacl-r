@@ -20,8 +20,8 @@
 #include <vector>
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/ossl_provider/helper.h"
 #include "yacl/base/secparam.h"
+#include "yacl/crypto/ossl_provider/helper.h"
 
 namespace yacl::crypto {
 
@@ -30,23 +30,23 @@ namespace {
 std::vector<OSSL_PARAM> SelectParams(const std::string& type) {
   if (type == "CTR-DRBG") {
     std::vector<OSSL_PARAM> params(2);
-    params[0] = OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_CIPHER,
-                                                 (char*)SN_aes_256_ctr, 0);
+    params[0] = OSSL_PARAM_construct_utf8_string(
+        OSSL_DRBG_PARAM_CIPHER, std::string(SN_aes_256_ctr).data(), 0);
     params[1] = OSSL_PARAM_construct_end();
     return params;
   } else if (type == "HASH-DRBG") {
     std::vector<OSSL_PARAM> params(2);
-    params[0] = OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_DIGEST,
-                                                 (char*)SN_sha256, 0);
+    params[0] = OSSL_PARAM_construct_utf8_string(
+        OSSL_DRBG_PARAM_DIGEST, std::string(SN_sha256).data(), 0);
     params[1] = OSSL_PARAM_construct_end();
     return params;
 
   } else if (type == "HMAC-DRBG") {
     std::vector<OSSL_PARAM> params(3);
-    params[0] = OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_MAC,
-                                                 (char*)SN_hmac, 0);
-    params[1] = OSSL_PARAM_construct_utf8_string(OSSL_DRBG_PARAM_DIGEST,
-                                                 (char*)SN_sha256, 0);
+    params[0] = OSSL_PARAM_construct_utf8_string(
+        OSSL_DRBG_PARAM_MAC, std::string(SN_hmac).data(), 0);
+    params[1] = OSSL_PARAM_construct_utf8_string(
+        OSSL_DRBG_PARAM_DIGEST, std::string(SN_sha256).data(), 0);
     params[2] = OSSL_PARAM_construct_end();
     return params;
 
@@ -80,13 +80,13 @@ OpensslDrbg::OpensslDrbg(std::string type,
     // instantiate the es_ctx
     OSSL_RET_1(EVP_RAND_instantiate(es_ctx.get(), 128, 0, nullptr, 0, nullptr));
   } else {
-    SPDLOG_WARN("Yacl is using openssl's default entropy srouce for randomness");
+    SPDLOG_WARN(
+        "Yacl is using openssl's default entropy srouce for randomness");
   }
 
   // fetch rand (drbg with the specified type) algorithm from OpenSSL's default
   // provider
-  auto rand =
-      ossl::UniqueRand(EVP_RAND_fetch(nullptr, type_.c_str(), nullptr));
+  auto rand = ossl::UniqueRand(EVP_RAND_fetch(nullptr, type_.c_str(), nullptr));
   YACL_ENFORCE(rand != nullptr);
 
   // give ctx_ the fetched algorithm

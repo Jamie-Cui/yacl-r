@@ -133,7 +133,8 @@ inline block toBlock(std::uint64_t low_uint64) {
   return toBlock(0, low_uint64);
 }
 inline block toBlock(const std::uint8_t* data) {
-  return toBlock(((std::uint64_t*)data)[1], ((std::uint64_t*)data)[0]);
+  return toBlock(((const std::uint64_t*)data)[1],
+                 ((const std::uint64_t*)data)[0]);
 }
 
 inline uint128_t toU128(block data) { return data.as<uint128_t>()[0]; }

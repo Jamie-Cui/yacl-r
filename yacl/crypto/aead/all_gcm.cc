@@ -107,8 +107,10 @@ void GcmCrypto::Decrypt(ByteContainerView ciphertext, ByteContainerView aad,
                "Unexpcted decryption out length.");
   YACL_ENFORCE(EVP_CIPHER_CTX_get_tag_length(ctx.get()) ==
                (int)GetMacSize(schema_));
+  std::vector<char*> mac_tmp(mac.size());
+  memcpy(mac_tmp.data(), mac.data(), mac.size());
   OSSL_RET_1(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_GCM_SET_TAG,
-                                 GetMacSize(schema_), (void*)mac.data()));
+                                 GetMacSize(schema_), (void*)mac_tmp.data()));
 
   // Note that get no output here as the data is always aligned for GCM.
   YACL_ENFORCE(EVP_DecryptFinal_ex(ctx.get(), nullptr, &out_length) > 0,

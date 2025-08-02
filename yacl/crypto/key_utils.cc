@@ -33,7 +33,7 @@ constexpr std::array<std::string_view, 6> kX509SubjectFields = {
     /* organizational unit */ "OU",
     /* common name */ "CN"};
 
-inline void AddX509Extension(X509* cert, int nid, char* value) {
+inline void AddX509Extension(X509* cert, int nid, const char* value) {
   X509V3_CTX ctx;
   /* This sets the 'context' of the extensions. */
   /* No configuration database */
@@ -308,12 +308,15 @@ ossl::UniqueX509 MakeX509Cert(
   /* fill cert with rsa public key */
   X509_set_pubkey(x509.get(), pk.get());
 
-  AddX509Extension(x509.get(), NID_basic_constraints, (char*)"CA:TRUE");
-  AddX509Extension(x509.get(), NID_subject_key_identifier, (char*)"hash");
+  constexpr std::string_view kTmp1 = "CA:TRUE";
+  constexpr std::string_view kTmp2 = "hash";
+
+  AddX509Extension(x509.get(), NID_basic_constraints, kTmp1.data());
+  AddX509Extension(x509.get(), NID_subject_key_identifier, kTmp2.data());
 
   /* self signing with digest algorithm */
-  auto sign_bytes = X509_sign(x509.get(), sk.get(),
-                              ossl::FetchEvpMd(ToString(hash)).get());
+  auto sign_bytes =
+      X509_sign(x509.get(), sk.get(), ossl::FetchEvpMd(ToString(hash)).get());
   YACL_ENFORCE(sign_bytes > 0, "Perform self-signing failed.");
   return x509;
 }
@@ -345,8 +348,7 @@ ossl::UniquePkey LoadX509CertPublicKeyFromBuf(ByteContainerView buf) {
   return pkey;  // public key only
 }
 
-ossl::UniquePkey LoadX509CertPublicKeyFromFile(
-    const std::string& file_path) {
+ossl::UniquePkey LoadX509CertPublicKeyFromFile(const std::string& file_path) {
   return LoadX509CertPublicKeyFromBuf(LoadBufFromFile(file_path));
 }
 

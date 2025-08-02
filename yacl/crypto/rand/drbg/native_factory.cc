@@ -26,11 +26,11 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"
 #include "yacl/crypto/hash/hash_utils.h"
 #include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/entropy_source/entropy_source.h"
-#include "yacl/base/secparam.h"
 
 namespace yacl::crypto {
 
@@ -114,7 +114,7 @@ void Sm4Drbg::rng_update(ByteContainerView derived_buf, uint128_t key,
 
   for (int i = 0; i < temp.size(); ++i) {
     *(temp.data<unsigned char>() + i) ^=
-        *((unsigned char*)derived_buf.data() + i);
+        *((const unsigned char*)derived_buf.data() + i);
   }
 
   YACL_ENFORCE(temp.size() == kKeySize + kBlockSize);

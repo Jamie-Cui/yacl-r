@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <functional>
-#include <string_view>
+#include <string>
 #include <utility>
 
 #include "yacl/base/exception.h"
