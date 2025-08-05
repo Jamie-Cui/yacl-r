@@ -39,11 +39,11 @@ add_yacl_test_if(factory_test)
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/context.h
-        ${CMAKE_CURRENT_LIST_DIR}/factory_brpc.h
-        ${CMAKE_CURRENT_LIST_DIR}/factory_mem.h
-        ${CMAKE_CURRENT_LIST_DIR}/trace.h
-        ${CMAKE_CURRENT_LIST_DIR}/link.h
-        ${CMAKE_CURRENT_LIST_DIR}/retry_options.h
-        ${CMAKE_CURRENT_LIST_DIR}/ssl_options.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/link/context.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_brpc.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_mem.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/trace.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/link.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/retry_options.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/ssl_options.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)

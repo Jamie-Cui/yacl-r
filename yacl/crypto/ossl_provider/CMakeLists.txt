@@ -13,8 +13,8 @@
 # the License.
 
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/helper.h ${CMAKE_CURRENT_LIST_DIR}/rand_impl.h
-        ${CMAKE_CURRENT_LIST_DIR}/version.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/helper.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/rand_impl.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/version.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ossl_provider)
 
 # ------------------------------------------------------------------------------

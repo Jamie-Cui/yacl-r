@@ -16,7 +16,7 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/digital_envelope.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/envelope/digital_envelope.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/digital_envelope)
 
 set(YACL_SOURCE_FILES

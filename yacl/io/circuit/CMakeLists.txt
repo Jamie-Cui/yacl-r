@@ -16,7 +16,7 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/bristol_fashion.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/bristol_fashion.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/io/circuit/bristol_fashion.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/circuit)
 
 set(YACL_SOURCE_FILES

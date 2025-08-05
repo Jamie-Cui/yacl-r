@@ -18,9 +18,9 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/common.h ${CMAKE_CURRENT_LIST_DIR}/crhash.h
-        ${CMAKE_CURRENT_LIST_DIR}/prg.h ${CMAKE_CURRENT_LIST_DIR}/ro.h
-        ${CMAKE_CURRENT_LIST_DIR}/rp.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tools/common.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tools/crhash.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tools/prg.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tools/ro.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tools/rp.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/tools)
 
 set(YACL_SOURCE_FILES

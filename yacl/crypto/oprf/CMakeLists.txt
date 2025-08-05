@@ -16,8 +16,8 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/oprf.h
-              ${CMAKE_CURRENT_LIST_DIR}/oprf_ctx.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/oprf/oprf.h
+              ${PROJECT_SOURCE_DIR}/include/yacl/crypto/oprf/oprf_ctx.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/oprf)
 
 set(YACL_SOURCE_FILES

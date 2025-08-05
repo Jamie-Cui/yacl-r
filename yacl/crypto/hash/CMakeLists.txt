@@ -18,10 +18,10 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/ssl_hash.h
-        ${CMAKE_CURRENT_LIST_DIR}/hash_interface.h
-        ${CMAKE_CURRENT_LIST_DIR}/hash_utils.h
-        ${CMAKE_CURRENT_LIST_DIR}/blake3.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hash/ssl_hash.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hash/hash_interface.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hash/hash_utils.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hash/blake3.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/hash)
 
 set(YACL_SOURCE_FILES

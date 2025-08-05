@@ -14,9 +14,9 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/item.h
-        ${CMAKE_CURRENT_LIST_DIR}/spi_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/type_traits.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/item.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/spi_factory.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/type_traits.h
         ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
         ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
         ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h

@@ -16,8 +16,8 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/spec_traits.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/buffer.h
-              ${CMAKE_CURRENT_LIST_DIR}/spec_traits.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/io/msgpack/buffer.h
+              ${PROJECT_SOURCE_DIR}/include/yacl/io/msgpack/spec_traits.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/msgpack)
 
 set(YACL_SOURCE_FILES

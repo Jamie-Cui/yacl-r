@@ -263,6 +263,7 @@ target_include_directories(
   yacl_obj
   PUBLIC # these dirs are only used when building inside the build tree
          "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
          "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
          # these dirs are only used when linking against a prebuilt package
          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
@@ -314,6 +315,7 @@ endif()
 add_library(yacl SHARED) # main shared lib
 
 target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
+                                       ${PROJECT_SOURCE_DIR}/include
                                        ${CMAKE_DEPS_INCLUDEDIR})
 
 target_link_libraries(yacl PUBLIC yacl_obj)

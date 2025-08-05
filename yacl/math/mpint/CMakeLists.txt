@@ -14,12 +14,12 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/montgomery_math.h
-        ${CMAKE_CURRENT_LIST_DIR}/mp_int.h
-        ${CMAKE_CURRENT_LIST_DIR}/mp_int_enforce.h
-        ${CMAKE_CURRENT_LIST_DIR}/mp_int_private.h
-        ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_types.h
-        ${CMAKE_CURRENT_LIST_DIR}/tommath_ext_features.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/montgomery_math.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int_enforce.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int_private.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/tommath_ext_types.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/tommath_ext_features.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/mpint)
 
 add_yacl_test_if(montgomery_math_test)

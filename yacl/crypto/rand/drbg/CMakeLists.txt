@@ -14,9 +14,9 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/drbg.h
-        ${CMAKE_CURRENT_LIST_DIR}/native_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/openssl_factory.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/drbg.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/native_factory.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/openssl_factory.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
 
 set(YACL_SOURCE_FILES

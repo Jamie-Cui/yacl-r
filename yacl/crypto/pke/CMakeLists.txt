@@ -17,9 +17,9 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.cc
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.h
-        ${CMAKE_CURRENT_LIST_DIR}/pke_interface.h
-        ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/pke/rsa_enc.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/pke/pke_interface.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/pke/sm2_enc.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/pke)
 
 set(YACL_SOURCE_FILES

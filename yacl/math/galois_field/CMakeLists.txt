@@ -16,8 +16,8 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.cc)
 
 # Add header files for installation NOTE no install for factory folder files
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/gf.h
-              ${CMAKE_CURRENT_LIST_DIR}/gf_intrinsic.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/math/galois_field/gf.h
+              ${PROJECT_SOURCE_DIR}/include/yacl/math/galois_field/gf_intrinsic.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/galois_field)
 
 set(YACL_SOURCE_FILES

@@ -19,14 +19,14 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/aligned_vector.h
-        ${CMAKE_CURRENT_LIST_DIR}/block.h
-        ${CMAKE_CURRENT_LIST_DIR}/secparam.h
-        ${CMAKE_CURRENT_LIST_DIR}/buffer.h
-        ${CMAKE_CURRENT_LIST_DIR}/byte_container_view.h
-        ${CMAKE_CURRENT_LIST_DIR}/dynamic_bitset.h
-        ${CMAKE_CURRENT_LIST_DIR}/exception.h
-        ${CMAKE_CURRENT_LIST_DIR}/int128.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/base/aligned_vector.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/block.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/secparam.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/buffer.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/byte_container_view.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/dynamic_bitset.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/exception.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/base/int128.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/base)
 
 set(YACL_SOURCE_FILES

@@ -14,9 +14,9 @@
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/entropy_source.h
-        ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.h
-        ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/entropy_source.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/urandom_factory.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/rdseed_factory.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
 
 # ------------

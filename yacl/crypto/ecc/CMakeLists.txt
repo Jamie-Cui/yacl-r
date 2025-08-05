@@ -21,11 +21,11 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/curve_meta.h
-        ${CMAKE_CURRENT_LIST_DIR}/ec_point.h
-        ${CMAKE_CURRENT_LIST_DIR}/ecc_spi.h
-        ${CMAKE_CURRENT_LIST_DIR}/group_sketch.h
-        ${CMAKE_CURRENT_LIST_DIR}/any_ptr.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/curve_meta.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/ec_point.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/ecc_spi.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/group_sketch.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/any_ptr.h
         ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.h
         ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.h
         ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.h

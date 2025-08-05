@@ -18,8 +18,8 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/aead.h ${CMAKE_CURRENT_LIST_DIR}/all_gcm.h
-        ${CMAKE_CURRENT_LIST_DIR}/sm4_mte.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/aead/aead.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/aead/all_gcm.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/aead/sm4_mte.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aead)
 
 set(YACL_SOURCE_FILES

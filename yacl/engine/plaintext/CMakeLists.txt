@@ -23,5 +23,5 @@ set(YACL_SOURCE_FILES
 # add_yacl_test_if(executor_test)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/executor.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/engine/plaintext/executor.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/engine)

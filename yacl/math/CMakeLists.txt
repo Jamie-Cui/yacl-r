@@ -13,7 +13,7 @@
 # the License.
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/gadget.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/math/gadget.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math)
 
 add_subdirectory(galois_field)

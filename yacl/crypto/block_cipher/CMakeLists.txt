@@ -16,7 +16,7 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.cc)
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/block_cipher/symmetric_crypto.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/block_cipher)
 
 set(YACL_SOURCE_FILES

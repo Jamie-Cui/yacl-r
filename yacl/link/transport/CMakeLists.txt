@@ -25,11 +25,11 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/brpc_blackbox_link.h
-        ${CMAKE_CURRENT_LIST_DIR}/interconnection_link.h
-        ${CMAKE_CURRENT_LIST_DIR}/brpc_link.h
-        ${CMAKE_CURRENT_LIST_DIR}/channel.h
-        ${CMAKE_CURRENT_LIST_DIR}/channel_mem.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/brpc_blackbox_link.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/interconnection_link.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/brpc_link.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel_mem.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
 
 set(YACL_SOURCE_FILES

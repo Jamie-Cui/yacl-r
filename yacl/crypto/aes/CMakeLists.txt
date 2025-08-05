@@ -13,8 +13,8 @@
 # the License.
 
 # Add header files for installation
-install(FILES ${CMAKE_CURRENT_LIST_DIR}/aes_intrinsics.h
-              ${CMAKE_CURRENT_LIST_DIR}/aes_opt.h
+install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/aes/aes_intrinsics.h
+              ${PROJECT_SOURCE_DIR}/include/yacl/crypto/aes/aes_opt.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/aes)
 
 set(YACL_SOURCE_FILES

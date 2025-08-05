@@ -19,9 +19,9 @@ set(YACL_SOURCE_FILES
 
 # Add header files for installation
 install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/capsule.h ${CMAKE_CURRENT_LIST_DIR}/hash.h
-        ${CMAKE_CURRENT_LIST_DIR}/kdf.h ${CMAKE_CURRENT_LIST_DIR}/keys.h
-        ${CMAKE_CURRENT_LIST_DIR}/tpre.h
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/experimental/tpre/capsule.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/experimental/tpre/hash.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/experimental/tpre/kdf.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/experimental/tpre/keys.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/experimental/tpre/tpre.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/experimental/tpre)
 
 set(YACL_SOURCE_FILES
