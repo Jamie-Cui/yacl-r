@@ -1,6 +1,6 @@
 # Yet Another Cryptographic Library for Research
 
-![CircleCI](https://dl.circleci.com/status-badge/img/gh/Jamie-Cui/yacl-r/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Jamie-Cui/yacl-r/tree/main)
+![CircleCI](https://dl.circleci.com/status-badge/img/gh/Jamie-Cui/yacl-r/tree/main.svg?style=svg)
 
 ```
 ██╗   ██╗ █████╗  ██████╗██╗           ██████╗ 
