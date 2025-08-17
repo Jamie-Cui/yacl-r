@@ -133,8 +133,8 @@ add_compiler_flags(-Wno-shift-count-overflow)
 add_compiler_flags(-Wno-deprecated-declarations) # for butil
 add_compiler_flags(-Wno-unused-parameter) # for butil
 # add_compiler_flags(-Wno-inconsistent-missing-override) # context_test
+# add_compiler_flags(-Wno-stringop-overflow) # mcl
 add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
-add_compiler_flags(-Wno-stringop-overflow) # mcl
 add_compiler_flags(-Wno-array-bounds) # mcl
 
 # HACK we need to add the following global compiler flag in order to compile fourq
@@ -314,9 +314,9 @@ endif()
 
 add_library(yacl SHARED) # main shared lib
 
-target_include_directories(yacl PUBLIC ${PROJECT_SOURCE_DIR}
-                                       ${PROJECT_SOURCE_DIR}/include
-                                       ${CMAKE_DEPS_INCLUDEDIR})
+target_include_directories(
+  yacl PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include
+              ${CMAKE_DEPS_INCLUDEDIR})
 
 target_link_libraries(yacl PUBLIC yacl_obj)
 

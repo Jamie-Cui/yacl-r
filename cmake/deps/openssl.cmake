@@ -22,10 +22,12 @@ ExternalProject_Add(
     ./Configure no-legacy no-weak-ssl-ciphers no-tests no-shared no-ui-console
     no-docs no-apps --banner=Finished --release --libdir=${CMAKE_INSTALL_LIBDIR}
     --prefix=${CMAKE_DEPS_PREFIX} -w
-  BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} build_sw
-  INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install_sw
+  BUILD_COMMAND make build_sw
+  INSTALL_COMMAND make install_sw
   BUILD_IN_SOURCE On
   DOWNLOAD_EXTRACT_TIMESTAMP On
+  BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}
+  BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}
   EXCLUDE_FROM_ALL true
   LOG_DOWNLOAD On
   LOG_CONFIGURE On

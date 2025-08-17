@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: Intall Dependencies
-          command: apt update && apt install libgmp-dev tree -y
+          command: apt update && apt install libgmp-dev tree ninja-build -y
       - run:
           name: Check System Info
           command: uname -a && lscpu && whoami && pwd && ls -l
@@ -35,7 +35,7 @@ jobs:
             - cmake-{{ checksum "CMakeLists.txt" }}
       - run:
           name: Configure
-          command: cmake -S . -B build
+          command: cmake -S . -B build -G Ninja
       - run:
           name: Build
           command: cmake --build build --parallel 4

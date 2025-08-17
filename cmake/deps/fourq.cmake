@@ -22,21 +22,15 @@ ExternalProject_Add(
                 ${PROJECT_SOURCE_DIR}/cmake/patches/FourQlib.patch
   CONFIGURE_COMMAND "" # no configure
   BUILD_IN_SOURCE On
-  BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} ARCH=x64 GENERIC=TRUE EXTENDED_SET=FALSE
-                -C FourQ_64bit_and_portable libFourQ
+  BUILD_COMMAND make ARCH=x64 GENERIC=TRUE EXTENDED_SET=FALSE -C
+                FourQ_64bit_and_portable libFourQ
   INSTALL_COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
   COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}/fourq
-  COMMAND ${CMAKE_MAKE_PROGRAM} PREFIX=${CMAKE_DEPS_PREFIX} -C
-          FourQ_64bit_and_portable install
-  #
-  # FIXME wait for bazel try to install header in include/fourq/*.h see:
-  # fourq.BUILD
-  #
-  # COMMAND mv ${CMAKE_DEPS_INCLUDEDIR}/FourQ.h ${CMAKE_DEPS_INCLUDEDIR}/fourq/
-  # COMMAND mv ${CMAKE_DEPS_INCLUDEDIR}/FourQ_api.h
-  # ${CMAKE_DEPS_INCLUDEDIR}/fourq/ COMMAND mv
-  # ${CMAKE_DEPS_INCLUDEDIR}/FourQ_internal.h ${CMAKE_DEPS_INCLUDEDIR}/fourq/
-  # COMMAND mv ${CMAKE_DEPS_INCLUDEDIR}/random.h ${CMAKE_DEPS_INCLUDEDIR}/fourq/
+  # HACK fourq does not support ninja, so use gnumake
+  COMMAND make PREFIX=${CMAKE_DEPS_PREFIX} -C FourQ_64bit_and_portable install
+  COMMAND cp -n ${CMAKE_DEPS_PREFIX}/lib/libFourQ${CMAKE_STATIC_LIBRARY_SUFFIX}
+          ${CMAKE_DEPS_LIBDIR}
+  BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libFourQ${CMAKE_STATIC_LIBRARY_SUFFIX}
   EXCLUDE_FROM_ALL true
   DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
