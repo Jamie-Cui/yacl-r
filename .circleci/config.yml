@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: Intall Dependencies
-          command: apt update && apt install libgmp-dev tree ninja-build -y
+          command: apt update && apt install libgmp-dev tree ninja-build clang -y
       - run:
           name: Check System Info
           command: uname -a && lscpu && whoami && pwd && ls -l
