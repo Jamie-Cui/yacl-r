@@ -38,7 +38,7 @@ jobs:
           command: cmake -S . -B build -G Ninja
       - run:
           name: Build
-          command: cmake --build build --parallel 4
+          command: cmake --build build
       - run:
           name: Run Tests
           command: cmake --build build --target test # If your project has tests
