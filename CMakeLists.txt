@@ -64,6 +64,12 @@ if(NOT CMAKE_BUILD_TYPE)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
+# Configure default install path
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE
+                                                   ${PROJECT_SOURCE_DIR}/output)
+endif()
+
 # Set module path
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -218,6 +224,7 @@ message(STATUS "(opt) Engine Module       : ${ENABLE_ENGINE}")
 message(STATUS "(opt) Kernel Module       : ${ENABLE_KERNEL}")
 message(STATUS "(opt) Link Module         : ${ENABLE_LINK}")
 message(STATUS "(opt) Build Test          : ${BUILD_TEST}")
+message(STATUS "Install Prefix            : ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "==============================================================")
 
 enable_testing()
@@ -325,12 +332,6 @@ foreach(spilib IN LISTS YACL_SPI_LIBS)
   target_link_libraries(yacl PRIVATE $<TARGET_OBJECTS:${spilib}>)
 endforeach()
 
-# target_link_libraries(yacl PUBLIC yacl_proto)
-# target_link_libraries(yacl PUBLIC Deps::msgpack)
-# target_link_libraries(yacl PUBLIC Deps::brpc)
-# target_link_libraries(yacl PUBLIC Deps::simplest_ot)
-# target_link_libraries(yacl PUBLIC Deps::interconnection)
-
 add_library(Yacl::yacl ALIAS yacl)
 
 #
@@ -343,4 +344,4 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
-# install(${CMAKE_DEPS_INCLUDEDIR})
+install(DIRECTORY ${CMAKE_DEPS_INCLUDEDIR} DESTINATION ${CMAKE_INSTALL_PREFIX})
