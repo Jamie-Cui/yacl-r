@@ -332,12 +332,6 @@ foreach(spilib IN LISTS YACL_SPI_LIBS)
   target_link_libraries(yacl PRIVATE $<TARGET_OBJECTS:${spilib}>)
 endforeach()
 
-# target_link_libraries(yacl PUBLIC yacl_proto)
-# target_link_libraries(yacl PUBLIC Deps::msgpack)
-# target_link_libraries(yacl PUBLIC Deps::brpc)
-# target_link_libraries(yacl PUBLIC Deps::simplest_ot)
-# target_link_libraries(yacl PUBLIC Deps::interconnection)
-
 add_library(Yacl::yacl ALIAS yacl)
 
 #
