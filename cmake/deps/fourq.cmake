@@ -18,7 +18,7 @@ ExternalProject_Add(
   URL_HASH
     SHA256=7417c829d7933facda568c7a08924dfefb0c83dd1dab411e597af4c0cc0417f0
   PREFIX ${CMAKE_DEPS_PREFIX}
-  PATCH_COMMAND patch -p1 -l --binary -i
+  PATCH_COMMAND patch -p1 -l --binary --forward -i
                 ${PROJECT_SOURCE_DIR}/cmake/patches/FourQlib.patch
   CONFIGURE_COMMAND "" # no configure
   BUILD_IN_SOURCE On
