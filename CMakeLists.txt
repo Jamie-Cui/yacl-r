@@ -32,33 +32,14 @@ endif()
 # User options
 # --------------------------------------------------------------------
 
-# Toggle different modules
-option(ENABLE_ENGINE "Enabel the engine module (On/Off)." On)
-option(ENABLE_KERNEL "Enable the kernel module (On/Off)." On)
-option(ENABLE_LINK "Enable the link (network) module (On/Off)." On)
+# Always enable engine, kernel and link modules
+set(ENABLE_ENGINE On)
+set(ENABLE_KERNEL On)
+set(ENABLE_LINK On)
+
 option(ENABLE_BRPC
        "Enable brpc transport (requires protobuf). If Off, uses ASIO only." Off)
 option(BUILD_TEST "Build the testing binaries (On/Off)." On)
-
-# Check for options
-if(ENABLE_ENGINE AND NOT ENABLE_KERNEL)
-  message(
-    WARNING
-      "Engine enabled, but kernels disabled. Turn on kernel automatically.")
-  set(ENABLE_KERNEL On)
-endif()
-
-if(ENABLE_ENGINE AND NOT ENABLE_LINK)
-  message(
-    WARNING "Engine enabled, but link disabled. Turn on link automatically.")
-  set(ENABLE_LINK On)
-endif()
-
-if(ENABLE_KERNEL AND NOT ENABLE_LINK)
-  message(
-    WARNING "Kernel enabled, but link disabled. Turn on link automatically.")
-  set(ENABLE_LINK On)
-endif()
 
 # --------------------------------------------------------------------
 # Project Generic Configuration
