@@ -32,11 +32,6 @@ endif()
 # User options
 # --------------------------------------------------------------------
 
-# Always enable engine, kernel and link modules
-set(ENABLE_ENGINE On)
-set(ENABLE_KERNEL On)
-set(ENABLE_LINK On)
-
 option(ENABLE_BRPC
        "Enable brpc transport (requires protobuf). If Off, uses ASIO only." Off)
 option(BUILD_TEST "Build the testing binaries (On/Off)." On)
@@ -181,16 +176,14 @@ file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR})
 # HACK FetchContent should download to build/deps/src
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
-if(ENABLE_LINK)
-  # ASIO is always required for link module
-  include(deps/asio)
+# ASIO is always required for link module
+include(deps/asio)
 
-  # brpc and protobuf are only needed when ENABLE_BRPC is On
-  if(ENABLE_BRPC)
-    # Protobuf must be placed before all dependencies
-    include(deps/protobuf)
-    include(deps/brpc)
-  endif()
+# brpc and protobuf are only needed when ENABLE_BRPC is On
+if(ENABLE_BRPC)
+  # Protobuf must be placed before all dependencies
+  include(deps/protobuf)
+  include(deps/brpc)
 endif()
 
 include(deps/abseil)
@@ -228,9 +221,6 @@ message(STATUS "Compiler Version          : ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "C++ Standard              : ${CMAKE_CXX_STANDARD}")
 message(STATUS "Compiler Flags            : \n${CMAKE_CXX_FLAGS}")
 message(STATUS "Linker Flags              : \n${LINK_OPTIONS}")
-message(STATUS "(opt) Engine Module       : ${ENABLE_ENGINE}")
-message(STATUS "(opt) Kernel Module       : ${ENABLE_KERNEL}")
-message(STATUS "(opt) Link Module         : ${ENABLE_LINK}")
 message(STATUS "(opt) Build Test          : ${BUILD_TEST}")
 message(STATUS "Install Prefix            : ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "==============================================================")
@@ -250,18 +240,9 @@ add_subdirectory(yacl/crypto)
 add_subdirectory(yacl/math)
 add_subdirectory(yacl/utils)
 add_subdirectory(yacl/io)
-
-if(ENABLE_ENGINE)
-  add_subdirectory(yacl/engine)
-endif()
-
-if(ENABLE_KERNEL)
-  add_subdirectory(yacl/kernel)
-endif()
-
-if(ENABLE_LINK)
-  add_subdirectory(yacl/link)
-endif()
+add_subdirectory(yacl/engine)
+add_subdirectory(yacl/kernel)
+add_subdirectory(yacl/link)
 
 # TODO Remove all test files from ${YACL_SOURCE_FILES}
 file(GLOB_RECURSE SRC_TEST_CC *_test.cc)
@@ -309,7 +290,7 @@ target_link_libraries(
 # Object Library: yacl_proto (only needed when brpc is enabled)
 #
 
-if(ENABLE_LINK AND ENABLE_BRPC)
+if(ENABLE_BRPC)
   # build yacl_proto target
   add_library(yacl_proto OBJECT) # object lib for protobuf
   target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
@@ -329,9 +310,7 @@ if(ENABLE_LINK AND ENABLE_BRPC)
 endif()
 
 # ASIO is always needed for link module
-if(ENABLE_LINK)
-  target_link_libraries(yacl_obj PUBLIC Deps::asio)
-endif()
+target_link_libraries(yacl_obj PUBLIC Deps::asio)
 
 #
 # Static Library: yacl
