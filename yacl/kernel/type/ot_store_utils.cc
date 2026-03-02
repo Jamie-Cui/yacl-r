@@ -132,7 +132,8 @@ OtSendStore MakeOtSendStore(std::vector<std::array<uint128_t, 2>>&& blocks) {
 OtSendStore MakeOtSendStore(
     UninitAlignedVector<std::array<uint128_t, 2>>&& blocks) {
   auto buf_ptr =
-      std::make_shared<UninitAlignedVector<uint128_t>>(std::move(blocks));
+      std::make_shared<UninitAlignedVector<uint128_t>>(blocks.size() * 2);
+  memcpy(buf_ptr->data(), blocks.data(), buf_ptr->size() * sizeof(uint128_t));
 
   return {
       buf_ptr, 0, 0, buf_ptr->size(), 0, buf_ptr->size(), OtStoreType::Normal};

@@ -125,20 +125,25 @@ void Channel::StartSendThread() {
 }
 
 void Channel::SubmitSendTask(Message&& msg) {
-  auto btask = std::make_unique<SendTask>(this->shared_from_this(),
-                                          std::move(msg), exit_if_async_error_);
-  bthread_t tid;
-  if (bthread_start_background(&tid, nullptr, SendTask::Proc, btask.get()) ==
-      0) {
-    // bthread takes the ownership, release it.
-    static_cast<void>(btask.release());
-  } else {
-    YACL_THROW("failed to push async sending job to bthread");
-  }
+  auto task = std::make_unique<SendTask>(this->shared_from_this(),
+                                         std::move(msg), exit_if_async_error_);
+  // Use std::thread instead of bthread
+  std::thread t([task_ptr = task.release()]() {
+    std::unique_ptr<SendTask> task(task_ptr);
+    try {
+      task->channel_->SendImpl(task->msg_.msg_key_, task->msg_.value_);
+    } catch (const std::exception& e) {
+      SPDLOG_ERROR("SendImpl error {}", e.what());
+      if (task->exit_if_async_error_) {
+        exit(-1);
+      }
+    }
+  });
+  t.detach();
 }
 
 std::optional<Channel::Message> Channel::MessageQueue::Pop(bool block) {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   if (block && queue_.empty() && !stopped_) {
     cond_.wait(lock);
   }
@@ -185,7 +190,7 @@ class SendChunkedWindow
   }
 
   void OnPushDone(std::unique_ptr<std::exception> e) noexcept {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     running_push_--;
 
     if (e) {
@@ -195,7 +200,7 @@ class SendChunkedWindow
   }
 
   void Finished() {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     while (running_push_ != 0) {
       cond_.wait(lock);
       if (async_exception_) {
@@ -223,7 +228,7 @@ class SendChunkedWindow
   };
 
   std::unique_ptr<Token> GetToken() {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     running_push_++;
 
     while (running_push_ > parallel_limit_) {
@@ -239,8 +244,8 @@ class SendChunkedWindow
  private:
   const int64_t parallel_limit_;
   int64_t running_push_ = 0;
-  bthread::Mutex mutex_;
-  bthread::ConditionVariable cond_;
+  std::mutex mutex_;
+  std::condition_variable cond_;
   std::unique_ptr<std::exception> async_exception_;
 };
 
@@ -248,7 +253,7 @@ class SendChunkedTask {
  public:
   SendChunkedTask(std::shared_ptr<const Channel> channel,
                   std::unique_ptr<SendChunkedWindow::Token> token,
-                  std::unique_ptr<::google::protobuf::Message> request)
+                  std::unique_ptr<Request> request)
       : channel_(std::move(channel)),
         token_(std::move(token)),
         request_(std::move(request)) {
@@ -275,7 +280,7 @@ class SendChunkedTask {
  private:
   std::shared_ptr<const Channel> channel_;
   std::unique_ptr<SendChunkedWindow::Token> token_;
-  std::unique_ptr<::google::protobuf::Message> request_;
+  std::unique_ptr<Request> request_;
 };
 
 void Channel::SendChunked(const std::string& key,
@@ -287,6 +292,7 @@ void Channel::SendChunked(const std::string& key,
   uint32_t parallel_size = chunk_parallel_send_size_;
   auto window = std::make_shared<SendChunkedWindow>(parallel_size);
 
+  std::vector<std::thread> threads;
   for (size_t chunk_idx = 0; chunk_idx < num_chunks; chunk_idx++) {
     const size_t chunk_offset = chunk_idx * bytes_per_chunk;
 
@@ -297,16 +303,21 @@ void Channel::SendChunked(const std::string& key,
             std::min(bytes_per_chunk, value.size() - chunk_offset)),
         chunk_offset, num_bytes);
 
-    auto task = std::make_unique<SendChunkedTask>(
-        this->shared_from_this(), window->GetToken(), std::move(request));
-    bthread_t tid;
-    if (bthread_start_background(&tid, nullptr, SendChunkedTask::Proc,
-                                 task.get()) == 0) {
-      (void)task.release();
-    } else {
-      YACL_THROW("Start bthread error for Chunk (key: {}, {} of {}) error", key,
-                 chunk_idx, num_chunks);
-    }
+    auto token = window->GetToken();
+    auto channel = this->shared_from_this();
+    threads.emplace_back(
+        [channel, request = std::move(request), token = std::move(token)]() {
+          try {
+            channel->SendRequestWithRetry(*request, 0);
+          } catch (const Exception& e) {
+            token->SetException(std::make_unique<Exception>(e));
+          } catch (const std::exception& e) {
+            token->SetException(std::make_unique<std::exception>(e));
+          }
+        });
+  }
+  for (auto& t : threads) {
+    t.join();
   }
   window->Finished();
 }
@@ -318,7 +329,7 @@ void Channel::SendMono(const std::string& key, ByteContainerView value,
   SendRequestWithRetry(*request, timeout_override_ms, log_level);
 }
 
-void Channel::SendRequestWithRetry(const ::google::protobuf::Message& request,
+void Channel::SendRequestWithRetry(const Request& request,
                                    uint32_t timeout_override_ms,
                                    spdlog::level::level_enum log_level) const {
   uint32_t retry_count = 0;
@@ -370,12 +381,12 @@ void Channel::SendRequestWithRetry(const ::google::protobuf::Message& request,
 }
 
 void Channel::SendTaskSynchronizer::SendTaskStartNotify() {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   running_tasks_++;
 }
 
 void Channel::SendTaskSynchronizer::SendTaskFinishedNotify(size_t seq_id) {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   running_tasks_--;
   if (seq_id != 0) {
     finished_ids_.Insert(seq_id);
@@ -384,7 +395,7 @@ void Channel::SendTaskSynchronizer::SendTaskFinishedNotify(size_t seq_id) {
 }
 
 void Channel::SendTaskSynchronizer::WaitSeqIdSendFinished(size_t seq_id) {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   while (!finished_ids_.Contains(seq_id)) {
     if (task_aborting_.load()) {
       YACL_THROW_LINK_ABORTED("aborting task, skip waiting");
@@ -394,7 +405,7 @@ void Channel::SendTaskSynchronizer::WaitSeqIdSendFinished(size_t seq_id) {
 }
 
 void Channel::SendTaskSynchronizer::WaitAllSendFinished() {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   while (running_tasks_ > 0) {
     finished_cond_.wait(lock);
   }
@@ -409,7 +420,7 @@ Buffer Channel::Recv(const std::string& msg_key) {
   Buffer value;
   size_t seq_id = 0;
   {
-    std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+    std::unique_lock<std::mutex> lock(msg_mutex_);
     auto stop_waiting = [&] {
       auto itr = this->recv_msgs_.find(msg_key);
       if (itr == this->recv_msgs_.end()) {
@@ -425,8 +436,9 @@ Buffer Channel::Recv(const std::string& msg_key) {
         YACL_THROW_LINK_ABORTED("Aborting channel, skip waiting");
       }
       //                                timeout_us
-      if (msg_db_cond_.wait_for(lock, static_cast<int64_t>(recv_timeout_ms_) *
-                                          1000) == ETIMEDOUT) {
+      if (msg_db_cond_.wait_for(lock,
+                                std::chrono::milliseconds(recv_timeout_ms_)) ==
+          std::cv_status::timeout) {
         YACL_THROW_IO_ERROR("Get data timeout, key={}", msg_key);
       }
     }
@@ -478,7 +490,7 @@ class ChunkedMessage {
   explicit ChunkedMessage(int64_t message_length) : message_(message_length) {}
 
   void AddChunk(int64_t offset, ByteContainerView data) {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     if (received_.emplace(offset).second) {
       std::memcpy(message_.data<std::byte>() + offset, data.data(),
                   data.size());
@@ -487,17 +499,17 @@ class ChunkedMessage {
   }
 
   bool IsFullyFilled() {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     return bytes_written_ == message_.size();
   }
 
   Buffer&& Reassemble() {
-    std::unique_lock<bthread::Mutex> lock(mutex_);
+    std::unique_lock<std::mutex> lock(mutex_);
     return std::move(message_);
   }
 
  protected:
-  bthread::Mutex mutex_;
+  std::mutex mutex_;
   std::set<int64_t> received_;
   // chunk index to value.
   int64_t bytes_written_{0};
@@ -515,7 +527,7 @@ void Channel::OnChunkedMessage(const std::string& key, ByteContainerView value,
   bool should_reassemble = false;
   std::shared_ptr<ChunkedMessage> data;
   {
-    std::unique_lock<bthread::Mutex> lock(chunked_values_mutex_);
+    std::unique_lock<std::mutex> lock(chunked_values_mutex_);
     auto itr = chunked_values_.find(key);
     if (itr == chunked_values_.end()) {
       itr = chunked_values_
@@ -540,7 +552,7 @@ void Channel::OnChunkedMessage(const std::string& key, ByteContainerView value,
 }
 
 void Channel::OnMessage(const std::string& key, ByteContainerView value) {
-  std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+  std::unique_lock<std::mutex> lock(msg_mutex_);
   if (key == kAckKey) {
     size_t seq_id = ViewToSizeT(value);
     if (received_ack_ids_.Insert(seq_id)) {
@@ -572,7 +584,7 @@ void Channel::SendAsync(const std::string& msg_key, ByteContainerView value) {
 }
 
 void Channel::MessageQueue::Push(Message&& msg) {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   queue_.push(std::move(msg));
   cond_.notify_all();
 }
@@ -658,15 +670,16 @@ void Channel::ThrottleWindowWait(size_t wait_count) {
   if (throttle_window_size_ == 0) {
     return;
   }
-  std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+  std::unique_lock<std::mutex> lock(msg_mutex_);
   while ((throttle_window_size_ != 0) &&
          (received_ack_ids_.Count() + throttle_window_size_ <= wait_count)) {
     if (aborting_.load()) {
       YACL_THROW_LINK_ABORTED("Aborting channel, skip waiting");
     }
     //                               timeout_us
-    if (ack_fin_cond_.wait_for(
-            lock, static_cast<int64_t>(recv_timeout_ms_) * 1000) == ETIMEDOUT) {
+    if (ack_fin_cond_.wait_for(lock,
+                               std::chrono::milliseconds(recv_timeout_ms_)) ==
+        std::cv_status::timeout) {
       YACL_THROW_IO_ERROR("Throttle window wait timeout");
     }
   }
@@ -680,7 +693,7 @@ void Channel::WaitAsyncSendToFinish() {
 }
 
 void Channel::MessageQueue::EmptyNotify() {
-  std::unique_lock<bthread::Mutex> lock(mutex_);
+  std::unique_lock<std::mutex> lock(mutex_);
   stopped_ = true;
   cond_.notify_all();
 }
@@ -689,13 +702,13 @@ void Channel::WaitForFinAndFlyingMsg() {
   size_t sent_msg_count = msg_seq_id_;
   SubmitSendTask(Message(0, kFinKey, Buffer(std::to_string(sent_msg_count))));
   {
-    std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+    std::unique_lock<std::mutex> lock(msg_mutex_);
     while (!received_fin_) {
       ack_fin_cond_.wait(lock);
     }
   }
   {
-    std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+    std::unique_lock<std::mutex> lock(msg_mutex_);
     if (peer_sent_msg_count_ == 0) {
       // peer send no thing, no need waiting.
       return;
@@ -710,7 +723,7 @@ void Channel::WaitForFinAndFlyingMsg() {
 }
 
 void Channel::StopReceivingAndAckUnreadMsgs() {
-  std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+  std::unique_lock<std::mutex> lock(msg_mutex_);
   waiting_finish_.store(true);
   for (auto& msg : recv_msgs_) {
     auto seq_id = msg.second.second;
@@ -723,7 +736,7 @@ void Channel::StopReceivingAndAckUnreadMsgs() {
 
 void Channel::WaitForFlyingAck() {
   size_t sent_msg_count = msg_seq_id_;
-  std::unique_lock<bthread::Mutex> lock(msg_mutex_);
+  std::unique_lock<std::mutex> lock(msg_mutex_);
   if (sent_msg_count == 0) {
     // send no thing, no need waiting.
     return;
@@ -775,8 +788,7 @@ void Channel::Abort() {
   SPDLOG_INFO("channel aborted");
 }
 
-void Channel::OnRequest(const ::google::protobuf::Message& request,
-                        ::google::protobuf::Message* response) {
+void Channel::OnRequest(const Request& request, Response* response) {
   if (aborting_.load()) {
     YACL_THROW_LINK_ABORTED("OnRequest is not allowed when aborting channel");
   }

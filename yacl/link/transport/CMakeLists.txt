@@ -12,25 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-file(GLOB SRC_CC *.cc)
-file(GLOB SRC_H *.h)
-
+# Always include ASIO and basic channel implementations
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/brpc_blackbox_link.cc
-    ${CMAKE_CURRENT_LIST_DIR}/interconnection_link.cc
-    ${CMAKE_CURRENT_LIST_DIR}/brpc_link.cc
     ${CMAKE_CURRENT_LIST_DIR}/asio_link.cc
     ${CMAKE_CURRENT_LIST_DIR}/channel.cc
     ${CMAKE_CURRENT_LIST_DIR}/channel_mem.cc)
 
-# Add header files for installation
+# brpc is optional
+if(ENABLE_BRPC)
+  # TODO(jamie): Add non-interconnection based brpc link implementation
+  # Currently brpc link depends on interconnection which has been removed
+endif()
+
+# Header files for installation
+set(LINK_TRANSPORT_HEADERS
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/asio_link.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel_mem.h)
+
+if(ENABLE_BRPC)
+  list(APPEND LINK_TRANSPORT_HEADERS
+       # TODO(jamie): Add brpc link headers when implemented
+  )
+endif()
+
 install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/brpc_blackbox_link.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/interconnection_link.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/brpc_link.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel_mem.h
+  FILES ${LINK_TRANSPORT_HEADERS}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
 
 set(YACL_SOURCE_FILES

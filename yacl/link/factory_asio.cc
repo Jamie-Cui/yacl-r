@@ -38,7 +38,9 @@ std::shared_ptr<Context> FactoryAsio::CreateContext(const ContextDesc& desc,
   }
 
   auto io_ctx = std::make_shared<asio::io_context>();
-  auto io_work = std::make_shared<asio::io_context::work>(*io_ctx);
+  auto io_work = std::make_shared<
+      asio::executor_work_guard<asio::io_context::executor_type>>(
+      asio::make_work_guard(*io_ctx));
   auto io_thread = std::make_shared<std::thread>([io_ctx]() { io_ctx->run(); });
 
   auto msg_loop = std::make_unique<transport::ReceiverLoopAsio>();

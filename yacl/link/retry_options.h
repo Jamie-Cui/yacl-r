@@ -17,8 +17,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "yacl/link/link.pb.h"
-
 namespace yacl::link {
 
 struct RetryOptions {
@@ -50,23 +48,6 @@ struct RetryOptions {
         aggressive_retry(true) {}
 
   RetryOptions(const RetryOptions&) = default;
-
-  RetryOptions(const RetryOptionsProto& pb) {
-    max_retry = pb.max_retry() ? pb.max_retry() : kDefaultMaxRetryCount;
-    retry_interval_ms =
-        pb.retry_interval_ms() ? pb.retry_interval_ms() : kDefaultRetryInterval;
-    retry_interval_incr_ms = pb.retry_interval_incr_ms()
-                                 ? pb.retry_interval_ms()
-                                 : kDefaultRetryIncrement;
-    max_retry_interval_ms = pb.max_retry_interval_ms()
-                                ? pb.max_retry_interval_ms()
-                                : kDefaultMaxRetryInterval;
-    std::for_each(pb.error_codes().begin(), pb.error_codes().end(),
-                  [this](const auto& codes) { error_codes.insert(codes); });
-    std::for_each(pb.http_codes().begin(), pb.http_codes().end(),
-                  [this](const auto& codes) { http_codes.insert(codes); });
-    aggressive_retry = pb.aggressive_retry();
-  }
 };
 
 }  // namespace yacl::link

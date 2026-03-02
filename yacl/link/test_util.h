@@ -37,7 +37,7 @@ inline std::vector<std::shared_ptr<Context>> SetupBrpcWorld(
 
   std::vector<std::shared_ptr<Context>> contexts(world_size);
   for (size_t rank = 0; rank < world_size; rank++) {
-    contexts[rank] = FactoryBrpc().CreateContext(ctx_desc, rank);
+    contexts[rank] = FactoryAsio().CreateContext(ctx_desc, rank);
   }
 
   auto proc = [&](size_t rank) {

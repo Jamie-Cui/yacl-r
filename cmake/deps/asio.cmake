@@ -12,26 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-message(STATUS "Downloading asio")
-
-FetchContent_Declare(
+ExternalProject_Add(
   asio
   URL https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-30-2.tar.gz
   URL_HASH
-    SHA256=c4553b87b5fc48a3c6c6d128e1c4464f1e9f15d68acd3f14c6c53019e5dbe7e7
-  DOWNLOAD_EXTRACT_TIMESTAMP On SOURCE_DIR ${CMAKE_DEPS_SRCDIR}/asio)
-
-message(STATUS "Downloading asio - Success")
-
-FetchContent_GetProperties(asio)
-
-if(NOT asio_POPULATED)
-  FetchContent_Populate(asio)
-endif()
+    SHA256=755bd7f85a4b269c67ae0ea254907c078d408cce8e1a352ad2ed664d233780e8
+  PREFIX ${CMAKE_DEPS_PREFIX}
+  CONFIGURE_COMMAND "" # no configure
+  BUILD_COMMAND "" # header-only, no build
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_DEPS_INCLUDEDIR}/asio
+  COMMAND ${CMAKE_COMMAND} -E copy_directory 
+          ${CMAKE_DEPS_PREFIX}/src/asio/asio/include 
+          ${CMAKE_DEPS_INCLUDEDIR}/asio
+  EXCLUDE_FROM_ALL true
+  DOWNLOAD_EXTRACT_TIMESTAMP On
+  LOG_DOWNLOAD On
+  LOG_CONFIGURE On
+  LOG_BUILD On
+  LOG_INSTALL On)
 
 add_library(libasio INTERFACE)
-target_include_directories(libasio
-                           INTERFACE ${CMAKE_DEPS_SRCDIR}/asio/asio/include)
+target_include_directories(libasio INTERFACE ${CMAKE_DEPS_INCLUDEDIR}/asio)
 target_compile_definitions(libasio INTERFACE ASIO_STANDALONE ASIO_NO_DEPRECATED)
+
+add_dependencies(libasio asio)
 
 add_library(Deps::asio ALIAS libasio)

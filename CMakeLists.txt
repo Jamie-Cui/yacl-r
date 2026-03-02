@@ -19,16 +19,25 @@ project(
   VERSION 0.4.5
   DESCRIPTION "YACL-r (Yet Another Crypto Library for Research)"
   HOMEPAGE_URL "https://github.com/Jamie-Cui/yacl-r"
-  LANGUAGES CXX C)
+  LANGUAGES CXX C ASM)
+
+find_program(PATCH_EXECUTABLE patch)
+if(NOT PATCH_EXECUTABLE)
+  message(
+    FATAL_ERROR
+      "patch is required to build yacl-r. Please install patch and try again.")
+endif()
 
 # --------------------------------------------------------------------
 # User options
 # --------------------------------------------------------------------
 
 # Toggle different modules
-option(ENABLE_ENGINE "Enabel the engine module (On/Off)." Off)
-option(ENABLE_KERNEL "Enable the kernel module (On/Off)." Off)
-option(ENABLE_LINK "Enable the link (network) module (On/Off)." Off)
+option(ENABLE_ENGINE "Enabel the engine module (On/Off)." On)
+option(ENABLE_KERNEL "Enable the kernel module (On/Off)." On)
+option(ENABLE_LINK "Enable the link (network) module (On/Off)." On)
+option(ENABLE_BRPC
+       "Enable brpc transport (requires protobuf). If Off, uses ASIO only." Off)
 option(BUILD_TEST "Build the testing binaries (On/Off)." On)
 
 # Check for options
@@ -134,7 +143,10 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
   # No additional flags needed as they are handled by compiler intrinsics
   message(STATUS "ARM64 platform detected - using ARM-specific optimizations")
 else()
-  message(WARNING "Unknown platform ${CMAKE_SYSTEM_PROCESSOR} - some optimizations may not be available")
+  message(
+    WARNING
+      "Unknown platform ${CMAKE_SYSTEM_PROCESSOR} - some optimizations may not be available"
+  )
 endif()
 
 # Security flags
@@ -189,13 +201,15 @@ file(MAKE_DIRECTORY ${CMAKE_DEPS_SRCDIR})
 set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 
 if(ENABLE_LINK)
-  # Protobuf must be placed before all dependencies
-  include(deps/protobuf)
-  # Interconnection should be built after protobuf
-  include(deps/interconnection)
-  include(deps/simplest_ot)
-  include(deps/brpc)
+  # ASIO is always required for link module
   include(deps/asio)
+
+  # brpc and protobuf are only needed when ENABLE_BRPC is On
+  if(ENABLE_BRPC)
+    # Protobuf must be placed before all dependencies
+    include(deps/protobuf)
+    include(deps/brpc)
+  endif()
 endif()
 
 include(deps/abseil)
@@ -288,6 +302,10 @@ target_include_directories(
          "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
          ${CMAKE_DEPS_INCLUDEDIR})
 
+# Add include path for simplest-ot
+target_include_directories(yacl_obj PRIVATE 
+    ${PROJECT_SOURCE_DIR}/yacl/kernel/simplest-ot)
+
 target_link_libraries(
   yacl_obj
   PUBLIC Deps::absl
@@ -307,10 +325,10 @@ target_link_libraries(
          Deps::msgpack)
 
 #
-# Object Library: yacl_proto
+# Object Library: yacl_proto (only needed when brpc is enabled)
 #
 
-if(ENABLE_LINK)
+if(ENABLE_LINK AND ENABLE_BRPC)
   # build yacl_proto target
   add_library(yacl_proto OBJECT) # object lib for protobuf
   target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
@@ -325,7 +343,12 @@ if(ENABLE_LINK)
     ${CMAKE_CURRENT_BINARY_DIR})
   target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
   target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-  # Add asio dependency for link module
+  # Add brpc/protobuf dependencies
+  target_link_libraries(yacl_obj PUBLIC Deps::brpc Deps::protobuf)
+endif()
+
+# ASIO is always needed for link module
+if(ENABLE_LINK)
   target_link_libraries(yacl_obj PUBLIC Deps::asio)
 endif()
 
@@ -333,7 +356,13 @@ endif()
 # Static Library: yacl
 #
 
-add_library(yacl SHARED) # main shared lib
+option(BUILD_YACL_SHARED "Build yacl as a shared library" Off)
+
+if(BUILD_YACL_SHARED)
+  add_library(yacl SHARED) # main shared lib
+else()
+  add_library(yacl STATIC) # main static lib
+endif()
 
 target_include_directories(
   yacl PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include

@@ -144,14 +144,12 @@ class FactoryTest : public ::testing::Test {
   std::vector<std::shared_ptr<Context>> contexts_;
 };
 
-using FactoryTestTypes =
-    ::testing::Types<TestTypes<FactoryMem, 0>, TestTypes<FactoryBrpc, 0>,
-                     TestTypes<FactoryBrpc, 1>
+using FactoryTestTypes = ::testing::Types<TestTypes<FactoryMem, 0>
 #ifdef YACL_WITH_TONGSUO
-                     ,
-                     TestTypes<FactoryBrpc, 2>
+                                          ,
+                                          TestTypes<FactoryAsio, 2>
 #endif
-                     >;
+                                          >;
 
 TYPED_TEST_SUITE(FactoryTest, FactoryTestTypes);
 

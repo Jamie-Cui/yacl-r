@@ -90,13 +90,6 @@ Context::Context(ContextDesc desc, size_t rank,
   stats_ = std::make_shared<Statistics>();
 }
 
-Context::Context(const ContextDescProto& desc_pb, size_t rank,
-                 std::vector<std::shared_ptr<transport::IChannel>> channels,
-                 std::shared_ptr<transport::IReceiverLoop> msg_loop,
-                 bool is_sub_world)
-    : Context(ContextDesc(desc_pb), rank, std::move(channels),
-              std::move(msg_loop), is_sub_world) {}
-
 std::string Context::Id() const { return desc_.id; }
 
 size_t Context::WorldSize() const { return desc_.parties.size(); }

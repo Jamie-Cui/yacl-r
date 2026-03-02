@@ -17,13 +17,15 @@ file(GLOB_RECURSE SRC_PROTO *.proto)
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     ${CMAKE_CURRENT_LIST_DIR}/context.cc
-    ${CMAKE_CURRENT_LIST_DIR}/factory_brpc.cc
-    ${CMAKE_CURRENT_LIST_DIR}/factory_brpc_blackbox.cc
     ${CMAKE_CURRENT_LIST_DIR}/factory_asio.cc
     ${CMAKE_CURRENT_LIST_DIR}/factory_mem.cc
     ${CMAKE_CURRENT_LIST_DIR}/trace.cc)
 
-set(YACL_PROTO_SOURCE_FILES ${YACL_PROTO_SOURCE_FILES} ${SRC_PROTO})
+# brpc is optional - only include when ENABLE_BRPC is On
+if(ENABLE_BRPC)
+  # TODO(jamie): Add brpc factory when brpc link is re-implemented without interconnection
+  list(APPEND YACL_PROTO_SOURCE_FILES ${SRC_PROTO})
+endif()
 
 add_subdirectory(algorithm)
 add_subdirectory(transport)
@@ -39,12 +41,20 @@ add_yacl_test_if(context_test)
 add_yacl_test_if(factory_test)
 
 # Add header files for installation
+set(LINK_HEADERS
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/context.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_asio.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_mem.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/trace.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/link.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/retry_options.h
+    ${PROJECT_SOURCE_DIR}/include/yacl/link/ssl_options.h)
+
+if(ENABLE_BRPC)
+  list(APPEND LINK_HEADERS
+       ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_brpc.h)
+endif()
+
 install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/link/context.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_brpc.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_mem.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/trace.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/link.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/retry_options.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/link/ssl_options.h
+  FILES ${LINK_HEADERS}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)

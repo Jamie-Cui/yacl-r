@@ -24,10 +24,6 @@
 #include <thread>
 #include <utility>
 
-#include "brpc/controller.h"
-#include "bthread/bthread.h"
-#include "bthread/condition_variable.h"
-#include "google/protobuf/message.h"
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/buffer.h"
@@ -37,6 +33,17 @@
 #include "yacl/utils/segment_tree.h"
 
 namespace yacl::link::transport {
+
+// Abstract base classes for request/response, replacing protobuf dependency
+class Request {
+ public:
+  virtual ~Request() = default;
+};
+
+class Response {
+ public:
+  virtual ~Response() = default;
+};
 
 // A channel is basic interface for p2p communicator.
 class IChannel {
@@ -99,9 +106,6 @@ class IChannel {
 
 class TransportLink {
  public:
-  using Request = ::google::protobuf::Message;
-  using Response = ::google::protobuf::Message;
-
   TransportLink(size_t self_rank, size_t peer_rank)
       : self_rank_(self_rank), peer_rank_(peer_rank) {}
 
@@ -218,8 +222,7 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
   void OnChunkedMessage(const std::string& key, ByteContainerView value,
                         size_t offset, size_t total_length);
 
-  void OnRequest(const ::google::protobuf::Message& request,
-                 ::google::protobuf::Message* response);
+  void OnRequest(const Request& request, Response* response);
 
   void SetChunkParallelSendSize(size_t size) final {
     chunk_parallel_send_size_ = size;
@@ -230,7 +233,7 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
   }
 
   void SendRequestWithRetry(
-      const ::google::protobuf::Message& request, uint32_t timeout_override_ms,
+      const Request& request, uint32_t timeout_override_ms,
       spdlog::level::level_enum log_level = spdlog::level::info) const;
 
  protected:
@@ -310,10 +313,10 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
     }
 
    private:
-    bthread::Mutex mutex_;
+    std::mutex mutex_;
     size_t running_tasks_ = 0;
     utils::SegmentTree<size_t> finished_ids_;
-    bthread::ConditionVariable finished_cond_;
+    std::condition_variable finished_cond_;
     std::atomic<bool> task_aborting_ = false;
   };
 
@@ -324,9 +327,9 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
     void EmptyNotify();
 
    private:
-    bthread::Mutex mutex_;
+    std::mutex mutex_;
     std::queue<Message> queue_;
-    bthread::ConditionVariable cond_;
+    std::condition_variable cond_;
     bool stopped_ = false;
   };
 
@@ -339,13 +342,13 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
   SendTaskSynchronizer send_sync_;
 
   // chunking related.
-  bthread::Mutex chunked_values_mutex_;
+  std::mutex chunked_values_mutex_;
   std::map<std::string, std::shared_ptr<ChunkedMessage>> chunked_values_;
   std::atomic<uint32_t> chunk_parallel_send_size_ = 8;
 
   // message database related.
-  bthread::Mutex msg_mutex_;
-  bthread::ConditionVariable msg_db_cond_;
+  std::mutex msg_mutex_;
+  std::condition_variable msg_db_cond_;
   // msg_key -> <value, seq_id>
   std::map<std::string, std::pair<Buffer, size_t>> recv_msgs_;
 
@@ -368,7 +371,7 @@ class Channel : public IChannel, public std::enable_shared_from_this<Channel> {
   // and how many normal msg sent by peer.
   size_t peer_sent_msg_count_ = 0;
   // cond for ack/fin wait.
-  bthread::ConditionVariable ack_fin_cond_;
+  std::condition_variable ack_fin_cond_;
 
   const bool exit_if_async_error_;
 

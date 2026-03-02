@@ -147,7 +147,8 @@ std::string ReceiverLoopAsio::Start(const std::string& host,
   acceptor_ = std::make_unique<asio::ip::tcp::acceptor>(io_ctx_, endpoint);
 
   io_thread_ = std::thread([this]() {
-    asio::io_context::work work(io_ctx_);
+    asio::executor_work_guard<asio::io_context::executor_type> work =
+        asio::make_work_guard(io_ctx_);
     io_ctx_.run();
   });
 
@@ -341,7 +342,7 @@ void AsioLink::DoSend(const MessageHeader& header,
   }
 }
 
-std::unique_ptr<TransportLink::Request> AsioLink::PackMonoRequest(
+std::unique_ptr<Request> AsioLink::PackMonoRequest(
     const std::string& key, ByteContainerView value) const {
   PushMessage msg;
   msg.sender_rank = static_cast<uint32_t>(self_rank_);
@@ -358,7 +359,7 @@ std::unique_ptr<TransportLink::Request> AsioLink::PackMonoRequest(
   return request;
 }
 
-std::unique_ptr<TransportLink::Request> AsioLink::PackChunkedRequest(
+std::unique_ptr<Request> AsioLink::PackChunkedRequest(
     const std::string& key, ByteContainerView value, size_t offset,
     size_t total_length) const {
   PushMessage msg;

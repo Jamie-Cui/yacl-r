@@ -12,6 +12,11 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+find_program(NASM_EXECUTABLE nasm)
+if(NOT NASM_EXECUTABLE)
+  message(FATAL_ERROR "FourQ requires NASM to build. Please install nasm and try again.")
+endif()
+
 ExternalProject_Add(
   fourq
   URL https://github.com/microsoft/FourQlib/archive/1031567f23278e1135b35cc04e5d74c2ac88c029.tar.gz

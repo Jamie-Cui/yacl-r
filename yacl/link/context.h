@@ -29,8 +29,6 @@
 #include "yacl/link/transport/channel.h"
 #include "yacl/utils/hash_combine.h"
 
-#include "yacl/link/link.pb.h"
-
 namespace yacl::link {
 
 constexpr size_t kAllRank = std::numeric_limits<size_t>::max();
@@ -57,8 +55,6 @@ struct ContextDesc {
     }
 
     Party() = default;
-
-    Party(const PartyProto& pb) : id(pb.id()), host(pb.host()) {}
 
     Party(const std::string& id_, const std::string& host_)
         : id(id_), host(host_) {}
@@ -147,41 +143,6 @@ struct ContextDesc {
   }
 
   ContextDesc() = default;
-
-  ContextDesc(const ContextDescProto& pb)
-      : id(pb.id().size() ? pb.id() : kDefaultId),
-        connect_retry_times(pb.connect_retry_times()
-                                ? pb.connect_retry_times()
-                                : kDefaultConnectRetryTimes),
-        connect_retry_interval_ms(pb.connect_retry_interval_ms()
-                                      ? pb.connect_retry_interval_ms()
-                                      : kDefaultConnectRetryIntervalMs),
-        recv_timeout_ms(pb.recv_timeout_ms() ? pb.recv_timeout_ms()
-                                             : kDefaultRecvTimeoutMs),
-        http_max_payload_size(pb.http_max_payload_size()
-                                  ? pb.http_max_payload_size()
-                                  : kDefaultHttpMaxPayloadSize),
-        http_timeout_ms(pb.http_timeout_ms() ? pb.http_timeout_ms()
-                                             : kDefaultHttpTimeoutMs),
-        throttle_window_size(pb.throttle_window_size()
-                                 ? pb.throttle_window_size()
-                                 : kDefaultThrottleWindowSize),
-        chunk_parallel_send_size(pb.chunk_parallel_send_size()
-                                     ? pb.chunk_parallel_send_size()
-                                     : kDefaultChunkParallelSendSize),
-        brpc_channel_protocol(pb.brpc_channel_protocol().size()
-                                  ? pb.brpc_channel_protocol()
-                                  : kDefaultBrpcChannelProtocol),
-        brpc_channel_connection_type(pb.brpc_channel_connection_type()),
-        enable_ssl(pb.enable_ssl()),
-        client_ssl_opts(pb.client_ssl_opts()),
-        server_ssl_opts(pb.server_ssl_opts()),
-        link_type(kDefaultLinkType),
-        retry_opts(pb.retry_opts()) {
-    for (const auto& party_pb : pb.parties()) {
-      parties.emplace_back(party_pb);
-    }
-  }
 };
 
 struct ContextDescHasher {
@@ -225,11 +186,6 @@ struct Statistics {
 class Context {
  public:
   Context(ContextDesc desc, size_t rank,
-          std::vector<std::shared_ptr<transport::IChannel>> channels,
-          std::shared_ptr<transport::IReceiverLoop> msg_loop,
-          bool is_sub_world = false);
-
-  Context(const ContextDescProto& desc_pb, size_t rank,
           std::vector<std::shared_ptr<transport::IChannel>> channels,
           std::shared_ptr<transport::IReceiverLoop> msg_loop,
           bool is_sub_world = false);
