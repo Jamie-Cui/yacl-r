@@ -85,6 +85,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 # Generic this project's CMake modules
 include(AddCompilerFlags)
 include(AddYaclTest)
+include(Coverage)
 include(ImportLib)
 
 # Generic CMake modules
@@ -117,13 +118,24 @@ add_compiler_flags(-Wall)
 add_compiler_flags(-Wextra)
 add_compiler_flags(-Werror)
 
-# For platform_utils
-add_compiler_flags(-mbmi2)
+# Platform-specific CPU feature flags
+# These flags are x86_64 specific and may not be available on ARM/other platforms
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|amd64")
+  # For platform_utils
+  add_compiler_flags(-mbmi2)
 
-# For cryptos
-add_compiler_flags(-maes)
-add_compiler_flags(-mavx)
-add_compiler_flags(-mpclmul)
+  # For cryptos
+  add_compiler_flags(-maes)
+  add_compiler_flags(-mavx)
+  add_compiler_flags(-mpclmul)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
+  # ARM64 has different instruction sets - BMI2/AES/AVX/PCLMUL are x86-specific
+  # ARM64 has native AES instructions via ARMv8-A crypto extensions
+  # No additional flags needed as they are handled by compiler intrinsics
+  message(STATUS "ARM64 platform detected - using ARM-specific optimizations")
+else()
+  message(WARNING "Unknown platform ${CMAKE_SYSTEM_PROCESSOR} - some optimizations may not be available")
+endif()
 
 # Security flags
 set(CMAKE_POSITION_INDEPENDENT_CODE ON) # fpic
