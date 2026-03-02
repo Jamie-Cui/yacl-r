@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "gtest/gtest.h"
-
 #include "yacl/crypto/rand/entropy_source/entropy_source.h"
+
+#include "gtest/gtest.h"
 
 namespace yacl::crypto {
 
@@ -24,7 +24,12 @@ constexpr size_t kBitOfEntropy = 100;
 
 #ifdef __x86_64
 
+#include "cpu_features/cpuinfo_x86.h"
+
 TEST(OpensslTest, HardwareESWorks) {
+  if (!cpu_features::GetX86Info().features.rdseed) {
+    GTEST_SKIP() << "Hardware entropy (RDSEED) not supported on this CPU";
+  }
   auto es = EntropySourceFactory::Instance().Create("hardware");
   auto x = es->GetEntropy(kBitOfEntropy);
   auto y = es->GetEntropy(kBitOfEntropy);
