@@ -22,10 +22,16 @@ namespace yacl::crypto {
 // Easier way of generate a ot_store pointer from a given choice buffer and
 // a block buffer
 OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
+                            const std::vector<uint128_t>& blocks);
+
+OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
                             const UninitAlignedVector<uint128_t>& blocks);
 
 OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
-                            const std::vector<uint128_t>& blocks);
+                            std::vector<uint128_t>&& blocks);
+
+OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
+                            UninitAlignedVector<uint128_t>&& blocks);
 
 // Easier way of generate a compact cot_store pointer from a given block buffer
 // Note: Compact ot is correlated-ot (or called delta-ot)
@@ -40,7 +46,15 @@ OtRecvStore MakeCompactOtRecvStore(std::vector<uint128_t>&& blocks);
 
 // Easier way of generate a ot_store pointer from a given blocks buffer
 OtSendStore MakeOtSendStore(
+    const std::vector<std::array<uint128_t, 2>>& blocks);
+
+OtSendStore MakeOtSendStore(
     const UninitAlignedVector<std::array<uint128_t, 2>>& blocks);
+
+OtSendStore MakeOtSendStore(std::vector<std::array<uint128_t, 2>>&& blocks);
+
+OtSendStore MakeOtSendStore(
+    UninitAlignedVector<std::array<uint128_t, 2>>&& blocks);
 
 OtSendStore MakeOtSendStore(
     const std::vector<std::array<uint128_t, 2>>& blocks);

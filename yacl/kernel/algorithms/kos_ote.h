@@ -19,9 +19,9 @@
 #include "absl/types/span.h"
 
 #include "yacl/base/dynamic_bitset.h"
+#include "yacl/base/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
-#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/rand/rand.h"
@@ -80,12 +80,12 @@ inline OtSendStore KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
                                 bool cot = false) {
   std::vector<std::array<uint128_t, 2>> blocks(ot_num);
   KosOtExtSend(ctx, base_ot, absl::MakeSpan(blocks), cot);
-  auto ret = MakeOtSendStore(blocks);
+  auto ret = MakeOtSendStore(std::move(blocks));
   if (cot) {
     auto tmp_choice = base_ot.CopyBitBuf();
     ret.SetDelta(static_cast<uint128_t>(*tmp_choice.data()));
   }
-  return ret;  // FIXME: Drop explicit copy
+  return ret;
 }
 
 inline OtRecvStore KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
@@ -94,7 +94,7 @@ inline OtRecvStore KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                                 uint32_t ot_num, bool cot = false) {
   std::vector<uint128_t> blocks(ot_num);
   KosOtExtRecv(ctx, base_ot, choices, absl::MakeSpan(blocks), cot);
-  return MakeOtRecvStore(choices, blocks);  // FIXME: Drop explicit copy
+  return MakeOtRecvStore(choices, std::move(blocks));
 }
 
 }  // namespace yacl::crypto

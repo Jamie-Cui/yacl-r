@@ -195,6 +195,7 @@ if(ENABLE_LINK)
   include(deps/interconnection)
   include(deps/simplest_ot)
   include(deps/brpc)
+  include(deps/asio)
 endif()
 
 include(deps/abseil)
@@ -324,6 +325,8 @@ if(ENABLE_LINK)
     ${CMAKE_CURRENT_BINARY_DIR})
   target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
   target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+  # Add asio dependency for link module
+  target_link_libraries(yacl_obj PUBLIC Deps::asio)
 endif()
 
 #

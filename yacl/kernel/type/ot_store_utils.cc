@@ -115,6 +115,29 @@ OtSendStore MakeOtSendStore(
           OtStoreType::Normal};
 }
 
+OtSendStore MakeOtSendStore(std::vector<std::array<uint128_t, 2>>&& blocks) {
+  auto buf_ptr =
+      std::make_shared<UninitAlignedVector<uint128_t>>(blocks.size() * 2);
+  memcpy(buf_ptr->data(), blocks.data(), buf_ptr->size() * sizeof(uint128_t));
+
+  return {buf_ptr,
+          0,
+          0,
+          blocks.size() * 2,
+          0,
+          blocks.size() * 2,
+          OtStoreType::Normal};
+}
+
+OtSendStore MakeOtSendStore(
+    UninitAlignedVector<std::array<uint128_t, 2>>&& blocks) {
+  auto buf_ptr =
+      std::make_shared<UninitAlignedVector<uint128_t>>(std::move(blocks));
+
+  return {
+      buf_ptr, 0, 0, buf_ptr->size(), 0, buf_ptr->size(), OtStoreType::Normal};
+}
+
 OtSendStore MakeCompactOtSendStore(const std::vector<uint128_t>& blocks,
                                    uint128_t delta) {
   // warning: copy
@@ -192,6 +215,28 @@ OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
   auto tmp1_ptr = std::make_shared<dynamic_bitset<uint128_t>>(choices);  // copy
   auto tmp2_ptr =
       std::make_shared<UninitAlignedVector<uint128_t>>(blocks);  // copy
+
+  return {tmp1_ptr,         tmp2_ptr,           0, tmp1_ptr->size(), 0,
+          tmp1_ptr->size(), OtStoreType::Normal};
+}
+
+OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
+                            std::vector<uint128_t>&& blocks) {
+  auto tmp1_ptr = std::make_shared<dynamic_bitset<uint128_t>>(choices);
+  auto tmp2_ptr =
+      std::make_shared<UninitAlignedVector<uint128_t>>(blocks.size());
+  std::memcpy(tmp2_ptr->data(), blocks.data(),
+              blocks.size() * sizeof(uint128_t));
+
+  return {tmp1_ptr,         tmp2_ptr,           0, tmp1_ptr->size(), 0,
+          tmp1_ptr->size(), OtStoreType::Normal};
+}
+
+OtRecvStore MakeOtRecvStore(const dynamic_bitset<uint128_t>& choices,
+                            UninitAlignedVector<uint128_t>&& blocks) {
+  auto tmp1_ptr = std::make_shared<dynamic_bitset<uint128_t>>(choices);
+  auto tmp2_ptr =
+      std::make_shared<UninitAlignedVector<uint128_t>>(std::move(blocks));
 
   return {tmp1_ptr,         tmp2_ptr,           0, tmp1_ptr->size(), 0,
           tmp1_ptr->size(), OtStoreType::Normal};

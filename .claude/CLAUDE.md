@@ -14,74 +14,63 @@ Key features:
 
 ## Code Architecture
 
-The library is organized into several modules:
+The library is organized into modules with dependency relationships:
 
-1. **base**: Fundamental types and utilities
-2. **crypto**: Core cryptographic algorithms without network dependencies
-3. **engine**: Interactive engines designed for specific purposes
-4. **io**: Streaming-based I/O library
-5. **kernel**: Crypto kernel with network support (link module) and multi-threading (WIP)
-6. **link**: Simple RPC-based MPI framework for SPMD parallel programming
-7. **math**: Simplified math library supporting big integers
-8. **utils**: Additional utility functions
+```
+engine → kernel → link → (network dependencies)
+    │        │
+    └────────┴────→ crypto (no network dependencies)
+```
+
+- **base**: Fundamental types (buffer, int128, exception, dynamic_bitset)
+- **crypto**: Core cryptographic algorithms (no network). Submodules include: aead, aes, block_cipher, ecc, hash, hmac, oprf, pairing, pke, rand, sign, tools. The `experimental/` subdirectory contains research-grade code (dpf, tpre, vss).
+- **engine**: Interactive engines for specific purposes (requires kernel + link)
+- **io**: Streaming-based I/O library (circuit, kv, msgpack, rw, stream)
+- **kernel**: Crypto kernel with network support - OT/VOLE implementations (requires link)
+- **link**: RPC-based MPI framework for SPMD parallel programming
+- **math**: Math library (galois_field, mpint for big integers)
+- **utils**: Utilities (parallel, hamming, matrix_transpose, platform_utils)
 
 ## Build System
 
-The project uses CMake as its primary build system with the following key options:
-- `ENABLE_ENGINE`: Enable the engine module (default: Off)
-- `ENABLE_KERNEL`: Enable the kernel module (default: Off)
-- `ENABLE_LINK`: Enable the link (network) module (default: Off)
-- `BUILD_TEST`: Build testing binaries (default: On)
+CMake options (all default to Off except BUILD_TEST):
+- `ENABLE_ENGINE`: Enable engine module (auto-enables kernel and link)
+- `ENABLE_KERNEL`: Enable kernel module (auto-enables link)
+- `ENABLE_LINK`: Enable link/network module
+- `BUILD_TEST`: Build test binaries (default: On)
 
-Important build dependencies:
-- GCC >= 10.3
-- Ninja/ninja-build
-- Perl 5 with core modules
-- gflags
-- protobuf
+Dependencies: GCC >= 10.3, ninja-build, Perl 5, gflags, protobuf, GMP
 
 ## Common Development Commands
 
-### Building the Project
 ```bash
-# Configure the project
+# Configure
 cmake -S . -B build
 
-# Build the project
+# Build (release by default)
 cmake --build build
 
-# Build with specific options
+# Build with networking/crypto kernel support
 cmake -S . -B build -DENABLE_KERNEL=On -DENABLE_LINK=On
-```
 
-### Running Tests
-```bash
 # Run all tests
 cd build && ctest
 
-# Run tests with verbose output
-cd build && ctest --output-on-failure
+# Run specific test (name matches *_test.cc filename without extension)
+cd build && ctest -R buffer_test
 
-# Run a specific test
-cd build && ctest -R test_name
+# Install to default output/ directory
+cmake --install build
 ```
-
-### Code Formatting
-The project uses clang-format with Google style guidelines:
-```bash
-# Format code (requires pre-commit hooks)
-pre-commit run clang-format --all-files
-```
-
-## Testing Structure
-
-Tests are written using Google Test framework and follow the naming convention:
-- Test files are named `*_test.cc`
-- Tests are added to CMake using the `add_yacl_test` macro
-- Tests are typically located alongside the code they test
 
 ## Code Style
 
-- Follows Envoy C++ style guidelines with appropriate exceptions
-- Uses Google C++ style for formatting (enforced by clang-format)
-- Header files are organized with specific include categories and priorities
+- Google C++ style (enforced by clang-format via pre-commit)
+- Install hooks: `pre-commit install`
+- Format all files: `pre-commit run clang-format --all-files`
+
+## Testing
+
+- Tests use Google Test framework
+- Named `*_test.cc`, added via `add_yacl_test_if()` macro in CMakeLists.txt
+- Located alongside the code they test

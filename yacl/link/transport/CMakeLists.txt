@@ -20,6 +20,7 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/brpc_blackbox_link.cc
     ${CMAKE_CURRENT_LIST_DIR}/interconnection_link.cc
     ${CMAKE_CURRENT_LIST_DIR}/brpc_link.cc
+    ${CMAKE_CURRENT_LIST_DIR}/asio_link.cc
     ${CMAKE_CURRENT_LIST_DIR}/channel.cc
     ${CMAKE_CURRENT_LIST_DIR}/channel_mem.cc)
 

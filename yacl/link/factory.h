@@ -50,4 +50,11 @@ class FactoryBrpcBlackBox : public ILinkFactory {
                                       size_t& self_rank);
 };
 
+/// asio based lightweight link context
+class FactoryAsio : public ILinkFactory {
+ public:
+  std::shared_ptr<Context> CreateContext(const ContextDesc& desc,
+                                         size_t self_rank) override;
+};
+
 }  // namespace yacl::link

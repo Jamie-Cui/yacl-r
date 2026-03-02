@@ -32,33 +32,38 @@ if(NOT simplest_ot_POPULATED)
 
   # Build x86 lib
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
-    message(STATUS "Building simplest_ot x86 asm (this may takes a while)")
+    find_program(NASM_EXECUTABLE nasm)
+    find_program(YASM_EXECUTABLE yasm)
+    
+    if(NASM_EXECUTABLE OR YASM_EXECUTABLE)
+      message(STATUS "Building simplest_ot x86 asm (this may takes a while)")
 
-    add_library(libsimplest_ot_x86 STATIC IMPORTED)
+      add_library(libsimplest_ot_x86 STATIC IMPORTED)
 
-    execute_process(
-      COMMAND ${CMAKE_MAKE_PROGRAM} libsimpleot
-      OUTPUT_FILE
-        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-out.log
-      ERROR_FILE
-        ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-err.log
-      WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/simplest_ot/simplest_ot_x86_asm
-      RESULT_VARIABLE SIMPLEST_OT_BUILD_FAIL)
+      execute_process(
+        COMMAND ${CMAKE_MAKE_PROGRAM} libsimpleot
+        OUTPUT_FILE
+          ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-out.log
+        ERROR_FILE
+          ${CMAKE_DEPS_SRCDIR}/simplest_ot-stamp/simplest_ot-build-err.log
+        WORKING_DIRECTORY ${CMAKE_DEPS_SRCDIR}/simplest_ot/simplest_ot_x86_asm
+        RESULT_VARIABLE SIMPLEST_OT_BUILD_FAIL)
 
-    if(SIMPLEST_OT_BUILD_FAIL AND NOT SIMPLEST_OT_BUILD_FAIL EQUAL 0)
-      message(FATAL_ERROR "Building simplest_ot x86 asm - Failed")
+      if(SIMPLEST_OT_BUILD_FAIL AND NOT SIMPLEST_OT_BUILD_FAIL EQUAL 0)
+        message(WARNING "Building simplest_ot x86 asm - Failed, using portable version")
+      else()
+        message(STATUS "Building simplest_ot x86 asm - Success")
+        set_target_properties(
+          libsimplest_ot_x86
+          PROPERTIES
+            IMPORTED_LOCATION
+            ${CMAKE_DEPS_LIBDIR}/simplest_ot/simplest_ot_x86_asm/libsimplest_ot_x86${CMAKE_STATIC_LIBRARY_SUFFIX}
+        )
+        target_link_libraries(libsimplest_ot_itf INTERFACE libsimplest_ot_x86)
+      endif()
     else()
-      message(STATUS "Building simplest_ot x86 asm - Success")
+      message(STATUS "nasm/yasm not found, using portable simplest_ot")
     endif()
-
-    set_target_properties(
-      libsimplest_ot_x86
-      PROPERTIES
-        IMPORTED_LOCATION
-        ${CMAKE_DEPS_LIBDIR}/simplest_ot/simplest_ot_x86_asm/libsimplest_ot_x86${CMAKE_STATIC_LIBRARY_SUFFIX}
-    )
-
-    target_link_libraries(libsimplest_ot_itf INTERFACE libsimplest_ot_x86)
 
   endif()
 endif()

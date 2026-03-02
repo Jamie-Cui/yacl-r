@@ -19,6 +19,7 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/context.cc
     ${CMAKE_CURRENT_LIST_DIR}/factory_brpc.cc
     ${CMAKE_CURRENT_LIST_DIR}/factory_brpc_blackbox.cc
+    ${CMAKE_CURRENT_LIST_DIR}/factory_asio.cc
     ${CMAKE_CURRENT_LIST_DIR}/factory_mem.cc
     ${CMAKE_CURRENT_LIST_DIR}/trace.cc)
 

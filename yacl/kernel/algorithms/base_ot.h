@@ -21,9 +21,9 @@
 
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
+#include "yacl/base/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
-#include "yacl/base/secparam.h"
 
 /* submodules */
 #if defined(__linux__) && defined(__x86_64)
@@ -55,14 +55,14 @@ inline OtRecvStore BaseOtRecv(const std::shared_ptr<link::Context>& ctx,
                               uint32_t num_ot) {
   std::vector<Block> blocks(num_ot);
   BaseOtRecv(ctx, choices, absl::MakeSpan(blocks));
-  return MakeOtRecvStore(choices, blocks);  // FIXME: Drop explicit copy
+  return MakeOtRecvStore(choices, std::move(blocks));
 }
 
 inline OtSendStore BaseOtSend(const std::shared_ptr<link::Context>& ctx,
                               uint32_t num_ot) {
   std::vector<std::array<Block, 2>> blocks(num_ot);
   BaseOtSend(ctx, absl::MakeSpan(blocks));
-  return MakeOtSendStore(blocks);  // FIXME: Drop explicit copy
+  return MakeOtSendStore(std::move(blocks));
 }
 
 }  // namespace yacl::crypto

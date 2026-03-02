@@ -51,3 +51,4 @@ external
 rpc_data
 
 Testing/Temporary/*
+/.agent-shell/
