@@ -142,6 +142,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
   add_compile_definitions(_ARM64_)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+  add_compile_definitions(_AMD64_)
 endif()
 
 # make it colorful under ninja-build
