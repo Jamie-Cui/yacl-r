@@ -65,11 +65,8 @@ cmake --build build
 ### Build Options
 
 ```bash
-# Build with networking/kernel support
-cmake -S . -B build -G Ninja -DENABLE_KERNEL=On -DENABLE_LINK=On
-
-# Build with engine module (enables kernel and link automatically)
-cmake -S . -B build -G Ninja -DENABLE_ENGINE=On
+# Enable brpc transport (requires protobuf); without this, ASIO-only transport is used
+cmake -S . -B build -G Ninja -DENABLE_BRPC=On
 
 # Disable tests
 cmake -S . -B build -G Ninja -DBUILD_TEST=Off
@@ -82,9 +79,7 @@ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `ENABLE_ENGINE` | Off | Enable engine module |
-| `ENABLE_KERNEL` | Off | Enable kernel module (crypto with networking) |
-| `ENABLE_LINK` | Off | Enable link/network module |
+| `ENABLE_BRPC` | Off | Enable brpc transport (adds protobuf + brpc deps) |
 | `BUILD_TEST` | On | Build test binaries |
 
 ## Running Tests

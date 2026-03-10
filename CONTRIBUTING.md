@@ -140,8 +140,7 @@ yacl/crypto/my_feature/
 // Licensed under the Apache License, Version 2.0 (the "License");
 // ...
 
-#ifndef YACL_CRYPTO_MY_FEATURE_H_
-#define YACL_CRYPTO_MY_FEATURE_H_
+#pragma once
 
 // Standard library
 #include <string>
@@ -158,8 +157,6 @@ namespace yacl::crypto {
 // ...
 
 }  // namespace yacl::crypto
-
-#endif  // YACL_CRYPTO_MY_FEATURE_H_
 ```
 
 ## Testing Guidelines

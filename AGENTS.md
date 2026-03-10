@@ -11,9 +11,8 @@ cmake -S . -B build -G Ninja
 # Debug build
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 
-# With optional modules
-cmake -S . -B build -G Ninja -DENABLE_KERNEL=On -DENABLE_LINK=On
-cmake -S . -B build -G Ninja -DENABLE_ENGINE=On  # Enables kernel and link automatically
+# With brpc transport (requires protobuf)
+cmake -S . -B build -G Ninja -DENABLE_BRPC=On
 
 # Build
 cmake --build build -j$(nproc)

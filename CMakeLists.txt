@@ -61,12 +61,6 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # Enable compile_commands.json for lsp
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# This policy was introduced in CMake 3.13; OLD by default until CMake 3.21
-# cmake_policy(SET CMP0077 NEW)
-# cmake_policy(SET CMP0135 NEW)
-# cmake_policy(SET CMP0168 NEW)
-# cmake_policy(SET CMP0169 OLD)
-
 # Generic this project's CMake modules
 include(AddCompilerFlags)
 include(AddYaclTest)
@@ -143,8 +137,12 @@ add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-array-bounds) # mcl
 
 # HACK we need to add the following global compiler flag in order to compile fourq
-add_compile_definitions(__LINUX__)
-add_compile_definitions(_ARM64_)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_compile_definitions(__LINUX__)
+endif()
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
+  add_compile_definitions(_ARM64_)
+endif()
 
 # make it colorful under ninja-build
 if(CMAKE_GENERATOR STREQUAL Ninja)
