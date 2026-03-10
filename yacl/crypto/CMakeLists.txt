@@ -23,9 +23,9 @@ install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/key_utils.h
 add_subdirectory(aead)
 add_subdirectory(aes)
 add_subdirectory(block_cipher)
+add_subdirectory(dpf)
 add_subdirectory(ecc)
 add_subdirectory(envelope)
-add_subdirectory(experimental)
 add_subdirectory(hash)
 add_subdirectory(hmac)
 add_subdirectory(oprf)
@@ -34,7 +34,10 @@ add_subdirectory(pairing)
 add_subdirectory(pke)
 add_subdirectory(rand)
 add_subdirectory(sign)
+# add_subdirectory(sync_drbg)
 add_subdirectory(tools)
+add_subdirectory(tpre)
+# add_subdirectory(vss)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
