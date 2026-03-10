@@ -17,9 +17,9 @@
 #include <utility>
 #include <vector>
 
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/key_utils.h"
 #include "yacl/crypto/sign/signing.h"
-#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/hash/hash_utils.h"

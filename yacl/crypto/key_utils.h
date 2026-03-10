@@ -65,7 +65,7 @@ namespace yacl::crypto {
 // Load any (format/type/structure) key from buffer, and return a UniquePkey
 // object
 [[nodiscard]] ossl::UniquePkey LoadKeyFromBufs(ByteContainerView sk_buf,
-                                                  ByteContainerView pk_buf);
+                                               ByteContainerView pk_buf);
 
 // load any (format/type/structure) key from file, and return a UniquePkey
 // object
@@ -86,7 +86,7 @@ namespace yacl::crypto {
 }
 
 [[nodiscard]] inline ossl::UniquePkey LoadPemKeys(ByteContainerView sk_buf,
-                                                     ByteContainerView pk_buf) {
+                                                  ByteContainerView pk_buf) {
   return LoadKeyFromBufs(sk_buf, pk_buf);
 }
 
@@ -124,7 +124,7 @@ void ExportSecretKeyToPemBuf(
 }
 
 [[nodiscard]] inline ossl::UniquePkey LoadDerKeys(ByteContainerView sk_buf,
-                                                     ByteContainerView pk_buf) {
+                                                  ByteContainerView pk_buf) {
   return LoadKeyFromBufs(sk_buf, pk_buf);
 }
 

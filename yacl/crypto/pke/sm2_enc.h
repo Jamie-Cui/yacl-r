@@ -18,9 +18,9 @@
 #include <utility>
 #include <vector>
 
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/key_utils.h"
 #include "yacl/crypto/pke/pke_interface.h"
-#include "yacl/base/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sm2_enc", SecParam::C::k128, SecParam::S::INF);

@@ -19,7 +19,7 @@
 
 #include "libtommath/tommath.h"
 
-extern "C"{
+extern "C" {
 
 /*
  * Private symbols
@@ -142,7 +142,7 @@ extern void MP_FREE(void *mem, size_t size);
     b = _c;              \
   } while (0)
 
-#define MP_IS_2EXPT(x) (((x) != 0u) && (((x) & ((x) - 1u)) == 0u))
+#define MP_IS_2EXPT(x) (((x) != 0u) && (((x) & ((x)-1u)) == 0u))
 
 #define MP_IS_POWER_OF_TWO(a) (((mp_count_bits((a)) - 1) == mp_cnt_lsb((a))))
 
@@ -390,10 +390,9 @@ extern MP_PRIVATE const mp_digit s_mp_prime_tab[];
     return res;                                                               \
   }
 
-#define MP_GET_SIGNED(name, mag, type, utype)      \
-  type name(const mp_int *a) {                     \
-    utype res = mag(a);                            \
-    return mp_isneg(a) ? (type) - res : (type)res; \
+#define MP_GET_SIGNED(name, mag, type, utype)    \
+  type name(const mp_int *a) {                   \
+    utype res = mag(a);                          \
+    return mp_isneg(a) ? (type)-res : (type)res; \
   }
-
 }

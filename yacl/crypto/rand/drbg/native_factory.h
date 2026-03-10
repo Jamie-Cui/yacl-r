@@ -22,9 +22,9 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/crypto/rand/drbg/drbg.h"
-#include "yacl/base/secparam.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
 /* submodules */

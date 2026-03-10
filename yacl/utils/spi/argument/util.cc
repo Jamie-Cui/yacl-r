@@ -34,4 +34,4 @@ std::string ToSnakeCase(const std::string& str) {
   return absl::StrJoin(words, "_");
 }
 
-}  // namespace yacl::util
+}  // namespace yacl

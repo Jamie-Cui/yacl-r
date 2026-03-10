@@ -20,9 +20,9 @@
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
 /* submodules */
+#include "yacl/base/secparam.h"
 #include "yacl/kernel/algorithms/softspoken_ote.h"
 #include "yacl/kernel/type/ot_store_utils.h"
-#include "yacl/base/secparam.h"
 
 YACL_MODULE_DECLARE("base_vole", SecParam::C::INF, SecParam::S::INF);
 namespace yacl::crypto {

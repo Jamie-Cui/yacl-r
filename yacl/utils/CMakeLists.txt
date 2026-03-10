@@ -39,3 +39,8 @@ add_yacl_test_if(platform_utils_test)
 add_yacl_test_if(scope_guard_test)
 add_yacl_test_if(segment_tree_test)
 add_yacl_test_if(serializer_test)
+
+# ------------
+# Fuzz
+# ------------
+add_yacl_fuzz_if(serializer_fuzz)

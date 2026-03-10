@@ -47,13 +47,6 @@ add_library(
   ${CMAKE_CURRENT_LIST_DIR}/group_sketch.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.cc
-  # FIXME ecc with lib25519 ${CMAKE_CURRENT_LIST_DIR}/lib25519/ed25519_group.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_factory.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/lib25519/lib25519_group.cc FIXME ecc with
-  # libsodium ${CMAKE_CURRENT_LIST_DIR}/libsodium/ed25519_group.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/x25519_group.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_factory.cc
-  # ${CMAKE_CURRENT_LIST_DIR}/libsodium/sodium_grop.cc
   ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_factory.cc
   ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.cc
   ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_factory.cc

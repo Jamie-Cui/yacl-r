@@ -45,7 +45,8 @@ TEST(PrimeFieldTest, Works) {
 // #ifdef __x86_64__
 // TEST(BinaryTest, Works) {
 //   // Note that: kPrimeField implmentation requires ArgDegree
-//   auto gf = GaloisFieldFactory::Instance().Create(kBinaryField, ArgDegree = 64);
+//   auto gf = GaloisFieldFactory::Instance().Create(kBinaryField, ArgDegree =
+//   64);
 
 //   EXPECT_EQ(gf->GetLibraryName(), kIntelLib);  // kIntelLib has kBinaryField
 //   EXPECT_EQ(gf->GetFieldName(), kBinaryField);

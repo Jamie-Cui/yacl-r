@@ -1,10 +1,10 @@
-// Copyright 2023 Ant Group Co., Ltd.
+// Copyright 2024 Jamie Cui
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,11 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
+#include <cstddef>
+#include <cstdint>
 
-#define CONFIGURED 1
-#define HAVE_TI_MODE
+#include "yacl/crypto/hash/hash_utils.h"
 
-extern "C" {
-#include "sodium/private/ed25519_ref10.h"
-};
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  auto view = yacl::ByteContainerView(data, size);
+
+  yacl::crypto::Sha256(view);
+  yacl::crypto::Sm3(view);
+  yacl::crypto::Blake3(view);
+
+  return 0;
+}

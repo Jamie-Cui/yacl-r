@@ -13,11 +13,11 @@
 // limitations under the License.
 
 #include "yacl/math/mpint/tommath_ext_types.h"
-#include "yacl/math/mpint/mp_int_private.h"
 
 #include <climits>
 
 #include "yacl/math/mpint/mp_int_enforce.h"
+#include "yacl/math/mpint/mp_int_private.h"
 
 // extern "C" {
 // #include "libtommath/tommath_private.h"

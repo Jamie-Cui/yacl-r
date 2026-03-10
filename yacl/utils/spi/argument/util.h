@@ -20,4 +20,4 @@ namespace yacl {
 
 std::string ToSnakeCase(const std::string& str);
 
-}  // namespace yacl::util
+}  // namespace yacl

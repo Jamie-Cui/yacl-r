@@ -25,8 +25,8 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
-#include "yacl/math/mpint/mp_int.h"
 #include "yacl/base/secparam.h"
+#include "yacl/math/mpint/mp_int.h"
 
 /* submodules */
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"

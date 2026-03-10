@@ -34,3 +34,8 @@ set(YACL_SOURCE_FILES
 
 add_yacl_test_if(blake3_test)
 add_yacl_test_if(ssl_hash_all_test)
+
+# ------------
+# Fuzz
+# ------------
+add_yacl_fuzz_if(hash_fuzz)

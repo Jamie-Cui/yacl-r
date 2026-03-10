@@ -18,8 +18,8 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/crypto/rand/rand.h"
 #include "yacl/base/secparam.h"
+#include "yacl/crypto/rand/rand.h"
 
 namespace yacl::crypto {
 

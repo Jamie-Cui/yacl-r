@@ -18,10 +18,10 @@
 #include <memory>
 #include <vector>
 
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/hash/hash_utils.h"
 #include "yacl/crypto/tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
-#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/kernel/algorithms/gywz_ote.h"

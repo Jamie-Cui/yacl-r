@@ -87,6 +87,15 @@ OpensslGroup::OpensslGroup(const CurveMeta &meta, UniqueEcGroup group)
   cofactor_ = Bn2Mp(EC_GROUP_get0_cofactor(group_.get()));
   OSSL_RET_1(EC_GROUP_get_curve(group_.get(), field_p_.get(), nullptr, nullptr,
                                 ctx_.get()));
+
+  // Cache serialize lengths — constant per curve
+  const auto *gen = CastAny<EC_POINT>(generator_);
+  serialize_len_compressed_ = EC_POINT_point2oct(
+      group_.get(), gen, POINT_CONVERSION_COMPRESSED, nullptr, 0, ctx_.get());
+  serialize_len_uncompressed_ = EC_POINT_point2oct(
+      group_.get(), gen, POINT_CONVERSION_UNCOMPRESSED, nullptr, 0, ctx_.get());
+  serialize_len_hybrid_ = EC_POINT_point2oct(
+      group_.get(), gen, POINT_CONVERSION_HYBRID, nullptr, 0, ctx_.get());
 }
 
 AnyPtr OpensslGroup::MakeOpensslPoint() const {
@@ -209,11 +218,14 @@ AffinePoint OpensslGroup::GetAffinePoint(const EcPoint &point) const {
 }
 
 uint64_t OpensslGroup::GetSerializeLength(PointOctetFormat format) const {
-  auto f = ToOsslForm(format);
-  size_t len = EC_POINT_point2oct(group_.get(), CastAny<EC_POINT>(generator_),
-                                  f, nullptr, 0, ctx_.get());
-  YACL_ENFORCE(len != 0, "calc serialize point size, openssl returns 0");
-  return len;
+  switch (ToOsslForm(format)) {
+    case POINT_CONVERSION_UNCOMPRESSED:
+      return serialize_len_uncompressed_;
+    case POINT_CONVERSION_HYBRID:
+      return serialize_len_hybrid_;
+    default:
+      return serialize_len_compressed_;
+  }
 }
 
 Buffer OpensslGroup::SerializePoint(const EcPoint &point,

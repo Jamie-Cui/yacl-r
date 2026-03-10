@@ -21,7 +21,6 @@
 
 namespace yacl::test {
 
-
 TEST(BufferTest, ReserveWorks) {
   Buffer buf("abc\0", 4);
   ASSERT_EQ(buf.size(), 4);

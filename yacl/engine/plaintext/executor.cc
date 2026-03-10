@@ -71,5 +71,4 @@ void PlainExecutor::Exec() {
   }
 }
 
-
 }  // namespace yacl::engine

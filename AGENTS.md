@@ -16,6 +16,12 @@ cmake -S . -B build -G Ninja -DENABLE_BRPC=On
 
 # Build
 cmake --build build -j$(nproc)
+
+# Build with fuzzing (requires Clang)
+cmake -S . -B build-fuzz -G Ninja \
+  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+  -DBUILD_FUZZ=On
+cmake --build build-fuzz -j$(nproc)
 ```
 
 ## Testing
@@ -60,6 +66,7 @@ clang-tidy path/to/file.cc -- -p build
 - Headers: `.h` extension
 - Source: `.cc` extension
 - Tests: `*_test.cc` suffix, placed alongside tested code
+- Fuzz targets: `*_fuzz.cc` suffix, placed alongside tested code
 
 ### Naming Conventions
 | Type | Convention | Example |
@@ -126,6 +133,13 @@ TEST(MyFeatureTest, BasicFunctionalityWorks) {
 Add to the relevant `CMakeLists.txt`:
 ```cmake
 add_yacl_test_if(my_feature_test)
+```
+
+### Adding New Fuzz Targets
+Fuzz targets use libFuzzer and require Clang. Create a `*_fuzz.cc` file with an
+`LLVMFuzzerTestOneInput` entry point, then add to the relevant `CMakeLists.txt`:
+```cmake
+add_yacl_fuzz_if(my_feature_fuzz)
 ```
 
 ## Project Structure

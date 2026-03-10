@@ -16,8 +16,8 @@
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
-#include "yacl/link/context.h"
 #include "yacl/base/secparam.h"
+#include "yacl/link/context.h"
 
 /* submodules */
 #include "yacl/crypto/rand/rand.h"

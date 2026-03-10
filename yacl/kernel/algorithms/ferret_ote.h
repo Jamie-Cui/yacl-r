@@ -19,10 +19,10 @@
 #include <unordered_map>
 #include <vector>
 
-#include "yacl/kernel/type/ot_store_utils.h"
-#include "yacl/math/gadget.h"
 #include "yacl/base/secparam.h"
 #include "yacl/crypto/tools/cuckoo_index.h"
+#include "yacl/kernel/type/ot_store_utils.h"
+#include "yacl/math/gadget.h"
 
 /* submodules */
 #include "yacl/kernel/algorithms/ferret_ote_rn.h"

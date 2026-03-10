@@ -19,8 +19,8 @@
 #include "absl/types/span.h"
 
 #include "yacl/base/int128.h"
-#include "yacl/link/link.h"
 #include "yacl/base/secparam.h"
+#include "yacl/link/link.h"
 
 /* submodules */
 #include "yacl/crypto/aes/aes_opt.h"

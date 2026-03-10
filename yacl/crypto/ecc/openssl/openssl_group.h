@@ -88,6 +88,12 @@ class OpensslGroup : public EcGroupSketch {
   MPInt cofactor_;
   EcPoint generator_;
 
+  // Cached serialize lengths (constant per curve), indexed by OpenSSL
+  // point_conversion_form_t: COMPRESSED=2, UNCOMPRESSED=4, HYBRID=6
+  uint64_t serialize_len_compressed_{0};
+  uint64_t serialize_len_uncompressed_{0};
+  uint64_t serialize_len_hybrid_{0};
+
   static thread_local UniqueBnCtx ctx_;
 };
 

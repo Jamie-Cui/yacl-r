@@ -22,8 +22,8 @@
 #error "OT interface already defined"
 #endif
 
-#include "yacl/kernel/algorithms/base_ot_interface.h"
 #include "yacl/base/secparam.h"
+#include "yacl/kernel/algorithms/base_ot_interface.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("base_ot_portable", SecParam::C::k128, SecParam::S::INF);

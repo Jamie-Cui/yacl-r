@@ -28,9 +28,9 @@ void EcGroupSketch::SubInplace(EcPoint *p1, const EcPoint &p2) const {
   AddInplace(p1, Negate(p2));
 }
 
-EcPoint EcGroupSketch::Double(const EcPoint &p) const { return Mul(p, 2_mp); }
+EcPoint EcGroupSketch::Double(const EcPoint &p) const { return Add(p, p); }
 
-void EcGroupSketch::DoubleInplace(EcPoint *p) const { MulInplace(p, 2_mp); }
+void EcGroupSketch::DoubleInplace(EcPoint *p) const { *p = Add(*p, *p); }
 
 EcPoint EcGroupSketch::MulBase(const MPInt &scalar) const {
   return Mul(GetGenerator(), scalar);

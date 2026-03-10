@@ -20,6 +20,7 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/rand/rand.h"
 #include "yacl/crypto/tools/common.h"
 #include "yacl/crypto/tools/ro.h"
@@ -28,7 +29,6 @@
 #include "yacl/kernel/algorithms/softspoken_ote.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/context.h"
-#include "yacl/base/secparam.h"
 #include "yacl/utils/parallel.h"
 #include "yacl/utils/thread_pool.h"
 

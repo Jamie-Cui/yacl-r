@@ -182,12 +182,8 @@ class EcCurveTest : public ::testing::TestWithParam<std::string> {
     ASSERT_TRUE(
         ec_->PointEqual(ec_->DeserializePoint(buf), ec_->GetGenerator()));
 
-    // todo: X962 support in libsodium and lib25519
-    if (ec_->GetLibraryName() == "Toy" ||
-        ec_->GetLibraryName() == "libsodium" ||
-        // ec_->GetLibraryName() == "lib25519" ||
-        ec_->GetLibraryName() == "FourQlib") {
-      return;  // The toy lib does not support X9.62 format
+    if (ec_->GetLibraryName() == "Toy" || ec_->GetLibraryName() == "FourQlib") {
+      return;  // These libs do not support X9.62 format
     }
 
     // test ANSI X9.62 format

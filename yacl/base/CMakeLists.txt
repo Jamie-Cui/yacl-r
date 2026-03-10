@@ -38,3 +38,8 @@ set(YACL_SOURCE_FILES
 # ------------
 add_yacl_test_if(buffer_test)
 add_yacl_test_if(secparam_test)
+
+# ------------
+# Fuzz
+# ------------
+add_yacl_fuzz_if(buffer_fuzz)

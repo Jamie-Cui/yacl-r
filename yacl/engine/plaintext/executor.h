@@ -94,7 +94,6 @@ class PlainExecutor {
       total_out_bitnum += circ_->now[i];
     }
 
-
     std::vector<uint8_t> out(total_out_bitnum / 8);
 
     size_t index = wires_.size();

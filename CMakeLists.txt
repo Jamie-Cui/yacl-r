@@ -63,6 +63,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # Generic this project's CMake modules
 include(AddCompilerFlags)
+include(AddYaclFuzz)
 include(AddYaclTest)
 include(Coverage)
 include(ImportLib)
@@ -222,6 +223,7 @@ message(STATUS "C++ Standard              : ${CMAKE_CXX_STANDARD}")
 message(STATUS "Compiler Flags            : \n${CMAKE_CXX_FLAGS}")
 message(STATUS "Linker Flags              : \n${LINK_OPTIONS}")
 message(STATUS "(opt) Build Test          : ${BUILD_TEST}")
+message(STATUS "(opt) Build Fuzz          : ${BUILD_FUZZ}")
 message(STATUS "Install Prefix            : ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "==============================================================")
 
