@@ -26,6 +26,17 @@ namespace yacl::crypto::ossl {
 
 static constexpr size_t kHashToCurveCounterGuard = 100;
 
+static point_conversion_form_t ToOsslForm(PointOctetFormat format) {
+  switch (format) {
+    case PointOctetFormat::X962Uncompressed:
+      return POINT_CONVERSION_UNCOMPRESSED;
+    case PointOctetFormat::X962Hybrid:
+      return POINT_CONVERSION_HYBRID;
+    default:
+      return POINT_CONVERSION_COMPRESSED;
+  }
+}
+
 thread_local UniqueBnCtx OpensslGroup::ctx_ = UniqueBnCtx(BN_CTX_new());
 
 UniqueBn Mp2Bn(const MPInt &mp) {
@@ -52,11 +63,11 @@ UniqueBn Mp2Bn(const MPInt &mp) {
 MPInt Bn2Mp(const BIGNUM *bn) {
   CheckNotNull(bn);
   auto buf_len = BN_num_bytes(bn);
-  unsigned char buf[buf_len];
-  YACL_ENFORCE(BN_bn2lebinpad(bn, buf, buf_len) >= 0);
+  std::vector<unsigned char> buf(buf_len);
+  YACL_ENFORCE(BN_bn2lebinpad(bn, buf.data(), buf_len) >= 0);
 
   MPInt mp;
-  mp.FromMagBytes({buf, static_cast<size_t>(buf_len)}, Endian::little);
+  mp.FromMagBytes({buf.data(), static_cast<size_t>(buf_len)}, Endian::little);
 
   if (BN_is_negative(bn)) {
     mp.NegateInplace();
@@ -199,19 +210,7 @@ AffinePoint OpensslGroup::GetAffinePoint(const EcPoint &point) const {
 }
 
 uint64_t OpensslGroup::GetSerializeLength(PointOctetFormat format) const {
-  point_conversion_form_t f;
-  switch (format) {
-    case PointOctetFormat::X962Uncompressed:
-      f = POINT_CONVERSION_UNCOMPRESSED;
-      break;
-    case PointOctetFormat::X962Hybrid:
-      f = POINT_CONVERSION_HYBRID;
-      break;
-    default:
-      f = POINT_CONVERSION_COMPRESSED;
-      break;
-  }
-
+  auto f = ToOsslForm(format);
   size_t len = EC_POINT_point2oct(group_.get(), CastAny<EC_POINT>(generator_),
                                   f, nullptr, 0, ctx_.get());
   YACL_ENFORCE(len != 0, "calc serialize point size, openssl returns 0");
@@ -227,19 +226,7 @@ Buffer OpensslGroup::SerializePoint(const EcPoint &point,
 
 void OpensslGroup::SerializePoint(const EcPoint &point, PointOctetFormat format,
                                   Buffer *buf) const {
-  point_conversion_form_t f;
-  switch (format) {
-    case PointOctetFormat::X962Uncompressed:
-      f = POINT_CONVERSION_UNCOMPRESSED;
-      break;
-    case PointOctetFormat::X962Hybrid:
-      f = POINT_CONVERSION_HYBRID;
-      break;
-    default:
-      f = POINT_CONVERSION_COMPRESSED;
-      break;
-  }
-
+  auto f = ToOsslForm(format);
   size_t len = EC_POINT_point2oct(group_.get(), CastAny<EC_POINT>(point), f,
                                   nullptr, 0, ctx_.get());
   YACL_ENFORCE(len != 0, "calc serialize point size, openssl returns 0");
@@ -252,19 +239,7 @@ void OpensslGroup::SerializePoint(const EcPoint &point, PointOctetFormat format,
 
 void OpensslGroup::SerializePoint(const EcPoint &point, PointOctetFormat format,
                                   uint8_t *buf, uint64_t buf_size) const {
-  point_conversion_form_t f;
-  switch (format) {
-    case PointOctetFormat::X962Uncompressed:
-      f = POINT_CONVERSION_UNCOMPRESSED;
-      break;
-    case PointOctetFormat::X962Hybrid:
-      f = POINT_CONVERSION_HYBRID;
-      break;
-    default:
-      f = POINT_CONVERSION_COMPRESSED;
-      break;
-  }
-
+  auto f = ToOsslForm(format);
   size_t len = EC_POINT_point2oct(group_.get(), CastAny<EC_POINT>(point), f,
                                   nullptr, 0, ctx_.get());
   YACL_ENFORCE(len != 0, "calc serialize point size, openssl returns 0");
@@ -358,10 +333,10 @@ size_t HashBn(const BIGNUM *bn) {
     return 0;
   }
   int len = BN_num_bytes(bn);
-  char buf[len];
-  YACL_ENFORCE(BN_bn2lebinpad(bn, reinterpret_cast<unsigned char *>(buf), len) >
-               0);
-  return std::hash<std::string_view>{}({buf, static_cast<size_t>(len)});
+  std::vector<unsigned char> buf(len);
+  YACL_ENFORCE(BN_bn2lebinpad(bn, buf.data(), len) > 0);
+  return std::hash<std::string_view>{}(
+      {reinterpret_cast<const char *>(buf.data()), static_cast<size_t>(len)});
 }
 }  // namespace
 

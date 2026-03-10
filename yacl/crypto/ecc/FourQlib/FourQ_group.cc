@@ -292,13 +292,13 @@ EcPoint FourQGroup::HashToCurve(HashToCurveStrategy strategy,
 }
 
 size_t FourQGroup::HashPoint(const EcPoint& point) const {
-  auto* p = const_cast<point_extproj*>(CastR1(point));
+  const auto* p = CastR1(point);
   f2elm_t x;
   f2elm_t z;
 
-  fp2copy1271(p->z, z);
+  fp2copy1271(const_cast<f2elm_t&>(p->z), z);
   fp2inv1271(z);
-  fp2mul1271(p->x, z, x);
+  fp2mul1271(const_cast<f2elm_t&>(p->x), z, x);
   mod1271(x[0]);
   mod1271(x[1]);
 
@@ -316,15 +316,15 @@ bool FourQGroup::PointEqual(const EcPoint& p1, const EcPoint& p2) const {
     return true;
   }
 
-  auto* p1p = const_cast<point_extproj*>(CastR1(p1));
-  auto* p2p = const_cast<point_extproj*>(CastR1(p2));
+  const auto* p1p = CastR1(p1);
+  const auto* p2p = CastR1(p2);
 
   // p1 = (X1/Z1, Y1/Z1) = ((X1*Z2)/(Z1*Z2), (Y1*Z2)/(Z1*Z2));
   // P2 = (X2/Z2, Y2/Z2) = ((Z1*X2)/(Z1*Z2), (Z1*Y2)/(Z1*Z2));
   f2elm_t a;
   f2elm_t b;
-  fp2mul1271(p1p->x, p2p->z, a);
-  fp2mul1271(p1p->z, p2p->x, b);
+  fp2mul1271(const_cast<f2elm_t&>(p1p->x), const_cast<f2elm_t&>(p2p->z), a);
+  fp2mul1271(const_cast<f2elm_t&>(p1p->z), const_cast<f2elm_t&>(p2p->x), b);
   mod1271(a[0]);
   mod1271(a[1]);
   mod1271(b[0]);
@@ -337,8 +337,8 @@ bool FourQGroup::PointEqual(const EcPoint& p1, const EcPoint& p2) const {
     }
   }
 
-  fp2mul1271(p1p->y, p2p->z, a);
-  fp2mul1271(p1p->z, p2p->y, b);
+  fp2mul1271(const_cast<f2elm_t&>(p1p->y), const_cast<f2elm_t&>(p2p->z), a);
+  fp2mul1271(const_cast<f2elm_t&>(p1p->z), const_cast<f2elm_t&>(p2p->y), b);
   mod1271(a[0]);
   mod1271(a[1]);
   mod1271(b[0]);
@@ -365,15 +365,17 @@ bool FourQGroup::IsInCurveGroup(const EcPoint& point) const {
 }
 
 bool FourQGroup::IsInfinity(const EcPoint& point) const {
-  auto* x =
-      const_cast<digit_t*>(reinterpret_cast<const digit_t*>(CastR1(point)->x));
-  auto* z =
-      const_cast<digit_t*>(reinterpret_cast<const digit_t*>(CastR1(point)->z));
-  mod1271(x);
-  mod1271(x + 2);
-  mod1271(z);
-  mod1271(z + 2);
-  return is_zero_ct(x, 2 * NWORDS_FIELD) || is_zero_ct(z, 2 * NWORDS_FIELD);
+  const auto* p = CastR1(point);
+  f2elm_t x;
+  f2elm_t z;
+  fp2copy1271(const_cast<f2elm_t&>(p->x), x);
+  fp2copy1271(const_cast<f2elm_t&>(p->z), z);
+  mod1271(x[0]);
+  mod1271(x[1]);
+  mod1271(z[0]);
+  mod1271(z[1]);
+  return is_zero_ct(reinterpret_cast<digit_t*>(x), 2 * NWORDS_FIELD) ||
+         is_zero_ct(reinterpret_cast<digit_t*>(z), 2 * NWORDS_FIELD);
 }
 
 const point_extproj* FourQGroup::CastR1(const EcPoint& p) {
