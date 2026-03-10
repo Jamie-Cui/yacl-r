@@ -171,6 +171,8 @@ class Buffer final {
   }
 
   void* release() {
+    YACL_ENFORCE(deleter_ == nullptr,
+                 "Cannot release a buffer with a custom deleter");
     void* tmp = ptr_;
     ptr_ = nullptr;
     size_ = 0;

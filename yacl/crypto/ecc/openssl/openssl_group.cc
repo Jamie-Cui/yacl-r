@@ -16,8 +16,7 @@
 
 #include <vector>
 
-#include "yacl/crypto/hash/blake3.h"
-#include "yacl/crypto/hash/ssl_hash.h"
+#include "yacl/crypto/ecc/hash_to_curve_util.h"
 #include "yacl/crypto/ossl_wrappers.h"
 #include "yacl/utils/scope_guard.h"
 #include "yacl/utils/spi/type_traits.h"
@@ -268,15 +267,7 @@ EcPoint OpensslGroup::HashToCurve(HashToCurveStrategy strategy,
   HashAlgorithm hash_algorithm;
   switch (strategy) {
     case HashToCurveStrategy::TryAndRehash_SHA2:
-      if (bits <= 224) {
-        hash_algorithm = HashAlgorithm::SHA224;
-      } else if (bits <= 256) {
-        hash_algorithm = HashAlgorithm::SHA256;
-      } else if (bits <= 384) {
-        hash_algorithm = HashAlgorithm::SHA384;
-      } else {
-        hash_algorithm = HashAlgorithm::SHA512;
-      }
+      hash_algorithm = SelectSha2ByBits(bits);
       break;
     case HashToCurveStrategy::TryAndRehash_SHA3:
       YACL_THROW("Openssl does not support TryAndRehash_SHA3 strategy now");
@@ -295,12 +286,7 @@ EcPoint OpensslGroup::HashToCurve(HashToCurveStrategy strategy,
 
   auto point = MakeOpensslPoint();
 
-  std::vector<uint8_t> buf;
-  if (hash_algorithm != HashAlgorithm::BLAKE3) {
-    buf = SslHash(hash_algorithm).Update(str).CumulativeHash();
-  } else {
-    buf = Blake3Hash((bits + 7) / 8).Update(str).CumulativeHash();
-  }
+  auto buf = HashForCurve(hash_algorithm, bits, str);
   auto bn = UniqueBn(BN_new());
   for (size_t t = 0; t < kHashToCurveCounterGuard; ++t) {
     // hash value to BN
@@ -316,11 +302,7 @@ EcPoint OpensslGroup::HashToCurve(HashToCurveStrategy strategy,
     }
 
     // do rehash
-    if (hash_algorithm != HashAlgorithm::BLAKE3) {
-      buf = SslHash(hash_algorithm).Update(buf).CumulativeHash();
-    } else {
-      buf = Blake3Hash((bits + 7) / 8).Update(buf).CumulativeHash();
-    }
+    buf = HashForCurve(hash_algorithm, bits, buf);
   }
 
   YACL_THROW("Openssl HashToCurve exceed max loop({})",

@@ -14,8 +14,8 @@
 
 #include "yacl/crypto/ecc/mcl/mcl_ec_group.h"
 
+#include "yacl/crypto/ecc/hash_to_curve_util.h"
 #include "yacl/crypto/ecc/mcl/mcl_util.h"
-#include "yacl/crypto/hash/blake3.h"
 #include "yacl/crypto/pairing/factory/mcl_pairing_header.h"
 
 namespace yacl::crypto {
@@ -391,15 +391,7 @@ EcPoint MclGroupT<Fp_, Zn_>::HashToStdCurve(HashToCurveStrategy strategy,
   HashAlgorithm hash_algorithm;
   switch (strategy) {
     case HashToCurveStrategy::TryAndIncrement_SHA2:
-      if (bits <= 224) {
-        hash_algorithm = HashAlgorithm::SHA224;
-      } else if (bits <= 256) {
-        hash_algorithm = HashAlgorithm::SHA256;
-      } else if (bits <= 384) {
-        hash_algorithm = HashAlgorithm::SHA384;
-      } else {
-        hash_algorithm = HashAlgorithm::SHA512;
-      }
+      hash_algorithm = SelectSha2ByBits(bits);
       break;
     case HashToCurveStrategy::TryAndIncrement_SHA3:
       YACL_THROW("Mcl lib do not support TryAndRehash_SHA3 strategy now");
@@ -415,12 +407,7 @@ EcPoint MclGroupT<Fp_, Zn_>::HashToStdCurve(HashToCurveStrategy strategy,
       YACL_THROW("Mcl lib only support TryAndIncrement strategy now. select={}",
                  (int)strategy);
   }
-  std::vector<uint8_t> buf;
-  if (hash_algorithm != HashAlgorithm::BLAKE3) {
-    buf = SslHash(hash_algorithm).Update(str).CumulativeHash();
-  } else {
-    buf = Blake3Hash((bits + 7) / 8).Update(str).CumulativeHash();
-  }
+  auto buf = HashForCurve(hash_algorithm, bits, str);
 
   Fp p{0};
   p.deserialize(buf.data(), buf.size());
