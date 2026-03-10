@@ -1,0 +1,32 @@
+# Copyright 2024 Ant Group Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+install(
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/helper.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/rand_impl.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/version.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ossl_provider)
+
+# ------------------------------------------------------------------------------
+# For libossl_provider.so
+# ------------------------------------------------------------------------------
+
+# add_library(ossl_provider SHARED ${CMAKE_CURRENT_LIST_DIR}/provider.cc)
+
+# target_include_directories(
+#   ossl_provider
+#   PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
+#          # these dirs are only used when building inside the build tree
+#          "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+# target_link_libraries(ossl_provider PUBLIC yacl)

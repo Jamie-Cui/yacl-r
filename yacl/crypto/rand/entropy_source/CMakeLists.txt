@@ -1,0 +1,46 @@
+# Copyright 2024 Ant Group Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# Add header files for installation
+install(
+  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/entropy_source.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/urandom_factory.h
+        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/rdseed_factory.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
+
+# ------------
+# Test
+# ------------
+
+add_yacl_test_if(entropy_source_test)
+
+# ------------------------------------------------------------------------------
+# For libyacl_spi_entropy_source.so
+# ------------------------------------------------------------------------------
+
+add_library(
+  yacl_spi_entropy_source OBJECT ${CMAKE_CURRENT_LIST_DIR}/urandom_factory.cc
+                                 ${CMAKE_CURRENT_LIST_DIR}/rdseed_factory.cc)
+
+target_include_directories(
+  yacl_spi_entropy_source PUBLIC ${CMAKE_DEPS_INCLUDEDIR}
+                                 "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>")
+
+target_link_libraries(yacl_spi_entropy_source PRIVATE yacl_obj)
+
+list(APPEND YACL_SPI_LIBS yacl_spi_entropy_source)
+
+set(YACL_SPI_LIBS
+    ${YACL_SPI_LIBS}
+    PARENT_SCOPE)

@@ -1,0 +1,45 @@
+# Copyright 2024 Ant Group Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+ExternalProject_Add(
+  openssl
+  PREFIX ${CMAKE_DEPS_PREFIX}
+  URL https://github.com/openssl/openssl/releases/download/openssl-3.6.1/openssl-3.6.1.tar.gz
+  URL_HASH
+    SHA256=b1bfedcd5b289ff22aee87c9d600f515767ebf45f77168cb6d64f231f518a82e
+  CONFIGURE_COMMAND
+    ./Configure no-legacy no-weak-ssl-ciphers no-tests no-shared no-ui-console
+    no-docs no-apps --banner=Finished --release --libdir=${CMAKE_INSTALL_LIBDIR}
+    --prefix=${CMAKE_DEPS_PREFIX} -w
+  BUILD_COMMAND make build_sw
+  INSTALL_COMMAND make install_sw
+  BUILD_IN_SOURCE On
+  DOWNLOAD_EXTRACT_TIMESTAMP On
+  BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}
+  BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}
+  EXCLUDE_FROM_ALL true
+  LOG_DOWNLOAD On
+  LOG_CONFIGURE On
+  LOG_BUILD On
+  LOG_INSTALL On)
+
+import_static_lib_from(libcrypto openssl)
+import_static_lib_from(libssl openssl)
+
+target_link_libraries(libssl INTERFACE libcrypto)
+
+# -----------------------------
+# Alias Target for External Use
+# -----------------------------
+add_library(Deps::openssl ALIAS libssl)
