@@ -18,7 +18,7 @@
 #include <iostream>
 #include <limits>
 
-#include "absl/numeric/bits.h"
+#include <bit>
 
 // NOTE:
 // We add our own int128 due to:
@@ -79,7 +79,7 @@ std::pair<uint64_t, uint64_t> DecomposeUInt128(uint128_t v);
 
 inline int CountLZ(uint128_t v) {
   auto [hi, lo] = DecomposeUInt128(v);
-  return hi == 0 ? absl::countl_zero(lo) + 64 : absl::countl_zero(hi);
+  return hi == 0 ? std::countl_zero(lo) + 64 : std::countl_zero(hi);
 }
 
 inline int CountBitWidth(uint128_t v) {

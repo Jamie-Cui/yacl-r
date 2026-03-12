@@ -14,19 +14,42 @@
 
 #include "yacl/base/int128.h"
 
+#include <algorithm>
 #include <utility>
 
-// For importing ostream implementation.
-#include "absl/numeric/int128.h"
+namespace {
+
+// Print a uint128 value in decimal to the given ostream.
+std::ostream& PrintUInt128(std::ostream& os, uint128_t x) {
+  if (x == 0) {
+    return os << '0';
+  }
+  char buf[40];
+  int len = 0;
+  while (x > 0) {
+    buf[len++] = '0' + static_cast<int>(x % 10);
+    x /= 10;
+  }
+  std::reverse(buf, buf + len);
+  return os.write(buf, len);
+}
+
+}  // namespace
 
 namespace std {
 
 std::ostream& operator<<(std::ostream& os, int128_t x) {
-  return os << static_cast<absl::int128>(x);
+  if (x < 0) {
+    os << '-';
+    // Avoid INT128_MIN overflow: -(x+1)+1 stays in uint128_t range.
+    return PrintUInt128(
+        os, static_cast<uint128_t>(-(x + 1)) + static_cast<uint128_t>(1));
+  }
+  return PrintUInt128(os, static_cast<uint128_t>(x));
 }
 
 std::ostream& operator<<(std::ostream& os, uint128_t x) {
-  return os << static_cast<absl::uint128>(x);
+  return PrintUInt128(os, x);
 }
 
 }  // namespace std
@@ -34,13 +57,12 @@ std::ostream& operator<<(std::ostream& os, uint128_t x) {
 namespace yacl {
 
 std::pair<int64_t, uint64_t> DecomposeInt128(int128_t v) {
-  auto absl_v = static_cast<absl::int128>(v);
-  return {absl::Int128High64(absl_v), absl::Int128Low64(absl_v)};
+  return {static_cast<int64_t>(static_cast<uint128_t>(v) >> 64),
+          static_cast<uint64_t>(static_cast<uint128_t>(v))};
 }
 
 std::pair<uint64_t, uint64_t> DecomposeUInt128(uint128_t v) {
-  auto absl_v = static_cast<absl::uint128>(v);
-  return {absl::Uint128High64(absl_v), absl::Uint128Low64(absl_v)};
+  return {static_cast<uint64_t>(v >> 64), static_cast<uint64_t>(v)};
 }
 
 }  // namespace yacl
