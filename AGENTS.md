@@ -56,7 +56,7 @@ clang-tidy path/to/file.cc -- -p build
 
 ### General Style
 - Follow Google C++ Style Guide with Envoy extensions
-- Use C++17 features where appropriate
+- Use C++20 features where appropriate
 - Use exceptions for error handling (encouraged in this codebase)
 
 ### File Organization

@@ -29,19 +29,21 @@ Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch6
 
 ## Prerequisites
 
-- **gcc >= 10.3**
+- **gcc >= 11** or **clang >= 12** (C++20 support required)
+- **cmake >= 3.20**
 - **[ninja/ninja-build](https://ninja-build.org/)**
 - **Perl 5 with core modules** (Required by [OpenSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites))
+- **patch** (required for dependency patching)
 
 ## Getting Started
 
-Yacl-r tries to support both [cmake](https://cmake.org/) and [bazel](https://bazel.build/) build system. For more guidelines about **how to develop on yacl**, please check the [Getting Started Guide](GETTING_STARTED.md).
+Yacl-r uses [cmake](https://cmake.org/) as its build system.
 
 **Ubuntu with CMake**
 
 ``` sh
 # install dependencies
-sudo apt install -y git cmake gcc-11 g++-11
+sudo apt install -y git cmake ninja-build gcc-11 g++-11 patch
 
 # optional, make gcc-11 g++-11 system default
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 10
@@ -53,11 +55,11 @@ git clone https://github.com/Jamie-Cui/yacl-r.git
 # enter the project
 cd yacl-r
 
-# configure 
-cmake -S . -B build
+# configure (Ninja recommended)
+cmake -S . -B build -G Ninja
 
 # build (this may take a while)
-cmake --build build
+cmake --build build -j$(nproc)
 ```
 
 ## License
