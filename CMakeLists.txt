@@ -84,7 +84,7 @@ set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
 # CMake arguments
 set(CMAKE_POSITION_INDEPENDENT_CODE On) # Enable position-independent-code
-set(CMAKE_CXX_STANDARD 17) # Enable C++17
+set(CMAKE_CXX_STANDARD 20) # Enable C++20
 set(CMAKE_C_STANDARD_REQUIRED Yes) # Force C standard to be present
 
 if(NOT BUILD_TEST)

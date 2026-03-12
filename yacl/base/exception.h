@@ -73,6 +73,11 @@ template <>
 #endif
 inline std::string Format() { return ""; }
 
+// Overload for passing a pre-built runtime string as the error message
+// (no format substitution). This prevents consteval issues in C++20 when
+// a runtime std::string is passed where a format-string literal is expected.
+inline std::string Format(std::string msg) { return msg; }
+
 }  // namespace internal
 
 // NOTE: Currently we are using STL exception tree.
