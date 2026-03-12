@@ -13,10 +13,10 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/engine.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/executor.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
-add_yacl_test_if(engine_test)
+add_yacl_test_if(executor_test)

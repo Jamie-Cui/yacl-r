@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/engine/secret_share/engine.h"
+#include "yacl/engine/secret_share/executor.h"
 
 #include <cstdint>
 #include <cstring>
@@ -43,11 +43,11 @@ constexpr int64_t kMinOts = 2560;
 // Constructor
 // ================================================================
 
-SSEngine::SSEngine(int64_t rank, std::shared_ptr<link::Context> lctx)
+SSExecutor::SSExecutor(int64_t rank, std::shared_ptr<link::Context> lctx)
     : rank_(rank), lctx_(std::move(lctx)) {
   YACL_ENFORCE(rank_ == 0 || rank_ == 1, "rank must be 0 or 1, got {}", rank_);
   YACL_ENFORCE(lctx_ != nullptr);
-  YACL_ENFORCE(lctx_->WorldSize() == 2, "SSEngine requires 2 parties, got {}",
+  YACL_ENFORCE(lctx_->WorldSize() == 2, "SSExecutor requires 2 parties, got {}",
                lctx_->WorldSize());
 }
 
@@ -55,16 +55,16 @@ SSEngine::SSEngine(int64_t rank, std::shared_ptr<link::Context> lctx)
 // Helpers
 // ================================================================
 
-std::string SSEngine::NextTag(std::string_view prefix) {
+std::string SSExecutor::NextTag(std::string_view prefix) {
   return fmt::format("ss/{}/{}", prefix, tag_ctr_++);
 }
 
-void SSEngine::SendU64(std::string_view tag, uint64_t val) {
+void SSExecutor::SendU64(std::string_view tag, uint64_t val) {
   lctx_->SendAsync(1 - rank_, ByteContainerView(&val, sizeof(val)),
                    std::string(tag));
 }
 
-uint64_t SSEngine::RecvU64(std::string_view tag) {
+uint64_t SSExecutor::RecvU64(std::string_view tag) {
   auto buf = lctx_->Recv(1 - rank_, std::string(tag));
   YACL_ENFORCE(buf.size() == static_cast<int64_t>(sizeof(uint64_t)));
   uint64_t val = 0;
@@ -72,15 +72,15 @@ uint64_t SSEngine::RecvU64(std::string_view tag) {
   return val;
 }
 
-void SSEngine::SendU64Span(std::string_view tag,
-                           absl::Span<const uint64_t> data) {
+void SSExecutor::SendU64Span(std::string_view tag,
+                             absl::Span<const uint64_t> data) {
   lctx_->SendAsync(
       1 - rank_, ByteContainerView(data.data(), data.size() * sizeof(uint64_t)),
       std::string(tag));
 }
 
-std::vector<uint64_t> SSEngine::RecvU64Vec(std::string_view tag,
-                                           int64_t count) {
+std::vector<uint64_t> SSExecutor::RecvU64Vec(std::string_view tag,
+                                             int64_t count) {
   auto buf = lctx_->Recv(1 - rank_, std::string(tag));
   YACL_ENFORCE(buf.size() == count * static_cast<int64_t>(sizeof(uint64_t)));
   std::vector<uint64_t> result(count);
@@ -88,7 +88,7 @@ std::vector<uint64_t> SSEngine::RecvU64Vec(std::string_view tag,
   return result;
 }
 
-ATriple SSEngine::ConsumeATriple() {
+ATriple SSExecutor::ConsumeATriple() {
   YACL_ENFORCE(!arith_triples_.empty(),
                "No arithmetic triples. Call PreprocessArithTriples first.");
   auto t = arith_triples_.front();
@@ -96,7 +96,7 @@ ATriple SSEngine::ConsumeATriple() {
   return t;
 }
 
-BTriple SSEngine::ConsumeBTriple() {
+BTriple SSExecutor::ConsumeBTriple() {
   YACL_ENFORCE(!bool_triples_.empty(),
                "No boolean triples. Call PreprocessBoolTriples first.");
   auto t = bool_triples_.front();
@@ -104,15 +104,15 @@ BTriple SSEngine::ConsumeBTriple() {
   return t;
 }
 
-int64_t SSEngine::ArithTripleCount() const {
+int64_t SSExecutor::ArithTripleCount() const {
   return static_cast<int64_t>(arith_triples_.size());
 }
 
-int64_t SSEngine::BoolTripleCount() const {
+int64_t SSExecutor::BoolTripleCount() const {
   return static_cast<int64_t>(bool_triples_.size());
 }
 
-int64_t SSEngine::Rank() const { return rank_; }
+int64_t SSExecutor::Rank() const { return rank_; }
 
 // ================================================================
 // RunChosenOT: ROT-based 1-out-of-2 OT for uint64_t messages
@@ -127,7 +127,7 @@ int64_t SSEngine::Rank() const { return rank_; }
 //        e0[i] = m0[i] ^ pad0,  e1[i] = m1[i] ^ pad1
 //   4. Receiver computes: result[i] = e_{desired}[i] ^ rot_block[i].
 //
-std::vector<uint64_t> SSEngine::RunChosenOT(
+std::vector<uint64_t> SSExecutor::RunChosenOT(
     const std::shared_ptr<link::Context>& parent_ctx, bool is_sender,
     int64_t num_ots, const std::vector<OtMessages>& sender_msgs,
     const std::vector<bool>& receiver_choices) {
@@ -218,7 +218,7 @@ std::vector<uint64_t> SSEngine::RunChosenOT(
 // The sender (who holds a_local) provides OT messages encoding a_local * 2^k.
 // The receiver (who holds b_local) uses b_local's bits as choices.
 // Returns the cross-product contribution for each triple.
-std::vector<uint64_t> SSEngine::RunArithOtDirection(
+std::vector<uint64_t> SSExecutor::RunArithOtDirection(
     bool is_sender, int64_t n, int64_t num_ots,
     const std::vector<uint64_t>& a_local,
     const std::vector<uint64_t>& b_local) {
@@ -259,7 +259,7 @@ std::vector<uint64_t> SSEngine::RunArithOtDirection(
   return cross;
 }
 
-void SSEngine::PreprocessArithTriples(int64_t n) {
+void SSExecutor::PreprocessArithTriples(int64_t n) {
   YACL_ENFORCE(n > 0);
 
   const int64_t num_ots = kBits * n;
@@ -288,13 +288,13 @@ void SSEngine::PreprocessArithTriples(int64_t n) {
 // ================================================================
 
 // Helper: run one direction of OT for boolean triple generation.
-std::vector<uint64_t> SSEngine::RunBoolOtDirection(
+std::vector<uint64_t> SSExecutor::RunBoolOtDirection(
     bool is_sender, int64_t n, int64_t num_ots,
     const std::vector<uint64_t>& a_local,
     const std::vector<uint64_t>& b_local) {
   std::vector<uint64_t> cross(n, 0);
 
-  std::vector<SSEngine::OtMessages> msgs;
+  std::vector<SSExecutor::OtMessages> msgs;
   if (is_sender) {
     msgs.resize(num_ots);
     for (int64_t i = 0; i < n; ++i) {
@@ -330,7 +330,7 @@ std::vector<uint64_t> SSEngine::RunBoolOtDirection(
   return cross;
 }
 
-void SSEngine::PreprocessBoolTriples(int64_t n) {
+void SSExecutor::PreprocessBoolTriples(int64_t n) {
   YACL_ENFORCE(n > 0);
 
   const int64_t num_ots = kBits * n;
@@ -358,7 +358,7 @@ void SSEngine::PreprocessBoolTriples(int64_t n) {
 // Arithmetic Operations
 // ================================================================
 
-AShare SSEngine::ShareA(uint64_t secret) {
+AShare SSExecutor::ShareA(uint64_t secret) {
   auto tag = NextTag("sha");
   if (rank_ == 0) {
     uint64_t r = crypto::FastRandU64();
@@ -368,24 +368,24 @@ AShare SSEngine::ShareA(uint64_t secret) {
   return AShare{RecvU64(tag)};
 }
 
-uint64_t SSEngine::RevealA(AShare share) {
+uint64_t SSExecutor::RevealA(AShare share) {
   auto tag = NextTag("rva");
   SendU64(tag, share.v);
   uint64_t peer = RecvU64(tag);
   return share.v + peer;
 }
 
-AShare SSEngine::AddA(AShare x, AShare y) { return AShare{x.v + y.v}; }
+AShare SSExecutor::AddA(AShare x, AShare y) { return AShare{x.v + y.v}; }
 
-AShare SSEngine::SubA(AShare x, AShare y) { return AShare{x.v - y.v}; }
+AShare SSExecutor::SubA(AShare x, AShare y) { return AShare{x.v - y.v}; }
 
-AShare SSEngine::NegA(AShare x) {
+AShare SSExecutor::NegA(AShare x) {
   return AShare{static_cast<uint64_t>(-static_cast<int64_t>(x.v))};
 }
 
-AShare SSEngine::MulConstA(AShare x, uint64_t c) { return AShare{x.v * c}; }
+AShare SSExecutor::MulConstA(AShare x, uint64_t c) { return AShare{x.v * c}; }
 
-AShare SSEngine::MulA(AShare x, AShare y) {
+AShare SSExecutor::MulA(AShare x, AShare y) {
   ATriple t = ConsumeATriple();
 
   uint64_t e_local = x.v - t.a;
@@ -410,7 +410,7 @@ AShare SSEngine::MulA(AShare x, AShare y) {
 // Boolean Operations
 // ================================================================
 
-BShare SSEngine::ShareB(uint64_t secret) {
+BShare SSExecutor::ShareB(uint64_t secret) {
   auto tag = NextTag("shb");
   if (rank_ == 0) {
     uint64_t r = crypto::FastRandU64();
@@ -420,23 +420,23 @@ BShare SSEngine::ShareB(uint64_t secret) {
   return BShare{RecvU64(tag)};
 }
 
-uint64_t SSEngine::RevealB(BShare share) {
+uint64_t SSExecutor::RevealB(BShare share) {
   auto tag = NextTag("rvb");
   SendU64(tag, share.v);
   uint64_t peer = RecvU64(tag);
   return share.v ^ peer;
 }
 
-BShare SSEngine::XorB(BShare x, BShare y) { return BShare{x.v ^ y.v}; }
+BShare SSExecutor::XorB(BShare x, BShare y) { return BShare{x.v ^ y.v}; }
 
-BShare SSEngine::NotB(BShare x) {
+BShare SSExecutor::NotB(BShare x) {
   if (rank_ == 0) {
     return BShare{~x.v};
   }
   return x;
 }
 
-BShare SSEngine::AndB(BShare x, BShare y) {
+BShare SSExecutor::AndB(BShare x, BShare y) {
   BTriple t = ConsumeBTriple();
 
   uint64_t e_local = x.v ^ t.a;
@@ -467,7 +467,7 @@ BShare SSEngine::AndB(BShare x, BShare y) {
 //
 // Consumes 64 boolean triples (1 batch generate + 63 carry chain).
 //
-BShare SSEngine::A2B(AShare x) {
+BShare SSExecutor::A2B(AShare x) {
   YACL_ENFORCE(BoolTripleCount() >= kBits,
                "A2B requires {} boolean triples; only {} available", kBits,
                BoolTripleCount());
@@ -517,7 +517,7 @@ BShare SSEngine::A2B(AShare x) {
 //
 // Uses 64 fresh OT instances (no triple consumption).
 //
-AShare SSEngine::B2A(BShare x) {
+AShare SSExecutor::B2A(BShare x) {
   // rank-1 is OT sender (knows b_{1,k}), rank-0 is OT receiver
   // (choice=b_{0,k}).
   bool is_sender = (rank_ == 1);

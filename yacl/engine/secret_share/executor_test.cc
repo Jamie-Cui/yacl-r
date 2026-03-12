@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/engine/secret_share/engine.h"
+#include "yacl/engine/secret_share/executor.h"
 
 #include <cstdint>
 #include <future>
@@ -42,12 +42,12 @@ std::pair<uint64_t, uint64_t> Run2Party(Func&& func) {
 // Arithmetic Share / Reveal
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, ShareAndRevealA) {
+TEST(SSExecutorTest, ShareAndRevealA) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         AShare s = eng.ShareA(rank == 0 ? secret : 0);
         return eng.RevealA(s);
       });
@@ -60,13 +60,13 @@ TEST(SSEngineTest, ShareAndRevealA) {
 // Arithmetic Local Operations
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, AddA) {
+TEST(SSExecutorTest, AddA) {
   uint64_t a = crypto::FastRandU64();
   uint64_t b = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         AShare sa = eng.ShareA(rank == 0 ? a : 0);
         AShare sb = eng.ShareA(rank == 0 ? b : 0);
         AShare sc = eng.AddA(sa, sb);
@@ -77,13 +77,13 @@ TEST(SSEngineTest, AddA) {
   EXPECT_EQ(r1, a + b);
 }
 
-TEST(SSEngineTest, SubA) {
+TEST(SSExecutorTest, SubA) {
   uint64_t a = crypto::FastRandU64();
   uint64_t b = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         AShare sa = eng.ShareA(rank == 0 ? a : 0);
         AShare sb = eng.ShareA(rank == 0 ? b : 0);
         AShare sc = eng.SubA(sa, sb);
@@ -94,12 +94,12 @@ TEST(SSEngineTest, SubA) {
   EXPECT_EQ(r1, a - b);
 }
 
-TEST(SSEngineTest, NegA) {
+TEST(SSExecutorTest, NegA) {
   uint64_t a = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         AShare sa = eng.ShareA(rank == 0 ? a : 0);
         AShare sc = eng.NegA(sa);
         return eng.RevealA(sc);
@@ -109,13 +109,13 @@ TEST(SSEngineTest, NegA) {
   EXPECT_EQ(r1, static_cast<uint64_t>(-static_cast<int64_t>(a)));
 }
 
-TEST(SSEngineTest, MulConstA) {
+TEST(SSExecutorTest, MulConstA) {
   uint64_t a = crypto::FastRandU64();
   uint64_t c = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, c](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         AShare sa = eng.ShareA(rank == 0 ? a : 0);
         AShare sc = eng.MulConstA(sa, c);
         return eng.RevealA(sc);
@@ -129,13 +129,13 @@ TEST(SSEngineTest, MulConstA) {
 // Arithmetic Multiplication (Online)
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, MulA) {
+TEST(SSExecutorTest, MulA) {
   uint64_t a = crypto::FastRandU64();
   uint64_t b = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         eng.PreprocessArithTriples(1);
         AShare sa = eng.ShareA(rank == 0 ? a : 0);
         AShare sb = eng.ShareA(rank == 0 ? b : 0);
@@ -151,12 +151,12 @@ TEST(SSEngineTest, MulA) {
 // Boolean Share / Reveal
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, ShareAndRevealB) {
+TEST(SSExecutorTest, ShareAndRevealB) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         BShare s = eng.ShareB(rank == 0 ? secret : 0);
         return eng.RevealB(s);
       });
@@ -169,13 +169,13 @@ TEST(SSEngineTest, ShareAndRevealB) {
 // Boolean Local Operations
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, XorB) {
+TEST(SSExecutorTest, XorB) {
   uint64_t a = crypto::FastRandU64();
   uint64_t b = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         BShare sa = eng.ShareB(rank == 0 ? a : 0);
         BShare sb = eng.ShareB(rank == 0 ? b : 0);
         BShare sc = eng.XorB(sa, sb);
@@ -186,12 +186,12 @@ TEST(SSEngineTest, XorB) {
   EXPECT_EQ(r1, a ^ b);
 }
 
-TEST(SSEngineTest, NotB) {
+TEST(SSExecutorTest, NotB) {
   uint64_t a = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         BShare sa = eng.ShareB(rank == 0 ? a : 0);
         BShare sc = eng.NotB(sa);
         return eng.RevealB(sc);
@@ -205,13 +205,13 @@ TEST(SSEngineTest, NotB) {
 // Boolean AND (Online)
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, AndB) {
+TEST(SSExecutorTest, AndB) {
   uint64_t a = crypto::FastRandU64();
   uint64_t b = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         eng.PreprocessBoolTriples(1);
         BShare sa = eng.ShareB(rank == 0 ? a : 0);
         BShare sb = eng.ShareB(rank == 0 ? b : 0);
@@ -227,12 +227,12 @@ TEST(SSEngineTest, AndB) {
 // A2B Conversion
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, A2B) {
+TEST(SSExecutorTest, A2B) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         eng.PreprocessBoolTriples(64);  // A2B needs 64 bool triples
         AShare sa = eng.ShareA(rank == 0 ? secret : 0);
         BShare sb = eng.A2B(sa);
@@ -247,12 +247,12 @@ TEST(SSEngineTest, A2B) {
 // B2A Conversion
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, B2A) {
+TEST(SSExecutorTest, B2A) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         BShare sb = eng.ShareB(rank == 0 ? secret : 0);
         AShare sa = eng.B2A(sb);
         return eng.RevealA(sa);
@@ -266,12 +266,12 @@ TEST(SSEngineTest, B2A) {
 // Roundtrip Conversions
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, RoundtripA2B2A) {
+TEST(SSExecutorTest, RoundtripA2B2A) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         eng.PreprocessBoolTriples(64);
         AShare sa = eng.ShareA(rank == 0 ? secret : 0);
         BShare sb = eng.A2B(sa);
@@ -283,12 +283,12 @@ TEST(SSEngineTest, RoundtripA2B2A) {
   EXPECT_EQ(r1, secret);
 }
 
-TEST(SSEngineTest, RoundtripB2A2B) {
+TEST(SSExecutorTest, RoundtripB2A2B) {
   uint64_t secret = crypto::FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
-        SSEngine eng(rank, lctx);
+        SSExecutor eng(rank, lctx);
         eng.PreprocessBoolTriples(64);  // needed for A2B inside roundtrip
         BShare sb = eng.ShareB(rank == 0 ? secret : 0);
         AShare sa = eng.B2A(sb);
@@ -304,11 +304,11 @@ TEST(SSEngineTest, RoundtripB2A2B) {
 // Triple Count Inspection
 // ---------------------------------------------------------------
 
-TEST(SSEngineTest, TripleCountTracking) {
+TEST(SSExecutorTest, TripleCountTracking) {
   auto contexts = link::test::SetupWorld(2);
 
   auto check = [](size_t rank, std::shared_ptr<link::Context> lctx) {
-    SSEngine eng(rank, lctx);
+    SSExecutor eng(rank, lctx);
 
     EXPECT_EQ(eng.ArithTripleCount(), 0);
     EXPECT_EQ(eng.BoolTripleCount(), 0);

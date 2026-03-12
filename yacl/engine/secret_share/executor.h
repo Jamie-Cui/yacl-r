@@ -28,7 +28,7 @@
 
 namespace yacl::engine {
 
-// SSEngine: 2-party semi-honest additive secret-sharing engine.
+// SSExecutor: 2-party semi-honest additive secret-sharing engine.
 //
 // Supports two domains:
 //   Arithmetic: additive shares in Z_{2^64}  (x0 + x1 = x mod 2^64)
@@ -45,12 +45,12 @@ namespace yacl::engine {
 //   rank 1: OT receiver for triple gen; OT sender for B2A.
 //
 // Threading: NOT thread-safe. link::Context is single-threaded by design.
-class SSEngine {
+class SSExecutor {
  public:
-  SSEngine(int64_t rank, std::shared_ptr<link::Context> lctx);
+  SSExecutor(int64_t rank, std::shared_ptr<link::Context> lctx);
 
-  SSEngine(const SSEngine&) = delete;
-  SSEngine& operator=(const SSEngine&) = delete;
+  SSExecutor(const SSExecutor&) = delete;
+  SSExecutor& operator=(const SSExecutor&) = delete;
 
   // ---------------------------------------------------------------
   // Preprocessing (Offline Phase)
