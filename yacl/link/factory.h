@@ -34,15 +34,6 @@ class FactoryMem : public ILinkFactory {
                                          size_t self_rank) override;
 };
 
-#ifdef ENABLE_BRPC
-/// builtin link context type, brpc base link context.
-class FactoryBrpc : public ILinkFactory {
- public:
-  std::shared_ptr<Context> CreateContext(const ContextDesc& desc,
-                                         size_t self_rank) override;
-};
-#endif
-
 /// asio based lightweight link context
 class FactoryAsio : public ILinkFactory {
  public:

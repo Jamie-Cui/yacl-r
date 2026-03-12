@@ -47,9 +47,6 @@ dump/
 .cache
 external
 
-#brpc
-rpc_data
-
 Testing/Temporary/*
 /.agent-shell/
 /.claude/

@@ -19,23 +19,11 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/channel.cc
     ${CMAKE_CURRENT_LIST_DIR}/channel_mem.cc)
 
-# brpc is optional
-if(ENABLE_BRPC)
-  # TODO(jamie): Add non-interconnection based brpc link implementation
-  # Currently brpc link depends on interconnection which has been removed
-endif()
-
 # Header files for installation
 set(LINK_TRANSPORT_HEADERS
     ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/asio_link.h
     ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel.h
     ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel_mem.h)
-
-if(ENABLE_BRPC)
-  list(APPEND LINK_TRANSPORT_HEADERS
-       # TODO(jamie): Add brpc link headers when implemented
-  )
-endif()
 
 install(
   FILES ${LINK_TRANSPORT_HEADERS}

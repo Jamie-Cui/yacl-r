@@ -11,9 +11,6 @@ cmake -S . -B build -G Ninja
 # Debug build
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 
-# With brpc transport (requires protobuf)
-cmake -S . -B build -G Ninja -DENABLE_BRPC=On
-
 # Build
 cmake --build build -j$(nproc)
 
@@ -86,7 +83,6 @@ clang-tidy path/to/file.cc -- -p build
 2. System headers (e.g., `<cstdint>`)
 3. Third-party headers (e.g., `"gtest/gtest.h"`)
 4. Project headers (e.g., `"yacl/base/buffer.h"`)
-5. Protobuf headers (e.g., `"file.pb.h"`)
 
 ### Header Guards
 Use `#pragma once` instead of traditional include guards.

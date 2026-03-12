@@ -19,8 +19,8 @@ ExternalProject_Add(
     SHA256=34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf
   CMAKE_ARGS -DCMAKE_POLICY_VERSION_MINIMUM=3.5
              -DBUILD_gflags_nothreads_LIB=Off
-             -DGFLAGS_BUILD_SHARED_LIBS=Off # NOTE brpc requires shared lib
-             -DGFLAGS_BUILD_STATIC_LIBS=On # NOTE brpc requires shared lib
+             -DGFLAGS_BUILD_SHARED_LIBS=Off
+             -DGFLAGS_BUILD_STATIC_LIBS=On
              -DGFLAGS_BUILD_TESTING=Off
              -DCMAKE_POSITION_INDEPENDENT_CODE=On
              -DCMAKE_CXX_STANDARD=17

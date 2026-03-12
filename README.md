@@ -32,8 +32,6 @@ Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch6
 - **gcc >= 10.3**
 - **[ninja/ninja-build](https://ninja-build.org/)**
 - **Perl 5 with core modules** (Required by [OpenSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites))
-- **gflags** (Required by brpc)
-- **protobuf**
 
 ## Getting Started
 

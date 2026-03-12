@@ -34,7 +34,7 @@
 
 namespace yacl::link::transport {
 
-// Abstract base classes for request/response, replacing protobuf dependency
+// Abstract base classes for request/response.
 class Request {
  public:
   virtual ~Request() = default;

@@ -32,8 +32,6 @@ endif()
 # User options
 # --------------------------------------------------------------------
 
-option(ENABLE_BRPC
-       "Enable brpc transport (requires protobuf). If Off, uses ASIO only." Off)
 option(BUILD_TEST "Build the testing binaries (On/Off)." On)
 
 # --------------------------------------------------------------------
@@ -180,13 +178,6 @@ set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 # ASIO is always required for link module
 include(deps/asio)
 
-# brpc and protobuf are only needed when ENABLE_BRPC is On
-if(ENABLE_BRPC)
-  # Protobuf must be placed before all dependencies
-  include(deps/protobuf)
-  include(deps/brpc)
-endif()
-
 include(deps/abseil)
 include(deps/blake3)
 include(deps/cpu_features)
@@ -195,7 +186,6 @@ include(deps/fourq)
 include(deps/gtest)
 include(deps/gflags)
 include(deps/leveldb)
-include(deps/libsodium)
 include(deps/libtommath)
 include(deps/mcl)
 include(deps/msgpack)
@@ -233,7 +223,6 @@ enable_testing()
 # Iteracte all files
 #
 
-set(YACL_PROTO_SOURCE_FILES "")
 set(YACL_SOURCE_FILES "")
 set(YACL_SPI_LIBS "")
 
@@ -278,7 +267,6 @@ target_link_libraries(
          Deps::fmt
          Deps::fourq
          Deps::leveldb
-         Deps::libsodium
          Deps::libtommath
          Deps::mcl
          Deps::openssl
@@ -287,29 +275,6 @@ target_link_libraries(
          Deps::sse2neon
          Deps::gmp
          Deps::msgpack)
-
-#
-# Object Library: yacl_proto (only needed when brpc is enabled)
-#
-
-if(ENABLE_BRPC)
-  # build yacl_proto target
-  add_library(yacl_proto OBJECT) # object lib for protobuf
-  target_sources(yacl_proto PRIVATE ${YACL_PROTO_SOURCE_FILES})
-  protobuf_generate(
-    LANGUAGE
-    cpp
-    TARGET
-    yacl_proto
-    IMPORT_DIRS
-    ${CMAKE_CURRENT_LIST_DIR}
-    PROTOC_OUT_DIR
-    ${CMAKE_CURRENT_BINARY_DIR})
-  target_link_libraries(yacl_proto PRIVATE protobuf::libprotobuf)
-  target_include_directories(yacl_proto PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-  # Add brpc/protobuf dependencies
-  target_link_libraries(yacl_obj PUBLIC Deps::brpc Deps::protobuf)
-endif()
 
 # ASIO is always needed for link module
 target_link_libraries(yacl_obj PUBLIC Deps::asio)

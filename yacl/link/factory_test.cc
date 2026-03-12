@@ -114,13 +114,13 @@ class FactoryTest : public ::testing::Test {
     contexts_.resize(2);
     auto desc = MakeDesc(desc_count++, SslMode(M::get_mode()));
 
-    auto create_brpc = [&](int self_rank) {
+    auto create_ctx = [&](int self_rank) {
       contexts_[self_rank] = M::get_t_instance().CreateContext(desc, self_rank);
     };
 
     std::vector<std::future<void>> creates;
-    creates.push_back(std::async(create_brpc, 0));
-    creates.push_back(std::async(create_brpc, 1));
+    creates.push_back(std::async(create_ctx, 0));
+    creates.push_back(std::async(create_ctx, 1));
 
     for (auto& f : creates) {
       f.get();

@@ -15,9 +15,6 @@ cmake -S . -B build -G Ninja
 # Build (Release by default)
 cmake --build build
 
-# Enable brpc transport (requires protobuf); all other modules always build
-cmake -S . -B build -G Ninja -DENABLE_BRPC=On
-
 # Debug build
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 
@@ -56,19 +53,18 @@ mkdir -p corpus/hash && ./build-fuzz/bin/hash_fuzz corpus/hash -max_total_time=3
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `ENABLE_BRPC` | Off | Enable brpc transport (adds protobuf + brpc deps). Without this, ASIO-only transport is used. |
 | `BUILD_TEST` | On | Build test binaries |
 | `BUILD_FUZZ` | Off | Build fuzz targets (requires Clang with libFuzzer) |
 | `BUILD_YACL_SHARED` | Off | Build as shared library instead of static |
 
-All modules (base, crypto, math, utils, io, engine, kernel, link) always build. Only brpc/protobuf support is optional.
+All modules (base, crypto, math, utils, io, engine, kernel, link) always build.
 
 ## Code Architecture
 
 ### Module Dependency Graph
 
 ```
-engine → kernel → link → (ASIO or brpc network transport)
+engine → kernel → link → ASIO network transport
     │        │
     └────────┴────→ crypto (no network dependencies)
 ```
@@ -94,9 +90,8 @@ A key architectural pattern: pluggable implementations registered at static init
 
 ### Build System Internals
 
-Source files are collected via three CMake variables propagated with `PARENT_SCOPE`:
+Source files are collected via two CMake variables propagated with `PARENT_SCOPE`:
 - `YACL_SOURCE_FILES` — all `.cc` files (test files excluded at top level)
-- `YACL_PROTO_SOURCE_FILES` — `.proto` files (only when `ENABLE_BRPC=On`)
 - `YACL_SPI_LIBS` — SPI object library targets
 
 These compile into `yacl_obj` (object lib) → `yacl` (static/shared lib, alias `Yacl::yacl`).
@@ -167,7 +162,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/my_featur
 2. C++ standard headers (`<*>`)
 3. Third-party headers (`"third_party/..."`)
 4. Project headers (`"yacl/..."`)
-5. Protobuf generated headers (`*.pb.h`)
 
 ### Header Guards
 

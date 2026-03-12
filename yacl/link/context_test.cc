@@ -19,17 +19,12 @@
 
 #include "fmt/format.h"
 #include "gmock/gmock.h"
-#include "google/protobuf/util/json_util.h"
 #include "gtest/gtest.h"
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
 #include "yacl/link/factory.h"
 #include "yacl/link/transport/channel_mem.h"
-
-#ifdef ENABLE_BRPC
-#include "yacl/link/link.pb.h"
-#endif
 
 namespace yacl::link::test {
 

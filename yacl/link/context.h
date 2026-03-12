@@ -43,7 +43,6 @@ struct ContextDesc {
   static constexpr uint32_t kDefaultHttpTimeoutMs = 20 * 1000;  // 20 seconds.
   static constexpr uint32_t kDefaultThrottleWindowSize = 10;
   static constexpr uint32_t kDefaultChunkParallelSendSize = 8;
-  static constexpr char kDefaultBrpcChannelProtocol[] = "baidu_std";
   static constexpr char kDefaultLinkType[] = "normal";
 
   struct Party {
@@ -110,12 +109,6 @@ struct ContextDesc {
   // message, the max paralleled send size is chunk_parallel_send_size
   uint32_t chunk_parallel_send_size = kDefaultChunkParallelSendSize;
 
-  // BRPC client channel protocol.
-  std::string brpc_channel_protocol = kDefaultBrpcChannelProtocol;
-
-  // BRPC client channel connection type.
-  std::string brpc_channel_connection_type = "";
-
   // ssl options for link channel
   bool enable_ssl = false;
 
@@ -157,8 +150,7 @@ struct ContextDescHasher {
     utils::hash_combine(seed, desc.connect_retry_times,
                         desc.connect_retry_interval_ms, desc.recv_timeout_ms,
                         desc.http_max_payload_size, desc.http_timeout_ms,
-                        desc.throttle_window_size, desc.brpc_channel_protocol,
-                        desc.brpc_channel_connection_type, desc.link_type);
+                        desc.throttle_window_size, desc.link_type);
 
     return seed;
   }

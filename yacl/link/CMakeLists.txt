@@ -12,8 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-file(GLOB_RECURSE SRC_PROTO *.proto)
-
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     ${CMAKE_CURRENT_LIST_DIR}/context.cc
@@ -21,20 +19,11 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/factory_mem.cc
     ${CMAKE_CURRENT_LIST_DIR}/trace.cc)
 
-# brpc is optional - only include when ENABLE_BRPC is On
-if(ENABLE_BRPC)
-  # TODO(jamie): Add brpc factory when brpc link is re-implemented without interconnection
-  list(APPEND YACL_PROTO_SOURCE_FILES ${SRC_PROTO})
-endif()
-
 add_subdirectory(algorithm)
 add_subdirectory(transport)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
-    PARENT_SCOPE)
-set(YACL_PROTO_SOURCE_FILES
-    ${YACL_PROTO_SOURCE_FILES}
     PARENT_SCOPE)
 
 add_yacl_test_if(context_test)
@@ -49,11 +38,6 @@ set(LINK_HEADERS
     ${PROJECT_SOURCE_DIR}/include/yacl/link/link.h
     ${PROJECT_SOURCE_DIR}/include/yacl/link/retry_options.h
     ${PROJECT_SOURCE_DIR}/include/yacl/link/ssl_options.h)
-
-if(ENABLE_BRPC)
-  list(APPEND LINK_HEADERS
-       ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_brpc.h)
-endif()
 
 install(
   FILES ${LINK_HEADERS}

@@ -30,8 +30,6 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
 
-// disable detect leaks for brpc's "acceptable mem leak"
-// https://github.com/apache/incubator-brpc/blob/0.9.6/src/brpc/server.cpp#L1138
 extern "C" const char* __asan_default_options() { return "detect_leaks=0"; }
 
 namespace yacl::link::transport::test {
