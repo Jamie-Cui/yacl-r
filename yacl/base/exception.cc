@@ -19,16 +19,15 @@ namespace yacl {
 std::string GetStacktraceString() {
   ::yacl::stacktrace_t stacks;
   const int dep =
-      absl::GetStackTrace(stacks.data(), internal::kMaxStackTraceDep, 1);
+      ::backtrace(stacks.data(), internal::kMaxStackTraceDep);
   std::string res;
+  char** symbols = ::backtrace_symbols(stacks.data(), dep);
   for (int i = 0; i < dep; ++i) {
-    std::array<char, 2048> tmp;
-    const char* symbol = "(unknown)";
-    if (absl::Symbolize(stacks[i], tmp.data(), tmp.size())) {
-      symbol = tmp.data();
-    }
-    res.append(fmt::format("#{} {}+{}\n", i, symbol, stacks[i]));
+    const char* symbol = (symbols != nullptr) ? symbols[i] : "(unknown)";
+    res.append(fmt::format("#{} {}\n", i, symbol));
   }
+  // NOLINTNEXTLINE(cppcoreguidelines-no-malloc)
+  free(symbols);
   return res;
 }
 

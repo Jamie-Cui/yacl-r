@@ -38,11 +38,11 @@ static void BM_SVOLE_single_thread(benchmark::State& state) {
       state.ResumeTiming();
       auto sender = std::async([&] {
         kernel0.init(lctxs[0]);
-        kernel0.eval(lctxs[0], &delta, absl::MakeSpan(c));
+        kernel0.eval(lctxs[0], &delta, std::span(c));
       });
       auto receiver = std::async([&] {
         kernel1.init(lctxs[1]);
-        kernel1.eval(lctxs[1], absl::MakeSpan(a), absl::MakeSpan(b));
+        kernel1.eval(lctxs[1], std::span(a), std::span(b));
       });
       sender.get();
       receiver.get();
@@ -71,11 +71,11 @@ static void BM_SVOLE_multi_thread(benchmark::State& state) {
       state.ResumeTiming();
       auto sender = std::async([&] {
         kernel0.init(lctxs[0]);
-        kernel0.eval_multithread(lctxs[0], &delta, absl::MakeSpan(c), threads);
+        kernel0.eval_multithread(lctxs[0], &delta, std::span(c), threads);
       });
       auto receiver = std::async([&] {
         kernel1.init(lctxs[1]);
-        kernel1.eval_multithread(lctxs[1], absl::MakeSpan(a), absl::MakeSpan(b),
+        kernel1.eval_multithread(lctxs[1], std::span(a), std::span(b),
                                  threads);
       });
       sender.get();
@@ -106,12 +106,12 @@ static void BM_SVOLE_streaming(benchmark::State& state) {
       state.ResumeTiming();
       auto sender = std::async([&] {
         kernel0.init(lctxs[0]);
-        kernel0.eval_streaming(lctxs[0], &delta, absl::MakeSpan(c), threads,
+        kernel0.eval_streaming(lctxs[0], &delta, std::span(c), threads,
                                step_size);
       });
       auto receiver = std::async([&] {
         kernel1.init(lctxs[1]);
-        kernel1.eval_streaming(lctxs[1], absl::MakeSpan(a), absl::MakeSpan(b),
+        kernel1.eval_streaming(lctxs[1], std::span(a), std::span(b),
                                threads, step_size);
       });
       sender.get();

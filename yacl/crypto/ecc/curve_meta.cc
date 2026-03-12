@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/ecc/curve_meta.h"
 
 #include <map>
 
-#include "absl/strings/ascii.h"
 
 #include "yacl/base/exception.h"
 
@@ -833,7 +833,7 @@ std::vector<CurveMeta> kPredefinedCurves = {
     {"FourQ", {}, CurveForm::TwistedEdwards, FieldType::Extension, 128},
 };
 
-CurveName CurveMeta::LowerName() const { return absl::AsciiStrToLower(name); }
+CurveName CurveMeta::LowerName() const { return yacl::AsciiStrToLower(name); }
 
 bool CurveMeta::IsEquivalent(const CurveMeta& rhs) const {
   return std::tie(form, field_type, secure_bits) ==
@@ -844,7 +844,7 @@ std::map<CurveName, CurveMeta> BuildMap() {
   std::map<CurveName, CurveMeta> res;
   auto insert = [&res](const CurveName& name_str, const CurveMeta& meta) {
     // curve names in map will all be lowercase
-    auto name = absl::AsciiStrToLower(name_str);
+    auto name = yacl::AsciiStrToLower(name_str);
     auto it = res.find(name);
     if (it == res.end()) {
       res.insert({name, meta});
@@ -865,7 +865,7 @@ std::map<CurveName, CurveMeta> BuildMap() {
 
 CurveMeta GetCurveMetaByName(const CurveName& name) {
   static auto curve_map = BuildMap();
-  auto name_l = absl::AsciiStrToLower(name);
+  auto name_l = yacl::AsciiStrToLower(name);
   auto it = curve_map.find(name_l);
   YACL_ENFORCE(it != curve_map.end(), "Unsupported curve {}", name);
   return it->second;

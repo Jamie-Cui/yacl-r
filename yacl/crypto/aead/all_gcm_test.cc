@@ -56,11 +56,11 @@ TYPED_TEST(AllGcmTest, EncryptDecrypt_ShouldOk) {
   std::vector<uint8_t> ciphertext(plaintext.size());
   std::vector<uint8_t> mac(16);
   crypto.Encrypt(plaintext, aad,
-                 absl::MakeSpan(ciphertext.data(), ciphertext.size()),
-                 absl::MakeSpan(mac.data(), mac.size()));
+                 std::span(ciphertext.data(), ciphertext.size()),
+                 std::span(mac.data(), mac.size()));
   std::vector<uint8_t> decrypted(plaintext.size());
   crypto.Decrypt(ciphertext, aad, mac,
-                 absl::MakeSpan(decrypted.data(), decrypted.size()));
+                 std::span(decrypted.data(), decrypted.size()));
   // THEN
   EXPECT_EQ(plaintext, std::string(decrypted.begin(), decrypted.end()));
 }
@@ -79,14 +79,14 @@ TYPED_TEST(AllGcmTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
   std::vector<uint8_t> ciphertext(plaintext.size());
   std::vector<uint8_t> mac(16);
   crypto.Encrypt(plaintext, aad,
-                 absl::MakeSpan(ciphertext.data(), ciphertext.size()),
-                 absl::MakeSpan(mac.data(), mac.size()));
+                 std::span(ciphertext.data(), ciphertext.size()),
+                 std::span(mac.data(), mac.size()));
   std::vector<uint8_t> decrypted(plaintext.size());
   mac[0] += 1;
   // THEN
   EXPECT_ANY_THROW({
     crypto.Decrypt(ciphertext, aad, mac,
-                   absl::MakeSpan(decrypted.data(), decrypted.size()));
+                   std::span(decrypted.data(), decrypted.size()));
   });
 }
 
@@ -105,14 +105,14 @@ TYPED_TEST(AllGcmTest, EncryptDecrypt_withErrorAAD_ShouldThrowException) {
   std::vector<uint8_t> ciphertext(plaintext.size());
   std::vector<uint8_t> mac(16);
   crypto.Encrypt(plaintext, aad,
-                 absl::MakeSpan(ciphertext.data(), ciphertext.size()),
-                 absl::MakeSpan(mac.data(), mac.size()));
+                 std::span(ciphertext.data(), ciphertext.size()),
+                 std::span(mac.data(), mac.size()));
   std::vector<uint8_t> decrypted(plaintext.size());
   aad[0] += 1;
   // THEN
   EXPECT_ANY_THROW({
     crypto.Decrypt(ciphertext, aad, mac,
-                   absl::MakeSpan(decrypted.data(), decrypted.size()));
+                   std::span(decrypted.data(), decrypted.size()));
   });
 }
 

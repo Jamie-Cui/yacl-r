@@ -31,20 +31,20 @@ uint128_t RP::Gen(uint128_t in) const {
   return out;
 }
 
-void RP::GenForMultiInputs(absl::Span<const uint128_t> in,
-                           absl::Span<uint128_t> out) const {
+void RP::GenForMultiInputs(std::span<const uint128_t> in,
+                           std::span<uint128_t> out) const {
   YACL_ENFORCE(in.size() == out.size());
   SymmetricCrypto(ctype_, key_, iv_).Encrypt(in, out);
 }
 
 std::vector<uint128_t> RP::GenForMultiInputs(
-    absl::Span<const uint128_t> in) const {
+    std::span<const uint128_t> in) const {
   std::vector<uint128_t> out(in.size());
-  GenForMultiInputs(in, absl::MakeSpan(out));
+  GenForMultiInputs(in, std::span(out));
   return out;
 }
 
-void RP::GenForMultiInputsInplace(absl::Span<uint128_t> inout) const {
+void RP::GenForMultiInputsInplace(std::span<uint128_t> inout) const {
   SymmetricCrypto(ctype_, key_, iv_).Encrypt(inout, inout);
 }
 

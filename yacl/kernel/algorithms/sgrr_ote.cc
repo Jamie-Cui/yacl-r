@@ -69,7 +69,7 @@ inline uint128_t GetInsertedIndex(const dynamic_bitset<uint128_t>& choice,
   return *static_cast<uint128_t*>(inserted_set.data());
 }
 
-std::vector<uint128_t> SplitAllSeeds(absl::Span<uint128_t> seeds) {
+std::vector<uint128_t> SplitAllSeeds(std::span<uint128_t> seeds) {
   // Use two-key prf in a faster way
   const size_t split_num = seeds.size();
   std::vector<uint128_t> out(split_num * 2);
@@ -85,7 +85,7 @@ struct CheckMsg {
   std::array<uint8_t, 32> t;
   std::array<uint8_t, 32> s;
 
-  void Pack(absl::Span<uint8_t> out) {
+  void Pack(std::span<uint8_t> out) {
     YACL_ENFORCE(out.size() >= 64);
     memcpy(out.data(), t.data(), 32);
     memcpy(out.data() + 32, s.data(), 32);
@@ -93,7 +93,7 @@ struct CheckMsg {
 
   Buffer Pack() {
     auto ret = Buffer(64);
-    Pack(absl::MakeSpan(ret.data<uint8_t>(), ret.size()));
+    Pack(std::span(ret.data<uint8_t>(), ret.size()));
     return ret;
   }
 
@@ -104,21 +104,21 @@ struct CheckMsg {
   }
 };
 
-CheckMsg GenCheckMsg(uint32_t n, absl::Span<uint128_t> output) {
+CheckMsg GenCheckMsg(uint32_t n, std::span<uint128_t> output) {
   auto t = std::array<uint8_t, 32>();
 
   std::vector<std::array<uint8_t, 32>> tmp;
   for (uint32_t i = 0; i < n; ++i) {
     tmp.emplace_back(Blake3(ByteContainerView(&output[i], sizeof(uint128_t))));
     // t = t xor tmp
-    std::transform(tmp[i].cbegin(), tmp[i].cend(), t.cbegin(), t.begin(),
+    std::transform(tmp[i].begin(), tmp[i].end(), t.begin(), t.begin(),
                    std::bit_xor<uint8_t>());
   }
   auto s = Blake3(ByteContainerView(tmp.data(), tmp.size() * 32));
   return {t, s};
 }
 
-bool VerifyCheckMsg(uint32_t n, uint32_t index, absl::Span<uint128_t> output,
+bool VerifyCheckMsg(uint32_t n, uint32_t index, std::span<uint128_t> output,
                     const CheckMsg& proof) {
   YACL_ENFORCE_LT(index, n);
   auto t = proof.t;
@@ -128,10 +128,10 @@ bool VerifyCheckMsg(uint32_t n, uint32_t index, absl::Span<uint128_t> output,
   for (uint32_t i = 0; i < n; ++i) {
     tmp.emplace_back(Blake3(ByteContainerView(&output[i], sizeof(uint128_t))));
     // t = t xor tmp
-    std::transform(tmp[i].cbegin(), tmp[i].cend(), t.cbegin(), t.begin(),
+    std::transform(tmp[i].begin(), tmp[i].end(), t.begin(), t.begin(),
                    std::bit_xor<uint8_t>());
   }
-  std::transform(t.cbegin(), t.cend(), tmp[index].cbegin(), tmp[index].begin(),
+  std::transform(t.begin(), t.end(), tmp[index].begin(), tmp[index].begin(),
                  std::bit_xor<uint8_t>());
 
   auto hash = Blake3(ByteContainerView(tmp.data(), tmp.size() * 32));
@@ -142,7 +142,7 @@ bool VerifyCheckMsg(uint32_t n, uint32_t index, absl::Span<uint128_t> output,
 
 void SgrrOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& base_ot, uint32_t n, uint32_t index,
-                   absl::Span<uint128_t> output, bool mal) {
+                   std::span<uint128_t> output, bool mal) {
   uint32_t ot_num = math::Log2Ceil(n);
   YACL_ENFORCE_GT(n, (uint32_t)1);                 // range should > 1
   YACL_ENFORCE_GE((uint32_t)128, base_ot.Size());  // base ot num < 128
@@ -169,7 +169,7 @@ void SgrrOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(recv_buf.size() >=
                static_cast<int64_t>(ot_num * 2 * sizeof(uint128_t)));
   // reuse, avoid copying
-  auto recv_msgs = absl::MakeSpan(
+  auto recv_msgs = std::span(
       reinterpret_cast<std::array<uint128_t, 2>*>(recv_buf.data()), ot_num);
 
   // for each level
@@ -218,7 +218,7 @@ void SgrrOtExtRecv(const std::shared_ptr<link::Context>& ctx,
 
 void SgrrOtExtSend(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& base_ot, uint32_t n,
-                   absl::Span<uint128_t> output, bool mal) {
+                   std::span<uint128_t> output, bool mal) {
   uint32_t ot_num = math::Log2Ceil(n);
   YACL_ENFORCE_GE(base_ot.Size(), ot_num);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -273,22 +273,22 @@ void SgrrOtExtSend(const std::shared_ptr<link::Context>& ctx,
 // sure how do these algorithms work.
 void SgrrOtExtRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtRecvStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output, bool mal) {
+                               std::span<uint128_t> output, bool mal) {
   const uint64_t buf_size = SgrrOtExtHelper(n, mal);
   auto recv_buf = ctx->Recv(ctx->NextRank(), "SGRR_OTE:RECV-CORR");
   YACL_ENFORCE_EQ(static_cast<uint64_t>(recv_buf.size()), buf_size);
   SgrrOtExtRecv_fixed_index(
       base_ot, n, output,
-      absl::MakeSpan(recv_buf.data<const uint8_t>(), buf_size), mal);
+      std::span(recv_buf.data<const uint8_t>(), buf_size), mal);
 }
 
 void SgrrOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtSendStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output, bool mal) {
+                               std::span<uint128_t> output, bool mal) {
   const uint64_t buf_size = SgrrOtExtHelper(n, mal);
   auto send_buf = Buffer(buf_size);
   SgrrOtExtSend_fixed_index(base_ot, n, output,
-                            absl::MakeSpan(send_buf.data<uint8_t>(), buf_size),
+                            std::span(send_buf.data<uint8_t>(), buf_size),
                             mal);
 
   ctx->SendAsync(ctx->NextRank(), ByteContainerView(send_buf),
@@ -296,8 +296,8 @@ void SgrrOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 }
 
 void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<const uint8_t> recv_buf, bool mal) {
+                               std::span<uint128_t> output,
+                               std::span<const uint8_t> recv_buf, bool mal) {
   const uint32_t ot_num = math::Log2Ceil(n);
   const uint64_t buf_size = SgrrOtExtHelper(n, mal);
   YACL_ENFORCE_GT(n, (uint32_t)1);                 // range should > 1
@@ -311,7 +311,7 @@ void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
   const uint64_t index = GetPuncturedIndex(choice, ot_num - 1);
   YACL_ENFORCE_LT(index, n);  // index < n
 
-  auto recv_msgs = absl::MakeConstSpan(
+  auto recv_msgs = std::span(
       reinterpret_cast<const std::array<uint128_t, 2>*>(recv_buf.data()),
       ot_num);
 
@@ -348,7 +348,7 @@ void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
 
   if (mal) {
     CheckMsg proof;
-    proof.Unpack(absl::MakeConstSpan(recv_buf.data() + buf_size - 64, 64));
+    proof.Unpack(std::span(recv_buf.data() + buf_size - 64, 64));
 
     YACL_ENFORCE(VerifyCheckMsg(n, index, output, proof),
                  "Malicious SgrrOtExt Consistency check: fail!");
@@ -359,8 +359,8 @@ void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
 }
 
 void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint8_t> send_buf, bool mal) {
+                               std::span<uint128_t> output,
+                               std::span<uint8_t> send_buf, bool mal) {
   const uint32_t ot_num = math::Log2Ceil(n);
   const uint64_t buf_size = SgrrOtExtHelper(n, mal);
   YACL_ENFORCE_GE(base_ot.Size(), ot_num);
@@ -368,7 +368,7 @@ void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
   YACL_ENFORCE_EQ(static_cast<uint64_t>(send_buf.size()), buf_size);
 
   output[0] = SecureRandSeed();
-  auto send_msgs = absl::MakeSpan(
+  auto send_msgs = std::span(
       reinterpret_cast<std::array<uint128_t, 2>*>(send_buf.data()), ot_num);
   // generate the final level seeds based on master_seed
   for (uint32_t i = 0; i < ot_num; ++i) {
@@ -389,7 +389,7 @@ void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
 
   if (mal) {
     auto proof = GenCheckMsg(n, output);
-    proof.Pack(absl::MakeSpan(send_buf.data() + buf_size - 64, 64));
+    proof.Pack(std::span(send_buf.data() + buf_size - 64, 64));
     // refresh output
     ParaCrHashInplace_128(output.subspan(0, n));
   }

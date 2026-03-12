@@ -17,7 +17,7 @@
 #include <memory>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
@@ -118,8 +118,8 @@ std::unique_ptr<IGroupPRF> KkrtOtExtSend(
 
 void KkrtOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& base_ot,
-                   absl::Span<const uint128_t> choices,
-                   absl::Span<uint128_t> recv_blocks);
+                   std::span<const uint128_t> choices,
+                   std::span<uint128_t> recv_blocks);
 
 class KkrtOtExtSender {
  public:
@@ -155,10 +155,10 @@ class KkrtOtExtReceiver {
   void Init(const std::shared_ptr<link::Context>& ctx,
             const OtSendStore& base_ot, uint64_t num_ot);
 
-  void Encode(uint64_t ot_idx, absl::Span<const uint128_t> inputs,
-              absl::Span<uint8_t> dest_encode);
+  void Encode(uint64_t ot_idx, std::span<const uint128_t> inputs,
+              std::span<uint8_t> dest_encode);
   void Encode(uint64_t ot_idx, uint128_t input,
-              absl::Span<uint8_t> dest_encode);
+              std::span<uint8_t> dest_encode);
   void ZeroEncode(uint64_t ot_idx);
 
   void SendCorrection(const std::shared_ptr<link::Context>& ctx,

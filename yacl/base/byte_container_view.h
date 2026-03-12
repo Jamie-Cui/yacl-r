@@ -58,6 +58,11 @@ class ByteContainerView : public std::span<const uint8_t> {
   explicit ByteContainerView(const Buffer &b)
       : std::span<const uint8_t>(b.data<uint8_t>(), b.size()) {}
 
+  // std::span<const T> has begin()/end() but not cbegin()/cend().
+  // Provide them for compatibility with code that expects cbegin/cend.
+  constexpr auto cbegin() const noexcept { return begin(); }
+  constexpr auto cend() const noexcept { return end(); }
+
   bool operator==(const ByteContainerView &other) const {
     if (data() == other.data() && size() == other.size()) {
       return true;

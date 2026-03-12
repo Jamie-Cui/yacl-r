@@ -23,7 +23,7 @@
 #include <numeric>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/block.h"
@@ -43,24 +43,24 @@ class ExAccCodeInterface : public LinearCodeInterface {
 
   virtual uint32_t GetWeight() const = 0;
 
-  virtual void DualEncode(absl::Span<uint128_t> in, /* GF(2^128) */
-                          absl::Span<uint128_t> out) const = 0;
-  virtual void DualEncode2(absl::Span<uint128_t> in0, /* GF(2^128) */
-                           absl::Span<uint128_t> out0,
-                           absl::Span<uint128_t> in1, /* GF(2^128) */
-                           absl::Span<uint128_t> out1) const = 0;
+  virtual void DualEncode(std::span<uint128_t> in, /* GF(2^128) */
+                          std::span<uint128_t> out) const = 0;
+  virtual void DualEncode2(std::span<uint128_t> in0, /* GF(2^128) */
+                           std::span<uint128_t> out0,
+                           std::span<uint128_t> in1, /* GF(2^128) */
+                           std::span<uint128_t> out1) const = 0;
 
-  virtual void DualEncode(absl::Span<uint64_t> in, /* GF(2^64) */
-                          absl::Span<uint64_t> out) const = 0;
-  virtual void DualEncode2(absl::Span<uint64_t> in0, /* GF(2^64) */
-                           absl::Span<uint64_t> out0,
-                           absl::Span<uint64_t> in1, /* GF(2^64) */
-                           absl::Span<uint64_t> out1) const = 0;
+  virtual void DualEncode(std::span<uint64_t> in, /* GF(2^64) */
+                          std::span<uint64_t> out) const = 0;
+  virtual void DualEncode2(std::span<uint64_t> in0, /* GF(2^64) */
+                           std::span<uint64_t> out0,
+                           std::span<uint64_t> in1, /* GF(2^64) */
+                           std::span<uint64_t> out1) const = 0;
 
-  virtual void DualEncode2(absl::Span<uint64_t> in0 /* GF(2^64) */,
-                           absl::Span<uint64_t> out0,
-                           absl::Span<uint128_t> in1, /* GF(2^128) */
-                           absl::Span<uint128_t> out1) const = 0;
+  virtual void DualEncode2(std::span<uint64_t> in0 /* GF(2^64) */,
+                           std::span<uint64_t> out0,
+                           std::span<uint128_t> in1, /* GF(2^128) */
+                           std::span<uint128_t> out1) const = 0;
 };
 
 // Implementation of expand accumulate code in F2k, for more details, see
@@ -94,31 +94,31 @@ class ExAccCode : public ExAccCodeInterface {
   // Expand Accumulate Code
   // dual LPN problem  --> G = A * B
   // thus, dual encode would be xG = (xA) * B = y * B, y[i] = sum_{j<=i} x[j]
-  void DualEncode(absl::Span<uint128_t> in,
-                  absl::Span<uint128_t> out) const override {
+  void DualEncode(std::span<uint128_t> in,
+                  std::span<uint128_t> out) const override {
     DualEncodeImpl<uint128_t>(in, out);
   }
 
-  void DualEncode2(absl::Span<uint128_t> in0, absl::Span<uint128_t> out0,
-                   absl::Span<uint128_t> in1,
-                   absl::Span<uint128_t> out1) const override {
+  void DualEncode2(std::span<uint128_t> in0, std::span<uint128_t> out0,
+                   std::span<uint128_t> in1,
+                   std::span<uint128_t> out1) const override {
     DualEncode2Impl<uint128_t, uint128_t>(in0, out0, in1, out1);
   }
 
-  void DualEncode(absl::Span<uint64_t> in,
-                  absl::Span<uint64_t> out) const override {
+  void DualEncode(std::span<uint64_t> in,
+                  std::span<uint64_t> out) const override {
     DualEncodeImpl<uint64_t>(in, out);
   }
 
-  void DualEncode2(absl::Span<uint64_t> in0, absl::Span<uint64_t> out0,
-                   absl::Span<uint64_t> in1,
-                   absl::Span<uint64_t> out1) const override {
+  void DualEncode2(std::span<uint64_t> in0, std::span<uint64_t> out0,
+                   std::span<uint64_t> in1,
+                   std::span<uint64_t> out1) const override {
     DualEncode2Impl<uint64_t, uint64_t>(in0, out0, in1, out1);
   }
 
-  void DualEncode2(absl::Span<uint64_t> in0, absl::Span<uint64_t> out0,
-                   absl::Span<uint128_t> in1,
-                   absl::Span<uint128_t> out1) const override {
+  void DualEncode2(std::span<uint64_t> in0, std::span<uint64_t> out0,
+                   std::span<uint128_t> in1,
+                   std::span<uint128_t> out1) const override {
     DualEncode2Impl<uint64_t, uint128_t>(in0, out0, in1, out1);
   }
 
@@ -129,19 +129,19 @@ class ExAccCode : public ExAccCodeInterface {
   const uint32_t weight_ = d;
 
   template <typename T>
-  void DualEncodeImpl(absl::Span<T> in, absl::Span<T> out) const {
+  void DualEncodeImpl(std::span<T> in, std::span<T> out) const {
     YACL_ENFORCE(in.size() >= m_);
     YACL_ENFORCE(out.size() >= n_);
 
     // y[i] = sum_{j<=i} x[j]
     Accumulate<T>(in);
     // d-Local Linear Code
-    Expand<T>(absl::MakeConstSpan(in), out);
+    Expand<T>(std::span(in), out);
   }
 
   template <typename T, typename K>
-  void DualEncode2Impl(absl::Span<T> in0, absl::Span<T> out0, absl::Span<K> in1,
-                       absl::Span<K> out1) const {
+  void DualEncode2Impl(std::span<T> in0, std::span<T> out0, std::span<K> in1,
+                       std::span<K> out1) const {
     YACL_ENFORCE(in0.size() >= m_);
     YACL_ENFORCE(in1.size() >= m_);
 
@@ -152,24 +152,24 @@ class ExAccCode : public ExAccCodeInterface {
     Accumulate<T>(in0);
     Accumulate<K>(in1);
     // d-Local Linear Code
-    Expand2<T, K>(absl::MakeConstSpan(in0), out0, absl::MakeConstSpan(in1),
+    Expand2<T, K>(std::span(in0), out0, std::span(in1),
                   out1);
   }
 
   template <typename T>
-  inline void Accumulate(absl::Span<T> inout) const {
-    std::partial_sum(inout.cbegin(), inout.cend(), inout.begin(),
+  inline void Accumulate(std::span<T> inout) const {
+    std::partial_sum(inout.begin(), inout.end(), inout.begin(),
                      std::bit_xor<T>());
   }
 
   template <typename T>
-  inline void Expand(absl::Span<const T> in, absl::Span<T> out) const {
+  inline void Expand(std::span<const T> in, std::span<T> out) const {
     LocalLinearCode<d>(seed_, n_, m_).Encode(in, out);
   }
 
   template <typename T, typename K>
-  inline void Expand2(absl::Span<const T> in0, absl::Span<T> out0,
-                      absl::Span<const K> in1, absl::Span<K> out1) const {
+  inline void Expand2(std::span<const T> in0, std::span<T> out0,
+                      std::span<const K> in1, std::span<K> out1) const {
     LocalLinearCode<d>(seed_, n_, m_).Encode2(in0, out0, in1, out1);
   }
 };

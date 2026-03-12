@@ -20,7 +20,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/int128.h"
 

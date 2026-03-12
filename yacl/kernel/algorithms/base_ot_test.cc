@@ -47,9 +47,9 @@ TEST_P(BaseOtTest, Works) {
   // WHEN
   auto choices = RandBits<dynamic_bitset<uint128_t>>(params.num_ot);
   std::future<void> sender =
-      std::async([&] { BaseOtSend(contexts[0], absl::MakeSpan(send_blocks)); });
+      std::async([&] { BaseOtSend(contexts[0], std::span(send_blocks)); });
   std::future<void> receiver = std::async(
-      [&] { BaseOtRecv(contexts[1], choices, absl::MakeSpan(recv_blocks)); });
+      [&] { BaseOtRecv(contexts[1], choices, std::span(recv_blocks)); });
   sender.get();
   receiver.get();
 
@@ -102,9 +102,9 @@ TEST(BaseOtEdgeTest, Test) {
   auto contexts = link::test::SetupWorld(2);
 
   // WHEN THEN
-  ASSERT_THROW(BaseOtRecv(contexts[0], choices, absl::MakeSpan(recv_blocks)),
+  ASSERT_THROW(BaseOtRecv(contexts[0], choices, std::span(recv_blocks)),
                ::yacl::Exception);
-  ASSERT_THROW(BaseOtSend(contexts[1], absl::MakeSpan(send_blocks)),
+  ASSERT_THROW(BaseOtSend(contexts[1], std::span(send_blocks)),
                ::yacl::Exception);
 }
 

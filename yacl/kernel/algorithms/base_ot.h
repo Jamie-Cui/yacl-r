@@ -17,7 +17,7 @@
 #include <memory>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
@@ -41,10 +41,10 @@ using Block = uint128_t;
 
 void BaseOtRecv(const std::shared_ptr<link::Context>& ctx,
                 const dynamic_bitset<uint128_t>& choices,
-                absl::Span<Block> recv_blocks);
+                std::span<Block> recv_blocks);
 
 void BaseOtSend(const std::shared_ptr<link::Context>& ctx,
-                absl::Span<std::array<Block, 2>> send_blocks);
+                std::span<std::array<Block, 2>> send_blocks);
 
 // ==================== //
 //   Support OT Store   //
@@ -54,14 +54,14 @@ inline OtRecvStore BaseOtRecv(const std::shared_ptr<link::Context>& ctx,
                               const dynamic_bitset<uint128_t>& choices,
                               uint32_t num_ot) {
   std::vector<Block> blocks(num_ot);
-  BaseOtRecv(ctx, choices, absl::MakeSpan(blocks));
+  BaseOtRecv(ctx, choices, std::span(blocks));
   return MakeOtRecvStore(choices, std::move(blocks));
 }
 
 inline OtSendStore BaseOtSend(const std::shared_ptr<link::Context>& ctx,
                               uint32_t num_ot) {
   std::vector<std::array<Block, 2>> blocks(num_ot);
-  BaseOtSend(ctx, absl::MakeSpan(blocks));
+  BaseOtSend(ctx, std::span(blocks));
   return MakeOtSendStore(std::move(blocks));
 }
 

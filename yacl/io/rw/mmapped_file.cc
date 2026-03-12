@@ -21,10 +21,8 @@
 #include <cstdio>
 #include <filesystem>
 
-#include "absl/base/internal/direct_mmap.h"
-#include "absl/cleanup/cleanup.h"
-
 #include "yacl/base/exception.h"
+#include "yacl/utils/scope_guard.h"
 
 namespace yacl::io {
 
@@ -34,18 +32,17 @@ MmappedFile::MmappedFile(const std::string &path) {
 
   // Open file
   auto fd = open(path.c_str(), O_RDONLY);
-  absl::Cleanup close_fd = [&fd]() {
+  ON_SCOPE_EXIT([&fd]() {
     // By posix standard, close the file will
     // not unmap the region, so let's close
     // the file.
     close(fd);
-  };
+  });
 
   YACL_ENFORCE(fd != -1, "failed to open file {}", path);
 
   // mmap whole file into memory
-  data_ = absl::base_internal::DirectMmap(nullptr, size_, PROT_READ,
-                                          MAP_PRIVATE, fd, 0);
+  data_ = mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd, 0);
 
   // Make sure mmap succeeded
   YACL_ENFORCE(data_ != MAP_FAILED, "mmap failed");
@@ -53,7 +50,7 @@ MmappedFile::MmappedFile(const std::string &path) {
 
 MmappedFile::~MmappedFile() {
   if (data_ != nullptr) {
-    absl::base_internal::DirectMunmap(data_, size_);
+    munmap(data_, size_);
   }
 }
 

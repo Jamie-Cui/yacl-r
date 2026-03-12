@@ -41,7 +41,7 @@ namespace yacl::crypto {
 //  - subfield Vole: u in GF(2^64); w, v, delta in GF(2^128)
 // Ot2VoleSend<uint64_t,uint128_t> / Ot2VoleRecv<uint64_t,uint128_t>
 template <typename T, typename K>
-void inline Ot2VoleSend(OtSendStore& send_ot, absl::Span<K> w) {
+void inline Ot2VoleSend(OtSendStore& send_ot, std::span<K> w) {
   constexpr size_t T_bits = sizeof(T) * 8;
   const uint64_t size = w.size();
 
@@ -62,13 +62,13 @@ void inline Ot2VoleSend(OtSendStore& send_ot, absl::Span<K> w) {
     for (size_t j = 0; j < T_bits; ++j) {
       w_buff[j] = send_ot.GetBlock(i * T_bits + j, 0);
     }
-    w[i] = math::GfMul(absl::MakeSpan(w_buff), absl::MakeSpan(basis));
+    w[i] = math::GfMul(std::span(w_buff), std::span(basis));
   }
 }
 
 template <typename T, typename K>
-void inline Ot2VoleRecv(OtRecvStore& recv_ot, absl::Span<T> u,
-                        absl::Span<K> v) {
+void inline Ot2VoleRecv(OtRecvStore& recv_ot, std::span<T> u,
+                        std::span<K> v) {
   constexpr size_t T_bits = sizeof(T) * 8;
   const uint64_t size = u.size();
   YACL_ENFORCE(u.size() == v.size());
@@ -93,7 +93,7 @@ void inline Ot2VoleRecv(OtRecvStore& recv_ot, absl::Span<T> u,
     for (size_t j = 0; j < T_bits; ++j) {
       v_buff[j] = recv_ot.GetBlock(i * T_bits + j);
     }
-    v[i] = math::GfMul(absl::MakeSpan(v_buff), absl::MakeSpan(basis));
+    v[i] = math::GfMul(std::span(v_buff), std::span(basis));
   }
 }
 
@@ -109,7 +109,7 @@ void inline Ot2VoleRecv(OtRecvStore& recv_ot, absl::Span<T> u,
 // GilboaVoleSend<uint64_t,uint128_t> / GilboaVoleRecv<uint64_t,uint128_t>
 template <typename T, typename K>
 void inline GilboaVoleSend(const std::shared_ptr<link::Context>& ctx,
-                           const OtRecvStore& base_ot, absl::Span<K> w,
+                           const OtRecvStore& base_ot, std::span<K> w,
                            bool mal = false) {
   constexpr size_t T_bits = sizeof(T) * 8;
   const size_t size = w.size();
@@ -123,8 +123,8 @@ void inline GilboaVoleSend(const std::shared_ptr<link::Context>& ctx,
 
 template <typename T, typename K>
 void inline GilboaVoleRecv(const std::shared_ptr<link::Context>& ctx,
-                           const OtSendStore& base_ot, absl::Span<T> u,
-                           absl::Span<K> v, bool mal = false) {
+                           const OtSendStore& base_ot, std::span<T> u,
+                           std::span<K> v, bool mal = false) {
   constexpr size_t T_bits = sizeof(T) * 8;
   const size_t size = u.size();
   YACL_ENFORCE(size == v.size());

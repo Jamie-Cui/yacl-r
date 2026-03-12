@@ -74,7 +74,7 @@ void naive_cot2rot(const OtRecvStore& cot_store, OtRecvStore* rot_store) {
 // Conversion from cot to rot (OtStoreType == Normal)
 [[maybe_unused]] void naive_rot2ot(
     const std::shared_ptr<yacl::link::Context>& lctx,
-    const OtSendStore& ot_store, absl::Span<const OtMsgPair> msgpairs) {
+    const OtSendStore& ot_store, std::span<const OtMsgPair> msgpairs) {
   static_assert(kBatchSize % 128 == 0);  // batch size should be multiple of 128
   YACL_ENFORCE(ot_store.Type() == OtStoreType::Normal);
   YACL_ENFORCE(ot_store.Size() == msgpairs.size());
@@ -114,7 +114,7 @@ void naive_cot2rot(const OtRecvStore& cot_store, OtRecvStore* rot_store) {
 [[maybe_unused]] void naive_rot2ot(
     const std::shared_ptr<yacl::link::Context>& lctx,
     const OtRecvStore& ot_store, const OtChoices& choices,
-    absl::Span<OtMsg> out) {
+    std::span<OtMsg> out) {
   static_assert(kBatchSize % 128 == 0);  // batch size should be multiple of 128
   YACL_ENFORCE(ot_store.Type() == OtStoreType::Normal);
   YACL_ENFORCE(ot_store.Size() == choices.size());

@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 
-#include "absl/strings/numbers.h"
-#include "absl/strings/str_split.h"
 
 #include "yacl/base/exception.h"
 
@@ -45,37 +44,37 @@ void CircuitReader::ReadMeta() {
   // first line
   in_->GetLine(&ret);
   {
-    std::vector<std::string> splits = absl::StrSplit(ret, ' ');
+    std::vector<std::string> splits = yacl::StrSplit(ret, ' ');
     YACL_ENFORCE(splits.size() == 2, "{}", ret);
-    YACL_ENFORCE(absl::SimpleAtoi(splits[0], &circ_->ng));
-    YACL_ENFORCE(absl::SimpleAtoi(splits[1], &circ_->nw));
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[0], &circ_->ng));
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[1], &circ_->nw));
   }
 
   // second line
   in_->GetLine(&ret);
   {
-    std::vector<std::string> splits = absl::StrSplit(ret, ' ');
-    YACL_ENFORCE(absl::SimpleAtoi(splits[0], &circ_->niv));
+    std::vector<std::string> splits = yacl::StrSplit(ret, ' ');
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[0], &circ_->niv));
 
     /* it's okay to have more columns, but we'll stick with the niv */
     YACL_ENFORCE(splits.size() >= circ_->niv + 1);
     circ_->niw.resize(circ_->niv);
     for (size_t i = 0; i < circ_->niv; ++i) {
-      YACL_ENFORCE(absl::SimpleAtoi(splits[i + 1], &circ_->niw[i]));
+      YACL_ENFORCE(yacl::SimpleAtoi(splits[i + 1], &circ_->niw[i]));
     }
   }
 
   // third line
   in_->GetLine(&ret);
   {
-    std::vector<std::string> splits = absl::StrSplit(ret, ' ');
-    YACL_ENFORCE(absl::SimpleAtoi(splits[0], &circ_->nov));
+    std::vector<std::string> splits = yacl::StrSplit(ret, ' ');
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[0], &circ_->nov));
 
     /* it's okay to have more columns, but we'll stick with the nov */
     YACL_ENFORCE(splits.size() >= circ_->nov + 1);
     circ_->now.resize(circ_->nov);
     for (size_t i = 0; i < circ_->nov; ++i) {
-      YACL_ENFORCE(absl::SimpleAtoi(splits[i + 1], &circ_->now[i]));
+      YACL_ENFORCE(yacl::SimpleAtoi(splits[i + 1], &circ_->now[i]));
     }
   }
 
@@ -99,9 +98,9 @@ void CircuitReader::ReadAllGates() {
   circ_->gates.resize(circ_->ng);  // resize the gates
   for (size_t i = 0; i < circ_->ng; ++i) {
     in_->GetLine(&ret);
-    std::vector<std::string> splits = absl::StrSplit(ret, ' ');
-    YACL_ENFORCE(absl::SimpleAtoi(splits[0], &circ_->gates[i].niw));
-    YACL_ENFORCE(absl::SimpleAtoi(splits[1], &circ_->gates[i].now));
+    std::vector<std::string> splits = yacl::StrSplit(ret, ' ');
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[0], &circ_->gates[i].niw));
+    YACL_ENFORCE(yacl::SimpleAtoi(splits[1], &circ_->gates[i].now));
 
     /* it's okay to have more columns, but we'll stick with the niw and now */
     YACL_ENFORCE(splits.size() > circ_->gates[i].niw + circ_->gates[i].now + 2);
@@ -109,10 +108,10 @@ void CircuitReader::ReadAllGates() {
     circ_->gates[i].ow.resize(circ_->gates[i].now);
 
     for (size_t j = 0; j < circ_->gates[i].niw; ++j) {
-      YACL_ENFORCE(absl::SimpleAtoi(splits[2 + j], &circ_->gates[i].iw[j]));
+      YACL_ENFORCE(yacl::SimpleAtoi(splits[2 + j], &circ_->gates[i].iw[j]));
     }
     for (size_t j = 0; j < circ_->gates[i].now; ++j) {
-      YACL_ENFORCE(absl::SimpleAtoi(splits[2 + circ_->gates[i].niw + j],
+      YACL_ENFORCE(yacl::SimpleAtoi(splits[2 + circ_->gates[i].niw + j],
                                     &circ_->gates[i].ow[j]));
     }
 

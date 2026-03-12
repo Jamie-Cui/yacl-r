@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <array>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
@@ -79,7 +79,7 @@ class LocalLinearCode : public LinearCodeInterface {
   uint32_t GetLength() const override { return n_; }
 
   // Encode a message (input) into a codeword (output)
-  void Encode(absl::Span<const uint128_t> in, absl::Span<uint128_t> out) const {
+  void Encode(std::span<const uint128_t> in, std::span<uint128_t> out) const {
     YACL_ENFORCE_EQ(in.size(), k_);
     // YACL_ENFORCE_EQ(out.size(), n_);
 
@@ -92,7 +92,7 @@ class LocalLinearCode : public LinearCodeInterface {
       const uint32_t block_num = math::DivCeil(limit * d, 4);
 
       // generate non-zero indexes
-      GenIndexes(i, block_num, absl::MakeSpan(tmp));
+      GenIndexes(i, block_num, std::span(tmp));
 
       const auto *ptr = reinterpret_cast<const uint32_t *>(tmp.data());
       for (uint32_t j = 0; j < limit; ++j) {
@@ -105,9 +105,9 @@ class LocalLinearCode : public LinearCodeInterface {
     }
   }
 
-  void Encode2(absl::Span<const uint128_t> in0, absl::Span<uint128_t> out0,
-               absl::Span<const uint128_t> in1,
-               absl::Span<uint128_t> out1) const {
+  void Encode2(std::span<const uint128_t> in0, std::span<uint128_t> out0,
+               std::span<const uint128_t> in1,
+               std::span<uint128_t> out1) const {
     YACL_ENFORCE_EQ(in0.size(), k_);
     YACL_ENFORCE_EQ(in1.size(), k_);
 
@@ -122,7 +122,7 @@ class LocalLinearCode : public LinearCodeInterface {
           std::min(kLcBatchSize, static_cast<uint32_t>(size) - i);
       const uint32_t block_num = math::DivCeil(limit * d, 4);
 
-      GenIndexes(i, block_num, absl::MakeSpan(tmp));
+      GenIndexes(i, block_num, std::span(tmp));
 
       const auto *ptr = reinterpret_cast<const uint32_t *>(tmp.data());
       for (uint32_t j = 0; j < limit; ++j) {
@@ -139,7 +139,7 @@ class LocalLinearCode : public LinearCodeInterface {
   }
 
   // Encode a message (input) into a codeword (output)
-  void Encode(absl::Span<const uint64_t> in, absl::Span<uint64_t> out) const {
+  void Encode(std::span<const uint64_t> in, std::span<uint64_t> out) const {
     YACL_ENFORCE_EQ(in.size(), k_);
     // YACL_ENFORCE_EQ(out.size(), n_);
 
@@ -151,7 +151,7 @@ class LocalLinearCode : public LinearCodeInterface {
           std::min(kLcBatchSize, static_cast<uint32_t>(out.size()) - i);
       const uint32_t block_num = math::DivCeil(limit * d, 4);
 
-      GenIndexes(i, block_num, absl::MakeSpan(tmp));
+      GenIndexes(i, block_num, std::span(tmp));
 
       const auto *ptr = reinterpret_cast<const uint32_t *>(tmp.data());
       for (uint32_t j = 0; j < limit; ++j) {
@@ -164,9 +164,9 @@ class LocalLinearCode : public LinearCodeInterface {
     }
   }
 
-  void Encode2(absl::Span<const uint64_t> in0, absl::Span<uint64_t> out0,
-               absl::Span<const uint64_t> in1,
-               absl::Span<uint64_t> out1) const {
+  void Encode2(std::span<const uint64_t> in0, std::span<uint64_t> out0,
+               std::span<const uint64_t> in1,
+               std::span<uint64_t> out1) const {
     YACL_ENFORCE_EQ(in0.size(), k_);
     YACL_ENFORCE_EQ(in1.size(), k_);
 
@@ -181,7 +181,7 @@ class LocalLinearCode : public LinearCodeInterface {
           std::min(kLcBatchSize, static_cast<uint32_t>(size) - i);
       const uint32_t block_num = math::DivCeil(limit * d, 4);
 
-      GenIndexes(i, block_num, absl::MakeSpan(tmp));
+      GenIndexes(i, block_num, std::span(tmp));
 
       const auto *ptr = reinterpret_cast<const uint32_t *>(tmp.data());
       for (uint32_t j = 0; j < limit; ++j) {
@@ -197,9 +197,9 @@ class LocalLinearCode : public LinearCodeInterface {
     }
   }
 
-  void Encode2(absl::Span<const uint64_t> in0, absl::Span<uint64_t> out0,
-               absl::Span<const uint128_t> in1,
-               absl::Span<uint128_t> out1) const {
+  void Encode2(std::span<const uint64_t> in0, std::span<uint64_t> out0,
+               std::span<const uint128_t> in1,
+               std::span<uint128_t> out1) const {
     YACL_ENFORCE_EQ(in0.size(), k_);
     YACL_ENFORCE_EQ(in1.size(), k_);
 
@@ -214,7 +214,7 @@ class LocalLinearCode : public LinearCodeInterface {
           std::min(kLcBatchSize, static_cast<uint32_t>(size) - i);
       const uint32_t block_num = math::DivCeil(limit * d, 4);
 
-      GenIndexes(i, block_num, absl::MakeSpan(tmp));
+      GenIndexes(i, block_num, std::span(tmp));
 
       const auto *ptr = reinterpret_cast<const uint32_t *>(tmp.data());
       for (uint32_t j = 0; j < limit; ++j) {
@@ -241,14 +241,14 @@ class LocalLinearCode : public LinearCodeInterface {
 
   // Generate non-zero indexes
   inline void GenIndexes(uint32_t i, uint32_t block_num,
-                         absl::Span<uint128_t> tmp) const {
+                         std::span<uint128_t> tmp) const {
     for (uint32_t j = 0; j < block_num; ++j) {
       _mm_store_si128(reinterpret_cast<__m128i *>(&tmp[j]),
                       _mm_set_epi32(i, 0, j, 0));
     }
     // Generate random indexes by Random Permutation
     rp_.GenForMultiInputsInplace(
-        absl::MakeSpan(reinterpret_cast<uint128_t *>(tmp.data()),
+        std::span(reinterpret_cast<uint128_t *>(tmp.data()),
                        block_num));  // kBatchSize * 10 / 4
 
     auto mask_tmp =

@@ -337,7 +337,7 @@ EcPoint MclGroupT<Fp_, Zn_>::DeserializePoint(ByteContainerView buf,
     switch (format) {
       case PointOctetFormat::Autonomous:
       case PointOctetFormat::ZCash_BLS12_381: {
-        CastAny<Ec>(ret)->deserialize(buf.cbegin(), len,
+        CastAny<Ec>(ret)->deserialize(buf.data(), len,
                                       mcl::IoMode::IoSerialize);
         break;
       }
@@ -351,23 +351,23 @@ EcPoint MclGroupT<Fp_, Zn_>::DeserializePoint(ByteContainerView buf,
   switch (format) {
     case PointOctetFormat::X962Uncompressed:
       YACL_ENFORCE(buf[0] == 0x04);
-      CastAny<Ec>(ret)->deserialize(buf.cbegin() + 1, len - 1,
+      CastAny<Ec>(ret)->deserialize(buf.data() + 1, len - 1,
                                     mcl::IoMode::IoEcAffineSerialize);
       break;
     case PointOctetFormat::X962Hybrid:
       YACL_ENFORCE(buf[0] == 0x06 || buf[0] == 0x07);
-      CastAny<Ec>(ret)->deserialize(buf.cbegin() + 1, len - 1,
+      CastAny<Ec>(ret)->deserialize(buf.data() + 1, len - 1,
                                     mcl::IoMode::IoEcAffineSerialize);
       break;
     case PointOctetFormat::Autonomous:
     case PointOctetFormat::X962Compressed: {
       auto* p = CastAny<Ec>(ret);
       p->z = 1;
-      if (mcl::bint::isZeroN(buf.cbegin(), len)) {
+      if (mcl::bint::isZeroN(buf.data(), len)) {
         p->clear();
       } else {
         bool isYodd = buf[0] == 3;
-        p->x.deserialize(buf.cbegin() + 1, len - 1, mcl::IoMode::IoSerialize);
+        p->x.deserialize(buf.data() + 1, len - 1, mcl::IoMode::IoSerialize);
         YACL_ENFORCE(Ec::getYfromX(p->y, p->x, isYodd));
       }
       break;

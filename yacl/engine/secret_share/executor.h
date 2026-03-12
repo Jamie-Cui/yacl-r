@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/engine/secret_share/types.h"
 #include "yacl/kernel/ot_kernel.h"
@@ -118,7 +118,7 @@ class SSExecutor {
   std::string NextTag(std::string_view prefix);
   void SendU64(std::string_view tag, uint64_t val);
   uint64_t RecvU64(std::string_view tag);
-  void SendU64Span(std::string_view tag, absl::Span<const uint64_t> data);
+  void SendU64Span(std::string_view tag, std::span<const uint64_t> data);
   std::vector<uint64_t> RecvU64Vec(std::string_view tag, int64_t count);
 
   ATriple ConsumeATriple();

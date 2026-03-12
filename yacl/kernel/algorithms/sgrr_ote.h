@@ -16,7 +16,7 @@
 
 #include <memory>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
@@ -66,11 +66,11 @@ namespace yacl::crypto {
 
 void SgrrOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& base_ot, uint32_t n, uint32_t index,
-                   absl::Span<uint128_t> output, bool mal = false);
+                   std::span<uint128_t> output, bool mal = false);
 
 void SgrrOtExtSend(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& base_ot, uint32_t n,
-                   absl::Span<uint128_t> output, bool mal = false);
+                   std::span<uint128_t> output, bool mal = false);
 
 //
 // --------------------------
@@ -94,21 +94,21 @@ uint64_t inline SgrrOtExtHelper(uint32_t n, bool mal = false) {
 //  it would be better to get Buffer's size by invoking `SgrrOtExtHelper`.
 void SgrrOtExtRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtRecvStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output, bool mal = false);
+                               std::span<uint128_t> output, bool mal = false);
 
 void SgrrOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtSendStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output, bool mal = false);
+                               std::span<uint128_t> output, bool mal = false);
 
 // non-interactive function, Receiver should receive "recv_msgs" from Sender
 void SgrrOtExtRecv_fixed_index(const OtRecvStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<const uint8_t> recv_buf,
+                               std::span<uint128_t> output,
+                               std::span<const uint8_t> recv_buf,
                                bool mal = false);
 
 // non-interactive function, Sender should send "send_msg" to Receiver
 void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint8_t> send_buf, bool mal = false);
+                               std::span<uint128_t> output,
+                               std::span<uint8_t> send_buf, bool mal = false);
 
 }  // namespace yacl::crypto

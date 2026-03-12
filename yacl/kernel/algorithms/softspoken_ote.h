@@ -17,7 +17,7 @@
 #include <memory>
 #include <utility>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/exception.h"
@@ -106,7 +106,7 @@ class SoftspokenOtExtSender {
 
   // old-style interface
   void Send(const std::shared_ptr<link::Context>& ctx,
-            absl::Span<std::array<uint128_t, 2>> send_blocks, bool cot = false);
+            std::span<std::array<uint128_t, 2>> send_blocks, bool cot = false);
 
   // [Warning] low efficiency
   void GenRot(const std::shared_ptr<link::Context>& ctx, uint64_t num_ot,
@@ -137,9 +137,9 @@ class SoftspokenOtExtSender {
   void SetCounter(uint64_t counter) { counter_ = counter; }
 
  private:
-  void GenSfVole(absl::Span<uint128_t> hash_buff,
-                 absl::Span<uint128_t> xor_buff, absl::Span<uint128_t> u,
-                 absl::Span<uint128_t> V);
+  void GenSfVole(std::span<uint128_t> hash_buff,
+                 std::span<uint128_t> xor_buff, std::span<uint128_t> u,
+                 std::span<uint128_t> V);
 
   uint128_t counter_{0};  // counter for seed refresh
 
@@ -180,7 +180,7 @@ class SoftspokenOtExtReceiver {
   // old-style interface
   void Recv(const std::shared_ptr<link::Context>& ctx,
             const dynamic_bitset<uint128_t>& choices,
-            absl::Span<uint128_t> recv_blocks, bool cot = false);
+            std::span<uint128_t> recv_blocks, bool cot = false);
 
   // [Warning] low efficiency
   void GenRot(const std::shared_ptr<link::Context>& ctx, uint64_t num_ot,
@@ -224,8 +224,8 @@ class SoftspokenOtExtReceiver {
 
  private:
   // Generate Subfield VOLE
-  void GenSfVole(uint128_t choice, absl::Span<uint128_t> xor_buff,
-                 absl::Span<uint128_t> u, absl::Span<uint128_t> W);
+  void GenSfVole(uint128_t choice, std::span<uint128_t> xor_buff,
+                 std::span<uint128_t> u, std::span<uint128_t> W);
 
   uint128_t counter_{0};  // counter for seed refresh
 
@@ -244,7 +244,7 @@ class SoftspokenOtExtReceiver {
 inline void SoftspokenOtExtSend(
     const std::shared_ptr<link::Context>& ctx,
     const OtRecvStore& base_ot /* rot */,
-    absl::Span<std::array<uint128_t, 2>> send_blocks, uint64_t k = 2,
+    std::span<std::array<uint128_t, 2>> send_blocks, uint64_t k = 2,
     bool cot = false, bool mal = false, bool compact = false) {
   auto ssSender = SoftspokenOtExtSender(k, 0, mal, compact);
   ssSender.OneTimeSetup(ctx, base_ot);
@@ -254,7 +254,7 @@ inline void SoftspokenOtExtSend(
 inline void SoftspokenOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                                 const OtSendStore& base_ot /* rot */,
                                 const dynamic_bitset<uint128_t>& choices,
-                                absl::Span<uint128_t> recv_blocks,
+                                std::span<uint128_t> recv_blocks,
                                 uint64_t k = 2, bool cot = false,
                                 bool mal = false, bool compact = false) {
   auto ssReceiver = SoftspokenOtExtReceiver(k, 0, mal, compact);

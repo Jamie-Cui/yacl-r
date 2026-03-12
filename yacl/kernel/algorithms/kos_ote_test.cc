@@ -48,10 +48,10 @@ TEST_P(KosOtExtTest, RotTestWorks) {
 
   // WHEN
   std::future<void> sender = std::async([&] {
-    KosOtExtSend(contexts[0], ot_store.recv, absl::MakeSpan(send_out));
+    KosOtExtSend(contexts[0], ot_store.recv, std::span(send_out));
   });
   std::future<void> receiver = std::async([&] {
-    KosOtExtRecv(contexts[1], ot_store.send, choices, absl::MakeSpan(recv_out));
+    KosOtExtRecv(contexts[1], ot_store.send, choices, std::span(recv_out));
   });
   receiver.get();
   sender.get();
@@ -85,10 +85,10 @@ TEST_P(KosOtExtTest, CotTestWorks) {
 
   // WHEN
   std::future<void> sender = std::async([&] {
-    KosOtExtSend(contexts[0], ot_store.recv, absl::MakeSpan(send_out), true);
+    KosOtExtSend(contexts[0], ot_store.recv, std::span(send_out), true);
   });
   std::future<void> receiver = std::async([&] {
-    KosOtExtRecv(contexts[1], ot_store.send, choices, absl::MakeSpan(recv_out),
+    KosOtExtRecv(contexts[1], ot_store.send, choices, std::span(recv_out),
                  true);
   });
   receiver.get();
@@ -188,7 +188,7 @@ TEST(KosOtExtEdgeTest, Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     auto choices = RandBits<dynamic_bitset<uint128_t>>(kNumOt + 128);
     ASSERT_THROW(KosOtExtRecv(contexts[1], ot_store.send, choices,
-                              absl::MakeSpan(recv_out)),
+                              std::span(recv_out)),
                  ::yacl::Exception);
   }
   {
@@ -196,14 +196,14 @@ TEST(KosOtExtEdgeTest, Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     dynamic_bitset<uint128_t> choices;
     ASSERT_THROW(KosOtExtRecv(contexts[1], ot_store.send, choices,
-                              absl::MakeSpan(recv_out)),
+                              std::span(recv_out)),
                  ::yacl::Exception);
   }
   {
     // Empty send output.
     std::vector<std::array<uint128_t, 2>> send_out;
     ASSERT_THROW(
-        KosOtExtSend(contexts[1], ot_store.recv, absl::MakeSpan(send_out)),
+        KosOtExtSend(contexts[1], ot_store.recv, std::span(send_out)),
         ::yacl::Exception);
   }
 }

@@ -35,7 +35,7 @@ BaseOTInterface::~BaseOTInterface() = default;
 
 void BaseOtRecv(const std::shared_ptr<link::Context>& ctx,
                 const dynamic_bitset<>& choices,
-                absl::Span<Block> recv_blocks) {
+                std::span<Block> recv_blocks) {
   YACL_ENFORCE_EQ(ctx->WorldSize(), 2u);
   YACL_ENFORCE_EQ(choices.size(), recv_blocks.size());
   YACL_ENFORCE(!choices.empty(), "empty choices");
@@ -45,7 +45,7 @@ void BaseOtRecv(const std::shared_ptr<link::Context>& ctx,
 }
 
 void BaseOtSend(const std::shared_ptr<link::Context>& ctx,
-                absl::Span<std::array<Block, 2>> send_blocks) {
+                std::span<std::array<Block, 2>> send_blocks) {
   YACL_ENFORCE(!send_blocks.empty(), "empty inputs");
 
   auto ot_interface = GetOtInterface();

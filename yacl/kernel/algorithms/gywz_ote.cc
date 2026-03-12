@@ -26,8 +26,8 @@ namespace yacl::crypto {
 
 namespace {
 void CggmFullEval(uint128_t delta, uint128_t seed, uint32_t n,
-                  absl::Span<uint128_t> all_msgs,
-                  absl::Span<uint128_t> left_sums,
+                  std::span<uint128_t> all_msgs,
+                  std::span<uint128_t> left_sums,
                   uint128_t one = Uint128Max()) {
   uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(height == left_sums.size());
@@ -55,7 +55,7 @@ void CggmFullEval(uint128_t delta, uint128_t seed, uint32_t n,
     if (!is_two_power && level == height - 1) {
       // all_msgs doesn't have enough space to store all leaves
       extra_buff.resize(prev_size);  // pre_size = 1 << (height - 1)
-      right_side = absl::MakeSpan(extra_buff);
+      right_side = std::span(extra_buff);
     }
 
     // copy previous seeds into right side
@@ -77,8 +77,8 @@ void CggmFullEval(uint128_t delta, uint128_t seed, uint32_t n,
   }
 }
 
-void CggmPuncFullEval(uint32_t index, absl::Span<const uint128_t> sibling_sums,
-                      uint32_t n, absl::Span<uint128_t> punctured_msgs,
+void CggmPuncFullEval(uint32_t index, std::span<const uint128_t> sibling_sums,
+                      uint32_t n, std::span<uint128_t> punctured_msgs,
                       uint128_t one = Uint128Max()) {
   YACL_ENFORCE(punctured_msgs.size() >= n);
   uint32_t height = sibling_sums.size();
@@ -106,7 +106,7 @@ void CggmPuncFullEval(uint32_t index, absl::Span<const uint128_t> sibling_sums,
     if (!is_two_power && level == height - 1) {
       // punctured_msgs doesn't have enough space to store all leaves
       extra_buff.resize(prev_size);  // pre_size = 1 << (height - 1)
-      right_side = absl::MakeSpan(extra_buff);
+      right_side = std::span(extra_buff);
     }
 
     // copy previous seeds into right side
@@ -136,7 +136,7 @@ void CggmPuncFullEval(uint32_t index, absl::Span<const uint128_t> sibling_sums,
 
 void GywzOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& cot, uint32_t n, uint32_t index,
-                   absl::Span<uint128_t> output) {
+                   std::span<uint128_t> output) {
   const uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -166,12 +166,12 @@ void GywzOtExtRecv(const std::shared_ptr<link::Context>& ctx,
     sibling_sums[i] ^= cot.GetBlock(i);
   }
 
-  CggmPuncFullEval(index, absl::MakeConstSpan(sibling_sums), n, output);
+  CggmPuncFullEval(index, std::span(sibling_sums), n, output);
 }
 
 void GywzOtExtSend(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& cot, uint32_t n,
-                   absl::Span<uint128_t> output) {
+                   std::span<uint128_t> output) {
   const uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -180,7 +180,7 @@ void GywzOtExtSend(const std::shared_ptr<link::Context>& ctx,
   uint128_t delta = cot.GetDelta();
   UninitAlignedVector<uint128_t> left_sums(height);
   uint128_t seed = SecureRandSeed();
-  CggmFullEval(delta, seed, n, output, absl::MakeSpan(left_sums));
+  CggmFullEval(delta, seed, n, output, std::span(left_sums));
 
   dynamic_bitset<uint128_t> masked_choice(height);
   auto recv_buf = ctx->Recv(ctx->NextRank(), "GYWZ_OTE: choice");
@@ -198,7 +198,7 @@ void GywzOtExtSend(const std::shared_ptr<link::Context>& ctx,
 
 void GywzOtExtRecv_ferret(const std::shared_ptr<link::Context>& ctx,
                           const OtRecvStore& cot, uint32_t n,
-                          absl::Span<uint128_t> output) {
+                          std::span<uint128_t> output) {
   uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -217,7 +217,7 @@ void GywzOtExtRecv_ferret(const std::shared_ptr<link::Context>& ctx,
     sibling_sums[i] ^= (cot.GetBlock(i) & one);
   }
 
-  CggmPuncFullEval(index, absl::MakeConstSpan(sibling_sums), n, output, one);
+  CggmPuncFullEval(index, std::span(sibling_sums), n, output, one);
 
   // notice: "index" may be greater than n
   if (n > index) {
@@ -227,7 +227,7 @@ void GywzOtExtRecv_ferret(const std::shared_ptr<link::Context>& ctx,
 
 void GywzOtExtSend_ferret(const std::shared_ptr<link::Context>& ctx,
                           const OtSendStore& cot, uint32_t n,
-                          absl::Span<uint128_t> output) {
+                          std::span<uint128_t> output) {
   uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -240,7 +240,7 @@ void GywzOtExtSend_ferret(const std::shared_ptr<link::Context>& ctx,
   uint128_t seed = SecureRandSeed() & one;
 
   UninitAlignedVector<uint128_t> left_sums(height);
-  CggmFullEval(delta, seed, n, output, absl::MakeSpan(left_sums), one);
+  CggmFullEval(delta, seed, n, output, std::span(left_sums), one);
 
   for (uint32_t i = 0; i < height; ++i) {
     left_sums[i] ^= (cot.GetBlock(i, 1) & one);
@@ -253,7 +253,7 @@ void GywzOtExtSend_ferret(const std::shared_ptr<link::Context>& ctx,
 
 void GywzOtExtRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtRecvStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output) {
+                               std::span<uint128_t> output) {
   const uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -262,20 +262,20 @@ void GywzOtExtRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(recv_buf.size() >=
                static_cast<int64_t>(height * sizeof(uint128_t)));
   auto recv_msgs =
-      absl::MakeSpan(reinterpret_cast<uint128_t*>(recv_buf.data()), height);
+      std::span(reinterpret_cast<uint128_t*>(recv_buf.data()), height);
 
   GywzOtExtRecv_fixed_index(cot, n, output, recv_msgs);
 }
 
 void GywzOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtSendStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output) {
+                               std::span<uint128_t> output) {
   uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
 
   UninitAlignedVector<uint128_t> left_sums(height);
-  GywzOtExtSend_fixed_index(cot, n, output, absl::MakeSpan(left_sums));
+  GywzOtExtSend_fixed_index(cot, n, output, std::span(left_sums));
 
   ctx->SendAsync(
       ctx->NextRank(),
@@ -284,8 +284,8 @@ void GywzOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 }
 
 void GywzOtExtRecv_fixed_index(const OtRecvStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint128_t> recv_msgs) {
+                               std::span<uint128_t> output,
+                               std::span<uint128_t> recv_msgs) {
   const uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);
@@ -301,12 +301,12 @@ void GywzOtExtRecv_fixed_index(const OtRecvStore& cot, uint32_t n,
   for (uint32_t i = 0; i < height; ++i) {
     sibling_sums[i] ^= cot.GetBlock(i);
   }
-  CggmPuncFullEval(index, absl::MakeConstSpan(sibling_sums), n, output);
+  CggmPuncFullEval(index, std::span(sibling_sums), n, output);
 }
 
 void GywzOtExtSend_fixed_index(const OtSendStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint128_t> send_msgs) {
+                               std::span<uint128_t> output,
+                               std::span<uint128_t> send_msgs) {
   uint32_t height = math::Log2Ceil(n);
   YACL_ENFORCE(cot.Size() == height);
   YACL_ENFORCE_GT(n, (uint32_t)1);

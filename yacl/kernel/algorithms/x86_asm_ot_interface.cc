@@ -30,7 +30,7 @@ namespace yacl::crypto {
 
 void X86AsmOtInterface::Recv(const std::shared_ptr<link::Context> &ctx,
                              const dynamic_bitset<uint128_t> &choices,
-                             absl::Span<Block> recv_blocks) {
+                             std::span<Block> recv_blocks) {
   const int kNumOt = choices.size();
   auto receiver = std::make_unique<SIMPLEOT_RECEIVER>();
 
@@ -84,7 +84,7 @@ void X86AsmOtInterface::Recv(const std::shared_ptr<link::Context> &ctx,
 }
 
 void X86AsmOtInterface::Send(const std::shared_ptr<link::Context> &ctx,
-                             absl::Span<std::array<Block, 2>> send_blocks) {
+                             std::span<std::array<Block, 2>> send_blocks) {
   const int kNumOt = send_blocks.size();
   auto sender = std::make_unique<SIMPLEOT_SENDER>();
 

@@ -26,7 +26,7 @@ constexpr size_t kBatchSize = 128;
 constexpr size_t kKappa = YACL_MODULE_SECPARAM_C_UINT("iknp_ote");
 
 inline std::array<uint128_t, kBatchSize> XorBatchedBlock(
-    const absl::Span<uint128_t> in, const uint128_t block) {
+    const std::span<uint128_t> in, const uint128_t block) {
   std::array<uint128_t, kBatchSize> res;
   for (size_t i = 0; i < in.size(); i++) {
     res[i] = in[i] ^ block;
@@ -38,7 +38,7 @@ inline std::array<uint128_t, kBatchSize> XorBatchedBlock(
 
 void IknpOtExtSend(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& base_ot,
-                   absl::Span<std::array<uint128_t, 2>> send_blocks,
+                   std::span<std::array<uint128_t, 2>> send_blocks,
                    const bool cot) {
   YACL_ENFORCE(ctx->WorldSize() == 2);
   YACL_ENFORCE(base_ot.Size() == kKappa);
@@ -55,7 +55,7 @@ void IknpOtExtSend(const std::shared_ptr<link::Context>& ctx,
   // Generate all the psedo-randomness to kKappa * kOtNum
   for (size_t k = 0; k < kKappa; ++k) {
     ts[k].resize(block_num);
-    PrgAesCtr<uint128_t>(base_ot.GetBlock(k), absl::MakeSpan(ts[k]));
+    PrgAesCtr<uint128_t>(base_ot.GetBlock(k), std::span(ts[k]));
   }
 
   // For every batch
@@ -86,12 +86,12 @@ void IknpOtExtSend(const std::shared_ptr<link::Context>& ctx,
     MatrixTranspose128(&batch0);
 
     auto tmp_choice = base_ot.CopyBitBuf();
-    batch1 = XorBatchedBlock(absl::MakeSpan(batch0),
+    batch1 = XorBatchedBlock(std::span(batch0),
                              static_cast<uint128_t>(*tmp_choice.data()));
 
     if (!cot) {
-      ParaCrHashInplace_128(absl::MakeSpan(batch0));
-      ParaCrHashInplace_128(absl::MakeSpan(batch1));
+      ParaCrHashInplace_128(std::span(batch0));
+      ParaCrHashInplace_128(std::span(batch1));
     }
 
     // Build Q & Q^S
@@ -109,7 +109,7 @@ void IknpOtExtSend(const std::shared_ptr<link::Context>& ctx,
 void IknpOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& base_ot,
                    const dynamic_bitset<uint128_t>& choices,
-                   absl::Span<uint128_t> recv_blocks, const bool cot) {
+                   std::span<uint128_t> recv_blocks, const bool cot) {
   YACL_ENFORCE(ctx->WorldSize() == 2);  // Make sure that OT has two parties
   YACL_ENFORCE(base_ot.Size() == kKappa);
   YACL_ENFORCE(recv_blocks.size() == choices.size());
@@ -126,8 +126,8 @@ void IknpOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   for (size_t k = 0; k < kKappa; ++k) {
     t0[k].resize(block_num);
     t1[k].resize(block_num);
-    PrgAesCtr<uint128_t>(base_ot.GetBlock(k, 0), absl::MakeSpan(t0[k]));
-    PrgAesCtr<uint128_t>(base_ot.GetBlock(k, 1), absl::MakeSpan(t1[k]));
+    PrgAesCtr<uint128_t>(base_ot.GetBlock(k, 0), std::span(t0[k]));
+    PrgAesCtr<uint128_t>(base_ot.GetBlock(k, 1), std::span(t1[k]));
   }
 
   // append to kBatchNum * kBatchSize
@@ -171,7 +171,7 @@ void IknpOtExtRecv(const std::shared_ptr<link::Context>& ctx,
         std::min(kBatchSize, recv_blocks.size() - i * kBatchSize);
 
     if (!cot) {
-      ParaCrHashInplace_128(absl::MakeSpan(batch));
+      ParaCrHashInplace_128(std::span(batch));
     }
     for (size_t j = 0; j < limit; ++j) {
       recv_blocks[i * kBatchSize + j] = batch[j];

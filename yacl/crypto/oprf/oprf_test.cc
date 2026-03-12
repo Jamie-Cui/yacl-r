@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/oprf/oprf.h"
 
-#include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
 
 namespace yacl::crypto {

@@ -26,12 +26,12 @@ namespace {
   if (t == typeid(type)) {                                    \
     return fmt::to_string(std::any_cast<type>(v));            \
   }                                                           \
-  if (t == typeid(absl::Span<type>)) {                        \
-    const auto &c = std::any_cast<absl::Span<type>>(v);       \
+  if (t == typeid(std::span<type>)) {                        \
+    const auto &c = std::any_cast<std::span<type>>(v);       \
     return fmt::to_string(fmt::join(c, ", "));                \
   }                                                           \
-  if (t == typeid(absl::Span<const type>)) {                  \
-    const auto &c = std::any_cast<absl::Span<const type>>(v); \
+  if (t == typeid(std::span<const type>)) {                  \
+    const auto &c = std::any_cast<std::span<const type>>(v); \
     return fmt::to_string(fmt::join(c, ", "));                \
   }                                                           \
   if (t == typeid(std::vector<type>)) {                       \
@@ -71,8 +71,8 @@ bool Item::IsAll(const bool &element) const {
   }
 
   if (IsView()) {
-    absl::Span<const bool> real =
-        IsReadOnly() ? As<absl::Span<const bool>>() : As<absl::Span<bool>>();
+    std::span<const bool> real =
+        IsReadOnly() ? As<std::span<const bool>>() : As<std::span<bool>>();
     return IsAllSameTo(real, element);
   }
 

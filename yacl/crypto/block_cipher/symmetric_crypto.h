@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
@@ -59,29 +59,29 @@ class SymmetricCrypto {
 
   // Encrypts `plaintext` into `ciphertext`.
   // Note the ciphertext/plaintext size must be `N * kBlockSize`.
-  void Encrypt(absl::Span<const uint8_t> plaintext,
-               absl::Span<uint8_t> ciphertext) const;
+  void Encrypt(std::span<const uint8_t> plaintext,
+               std::span<uint8_t> ciphertext) const;
 
   // Decrypts `ciphertext` into `plaintext`.
   // Note the ciphertext/plaintext size must be `N * kBlockSize`.
-  void Decrypt(absl::Span<const uint8_t> ciphertext,
-               absl::Span<uint8_t> plaintext) const;
+  void Decrypt(std::span<const uint8_t> ciphertext,
+               std::span<uint8_t> plaintext) const;
 
   // Wrapper for uint128.
   uint128_t Encrypt(uint128_t input) const;
   uint128_t Decrypt(uint128_t input) const;
 
   // Wrapper for span<uint128>.
-  void Encrypt(absl::Span<const uint128_t> plaintext,
-               absl::Span<uint128_t> ciphertext) const;
-  void Decrypt(absl::Span<const uint128_t> ciphertext,
-               absl::Span<uint128_t> plaintext) const;
+  void Encrypt(std::span<const uint128_t> plaintext,
+               std::span<uint128_t> ciphertext) const;
+  void Decrypt(std::span<const uint128_t> ciphertext,
+               std::span<uint128_t> plaintext) const;
 
   // Getter
   CryptoType GetType() const { return type_; }
 
   //
-  static void EcbMakeContentBlocks(uint128_t count, absl::Span<uint128_t> buf) {
+  static void EcbMakeContentBlocks(uint128_t count, std::span<uint128_t> buf) {
     std::iota(buf.begin(), buf.end(), count);
   }
 

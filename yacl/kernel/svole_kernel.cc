@@ -57,7 +57,7 @@ void SVoleKernel::init(const std::shared_ptr<link::Context>& lctx,
 }
 
 void SVoleKernel::eval(const std::shared_ptr<link::Context>& lctx,
-                       uint128_t* out_delta, absl::Span<uint128_t> out_c) {
+                       uint128_t* out_delta, std::span<uint128_t> out_c) {
   YACL_ENFORCE(inited_);
   YACL_ENFORCE(std::holds_alternative<SilentVoleSender>(core_));
   std::get<SilentVoleSender>(core_).SfSend(lctx, out_c);
@@ -65,8 +65,8 @@ void SVoleKernel::eval(const std::shared_ptr<link::Context>& lctx,
 }
 
 void SVoleKernel::eval(const std::shared_ptr<link::Context>& lctx,
-                       absl::Span<uint64_t> out_a,
-                       absl::Span<uint128_t> out_b) {
+                       std::span<uint64_t> out_a,
+                       std::span<uint128_t> out_b) {
   YACL_ENFORCE(inited_);
   YACL_ENFORCE(std::holds_alternative<SilentVoleReceiver>(core_));
   std::get<SilentVoleReceiver>(core_).SfRecv(lctx, out_a, out_b);
@@ -74,7 +74,7 @@ void SVoleKernel::eval(const std::shared_ptr<link::Context>& lctx,
 
 void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
                                    uint128_t* out_delta,
-                                   absl::Span<uint128_t> out_c, int threads) {
+                                   std::span<uint128_t> out_c, int threads) {
   YACL_ENFORCE(inited_);
   YACL_ENFORCE(std::holds_alternative<SilentVoleSender>(core_));
   YACL_ENFORCE(threads >= 1);
@@ -82,7 +82,7 @@ void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
   const size_t iter_size = out_c.size() / threads;
   const size_t last_size = out_c.size() - iter_size * (threads - 1);
 
-  std::vector<absl::Span<uint128_t>> tl_c(threads); /*thread-local c spans*/
+  std::vector<std::span<uint128_t>> tl_c(threads); /*thread-local c spans*/
   for (int i = 0; i < threads - 1; ++i) {
     tl_c[i] = out_c.subspan(iter_size * i, iter_size);
   }
@@ -108,8 +108,8 @@ void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
 }
 
 void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
-                                   absl::Span<uint64_t> out_a,
-                                   absl::Span<uint128_t> out_b, int threads) {
+                                   std::span<uint64_t> out_a,
+                                   std::span<uint128_t> out_b, int threads) {
   YACL_ENFORCE(inited_);
   YACL_ENFORCE(std::holds_alternative<SilentVoleReceiver>(core_));
   YACL_ENFORCE(out_a.size() == out_b.size());
@@ -118,8 +118,8 @@ void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
   const size_t iter_size = out_a.size() / threads;
   const size_t last_size = out_a.size() - iter_size * (threads - 1);
 
-  std::vector<absl::Span<uint64_t>> tl_a(threads);  /*thread-local a spans*/
-  std::vector<absl::Span<uint128_t>> tl_b(threads); /*thread-local b spans*/
+  std::vector<std::span<uint64_t>> tl_a(threads);  /*thread-local a spans*/
+  std::vector<std::span<uint128_t>> tl_b(threads); /*thread-local b spans*/
   for (int i = 0; i < threads - 1; ++i) {
     tl_a[i] = out_a.subspan(iter_size * i, iter_size);
     tl_b[i] = out_b.subspan(iter_size * i, iter_size);
@@ -147,7 +147,7 @@ void SVoleKernel::eval_multithread(const std::shared_ptr<link::Context>& lctx,
 
 void SVoleKernel::eval_streaming(const std::shared_ptr<link::Context>& lctx,
                                  uint128_t* out_delta,
-                                 absl::Span<uint128_t> out_c, int threads,
+                                 std::span<uint128_t> out_c, int threads,
                                  int step_size) {
   YACL_ENFORCE(inited_);
   const size_t step_num = (out_c.size() + step_size - 1) / step_size;
@@ -164,8 +164,8 @@ void SVoleKernel::eval_streaming(const std::shared_ptr<link::Context>& lctx,
 }
 
 void SVoleKernel::eval_streaming(const std::shared_ptr<link::Context>& lctx,
-                                 absl::Span<uint64_t> out_a,
-                                 absl::Span<uint128_t> out_b, int threads,
+                                 std::span<uint64_t> out_a,
+                                 std::span<uint128_t> out_b, int threads,
                                  int step_size) {
   YACL_ENFORCE(inited_);
   YACL_ENFORCE(out_a.size() == out_b.size());

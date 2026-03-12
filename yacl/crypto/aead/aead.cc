@@ -61,8 +61,8 @@ size_t AeadCtx::GetMacSize(AeadAlgorithm algorithm) {
 // are the AEAD algorithm, the plaintext,  and the optional
 // additional-authenticated-data (aad).
 void AeadCtx::Encrypt(ByteContainerView plaintext, ByteContainerView key,
-                      ByteContainerView iv, absl::Span<uint8_t> ciphertext,
-                      absl::Span<uint8_t> mac, ByteContainerView aad) const {
+                      ByteContainerView iv, std::span<uint8_t> ciphertext,
+                      std::span<uint8_t> mac, ByteContainerView aad) const {
   Encrypt(algorithm_, plaintext, key, iv, ciphertext, mac, aad);
 }
 
@@ -71,7 +71,7 @@ void AeadCtx::Encrypt(ByteContainerView plaintext, ByteContainerView key,
 // additional-authenticated-data (aad).
 void AeadCtx::Decrypt(ByteContainerView ciphertext, ByteContainerView mac,
                       ByteContainerView key, ByteContainerView iv,
-                      absl::Span<uint8_t> plaintext,
+                      std::span<uint8_t> plaintext,
                       ByteContainerView aad) const {
   Decrypt(algorithm_, ciphertext, mac, key, iv, plaintext, aad);
 }
@@ -82,7 +82,7 @@ void AeadCtx::Decrypt(ByteContainerView ciphertext, ByteContainerView mac,
 // (aad).
 void AeadCtx::Encrypt(AeadAlgorithm algorithm, ByteContainerView plaintext,
                       ByteContainerView key, ByteContainerView iv,
-                      absl::Span<uint8_t> ciphertext, absl::Span<uint8_t> mac,
+                      std::span<uint8_t> ciphertext, std::span<uint8_t> mac,
                       ByteContainerView aad) {
   YACL_ENFORCE(algorithm != AeadAlgorithm::UNKNOWN);
   switch (algorithm) {
@@ -125,7 +125,7 @@ void AeadCtx::Encrypt(AeadAlgorithm algorithm, ByteContainerView plaintext,
 // additional-authenticated-data (aad).
 void AeadCtx::Decrypt(AeadAlgorithm algorithm, ByteContainerView ciphertext,
                       ByteContainerView mac, ByteContainerView key,
-                      ByteContainerView iv, absl::Span<uint8_t> plaintext,
+                      ByteContainerView iv, std::span<uint8_t> plaintext,
                       ByteContainerView aad) {
   YACL_ENFORCE(algorithm != AeadAlgorithm::UNKNOWN);
   switch (algorithm) {

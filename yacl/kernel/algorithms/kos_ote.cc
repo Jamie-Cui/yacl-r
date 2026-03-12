@@ -57,7 +57,7 @@ struct CheckMsg {
   }
 };
 
-inline std::vector<uint128_t> VecXorMonochrome(absl::Span<const uint128_t> in,
+inline std::vector<uint128_t> VecXorMonochrome(std::span<const uint128_t> in,
                                                uint128_t block) {
   std::vector<uint128_t> res(in.size());
   for (size_t i = 0; i < in.size(); i++) {
@@ -74,8 +74,8 @@ ExtendBaseOt(const OtSendStore& base_ot, size_t block_num) {
   for (size_t k = 0; k < base_ot.Size(); ++k) {
     base_ot_ext0[k].resize(block_num);
     base_ot_ext1[k].resize(block_num);
-    PrgAesCtr(base_ot.GetBlock(k, 0), absl::Span<uint128_t>(base_ot_ext0[k]));
-    PrgAesCtr(base_ot.GetBlock(k, 1), absl::Span<uint128_t>(base_ot_ext1[k]));
+    PrgAesCtr(base_ot.GetBlock(k, 0), std::span<uint128_t>(base_ot_ext0[k]));
+    PrgAesCtr(base_ot.GetBlock(k, 1), std::span<uint128_t>(base_ot_ext1[k]));
   }
   return std::make_pair(base_ot_ext0, base_ot_ext1);
 }
@@ -85,7 +85,7 @@ inline std::array<std::vector<uint128_t>, kKappa> ExtendBaseOt(
   std::array<std::vector<uint128_t>, kKappa> base_ot_ext;
   for (size_t k = 0; k < base_ot.Size(); ++k) {
     base_ot_ext[k].resize(block_num);
-    PrgAesCtr(base_ot.GetBlock(k), absl::Span<uint128_t>(base_ot_ext[k]));
+    PrgAesCtr(base_ot.GetBlock(k), std::span<uint128_t>(base_ot_ext[k]));
   }
   return base_ot_ext;
 }
@@ -113,7 +113,7 @@ inline dynamic_bitset<uint128_t> ExtendChoice(
 
 void KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
                   const OtRecvStore& base_ot,
-                  absl::Span<std::array<uint128_t, 2>> send_blocks, bool cot) {
+                  std::span<std::array<uint128_t, 2>> send_blocks, bool cot) {
   static_assert(kS == 64,
                 "Currently, KOS only support statistical "
                 "security = 64 bit");
@@ -138,7 +138,7 @@ void KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
     const size_t offset = i * kBatchSize / 128;  // block offsets
 
     auto buf = ctx->Recv(ctx->NextRank(), fmt::format("KOS:{}", i));
-    auto recv_msg = absl::MakeSpan(reinterpret_cast<uint128_t*>(buf.data()),
+    auto recv_msg = std::span(reinterpret_cast<uint128_t*>(buf.data()),
                                    buf.size() / sizeof(uint128_t));
     // Q = (u & s) ^ G(K_s) = ((G(K_0) ^ G(K_1) ^ r)) & s) ^ G(K_s)
     // Q = G(K_0) when s is 0
@@ -160,12 +160,12 @@ void KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
   uint128_t seed = SyncSeedSend(ctx);
   // Generate the coefficent for consistency check
   std::vector<uint64_t> rand_samples(batch_num * 2);
-  PrgAesCtr(seed, absl::MakeSpan(rand_samples));
+  PrgAesCtr(seed, std::span(rand_samples));
   // =================== CONSISTENCY CHECK ===================
   for (size_t k = 0; k < kKappa; ++k) {
-    auto k_msg_span = absl::MakeSpan(
+    auto k_msg_span = std::span(
         reinterpret_cast<uint64_t*>(ot_ext[k].data()), 2 * batch_num);
-    q_check[k] = math::Gf64Mul(absl::MakeSpan(rand_samples), k_msg_span);
+    q_check[k] = math::Gf64Mul(std::span(rand_samples), k_msg_span);
   }
 
   CheckMsg check_msgs;
@@ -204,11 +204,11 @@ void KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
   uint128_t delta = static_cast<uint128_t>(*base_ot.CopyBitBuf().data());
   q_ext.resize(ot_num_valid);
   auto& batch0 = q_ext;
-  auto batch1 = VecXorMonochrome(absl::MakeSpan(q_ext), delta);
+  auto batch1 = VecXorMonochrome(std::span(q_ext), delta);
 
   if (!cot) {
-    ParaCrHashInplace_128(absl::MakeSpan(batch0));
-    ParaCrHashInplace_128(absl::MakeSpan(batch1));
+    ParaCrHashInplace_128(std::span(batch0));
+    ParaCrHashInplace_128(std::span(batch1));
   }
 
   for (size_t i = 0; i < ot_num_valid; i++) {
@@ -220,7 +220,7 @@ void KosOtExtSend(const std::shared_ptr<link::Context>& ctx,
 void KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                   const OtSendStore& base_ot,
                   const dynamic_bitset<uint128_t>& choices,
-                  absl::Span<uint128_t> recv_blocks, bool cot) {
+                  std::span<uint128_t> recv_blocks, bool cot) {
   static_assert(kS == 64,
                 "Currently, KOS only support statistical "
                 "security = 64 bit");
@@ -265,17 +265,17 @@ void KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   uint128_t seed = SyncSeedRecv(ctx);
   // Generate coefficent for consistency check
   std::vector<uint64_t> rand_samples(batch_num * 2);
-  PrgAesCtr(seed, absl::Span<uint64_t>(rand_samples));
+  PrgAesCtr(seed, std::span<uint64_t>(rand_samples));
 
   // =================== CONSISTENCY CHECK ===================
-  auto choice_span = absl::MakeSpan(
+  auto choice_span = std::span(
       reinterpret_cast<uint64_t*>(choice_ext.data()), batch_num * 2);
-  check_msgs.x = math::Gf64Mul(absl::MakeSpan(rand_samples), choice_span);
+  check_msgs.x = math::Gf64Mul(std::span(rand_samples), choice_span);
 
   for (size_t k = 0; k < kKappa; ++k) {
     check_msgs.t[k] = math::Gf64Mul(
-        absl::MakeSpan(rand_samples),
-        absl::MakeSpan(reinterpret_cast<uint64_t*>(ot_ext.first[k].data()),
+        std::span(rand_samples),
+        std::span(reinterpret_cast<uint64_t*>(ot_ext.first[k].data()),
                        batch_num * 2));
   }
 
@@ -303,7 +303,7 @@ void KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
 
   t_ext.resize(ot_num_valid);
   if (!cot) {
-    ParaCrHashInplace_128(absl::MakeSpan(t_ext));
+    ParaCrHashInplace_128(std::span(t_ext));
   }
   for (size_t i = 0; i < ot_num_valid; i++) {
     recv_blocks[i] = t_ext[i];

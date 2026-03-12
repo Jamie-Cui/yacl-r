@@ -32,7 +32,7 @@ TEST(ItemTest, RefRW) {
   ASSERT_EQ(v[1], 10);
 
   auto v_ref2 = item.AsSpan<const int>();
-  ASSERT_EQ(typeid(v_ref2), typeid(absl::Span<const int>));
+  ASSERT_EQ(typeid(v_ref2), typeid(std::span<const int>));
   v[2] = 30;
   EXPECT_EQ(v_ref2[2], 30);
 
@@ -48,7 +48,7 @@ TEST(ItemTest, RefRW) {
   ASSERT_EQ(v[2], 100);
 
   auto s_ref2 = s_item.AsSpan<const int>();
-  ASSERT_EQ(typeid(s_ref2), typeid(absl::Span<const int>));
+  ASSERT_EQ(typeid(s_ref2), typeid(std::span<const int>));
   EXPECT_EQ(s_ref2.size(), 2);
 
   // sub const span
@@ -61,7 +61,7 @@ TEST(ItemTest, RefRW) {
   // Exception: This is a read-only item, please use AsSpan<const T> instead
   EXPECT_ANY_THROW(c_item.AsSpan<int>());
   auto c_ref = c_item.AsSpan<const int>();
-  ASSERT_EQ(typeid(c_ref), typeid(absl::Span<const int>));
+  ASSERT_EQ(typeid(c_ref), typeid(std::span<const int>));
   EXPECT_EQ(s_ref2.size(), 2);
   v[1] = 666;
   EXPECT_EQ(c_ref[0], 666);
@@ -69,7 +69,7 @@ TEST(ItemTest, RefRW) {
 
 TEST(ItemTest, RefRO) {
   const std::vector<int> v = {1, 2, 3};
-  ASSERT_TRUE(is_container_v<decltype(absl::MakeSpan(v))>);
+  ASSERT_TRUE(is_container_v<decltype(std::span(v))>);
 
   Item item = Item::Ref(v);
   EXPECT_TRUE(item.IsArray());
@@ -80,12 +80,12 @@ TEST(ItemTest, RefRO) {
   // Exception: This is a read-only item, please use AsSpan<const T> instead
   EXPECT_ANY_THROW(item.AsSpan<int>());
   auto v_ref = item.AsSpan<const int>();
-  ASSERT_EQ(typeid(v_ref), typeid(absl::Span<const int>));
+  ASSERT_EQ(typeid(v_ref), typeid(std::span<const int>));
   EXPECT_EQ(v_ref[0], 1);
 
   const Item &item2 = item;
   auto v_ref2 = item2.AsSpan<int>();
-  ASSERT_EQ(typeid(v_ref2), typeid(absl::Span<const int>));
+  ASSERT_EQ(typeid(v_ref2), typeid(std::span<const int>));
   EXPECT_EQ(v_ref2[2], 3);
 
   // sub const span

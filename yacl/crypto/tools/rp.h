@@ -59,14 +59,14 @@ class RP {
   uint128_t Gen(uint128_t in) const;
 
   // generate many block's random permutation, and outputs the reuslts
-  void GenForMultiInputs(absl::Span<const uint128_t> in,
-                         absl::Span<uint128_t> out) const;
+  void GenForMultiInputs(std::span<const uint128_t> in,
+                         std::span<uint128_t> out) const;
 
   std::vector<uint128_t> GenForMultiInputs(
-      absl::Span<const uint128_t> in) const;
+      std::span<const uint128_t> in) const;
 
   // generate (block vector) x's random permutation, and inplace
-  void GenForMultiInputsInplace(absl::Span<uint128_t> inout) const;
+  void GenForMultiInputsInplace(std::span<uint128_t> inout) const;
 
   // Example: const auto rp = RP::GetDefault();
   static RP& GetDefault() {

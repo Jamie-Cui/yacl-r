@@ -20,7 +20,7 @@
 #include <set>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 #include "code_interface.h"
 #include "spdlog/spdlog.h"
 
@@ -53,58 +53,58 @@ class SilverCode : public LinearCodeInterface {
   uint32_t GetWeight() const { return weight_; }
 
   // uint128_t interface
-  void DualEncodeInplace(absl::Span<uint128_t> inout) const {
+  void DualEncodeInplace(std::span<uint128_t> inout) const {
     DualEncodeInplaceImpl(inout);
   }
 
-  void DualEncode(absl::Span<const uint128_t> in,
-                  absl::Span<uint128_t> out) const {
+  void DualEncode(std::span<const uint128_t> in,
+                  std::span<uint128_t> out) const {
     DualEncodeImpl(in, out);
   }
 
-  void DualEncodeInplace2(absl::Span<uint128_t> inout0 /* GF(2^128) */,
-                          absl::Span<uint128_t> inout1 /* GF(2^128) */) const {
+  void DualEncodeInplace2(std::span<uint128_t> inout0 /* GF(2^128) */,
+                          std::span<uint128_t> inout1 /* GF(2^128) */) const {
     DualEncodeInplace2Impl(inout0, inout1);
   }
 
-  void DualEncode2(absl::Span<const uint128_t> in0 /* GF(2^128) */,
-                   absl::Span<uint128_t> out0,
-                   absl::Span<const uint128_t> in1 /* GF(2^128) */,
-                   absl::Span<uint128_t> out1) const {
+  void DualEncode2(std::span<const uint128_t> in0 /* GF(2^128) */,
+                   std::span<uint128_t> out0,
+                   std::span<const uint128_t> in1 /* GF(2^128) */,
+                   std::span<uint128_t> out1) const {
     DualEncode2Impl(in0, out0, in1, out1);
   }
 
   // uint64_t interface
-  void DualEncodeInplace(absl::Span<uint64_t> inout) const {
+  void DualEncodeInplace(std::span<uint64_t> inout) const {
     DualEncodeInplaceImpl(inout);
   }
 
-  void DualEncode(absl::Span<const uint64_t> in,
-                  absl::Span<uint64_t> out) const {
+  void DualEncode(std::span<const uint64_t> in,
+                  std::span<uint64_t> out) const {
     DualEncodeImpl(in, out);
   }
 
-  void DualEncodeInplace2(absl::Span<uint64_t> inout0 /* GF(2^64) */,
-                          absl::Span<uint64_t> inout1 /* GF(2^64) */) const {
+  void DualEncodeInplace2(std::span<uint64_t> inout0 /* GF(2^64) */,
+                          std::span<uint64_t> inout1 /* GF(2^64) */) const {
     DualEncodeInplace2Impl(inout0, inout1);
   }
 
-  void DualEncodeInplace2(absl::Span<uint64_t> inout0 /* GF(2^64) */,
-                          absl::Span<uint128_t> inout1 /* GF(2^128) */) const {
+  void DualEncodeInplace2(std::span<uint64_t> inout0 /* GF(2^64) */,
+                          std::span<uint128_t> inout1 /* GF(2^128) */) const {
     DualEncodeInplace2Impl(inout0, inout1);
   }
 
-  void DualEncode2(absl::Span<const uint64_t> in0 /* GF(2^64) */,
-                   absl::Span<uint64_t> out0,
-                   absl::Span<const uint64_t> in1 /* GF(2^64) */,
-                   absl::Span<uint64_t> out1) const {
+  void DualEncode2(std::span<const uint64_t> in0 /* GF(2^64) */,
+                   std::span<uint64_t> out0,
+                   std::span<const uint64_t> in1 /* GF(2^64) */,
+                   std::span<uint64_t> out1) const {
     DualEncode2Impl(in0, out0, in1, out1);
   }
 
-  void DualEncode2(absl::Span<const uint64_t> in0 /* GF(2^64) */,
-                   absl::Span<uint64_t> out0,
-                   absl::Span<const uint128_t> in1 /* GF(2^128) */,
-                   absl::Span<uint128_t> out1) const {
+  void DualEncode2(std::span<const uint64_t> in0 /* GF(2^64) */,
+                   std::span<uint64_t> out0,
+                   std::span<const uint128_t> in1 /* GF(2^128) */,
+                   std::span<uint128_t> out1) const {
     DualEncode2Impl(in0, out0, in1, out1);
   }
 
@@ -115,7 +115,7 @@ class SilverCode : public LinearCodeInterface {
   uint32_t gap_;
   std::vector<uint32_t> L_one_idx_;
 
-  void InitLeftMatrix(absl::Span<const double> R);
+  void InitLeftMatrix(std::span<const double> R);
 
   // LDPC for SILent Vole and transfER
   // LPN problem  --> H = [L R]
@@ -125,31 +125,31 @@ class SilverCode : public LinearCodeInterface {
   // satisfying that H * G = 0
   // thus, dual encode would be: xG = x[0:n] - x[n:2n] * R^{-1} * L
   template <typename T>
-  void DualEncodeInplaceImpl(absl::Span<T> inout) const;
+  void DualEncodeInplaceImpl(std::span<T> inout) const;
 
   template <typename T>
-  void DualEncodeImpl(absl::Span<const T> in, absl::Span<T> out) const;
+  void DualEncodeImpl(std::span<const T> in, std::span<T> out) const;
 
   template <typename T, typename K>
-  void DualEncodeInplace2Impl(absl::Span<T> inout0, absl::Span<K> inout1) const;
+  void DualEncodeInplace2Impl(std::span<T> inout0, std::span<K> inout1) const;
 
   template <typename T, typename K>
-  void DualEncode2Impl(absl::Span<const T> in0, absl::Span<T> out0,
-                       absl::Span<const K> in1, absl::Span<K> out1) const;
+  void DualEncode2Impl(std::span<const T> in0, std::span<T> out0,
+                       std::span<const K> in1, std::span<K> out1) const;
 
   // L and R matrix Encode
   template <typename T>
-  void LeftEncode(absl::Span<const T> in, absl::Span<T> out) const;
+  void LeftEncode(std::span<const T> in, std::span<T> out) const;
 
   template <typename T, typename K>
-  void LeftEncode2(absl::Span<const T> in0, absl::Span<T> out0,
-                   absl::Span<const K> in1, absl::Span<K> out1) const;
+  void LeftEncode2(std::span<const T> in0, std::span<T> out0,
+                   std::span<const K> in1, std::span<K> out1) const;
 
   template <typename T>
-  void RightEncode(absl::Span<T> inout) const;
+  void RightEncode(std::span<T> inout) const;
 
   template <typename T, typename K>
-  void RightEncode2(absl::Span<T> inout0, absl::Span<K> inout1) const;
+  void RightEncode2(std::span<T> inout0, std::span<K> inout1) const;
 };
 
 };  // namespace yacl::crypto

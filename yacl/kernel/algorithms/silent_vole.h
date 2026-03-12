@@ -98,14 +98,14 @@ class SilentVoleSender {
   }
 
   // c = a * delta + b
-  void Send(const std::shared_ptr<link::Context>& ctx, absl::Span<uint128_t> c);
+  void Send(const std::shared_ptr<link::Context>& ctx, std::span<uint128_t> c);
 
-  void Send(const std::shared_ptr<link::Context>& ctx, absl::Span<uint64_t> c);
+  void Send(const std::shared_ptr<link::Context>& ctx, std::span<uint64_t> c);
 
   // subfield VOLE c = a * delta + b,
   // where a is in GF(2^64), delta, b, c are in GF(2^128)
   void SfSend(const std::shared_ptr<link::Context>& ctx,
-              absl::Span<uint128_t> c);
+              std::span<uint128_t> c);
 
   // GetDelta would return 128 bits delta.
   // However, in the case of GF(2^64), the low 64 bits of delta is used
@@ -132,7 +132,7 @@ class SilentVoleSender {
   SoftspokenOtExtSender ss_sender_;
 
   template <typename T, typename K>
-  void SendImpl(const std::shared_ptr<link::Context>& ctx, absl::Span<K> c);
+  void SendImpl(const std::shared_ptr<link::Context>& ctx, std::span<K> c);
 };
 
 class SilentVoleReceiver {
@@ -151,16 +151,16 @@ class SilentVoleReceiver {
   }
 
   // c = a * delta + b
-  void Recv(const std::shared_ptr<link::Context>& ctx, absl::Span<uint128_t> a,
-            absl::Span<uint128_t> b);
+  void Recv(const std::shared_ptr<link::Context>& ctx, std::span<uint128_t> a,
+            std::span<uint128_t> b);
 
-  void Recv(const std::shared_ptr<link::Context>& ctx, absl::Span<uint64_t> a,
-            absl::Span<uint64_t> b);
+  void Recv(const std::shared_ptr<link::Context>& ctx, std::span<uint64_t> a,
+            std::span<uint64_t> b);
 
   // subfield VOLE c = a * delta + b,
   // where a is belong to GF(2^64), delta, b, c is belong to GF(2^128)
-  void SfRecv(const std::shared_ptr<link::Context>& ctx, absl::Span<uint64_t> a,
-              absl::Span<uint128_t> b);
+  void SfRecv(const std::shared_ptr<link::Context>& ctx, std::span<uint64_t> a,
+              std::span<uint128_t> b);
 
   CodeType GetCodeType() const { return codetype_; }
 
@@ -173,8 +173,8 @@ class SilentVoleReceiver {
   SoftspokenOtExtReceiver ss_receiver_;
 
   template <typename T, typename K>
-  void RecvImpl(const std::shared_ptr<link::Context>& ctx, absl::Span<T> a,
-                absl::Span<K> b);
+  void RecvImpl(const std::shared_ptr<link::Context>& ctx, std::span<T> a,
+                std::span<K> b);
 };
 
 }  // namespace yacl::crypto

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/byte_container_view.h"
 
@@ -94,8 +94,8 @@ class AeadCtx {
   // NOTE Since Mac-Then-Encrypt results in one ciphertext, the argument "mac"
   // is ignored for Mte algorithms
   void Encrypt(ByteContainerView plaintext, ByteContainerView key,
-               ByteContainerView iv, absl::Span<uint8_t> ciphertext,
-               absl::Span<uint8_t> mac, ByteContainerView aad = "") const;
+               ByteContainerView iv, std::span<uint8_t> ciphertext,
+               std::span<uint8_t> mac, ByteContainerView aad = "") const;
 
   // Decrypts ciphertext and mac into ciphertext. The input arguments are the
   // AEAD algorithm, the ciphertext, the mac,and the optional
@@ -105,7 +105,7 @@ class AeadCtx {
   // is ignored for Mte algorithms
   void Decrypt(ByteContainerView ciphertext, ByteContainerView mac,
                ByteContainerView key, ByteContainerView iv,
-               absl::Span<uint8_t> plaintext, ByteContainerView aad = "") const;
+               std::span<uint8_t> plaintext, ByteContainerView aad = "") const;
 
   // Staticlly encrypts plaintext into ciphertext and mac. The input arguments
   // are the AEAD algorithm, the plaintext, the symmetric encryption key, the
@@ -116,7 +116,7 @@ class AeadCtx {
   // is ignored for Mte algorithms
   static void Encrypt(AeadAlgorithm algorithm, ByteContainerView plaintext,
                       ByteContainerView key, ByteContainerView iv,
-                      absl::Span<uint8_t> ciphertext, absl::Span<uint8_t> mac,
+                      std::span<uint8_t> ciphertext, std::span<uint8_t> mac,
                       ByteContainerView aad = "");
 
   // Staticlly decrypts ciphertext and mac into ciphertext. The input
@@ -128,7 +128,7 @@ class AeadCtx {
   // is ignored for Mte algorithms
   static void Decrypt(AeadAlgorithm algorithm, ByteContainerView ciphertext,
                       ByteContainerView mac, ByteContainerView key,
-                      ByteContainerView iv, absl::Span<uint8_t> plaintext,
+                      ByteContainerView iv, std::span<uint8_t> plaintext,
                       ByteContainerView aad = "");
 
  private:

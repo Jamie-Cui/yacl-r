@@ -88,11 +88,11 @@ OtRecvStore FerretOtExtRecv(const std::shared_ptr<link::Context>& ctx,
 void FerretOtExtSend_cheetah(const std::shared_ptr<link::Context>& ctx,
                              const OtSendStore& base_cot,
                              const LpnParam& lpn_param, uint64_t ot_num,
-                             absl::Span<uint128_t> out, bool mal = false);
+                             std::span<uint128_t> out, bool mal = false);
 
 void FerretOtExtRecv_cheetah(const std::shared_ptr<link::Context>& ctx,
                              const OtRecvStore& base_cot,
                              const LpnParam& lpn_param, uint64_t ot_num,
-                             absl::Span<uint128_t> out, bool mal = false);
+                             std::span<uint128_t> out, bool mal = false);
 
 }  // namespace yacl::crypto

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/ecc/toy/montgomery.h"
 
-#include "absl/strings/escaping.h"
 
 #include "yacl/crypto/hash/blake3.h"
 #include "yacl/crypto/hash/ssl_hash.h"
@@ -183,7 +183,7 @@ EcPoint ToyXGroup::HashToCurve(HashToCurveStrategy strategy,
 
   AffinePoint op;
   op.x.Set(
-      absl::BytesToHexString(absl::string_view((char *)buf.data(), buf.size())),
+      yacl::BytesToHexString(std::string_view((char *)buf.data(), buf.size())),
       16);
   return op;
 }

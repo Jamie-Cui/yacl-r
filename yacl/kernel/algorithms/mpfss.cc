@@ -34,7 +34,7 @@ constexpr uint32_t kSuperBatch = 16;
 
 void MpfssSend(const std::shared_ptr<link::Context>& ctx,
                const OtSendStore& /*cot*/ send_ot, const MpFssParam& param,
-               absl::Span<const uint128_t> w, absl::Span<uint128_t> output,
+               std::span<const uint128_t> w, std::span<uint128_t> output,
                const MpfssOp<uint128_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -46,7 +46,7 @@ void MpfssSend(const std::shared_ptr<link::Context>& ctx,
   const auto& last_batch_size = param.last_sp_vole_size_;
 
   UninitAlignedVector<uint128_t> send_msgs(batch_num, 0);
-  std::transform(send_msgs.cbegin(), send_msgs.cend(), w.cbegin(),
+  std::transform(send_msgs.begin(), send_msgs.end(), w.begin(),
                  send_msgs.begin(), op.sub);
 
   for (uint32_t i = 0; i < batch_num; ++i) {
@@ -76,7 +76,7 @@ void MpfssSend(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                const OtRecvStore& /*cot*/ recv_ot, const MpFssParam& param,
-               absl::Span<uint128_t> output, const MpfssOp<uint128_t>& op) {
+               std::span<uint128_t> output, const MpfssOp<uint128_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
   YACL_ENFORCE(recv_ot.Size() >= param.require_ot_num_);
@@ -111,7 +111,7 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                batch_num * sizeof(uint128_t));
 
   auto recv_msgs =
-      absl::MakeSpan(reinterpret_cast<uint128_t*>(recv_buff.data()), batch_num);
+      std::span(reinterpret_cast<uint128_t*>(recv_buff.data()), batch_num);
   for (uint32_t i = 0; i < batch_num; ++i) {
     auto tmp = op.sub(recv_msgs[i], dpf_sum[i]);
     output[i * batch_size + indexes[i]] =
@@ -121,7 +121,7 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssSend(const std::shared_ptr<link::Context>& ctx,
                const OtSendStore& /*cot*/ send_ot, const MpFssParam& param,
-               absl::Span<const uint64_t> w, absl::Span<uint64_t> output,
+               std::span<const uint64_t> w, std::span<uint64_t> output,
                const MpfssOp<uint64_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -133,12 +133,12 @@ void MpfssSend(const std::shared_ptr<link::Context>& ctx,
   const auto& last_batch_size = param.last_sp_vole_size_;
 
   UninitAlignedVector<uint64_t> send_msgs(batch_num, 0);
-  std::transform(send_msgs.cbegin(), send_msgs.cend(), w.cbegin(),
+  std::transform(send_msgs.begin(), send_msgs.end(), w.begin(),
                  send_msgs.begin(), op.sub);
 
   auto dpf_buff =
       Buffer(std::max(batch_size, last_batch_size) * sizeof(uint128_t));
-  auto dpf_span = absl::MakeSpan(dpf_buff.data<uint128_t>(),
+  auto dpf_span = std::span(dpf_buff.data<uint128_t>(),
                                  dpf_buff.size() / sizeof(uint128_t));
   // UninitAlignedVector<uint128_t> dpf_buff(std::max(batch_size,
   // last_batch_size));
@@ -176,7 +176,7 @@ void MpfssSend(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                const OtRecvStore& /*cot*/ recv_ot, const MpFssParam& param,
-               absl::Span<uint64_t> output, const MpfssOp<uint64_t>& op) {
+               std::span<uint64_t> output, const MpfssOp<uint64_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
   YACL_ENFORCE(recv_ot.Size() >= param.require_ot_num_);
@@ -188,7 +188,7 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
 
   auto dpf_buf =
       Buffer(std::max(batch_size, last_batch_size) * sizeof(uint128_t));
-  auto dpf_span = absl::MakeSpan(dpf_buf.data<uint128_t>(),
+  auto dpf_span = std::span(dpf_buf.data<uint128_t>(),
                                  dpf_buf.size() / sizeof(uint128_t));
 
   UninitAlignedVector<uint64_t> dpf_sum(batch_num, 0);
@@ -221,7 +221,7 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                batch_num * sizeof(uint64_t));
 
   auto recv_msgs =
-      absl::MakeSpan(reinterpret_cast<uint64_t*>(recv_buff.data()), batch_num);
+      std::span(reinterpret_cast<uint64_t*>(recv_buff.data()), batch_num);
   for (uint32_t i = 0; i < batch_num; ++i) {
     auto tmp = op.sub(recv_msgs[i], dpf_sum[i]);
     output[i * batch_size + indexes[i]] =
@@ -231,8 +231,8 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtSendStore& /*cot*/ send_ot,
-                           MpFssParam& param, absl::Span<const uint128_t> w,
-                           absl::Span<uint128_t> output,
+                           MpFssParam& param, std::span<const uint128_t> w,
+                           std::span<uint128_t> output,
                            const MpfssOp<uint128_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -247,7 +247,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 
   // Copy vector w
   UninitAlignedVector<uint128_t> dpf_sum(batch_num, 0);
-  std::transform(dpf_sum.cbegin(), dpf_sum.cend(), w.cbegin(), dpf_sum.begin(),
+  std::transform(dpf_sum.begin(), dpf_sum.end(), w.begin(), dpf_sum.begin(),
                  op.sub);
   // send message buff for GYWZ OTe
   auto gywz_send_msgs = UninitAlignedVector<uint128_t>(
@@ -275,7 +275,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
       auto ot_slice = send_ot.Slice(batch_idx * batch_length,
                                     batch_idx * batch_length + this_length);
       auto send_span =
-          absl::MakeSpan(gywz_send_msgs.data() + i * batch_length, this_length);
+          std::span(gywz_send_msgs.data() + i * batch_length, this_length);
       // GywzOtExt is single-point COT
       GywzOtExtSend_fixed_index(ot_slice, this_size, this_span, send_span);
       // Use CrHash to break the correlation
@@ -304,7 +304,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtRecvStore& /*cot*/ recv_ot,
-                           MpFssParam& param, absl::Span<uint128_t> output,
+                           MpFssParam& param, std::span<uint128_t> output,
                            const MpfssOp<uint128_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -334,7 +334,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
     auto gywz_recv_buf = ctx->Recv(ctx->NextRank(), "GYWZ_OTE: messages");
     YACL_ENFORCE(gywz_recv_buf.size() ==
                  static_cast<int64_t>(msg_length * sizeof(uint128_t)));
-    auto gywz_recv_msgs = absl::MakeSpan(
+    auto gywz_recv_msgs = std::span(
         reinterpret_cast<uint128_t*>(gywz_recv_buf.data()), msg_length);
 
     for (uint32_t i = 0; i < bound; ++i) {
@@ -353,7 +353,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
       auto ot_slice = recv_ot.Slice(batch_idx * batch_length,
                                     batch_idx * batch_length + this_length);
       auto recv_span =
-          absl::MakeSpan(gywz_recv_msgs.data() + i * batch_length, this_length);
+          std::span(gywz_recv_msgs.data() + i * batch_length, this_length);
 
       uint32_t real_index = 0;
       for (size_t i = 0; i < this_length; ++i) {
@@ -381,7 +381,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(static_cast<uint64_t>(recv_buff.size()) ==
                batch_num * sizeof(uint128_t));
   auto recv_msgs =
-      absl::MakeSpan(reinterpret_cast<uint128_t*>(recv_buff.data()), batch_num);
+      std::span(reinterpret_cast<uint128_t*>(recv_buff.data()), batch_num);
 
   for (uint32_t i = 0; i < batch_num; ++i) {
     auto tmp = op.sub(recv_msgs[i], dpf_sum[i]);
@@ -392,8 +392,8 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtSendStore& /*cot*/ send_ot,
-                           MpFssParam& param, absl::Span<const uint64_t> w,
-                           absl::Span<uint64_t> output,
+                           MpFssParam& param, std::span<const uint64_t> w,
+                           std::span<uint64_t> output,
                            const MpfssOp<uint64_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -408,7 +408,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 
   // copy w
   UninitAlignedVector<uint64_t> dpf_sum(batch_num, 0);
-  std::transform(dpf_sum.cbegin(), dpf_sum.cend(), w.cbegin(), dpf_sum.begin(),
+  std::transform(dpf_sum.begin(), dpf_sum.end(), w.begin(), dpf_sum.begin(),
                  op.sub);
   // GywzOtExt need uint128_t buffer
   auto dpf_buf = Buffer((1 << std::max(batch_length, last_batch_length)) *
@@ -416,7 +416,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
   // auto dpf_buf =
   //     UninitAlignedVector<uint128_t>(1 << std::max(batch_length,
   //     last_batch_length));
-  auto dpf_span = absl::MakeSpan(dpf_buf.data<uint128_t>(),
+  auto dpf_span = std::span(dpf_buf.data<uint128_t>(),
                                  dpf_buf.size() / sizeof(uint128_t));
   // send message buffer for GYWZ OTe
   auto gywz_send_msgs = UninitAlignedVector<uint128_t>(
@@ -447,7 +447,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
       auto ot_slice = send_ot.Slice(batch_idx * batch_length,
                                     batch_idx * batch_length + this_length);
       auto send_span =
-          absl::MakeSpan(gywz_send_msgs.data() + i * batch_length, this_length);
+          std::span(gywz_send_msgs.data() + i * batch_length, this_length);
       // GywzOtExt is single-point COT
       GywzOtExtSend_fixed_index(ot_slice, full_size, this_span, send_span);
       // Use CrHash to break the correlation
@@ -482,7 +482,7 @@ void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
 
 void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtRecvStore& /*cot*/ recv_ot,
-                           MpFssParam& param, absl::Span<uint64_t> output,
+                           MpFssParam& param, std::span<uint64_t> output,
                            const MpfssOp<uint64_t>& op) {
   YACL_ENFORCE(param.assumption_ == LpnNoiseAsm::RegularNoise);
   YACL_ENFORCE(output.size() >= param.mp_vole_size_);
@@ -505,7 +505,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
   // auto dpf_buf =
   //     UninitAlignedVector<uint128_t>(1 << std::max(batch_length,
   //     last_batch_length));
-  auto dpf_span = absl::MakeSpan(dpf_buf.data<uint128_t>(),
+  auto dpf_span = std::span(dpf_buf.data<uint128_t>(),
                                  dpf_buf.size() / sizeof(uint128_t));
 
   for (uint32_t s = 0; s < super_batch_num; ++s) {
@@ -519,7 +519,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
     auto gywz_recv_buf = ctx->Recv(ctx->NextRank(), "GYWZ_OTE: messages");
     YACL_ENFORCE(gywz_recv_buf.size() ==
                  static_cast<int64_t>(msg_length * sizeof(uint128_t)));
-    auto gywz_recv_msgs = absl::MakeSpan(
+    auto gywz_recv_msgs = std::span(
         reinterpret_cast<uint128_t*>(gywz_recv_buf.data()), msg_length);
 
     for (uint32_t i = 0; i < bound; ++i) {
@@ -552,7 +552,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
       }
 
       auto recv_span =
-          absl::MakeSpan(gywz_recv_msgs.data() + i * batch_length, this_length);
+          std::span(gywz_recv_msgs.data() + i * batch_length, this_length);
       // GywzOtExt is single-point COT
       GywzOtExtRecv_fixed_index(ot_slice, full_size, this_span, recv_span);
       // Use CrHash to break the correlation
@@ -573,7 +573,7 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(static_cast<uint64_t>(recv_buff.size()) ==
                batch_num * sizeof(uint64_t));
   auto recv_msgs =
-      absl::MakeSpan(reinterpret_cast<uint64_t*>(recv_buff.data()), batch_num);
+      std::span(reinterpret_cast<uint64_t*>(recv_buff.data()), batch_num);
 
   for (uint32_t i = 0; i < batch_num; ++i) {
     auto tmp = op.sub(recv_msgs[i], dpf_sum[i]);

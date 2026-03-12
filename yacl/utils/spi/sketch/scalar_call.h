@@ -28,8 +28,8 @@
     if (x.IsArray()) {                                                        \
       auto xsp = x.AsSpan<T>();                                               \
       std::vector<RES_T> res;                                                 \
-      res.resize(xsp.length());                                               \
-      yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) {     \
+      res.resize(xsp.size());                                               \
+      yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) {     \
         for (int64_t i = beg; i < end; ++i) {                                 \
           res[i] = FuncName(xsp[i], ##__VA_ARGS__);                           \
         }                                                                     \
@@ -47,7 +47,7 @@
   do {                                                                    \
     if (x->IsArray()) {                                                   \
       auto xsp = x->AsSpan<T>();                                          \
-      yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) { \
+      yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) { \
         for (int64_t i = beg; i < end; ++i) {                             \
           FuncName(&xsp[i], ##__VA_ARGS__);                               \
         }                                                                 \
@@ -72,13 +72,13 @@
         auto xsp = x.AsSpan<TX>();                                            \
         auto ysp = y.AsSpan<TY>();                                            \
         YACL_ENFORCE_EQ(                                                      \
-            xsp.length(), ysp.length(),                                       \
+            xsp.size(), ysp.size(),                                       \
             "operands must have the same length, x.len={}, y.len={}",         \
-            xsp.length(), ysp.length());                                      \
+            xsp.size(), ysp.size());                                      \
                                                                               \
         std::vector<RES_T> res;                                               \
-        res.resize(xsp.length());                                             \
-        yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) {   \
+        res.resize(xsp.size());                                             \
+        yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) {   \
           for (int64_t i = beg; i < end; ++i) {                               \
             res[i] = FuncName(xsp[i], ysp[i]);                                \
           }                                                                   \
@@ -104,10 +104,10 @@
         auto xsp = x->AsSpan<TX>();                                           \
         auto ysp = y.AsSpan<TY>();                                            \
         YACL_ENFORCE_EQ(                                                      \
-            xsp.length(), ysp.length(),                                       \
+            xsp.size(), ysp.size(),                                       \
             "operands must have the same length, x.len={}, y.len={}",         \
-            xsp.length(), ysp.length());                                      \
-        yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) {   \
+            xsp.size(), ysp.size());                                      \
+        yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) {   \
           for (int64_t i = beg; i < end; ++i) {                               \
             FuncName(&xsp[i], ysp[i]);                                        \
           }                                                                   \

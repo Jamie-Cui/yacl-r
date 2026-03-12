@@ -28,7 +28,7 @@ namespace {
 inline auto RandomBlocks(size_t length) {
   std::vector<uint128_t> rand_inputs(length);
   Prg<uint128_t> prg;
-  prg.Fill<uint128_t>(absl::MakeSpan(rand_inputs));
+  prg.Fill<uint128_t>(std::span(rand_inputs));
   return rand_inputs;
 }
 
@@ -49,11 +49,11 @@ TEST(RPTest, ParaCrHashWorks) {
 
   std::vector<uint128_t> zeros(size, 0);
   auto input = RandomBlocks(size);
-  auto output = ParaCrHash_128(absl::MakeSpan(input));
+  auto output = ParaCrHash_128(std::span(input));
 
-  EXPECT_NE(absl::MakeSpan(output), absl::MakeSpan(zeros));
-  EXPECT_NE(absl::MakeSpan(output), absl::MakeSpan(input));
-  EXPECT_EQ(absl::MakeSpan(output), ParaCrHash_128(absl::MakeSpan(input)));
+  EXPECT_NE(output, zeros);
+  EXPECT_NE(output, input);
+  EXPECT_EQ(output, ParaCrHash_128(std::span(input)));
 }
 
 TEST(RPTest, ParaCrHashInplaceWorks) {
@@ -63,12 +63,12 @@ TEST(RPTest, ParaCrHashInplaceWorks) {
   auto inout = RandomBlocks(size);
   auto inout_copy = inout;
 
-  ParaCrHashInplace_128(absl::MakeSpan(inout));
-  EXPECT_NE(absl::MakeSpan(inout), absl::MakeSpan(zeros));
-  EXPECT_NE(absl::MakeSpan(inout), absl::MakeSpan(inout_copy));
+  ParaCrHashInplace_128(std::span(inout));
+  EXPECT_NE(inout, zeros);
+  EXPECT_NE(inout, inout_copy);
 
-  ParaCrHashInplace_128(absl::MakeSpan(inout_copy));
-  EXPECT_EQ(absl::MakeSpan(inout), absl::MakeSpan(inout_copy));
+  ParaCrHashInplace_128(std::span(inout_copy));
+  EXPECT_EQ(inout, inout_copy);
 }
 
 TEST(RPTest, CcrHashWorks) {
@@ -86,11 +86,11 @@ TEST(RPTest, ParaCcrHashWorks) {
 
   std::vector<uint128_t> zeros(size, 0);
   auto input = RandomBlocks(size);
-  auto output = ParaCcrHash_128(absl::MakeSpan(input));
+  auto output = ParaCcrHash_128(std::span(input));
 
-  EXPECT_NE(absl::MakeSpan(output), absl::MakeSpan(zeros));
-  EXPECT_NE(absl::MakeSpan(output), absl::MakeSpan(input));
-  EXPECT_EQ(absl::MakeSpan(output), ParaCcrHash_128(absl::MakeSpan(input)));
+  EXPECT_NE(output, zeros);
+  EXPECT_NE(output, input);
+  EXPECT_EQ(output, ParaCcrHash_128(std::span(input)));
 }
 
 TEST(RPTest, ParaCcrHashInplaceWorks) {
@@ -100,12 +100,12 @@ TEST(RPTest, ParaCcrHashInplaceWorks) {
   auto inout = RandomBlocks(size);
   auto inout_copy = inout;
 
-  ParaCcrHashInplace_128(absl::MakeSpan(inout));
-  EXPECT_NE(absl::MakeSpan(inout), absl::MakeSpan(zeros));
-  EXPECT_NE(absl::MakeSpan(inout), absl::MakeSpan(inout_copy));
+  ParaCcrHashInplace_128(std::span(inout));
+  EXPECT_NE(inout, zeros);
+  EXPECT_NE(inout, inout_copy);
 
-  ParaCcrHashInplace_128(absl::MakeSpan(inout_copy));
-  EXPECT_EQ(absl::MakeSpan(inout), absl::MakeSpan(inout_copy));
+  ParaCcrHashInplace_128(std::span(inout_copy));
+  EXPECT_EQ(inout, inout_copy);
 }
 
 }  // namespace yacl::crypto

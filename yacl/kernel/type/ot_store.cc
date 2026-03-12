@@ -110,7 +110,7 @@ void OtRecvStore::SetBlock(uint64_t idx, uint128_t val) {
   blk_buf_->operator[](GetBufIdx(idx)) = val;
 }
 
-absl::Span<uint128_t> OtRecvStore::GetBlkBufSpan() {
+std::span<uint128_t> OtRecvStore::GetBlkBufSpan() {
   YACL_ENFORCE(!IsSliced());
   return {reinterpret_cast<uint128_t*>(blk_buf_->data()), GetBufSize()};
 }
@@ -332,7 +332,7 @@ Buffer OtSendStore::GetBlkBuf() {
   return {blk_buf_->data(), blk_buf_->size() * sizeof(uint128_t)};
 }
 
-absl::Span<uint128_t> OtSendStore::GetBlkBufSpan() {
+std::span<uint128_t> OtSendStore::GetBlkBufSpan() {
   YACL_ENFORCE(!IsSliced());
   return {reinterpret_cast<uint128_t*>(blk_buf_->data()), GetBufSize()};
 }

@@ -54,13 +54,13 @@ std::unique_ptr<GaloisField> MclFieldFactory::Create(
   auto mod = args.GetRequired(ArgMod);
   auto degree = args.GetOrDefault(ArgDegree, 1);
   auto maxBitSize = args.GetOrDefault(ArgMaxBitSize, 512);
-  auto it = kMclFieldMetas.cbegin();
-  for (; it != kMclFieldMetas.cend(); it++) {
+  auto it = kMclFieldMetas.begin();
+  for (; it != kMclFieldMetas.end(); it++) {
     if (it->IsEquivalent({field_name, degree, maxBitSize})) {
       break;
     }
   }
-  YACL_ENFORCE(it != kMclFieldMetas.cend());
+  YACL_ENFORCE(it != kMclFieldMetas.end());
 
   switch (it->degree) {
     case 1:

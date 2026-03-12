@@ -136,8 +136,8 @@ std::shared_ptr<LinearCodeInterface> GetEncoder(const VoleParam<T>& param) {
 }
 
 template <typename T, typename K>
-void DualLpnEncode(const VoleParam<T>& param, absl::Span<K> in,
-                   absl::Span<K> out) {
+void DualLpnEncode(const VoleParam<T>& param, std::span<K> in,
+                   std::span<K> out) {
   auto encoder = GetEncoder(param);
   if (std::dynamic_pointer_cast<SilverCode>(encoder)) {
     const auto vole_num = param.vole_num_;
@@ -153,8 +153,8 @@ void DualLpnEncode(const VoleParam<T>& param, absl::Span<K> in,
 }
 
 template <typename T, typename K>
-void DualLpnEncode2(const VoleParam<T>& param, absl::Span<T> in0,
-                    absl::Span<T> out0, absl::Span<K> in1, absl::Span<K> out1) {
+void DualLpnEncode2(const VoleParam<T>& param, std::span<T> in0,
+                    std::span<T> out0, std::span<K> in1, std::span<K> out1) {
   auto encoder = GetEncoder(param);
   if (std::dynamic_pointer_cast<SilverCode>(encoder)) {
     const auto vole_num = param.vole_num_;
@@ -176,11 +176,11 @@ void DualLpnEncode2(const VoleParam<T>& param, absl::Span<T> in0,
 
 #define REGISTER_VOLE(type)                                                \
   void SilentVoleSender::Send(const std::shared_ptr<link::Context>& ctx,   \
-                              absl::Span<type> c) {                        \
+                              std::span<type> c) {                        \
     SendImpl<type, type>(ctx, c);                                          \
   }                                                                        \
   void SilentVoleReceiver::Recv(const std::shared_ptr<link::Context>& ctx, \
-                                absl::Span<type> a, absl::Span<type> b) {  \
+                                std::span<type> a, std::span<type> b) {  \
     RecvImpl<type, type>(ctx, a, b);                                       \
   }
 
@@ -189,19 +189,19 @@ REGISTER_VOLE(uint128_t);
 #undef REGISTER_VOLE
 
 void SilentVoleSender::SfSend(const std::shared_ptr<link::Context>& ctx,
-                              absl::Span<uint128_t> c) {
+                              std::span<uint128_t> c) {
   SendImpl<uint64_t, uint128_t>(ctx, c);
 }
 
 void SilentVoleReceiver::SfRecv(const std::shared_ptr<link::Context>& ctx,
-                                absl::Span<uint64_t> a,
-                                absl::Span<uint128_t> b) {
+                                std::span<uint64_t> a,
+                                std::span<uint128_t> b) {
   RecvImpl<uint64_t, uint128_t>(ctx, a, b);
 }
 
 template <typename T, typename K>
 void SilentVoleSender::SendImpl(const std::shared_ptr<link::Context>& ctx,
-                                absl::Span<K> c) {
+                                std::span<K> c) {
   if (!is_inited_) {
     OneTimeSetup(ctx);
   }
@@ -218,7 +218,7 @@ void SilentVoleSender::SendImpl(const std::shared_ptr<link::Context>& ctx,
 
   // base vole, w = u * delta + v
   std::vector<K> w(mp_param.base_vole_num_);
-  Ot2VoleSend<T, K>(base_vole_cot, absl::MakeSpan(w));
+  Ot2VoleSend<T, K>(base_vole_cot, std::span(w));
 
   // mp vole
   auto mpvole = MpVoleSender<T, K>(mp_param);
@@ -227,7 +227,7 @@ void SilentVoleSender::SendImpl(const std::shared_ptr<link::Context>& ctx,
   // mp_vole output
   // UninitAlignedVector<K> mp_vole_output(mp_param.mp_vole_size_);
   auto buf = Buffer(mp_param.mp_vole_size_ * sizeof(K));
-  auto mp_vole_output = absl::MakeSpan(buf.data<K>(), mp_param.mp_vole_size_);
+  auto mp_vole_output = std::span(buf.data<K>(), mp_param.mp_vole_size_);
   // mpvole with fixed index
   // which means punctured index would be determined by mp_vole_cot choices
   mpvole.Send(ctx, mp_vole_cot, mp_vole_output, true);
@@ -238,7 +238,7 @@ void SilentVoleSender::SendImpl(const std::shared_ptr<link::Context>& ctx,
 
 template <typename T, typename K>
 void SilentVoleReceiver::RecvImpl(const std::shared_ptr<link::Context>& ctx,
-                                  absl::Span<T> a, absl::Span<K> b) {
+                                  std::span<T> a, std::span<K> b) {
   if (!is_inited_) {
     OneTimeSetup(ctx);
   }
@@ -269,7 +269,7 @@ void SilentVoleReceiver::RecvImpl(const std::shared_ptr<link::Context>& ctx,
   std::vector<K> v(mp_param.base_vole_num_);
 
   // base (subfield) VOLE
-  Ot2VoleRecv<T, K>(base_vole_cot, absl::MakeSpan(u), absl::MakeSpan(v));
+  Ot2VoleRecv<T, K>(base_vole_cot, std::span(u), std::span(v));
 
   // mp vole
   auto mpvole = MpVoleReceiver<T, K>(mp_param);
@@ -279,14 +279,14 @@ void SilentVoleReceiver::RecvImpl(const std::shared_ptr<link::Context>& ctx,
   UninitAlignedVector<T> sparse_noise(mp_param.mp_vole_size_);
   // UninitAlignedVector<K> mp_vole_output(mp_param.mp_vole_size_);
   auto buf = Buffer(mp_param.mp_vole_size_ * sizeof(K));
-  auto mp_vole_output = absl::MakeSpan(buf.data<K>(), mp_param.mp_vole_size_);
+  auto mp_vole_output = std::span(buf.data<K>(), mp_param.mp_vole_size_);
   // mpvole with fixed index
   // which means punctured index would be determined by mp_vole_cot choices
-  mpvole.Recv(ctx, mp_vole_cot, absl::MakeSpan(sparse_noise), mp_vole_output,
+  mpvole.Recv(ctx, mp_vole_cot, std::span(sparse_noise), mp_vole_output,
               true);
   // dual LPN
   // compressing sparse_noise into a, mp_vole_output into b
-  DualLpnEncode2(param, absl::MakeSpan(sparse_noise), a, mp_vole_output, b);
+  DualLpnEncode2(param, std::span(sparse_noise), a, mp_vole_output, b);
 }
 
 }  // namespace yacl::crypto

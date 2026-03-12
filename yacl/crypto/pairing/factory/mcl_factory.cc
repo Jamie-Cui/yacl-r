@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/strings/ascii.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/pairing/factory/mcl_pairing_group.h"
 
 namespace yacl::crypto {
@@ -32,7 +32,7 @@ std::map<PairingName, int> Name2MclPairingEnum = {
 
 PairingMeta MclPGFactory::GetMeta(const PairingName& name) {
   PairingMeta meta = GetCurveMetaByName("bls12-381");
-  meta.name = absl::AsciiStrToLower(name);
+  meta.name = yacl::AsciiStrToLower(name);
 
   auto pairing_type = Name2MclPairingEnum.at(meta.name);
   switch (pairing_type) {

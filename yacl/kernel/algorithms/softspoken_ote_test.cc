@@ -73,12 +73,12 @@ TEST_P(SoftspokenStepTest, Works) {
   auto sender = std::async([&] {
     ssSender.OneTimeSetup(lctxs[0], base_ot.recv);
     ssSender.SetStep(step);
-    ssSender.Send(lctxs[0], absl::MakeSpan(send_out), true);
+    ssSender.Send(lctxs[0], std::span(send_out), true);
   });
   auto receiver = std::async([&] {
     ssReceiver.OneTimeSetup(lctxs[1], base_ot.send);
     ssReceiver.SetStep(step);
-    ssReceiver.Recv(lctxs[1], choices, absl::MakeSpan(recv_out), true);
+    ssReceiver.Recv(lctxs[1], choices, std::span(recv_out), true);
   });
   sender.get();
   receiver.get();
@@ -105,12 +105,12 @@ TEST_P(SoftspokenKTest, KWorks) {
   std::vector<std::array<uint128_t, 2>> send_out(num_ot);
   std::vector<uint128_t> recv_out(num_ot);
   std::future<void> sender = std::async([&] {
-    SoftspokenOtExtSend(lctxs[0], base_ot.recv, absl::MakeSpan(send_out), k,
+    SoftspokenOtExtSend(lctxs[0], base_ot.recv, std::span(send_out), k,
                         false, mal);
   });
   std::future<void> receiver = std::async([&] {
     SoftspokenOtExtRecv(lctxs[1], base_ot.send, choices,
-                        absl::MakeSpan(recv_out), k, false, mal);
+                        std::span(recv_out), k, false, mal);
   });
   receiver.get();
   sender.get();
@@ -149,11 +149,11 @@ TEST_P(SoftspokenKTest, ReuseWorks) {
   std::vector<uint128_t> recv_out1(num_ot);
   std::future<void> sendTask1 = std::async([&] {
     ssSender.OneTimeSetup(lctxs[0], base_ot.recv);
-    ssSender.Send(lctxs[0], absl::MakeSpan(send_out1), false);
+    ssSender.Send(lctxs[0], std::span(send_out1), false);
   });
   std::future<void> recvTask1 = std::async([&] {
     ssReceiver.OneTimeSetup(lctxs[1], base_ot.send);
-    ssReceiver.Recv(lctxs[1], choices, absl::MakeSpan(recv_out1), false);
+    ssReceiver.Recv(lctxs[1], choices, std::span(recv_out1), false);
   });
 
   sendTask1.get();
@@ -163,9 +163,9 @@ TEST_P(SoftspokenKTest, ReuseWorks) {
   std::vector<std::array<uint128_t, 2>> send_out2(num_ot);
   std::vector<uint128_t> recv_out2(num_ot);
   std::future<void> sendTask2 = std::async(
-      [&] { ssSender.Send(lctxs[0], absl::MakeSpan(send_out2), false); });
+      [&] { ssSender.Send(lctxs[0], std::span(send_out2), false); });
   std::future<void> recvTask2 = std::async([&] {
-    ssReceiver.Recv(lctxs[1], choices, absl::MakeSpan(recv_out2), false);
+    ssReceiver.Recv(lctxs[1], choices, std::span(recv_out2), false);
   });
 
   sendTask2.get();
@@ -193,12 +193,12 @@ TEST_P(SoftspokenOtExtTest, RotExtWorks) {
   std::vector<std::array<uint128_t, 2>> send_out(num_ot);
   std::vector<uint128_t> recv_out(num_ot);
   std::future<void> sender = std::async([&] {
-    SoftspokenOtExtSend(lctxs[0], base_ot.recv, absl::MakeSpan(send_out), 2,
+    SoftspokenOtExtSend(lctxs[0], base_ot.recv, std::span(send_out), 2,
                         false, mal, compact);
   });
   std::future<void> receiver = std::async([&] {
     SoftspokenOtExtRecv(lctxs[1], base_ot.send, choices,
-                        absl::MakeSpan(recv_out), 2, false, mal, compact);
+                        std::span(recv_out), 2, false, mal, compact);
   });
   receiver.get();
   sender.get();
@@ -227,12 +227,12 @@ TEST_P(SoftspokenOtExtTest, CotExtWorks) {
   std::vector<uint128_t> recv_out(num_ot);
 
   std::future<void> sender = std::async([&] {
-    SoftspokenOtExtSend(lctxs[0], base_ot.recv, absl::MakeSpan(send_out), 3,
+    SoftspokenOtExtSend(lctxs[0], base_ot.recv, std::span(send_out), 3,
                         true, mal, compact);
   });
   std::future<void> receiver = std::async([&] {
     SoftspokenOtExtRecv(lctxs[1], base_ot.send, choices,
-                        absl::MakeSpan(recv_out), 3, true, mal, compact);
+                        std::span(recv_out), 3, true, mal, compact);
   });
   receiver.get();
   sender.get();

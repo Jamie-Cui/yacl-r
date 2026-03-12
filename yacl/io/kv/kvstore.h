@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include "absl/strings/string_view.h"
+
 
 #include "yacl/base/buffer.h"
 #include "yacl/base/byte_container_view.h"
@@ -30,13 +30,13 @@ class KVStore {
   virtual ~KVStore() = default;
 
   // store key,value
-  virtual void Put(absl::string_view key, ByteContainerView value) = 0;
+  virtual void Put(std::string_view key, ByteContainerView value) = 0;
 
   // get value by key
-  virtual bool Get(absl::string_view key, std::string *value) const = 0;
+  virtual bool Get(std::string_view key, std::string *value) const = 0;
 
   // get value by key
-  bool Get(absl::string_view key, Buffer *value) const {
+  bool Get(std::string_view key, Buffer *value) const {
     std::string value_str;
     bool ret = Get(key, &value_str);
 

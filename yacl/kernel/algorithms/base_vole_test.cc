@@ -52,10 +52,10 @@ enum SM : bool { Semi = false, Mal = true };
     std::vector<type1> v(vole_num);                                       \
     std::vector<type1> w(vole_num);                                       \
     auto sender = std::async(                                             \
-        [&] { Ot2VoleSend<type0, type1>(cot.send, absl::MakeSpan(w)); }); \
+        [&] { Ot2VoleSend<type0, type1>(cot.send, std::span(w)); }); \
     auto receiver = std::async([&] {                                      \
-      Ot2VoleRecv<type0, type1>(cot.recv, absl::MakeSpan(u),              \
-                                absl::MakeSpan(v));                       \
+      Ot2VoleRecv<type0, type1>(cot.recv, std::span(u),              \
+                                std::span(v));                       \
     });                                                                   \
     sender.get();                                                         \
     receiver.get();                                                       \
@@ -80,12 +80,12 @@ DECLARE_OT2VOLE_TEST(GF128, GF128);  // Vole: GF(2^128) x GF(2^128)
     std::vector<type1> v(vole_num);                                       \
     std::vector<type1> w(vole_num);                                       \
     auto sender = std::async([&] {                                        \
-      GilboaVoleSend<type0, type1>(lctxs[0], rot.recv, absl::MakeSpan(w), \
+      GilboaVoleSend<type0, type1>(lctxs[0], rot.recv, std::span(w), \
                                    SM::kase);                             \
     });                                                                   \
     auto receiver = std::async([&] {                                      \
-      GilboaVoleRecv<type0, type1>(lctxs[1], rot.send, absl::MakeSpan(u), \
-                                   absl::MakeSpan(v), SM::kase);          \
+      GilboaVoleRecv<type0, type1>(lctxs[1], rot.send, std::span(u), \
+                                   std::span(v), SM::kase);          \
     });                                                                   \
     sender.get();                                                         \
     receiver.get();                                                       \

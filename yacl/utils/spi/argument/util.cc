@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/utils/spi/argument/util.h"
 
 #include <regex>
 
-#include "absl/strings/ascii.h"
-#include "absl/strings/str_join.h"
 #include "fmt/core.h"
 
 namespace yacl {
@@ -29,9 +28,9 @@ std::string ToSnakeCase(const std::string& str) {
   for (std::smatch sm;
        std::regex_search(log, sm, reg, std::regex_constants::match_not_null);
        log = sm.suffix()) {
-    words.push_back(absl::AsciiStrToLower(sm.str()));
+    words.push_back(yacl::AsciiStrToLower(sm.str()));
   }
-  return absl::StrJoin(words, "_");
+  return yacl::StrJoin(words, "_");
 }
 
 }  // namespace yacl

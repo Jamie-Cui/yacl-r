@@ -29,7 +29,7 @@ CuckooIndex::CuckooIndex(const Options& options) : options_(options) {
                sizeof(HashType));
 }
 
-void CuckooIndex::Insert(absl::Span<const HashType> codes) {
+void CuckooIndex::Insert(std::span<const HashType> codes) {
   const size_t input_offset = hashes_.size();
   const size_t size = codes.size();
   const size_t num_bins = options_.NumBins();

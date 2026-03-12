@@ -23,9 +23,9 @@
 #include <utility>
 #include <vector>
 
-#include "absl/strings/ascii.h"
 #include "spdlog/spdlog.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 #include "yacl/utils/spi/argument/argument.h"
 
@@ -166,7 +166,7 @@ class SpiFactoryBase {
 
   void Register(const std::string &lib_name, int64_t performance,
                 const SpiCheckerT &checker, const SpiCreatorT<SPI_T> &creator) {
-    auto lib_key = absl::AsciiStrToLower(lib_name);
+    auto lib_key = yacl::AsciiStrToLower(lib_name);
 
     YACL_ENFORCE(libs_map_.count(lib_key) == 0,
                  "SPI lib name conflict, {} already exist", lib_key);

@@ -54,7 +54,7 @@ TEST_P(KkrtOtExtTest, DISABLED_Works) {
   std::future<std::unique_ptr<IGroupPRF>> sender = std::async(
       [&] { return KkrtOtExtSend(contexts[0], base_ot.recv, num_ot); });
   std::future<void> receiver = std::async([&] {
-    KkrtOtExtRecv(contexts[1], base_ot.send, inputs, absl::MakeSpan(recv_out));
+    KkrtOtExtRecv(contexts[1], base_ot.send, inputs, std::span(recv_out));
   });
   receiver.get();
   auto encoder = sender.get();
@@ -91,8 +91,8 @@ TEST(KkrtOtExtEdgeTest, DISABLED_Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     auto choices = RandBits<dynamic_bitset<uint128_t>>(kNumOt + 128);
     ASSERT_THROW(
-        KkrtOtExtRecv(contexts[1], base_ot.send, absl::MakeConstSpan(choices),
-                      absl::MakeSpan(recv_out)),
+        KkrtOtExtRecv(contexts[1], base_ot.send, std::span(choices),
+                      std::span(recv_out)),
         yacl::Exception);
   }
   {
@@ -100,8 +100,8 @@ TEST(KkrtOtExtEdgeTest, DISABLED_Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     std::vector<uint128_t> choices;
     ASSERT_THROW(
-        KkrtOtExtRecv(contexts[1], base_ot.send, absl::MakeConstSpan(choices),
-                      absl::MakeSpan(recv_out)),
+        KkrtOtExtRecv(contexts[1], base_ot.send, std::span(choices),
+                      std::span(recv_out)),
         yacl::Exception);
   }
   {
@@ -158,7 +158,7 @@ TEST_P(KkrtOtExtTest2, DISABLED_Works) {
       for (size_t i = 0; i < num_this_batch; ++i) {
         kkrtReceiver.Encode(
             batch_start + i, inputs,
-            absl::Span<uint8_t>(reinterpret_cast<uint8_t*>(&receiver_encoded),
+            std::span<uint8_t>(reinterpret_cast<uint8_t*>(&receiver_encoded),
                                 sizeof(uint128_t)));
 
         recv_out[batch_start + i] = receiver_encoded;

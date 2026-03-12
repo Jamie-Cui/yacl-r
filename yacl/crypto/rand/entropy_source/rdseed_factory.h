@@ -52,8 +52,8 @@ class RdSeedEntropySource : public EntropySource {
       const std::string &type, [[maybe_unused]] const SpiArgs &config) {
     // this entropy source should be used only if the CPU has rdseed support
     YACL_ENFORCE(cpu_features::GetX86Info().features.rdseed);
-    YACL_ENFORCE(absl::AsciiStrToLower(type) == "hardware" ||
-                 absl::AsciiStrToLower(type) == "auto");
+    YACL_ENFORCE(yacl::AsciiStrToLower(type) == "hardware" ||
+                 yacl::AsciiStrToLower(type) == "auto");
     return std::make_unique<RdSeedEntropySource>();
   }
 
@@ -61,8 +61,8 @@ class RdSeedEntropySource : public EntropySource {
   static bool Check(const std::string &type,
                     [[maybe_unused]] const SpiArgs &config) {
     return cpu_features::GetX86Info().features.rdseed &&
-           (absl::AsciiStrToLower(type) == "hardware" ||
-            absl::AsciiStrToLower(type) == "auto");
+           (yacl::AsciiStrToLower(type) == "hardware" ||
+            yacl::AsciiStrToLower(type) == "auto");
   }
 
   Buffer GetEntropy(uint32_t bits_of_entropy) noexcept override;

@@ -186,7 +186,7 @@ Buffer Sm4Drbg::derive(ByteContainerView buf,
   }
 
   /* step (i) */
-  absl::Span temp_span = absl::MakeSpan(temp);
+  auto temp_span = std::span(temp);
   auto k = temp_span.subspan(0, kKeySize);        // span
   auto x = temp_span.subspan(kKeySize, out_len);  // span
 
@@ -229,8 +229,8 @@ std::array<uint8_t, Sm4Drbg::kBlockSize> Sm4Drbg::cbc_mac(
 
   /* step (c-d) */
   for (size_t idx = 0; idx < n; ++idx) {
-    absl::Span<const uint8_t> block =
-        absl::MakeSpan(data.data() + idx * kBlockSize, kBlockSize);
+    std::span<const uint8_t> block =
+        std::span(data.data() + idx * kBlockSize, kBlockSize);
     std::array<uint8_t, kBlockSize> input_block;
     int enc_out_len = input_block.size();
 

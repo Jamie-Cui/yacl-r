@@ -14,7 +14,7 @@
 
 #include "yacl/crypto/envelope/digital_envelope.h"
 
-#include "absl/types/span.h"
+#include <span>
 
 namespace yacl::crypto {
 
@@ -48,8 +48,8 @@ void RsaEnvSeal(ByteContainerView pub_key, ByteContainerView iv,
   // Aes-128 mac size is 16 bytes.
   mac->resize(16);
   Aes128GcmCrypto(symmetric_key, iv)
-      .Encrypt(plaintext, "", absl::Span<uint8_t>(*ciphertext),
-               absl::Span<uint8_t>(*mac));
+      .Encrypt(plaintext, "", std::span<uint8_t>(*ciphertext),
+               std::span<uint8_t>(*mac));
   *encrypted_key = RsaEncryptor(pub_key).Encrypt(symmetric_key);
 }
 
@@ -60,7 +60,7 @@ void RsaEnvOpen(ByteContainerView pri_key, ByteContainerView iv,
       RsaDecryptor(pri_key).Decrypt(encrypted_key);
   plaintext->resize(ciphertext.size());
   Aes128GcmCrypto(symmetric_key, iv)
-      .Decrypt(ciphertext, "", mac, absl::Span<uint8_t>(*plaintext));
+      .Decrypt(ciphertext, "", mac, std::span<uint8_t>(*plaintext));
 }
 
 }  // namespace yacl::crypto

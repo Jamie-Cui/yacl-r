@@ -46,11 +46,11 @@ using GF128 = uint128_t;
     auto check0 = std::vector<type>(n, 0);                              \
     auto check1 = std::vector<type>(check0.begin(), check0.end());      \
     /* WHEN */                                                          \
-    acc.DualEncode(absl::MakeSpan(inout0), absl::MakeSpan(check0));     \
-    dup_acc.DualEncode(absl::MakeSpan(inout1), absl::MakeSpan(check1)); \
+    acc.DualEncode(std::span(inout0), std::span(check0));     \
+    dup_acc.DualEncode(std::span(inout1), std::span(check1)); \
     inout0 = std::vector<type>(n, 0);                                   \
     /* [Warning] DualEncode for ExAccCode would change input */         \
-    acc.DualEncode(absl::MakeSpan(inout2), absl::MakeSpan(inout0));     \
+    acc.DualEncode(std::span(inout2), std::span(inout0));     \
     /* THEN */                                                          \
     uint32_t zero_counter = 0;                                          \
     for (uint32_t i = 0; i < n; ++i) {                                  \
@@ -83,15 +83,15 @@ using GF128 = uint128_t;
     auto check2 = std::vector<type0>(check0.begin(), check0.end());      \
     auto check3 = std::vector<type1>(check1.begin(), check1.end());      \
     /* WHEN */                                                           \
-    acc.DualEncode2(absl::MakeSpan(inout0), absl::MakeSpan(check0),      \
-                    absl::MakeSpan(inout1), absl::MakeSpan(check1));     \
-    dup_acc.DualEncode2(absl::MakeSpan(inout2), absl::MakeSpan(check2),  \
-                        absl::MakeSpan(inout3), absl::MakeSpan(check3)); \
+    acc.DualEncode2(std::span(inout0), std::span(check0),      \
+                    std::span(inout1), std::span(check1));     \
+    dup_acc.DualEncode2(std::span(inout2), std::span(check2),  \
+                        std::span(inout3), std::span(check3)); \
     inout0 = std::vector<type0>(n, 0);                                   \
     inout1 = std::vector<type1>(n, 0);                                   \
     /* [Warning] DualEncode for ExAccCode would change input */          \
-    acc.DualEncode2(absl::MakeSpan(inout4), absl::MakeSpan(inout0),      \
-                    absl::MakeSpan(inout5), absl::MakeSpan(inout1));     \
+    acc.DualEncode2(std::span(inout4), std::span(inout0),      \
+                    std::span(inout5), std::span(inout1));     \
     /* THEN */                                                           \
     uint32_t zero_counter = 0;                                           \
     for (uint32_t i = 0; i < n; ++i) {                                   \

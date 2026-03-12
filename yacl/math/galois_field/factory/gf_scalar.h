@@ -98,12 +98,12 @@ class GFScalarSketch : public GaloisField {
       case OperandType::Vector2Vector: {
         auto xsp = x.AsSpan<T>();
         auto ysp = y.AsSpan<T>();
-        if (xsp.length() != ysp.length()) {
+        if (xsp.size() != ysp.size()) {
           return false;
         }
 
         std::atomic<bool> res = true;
-        yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) {
+        yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) {
           for (int64_t i = beg; i < end; ++i) {
             if (!res) {
               return;
@@ -181,11 +181,11 @@ class GFScalarSketch : public GaloisField {
       std::string res = "[";
       if (!xsp.empty()) {
         std::string str = ToString(xsp[0]);
-        res.reserve(str.size() * xsp.length() * 1.1);
+        res.reserve(str.size() * xsp.size() * 1.1);
         res += str;
       }
 
-      for (size_t i = 1; i < xsp.length(); ++i) {
+      for (size_t i = 1; i < xsp.size(); ++i) {
         res += ", ";
         res += ToString(xsp[i]);
       }

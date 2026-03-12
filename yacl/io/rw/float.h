@@ -21,7 +21,6 @@
 #include <string>
 #include <type_traits>
 
-#include "absl/strings/numbers.h"
 
 namespace yacl::io {
 
@@ -50,10 +49,10 @@ std::string FloatToString(S v, int precision) {
 }
 
 template <class S>
-[[nodiscard]] bool FloatFromString(absl::string_view str, S* ret) {
+[[nodiscard]] bool FloatFromString(std::string_view str, S* ret) {
   static_assert(std::is_floating_point_v<S>);
   double double_value = 0;
-  if (YACL_UNLIKELY(!absl::SimpleAtod(str, &double_value))) {
+  if (YACL_UNLIKELY(!yacl::SimpleAtod(str, &double_value))) {
     return false;
   }
   if (YACL_UNLIKELY(std::isnan(double_value))) {

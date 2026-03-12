@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/tpre/capsule.h"
 
-#include "absl/strings/escaping.h"
-#include "absl/strings/string_view.h"
+
 #include "gtest/gtest.h"
 
 #include "yacl/crypto/tpre/keys.h"
@@ -36,7 +36,7 @@ TEST(CapsuleTest, Test1) {
   std::pair<Capsule::CapsuleStruct, std::vector<uint8_t>> capsule_pair =
       cs.EnCapsulate(ecc_group, key_pair_alice.first);
 
-  std::string dek_str = absl::BytesToHexString(absl::string_view(
+  std::string dek_str = yacl::BytesToHexString(std::string_view(
       (const char*)capsule_pair.second.data(), capsule_pair.second.size()));
 
   std::vector<Keys::KFrag> kfrags =
@@ -54,8 +54,8 @@ TEST(CapsuleTest, Test1) {
       cs.DeCapsulateFrags(ecc_group, key_pair_bob.second, key_pair_alice.first,
                           key_pair_bob.first, cfrags);
 
-  std::string dek_str1 = absl::BytesToHexString(
-      absl::string_view((const char*)dek.data(), dek.size()));
+  std::string dek_str1 = yacl::BytesToHexString(
+      std::string_view((const char*)dek.data(), dek.size()));
 
   EXPECT_EQ(dek_str, dek_str1);
 }

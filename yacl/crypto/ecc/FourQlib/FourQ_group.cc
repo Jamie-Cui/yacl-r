@@ -14,7 +14,7 @@
 
 #include "yacl/crypto/ecc/FourQlib/FourQ_group.h"
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/crypto/hash/ssl_hash.h"
 
@@ -275,7 +275,7 @@ EcPoint FourQGroup::HashToCurve(HashToCurveStrategy strategy,
 
   std::vector<uint8_t> sha_bytes =
       SslHash(HashAlgorithm::SHA512)
-          .Update(absl::Span(input.data(), input.size()))
+          .Update(std::span(input.data(), input.size()))
           .CumulativeHash();
   auto* f2elmt = reinterpret_cast<f2elm_t*>(sha_bytes.data());
   mod1271(reinterpret_cast<felm_t*>(f2elmt)[0]);

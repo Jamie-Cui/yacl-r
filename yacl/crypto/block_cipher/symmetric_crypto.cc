@@ -92,8 +92,8 @@ SymmetricCrypto::SymmetricCrypto(CryptoType type, ByteContainerView key,
   SetupEVPCipherCtx(&dec_ctx_, type_, key_, iv_, 0);
 }
 
-void SymmetricCrypto::Decrypt(absl::Span<const uint8_t> ciphertext,
-                              absl::Span<uint8_t> plaintext) const {
+void SymmetricCrypto::Decrypt(std::span<const uint8_t> ciphertext,
+                              std::span<uint8_t> plaintext) const {
   if ((type_ != SymmetricCrypto::CryptoType::AES128_CTR) &&
       (type_ != SymmetricCrypto::CryptoType::SM4_CTR)) {
     if (ciphertext.size() % BlockSize() != 0) {
@@ -133,8 +133,8 @@ void SymmetricCrypto::Decrypt(absl::Span<const uint8_t> ciphertext,
   }
 }
 
-void SymmetricCrypto::Encrypt(absl::Span<const uint8_t> plaintext,
-                              absl::Span<uint8_t> ciphertext) const {
+void SymmetricCrypto::Encrypt(std::span<const uint8_t> plaintext,
+                              std::span<uint8_t> ciphertext) const {
   if ((type_ != SymmetricCrypto::CryptoType::AES128_CTR) &&
       (type_ != SymmetricCrypto::CryptoType::SM4_CTR)) {
     if (ciphertext.size() % BlockSize() != 0) {
@@ -175,36 +175,36 @@ void SymmetricCrypto::Encrypt(absl::Span<const uint8_t> plaintext,
 
 uint128_t SymmetricCrypto::Encrypt(uint128_t input) const {
   uint128_t ret;
-  Encrypt(absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(&input),
+  Encrypt(std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(&input),
                                     sizeof(input)),
-          absl::Span<uint8_t>(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)));
+          std::span<uint8_t>(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)));
   return ret;
 }
 
 uint128_t SymmetricCrypto::Decrypt(uint128_t input) const {
   uint128_t ret;
-  Decrypt(absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(&input),
+  Decrypt(std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(&input),
                                     sizeof(input)),
-          absl::Span<uint8_t>(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)));
+          std::span<uint8_t>(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)));
   return ret;
 }
 
-void SymmetricCrypto::Encrypt(absl::Span<const uint128_t> plaintext,
-                              absl::Span<uint128_t> ciphertext) const {
-  auto in = absl::Span<const uint8_t>(
+void SymmetricCrypto::Encrypt(std::span<const uint128_t> plaintext,
+                              std::span<uint128_t> ciphertext) const {
+  auto in = std::span<const uint8_t>(
       reinterpret_cast<const uint8_t*>(plaintext.data()),
       plaintext.size() * sizeof(uint128_t));
-  auto out = absl::Span<uint8_t>(reinterpret_cast<uint8_t*>(ciphertext.data()),
+  auto out = std::span<uint8_t>(reinterpret_cast<uint8_t*>(ciphertext.data()),
                                  ciphertext.size() * sizeof(uint128_t));
   Encrypt(in, out);
 }
 
-void SymmetricCrypto::Decrypt(absl::Span<const uint128_t> ciphertext,
-                              absl::Span<uint128_t> plaintext) const {
-  auto in = absl::Span<const uint8_t>(
+void SymmetricCrypto::Decrypt(std::span<const uint128_t> ciphertext,
+                              std::span<uint128_t> plaintext) const {
+  auto in = std::span<const uint8_t>(
       reinterpret_cast<const uint8_t*>(ciphertext.data()),
       ciphertext.size() * sizeof(uint128_t));
-  auto out = absl::Span<uint8_t>(reinterpret_cast<uint8_t*>(plaintext.data()),
+  auto out = std::span<uint8_t>(reinterpret_cast<uint8_t*>(plaintext.data()),
                                  plaintext.size() * sizeof(uint128_t));
   Decrypt(in, out);
 }

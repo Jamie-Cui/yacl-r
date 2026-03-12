@@ -41,12 +41,12 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_ShouldOk) {
   std::vector<uint8_t> ciphertext(plaintext.size() + additional_cipher_size);
   std::vector<uint8_t> mac(aead_cxt.GetMacSize());
 
-  aead_cxt.Encrypt(plaintext, key, iv, absl::MakeSpan(ciphertext),
-                   absl::MakeSpan(mac), aad);
+  aead_cxt.Encrypt(plaintext, key, iv, std::span(ciphertext),
+                   std::span(mac), aad);
 
   std::vector<uint8_t> decrypted(plaintext.size());
 
-  aead_cxt.Decrypt(ciphertext, mac, key, iv, absl::MakeSpan(decrypted), aad);
+  aead_cxt.Decrypt(ciphertext, mac, key, iv, std::span(decrypted), aad);
 
   EXPECT_EQ(plaintext, std::string(decrypted.begin(), decrypted.end()));
 }
@@ -64,8 +64,8 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
   std::vector<uint8_t> ciphertext(plaintext.size() + additional_cipher_size);
   std::vector<uint8_t> mac(aead_cxt.GetMacSize());
 
-  aead_cxt.Encrypt(plaintext, key, iv, absl::MakeSpan(ciphertext),
-                   absl::MakeSpan(mac), aad);
+  aead_cxt.Encrypt(plaintext, key, iv, std::span(ciphertext),
+                   std::span(mac), aad);
 
   std::vector<uint8_t> decrypted(plaintext.size());
 
@@ -79,7 +79,7 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
 
   // THEN
   EXPECT_ANY_THROW({
-    aead_cxt.Decrypt(ciphertext, mac, key, iv, absl::MakeSpan(decrypted), aad);
+    aead_cxt.Decrypt(ciphertext, mac, key, iv, std::span(decrypted), aad);
   });
 }
 

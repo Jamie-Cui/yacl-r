@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/sync_drbg/sync_drbg.h"
 
 #include <cstdint>
@@ -20,7 +21,6 @@
 #include <random>
 #include <vector>
 
-#include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
 
 #include "yacl/link/test_util.h"
@@ -43,8 +43,8 @@ TEST(DrbgTest, DifferentDrbg) {
   EXPECT_NE(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 
 TEST(DrbgTest, ReplayWork) {
@@ -69,8 +69,8 @@ TEST(DrbgTest, ReplayWork) {
   EXPECT_EQ(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 
 TEST(DrbgTest, ForkWork) {
@@ -89,8 +89,8 @@ TEST(DrbgTest, ForkWork) {
   EXPECT_EQ(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 
 TEST(DrbgTest, ReseedWork) {
@@ -117,8 +117,8 @@ TEST(DrbgTest, ReseedWork) {
   EXPECT_NE(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 
 TEST(DrbgTest, BlockedRecvWork) {
@@ -148,8 +148,8 @@ TEST(DrbgTest, BlockedRecvWork) {
   EXPECT_EQ(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 
 TEST(DrbgTest, BlockedSendWork) {
@@ -179,7 +179,7 @@ TEST(DrbgTest, BlockedSendWork) {
   EXPECT_EQ(cmp, 0);
 
   /* debug */
-  // SPDLOG_INFO("buf0 = {}", absl::BytesToHexString(buf0));
-  // SPDLOG_INFO("buf1 = {}", absl::BytesToHexString(buf1));
+  // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
+  // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
 }  // namespace yacl::crypto

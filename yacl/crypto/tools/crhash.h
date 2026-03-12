@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/int128.h"
 
@@ -31,10 +31,10 @@ namespace yacl::crypto {
 uint128_t CrHash_128(uint128_t x);
 
 // parallel crhash for many blocks
-std::vector<uint128_t> ParaCrHash_128(absl::Span<const uint128_t> x);
+std::vector<uint128_t> ParaCrHash_128(std::span<const uint128_t> x);
 
 // inplace parallel crhash for many blocks
-void ParaCrHashInplace_128(absl::Span<uint128_t> inout);
+void ParaCrHashInplace_128(std::span<uint128_t> inout);
 
 // Circular Correlation Robust Hash function (Single Block)
 // See https://eprint.iacr.org/2019/074.pdf Sec 7.3
@@ -43,10 +43,10 @@ void ParaCrHashInplace_128(absl::Span<uint128_t> inout);
 uint128_t CcrHash_128(uint128_t x);
 
 // parallel ccrhash for many blocks
-std::vector<uint128_t> ParaCcrHash_128(absl::Span<const uint128_t> x);
+std::vector<uint128_t> ParaCcrHash_128(std::span<const uint128_t> x);
 
 // inplace parallel ccrhash for many blocks
-void ParaCcrHashInplace_128(absl::Span<uint128_t> inout);
+void ParaCcrHashInplace_128(std::span<uint128_t> inout);
 
 // TODO(@shanzhu) Tweakable Correlation Robust Hash function (Multiple Blocks)
 // See https://eprint.iacr.org/2019/074.pdf Sec 7.4

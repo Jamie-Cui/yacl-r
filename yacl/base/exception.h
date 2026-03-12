@@ -16,23 +16,23 @@
 
 #include <array>
 #include <exception>
+#include <span>
 
-#include "absl/debugging/stacktrace.h"
-#include "absl/debugging/symbolize.h"
-#include "absl/strings/str_join.h"
-#include "absl/types/span.h"
+#include <execinfo.h>
+
 #include "fmt/format.h"
+#include "yacl/base/strings.h"
 
 template <>
-struct fmt::formatter<absl::Span<const int64_t>> {
+struct fmt::formatter<std::span<const int64_t>> {
   template <typename ParseContext>
   constexpr auto parse(ParseContext& ctx) {
     return ctx.begin();
   }
 
   template <typename FormatContext>
-  auto format(absl::Span<const int64_t> number, FormatContext& ctx) {
-    return fmt::format_to(ctx.out(), "{}", absl::StrJoin(number, "x"));
+  auto format(std::span<const int64_t> number, FormatContext& ctx) {
+    return fmt::format_to(ctx.out(), "{}", yacl::StrJoin(number, "x"));
   }
 };
 
@@ -45,7 +45,8 @@ struct fmt::formatter<std::vector<int64_t>> {
 
   template <typename FormatContext>
   auto format(const std::vector<int64_t>& number, FormatContext& ctx) {
-    return fmt::format_to(ctx.out(), "{}", absl::StrJoin(number, "x"));
+    return fmt::format_to(ctx.out(), "{}",
+                          yacl::StrJoin(std::span<const int64_t>(number), "x"));
   }
 };
 
@@ -92,14 +93,13 @@ class Exception : public std::exception {
   explicit Exception(const char* msg) : msg_(msg) {}
   explicit Exception(std::string msg, void** stacks, int dep,
                      bool append_stack_to_msg = false) {
+    char** symbols = ::backtrace_symbols(stacks, dep);
     for (int i = 0; i < dep; ++i) {
-      std::array<char, 2048> tmp;
-      const char* symbol = "(unknown)";
-      if (absl::Symbolize(stacks[i], tmp.data(), tmp.size())) {
-        symbol = tmp.data();
-      }
-      stack_trace_.append(fmt::format("#{} {}+{}\n", i, symbol, stacks[i]));
+      const char* symbol = (symbols != nullptr) ? symbols[i] : "(unknown)";
+      stack_trace_.append(fmt::format("#{} {}\n", i, symbol));
     }
+    // NOLINTNEXTLINE(cppcoreguidelines-no-malloc)
+    free(symbols);
 
     if (append_stack_to_msg) {
       msg_ = fmt::format("{}\nStacktrace:\n{}", msg, stack_trace_);
@@ -166,28 +166,20 @@ class LinkError : public NetworkError {
 };
 
 #define YACL_ERROR_MSG(...) \
-  fmt::format("[{}:{}] {}", __FILE__, __LINE__, fmt::format(__VA_ARGS__))
+  fmt::format("[{}:{}] {}", __FILE__, __LINE__,                         \
+              ::yacl::internal::Format(__VA_ARGS__))
 
 using stacktrace_t = std::array<void*, ::yacl::internal::kMaxStackTraceDep>;
 
-// add absl::InitializeSymbolizer to main function to get
-// human-readable names stack trace
-//
-// Example:
-// int main(int argc, char *argv[]) {
-//   absl::InitializeSymbolizer(argv[0]);
-//   ...
-// }
-
 std::string GetStacktraceString();
 
-#define YACL_THROW_HELPER(ExceptionName, AppendStack, ...)                     \
-  do {                                                                         \
-    ::yacl::stacktrace_t __stacks__;                                           \
-    int __dep__ = absl::GetStackTrace(__stacks__.data(),                       \
-                                      ::yacl::internal::kMaxStackTraceDep, 0); \
-    throw ExceptionName(YACL_ERROR_MSG(__VA_ARGS__), __stacks__.data(),        \
-                        __dep__, AppendStack);                                 \
+#define YACL_THROW_HELPER(ExceptionName, AppendStack, ...)                   \
+  do {                                                                       \
+    ::yacl::stacktrace_t __stacks__;                                         \
+    int __dep__ =                                                             \
+        ::backtrace(__stacks__.data(), ::yacl::internal::kMaxStackTraceDep); \
+    throw ExceptionName(YACL_ERROR_MSG(__VA_ARGS__), __stacks__.data(),      \
+                        __dep__, AppendStack);                               \
   } while (false)
 
 #define YACL_THROW(...) \
@@ -263,16 +255,16 @@ class EnforceNotMet : public Exception {
 
 // If you don't want to print stacktrace in error message, use
 // "YACL_ENFORCE_THAT" instead.
-#define YACL_ENFORCE(condition, ...)                                     \
-  do {                                                                   \
-    if (!(condition)) {                                                  \
-      ::yacl::stacktrace_t __stacks__;                                   \
-      const int __dep__ = absl::GetStackTrace(                           \
-          __stacks__.data(), ::yacl::internal::kMaxStackTraceDep, 0);    \
-      throw ::yacl::EnforceNotMet(__FILE__, __LINE__, #condition,        \
-                                  ::yacl::internal::Format(__VA_ARGS__), \
-                                  __stacks__.data(), __dep__);           \
-    }                                                                    \
+#define YACL_ENFORCE(condition, ...)                                       \
+  do {                                                                     \
+    if (!(condition)) {                                                    \
+      ::yacl::stacktrace_t __stacks__;                                     \
+      const int __dep__ =                                                   \
+          ::backtrace(__stacks__.data(), ::yacl::internal::kMaxStackTraceDep); \
+      throw ::yacl::EnforceNotMet(__FILE__, __LINE__, #condition,          \
+                                  ::yacl::internal::Format(__VA_ARGS__),   \
+                                  __stacks__.data(), __dep__);             \
+    }                                                                      \
   } while (false)
 
 /**

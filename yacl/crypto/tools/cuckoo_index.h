@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
@@ -135,7 +135,7 @@ class CuckooIndex {
   const std::vector<HashRoom>& hashes() const { return hashes_; }
 
   // This interface assumes `inputs` are already cryptographic random.
-  void Insert(absl::Span<const HashType> codes);
+  void Insert(std::span<const HashType> codes);
 
   // For debug only.
   void SanityCheck() const;

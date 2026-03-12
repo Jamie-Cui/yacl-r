@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 #include "yacl/crypto/hmac/hmac_sha256.h"
 #include "yacl/crypto/hmac/hmac_sm3.h"
@@ -83,16 +83,16 @@ TYPED_TEST_SUITE(HmacTest, MyTypes);
 TYPED_TEST(HmacTest, TestVector1) {
   std::vector<uint8_t> mac =
       TypeParam(this->Data().key).Update(this->Data().vector1).CumulativeMac();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)mac.data(), mac.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)mac.data(), mac.size())),
             this->Data().result1);
 }
 
 TYPED_TEST(HmacTest, TestVector2) {
   std::vector<uint8_t> mac =
       TypeParam(this->Data().key).Update(this->Data().vector2).CumulativeMac();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)mac.data(), mac.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)mac.data(), mac.size())),
             this->Data().result2);
 }
 
@@ -104,8 +104,8 @@ TYPED_TEST(HmacTest, ResetBetweenUpdates) {
                                  .Reset()
                                  .Update(this->Data().vector2)
                                  .CumulativeMac();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)mac.data(), mac.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)mac.data(), mac.size())),
             this->Data().result2);
 }
 
@@ -114,13 +114,13 @@ TYPED_TEST(HmacTest, ResetBetweenUpdates) {
 TYPED_TEST(HmacTest, MultipleUpdates) {
   TypeParam hmac(this->Data().key);
   std::vector<uint8_t> mac = hmac.Update(this->Data().vector1).CumulativeMac();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)mac.data(), mac.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)mac.data(), mac.size())),
             this->Data().result1);
 
   mac = hmac.Update(this->Data().suffix).CumulativeMac();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)mac.data(), mac.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)mac.data(), mac.size())),
             this->Data().result2);
 }
 

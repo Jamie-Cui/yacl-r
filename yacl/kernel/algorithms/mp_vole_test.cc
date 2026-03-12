@@ -73,11 +73,11 @@ using GF128 = uint128_t;
     mp_sender.OneTimeSetup(delta, std::move(pre_c));                           \
     mp_receiver.OneTimeSetup(std::move(pre_a), std::move(pre_b));              \
     auto sender = std::async([&] {                                             \
-      mp_sender.Send(lctxs[0], cot.send, absl::MakeSpan(c), fixed_index);      \
+      mp_sender.Send(lctxs[0], cot.send, std::span(c), fixed_index);      \
     });                                                                        \
     auto receiver = std::async([&] {                                           \
-      mp_receiver.Recv(lctxs[1], cot.recv, absl::MakeSpan(a),                  \
-                       absl::MakeSpan(b), fixed_index);                        \
+      mp_receiver.Recv(lctxs[1], cot.recv, std::span(a),                  \
+                       std::span(b), fixed_index);                        \
     });                                                                        \
     sender.get();                                                              \
     receiver.get();                                                            \

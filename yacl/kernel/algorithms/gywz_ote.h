@@ -16,7 +16,7 @@
 
 #include <memory>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/int128.h"
 #include "yacl/base/secparam.h"
@@ -54,11 +54,11 @@ namespace yacl::crypto {
 //
 void GywzOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& cot, uint32_t n, uint32_t index,
-                   absl::Span<uint128_t> output);
+                   std::span<uint128_t> output);
 
 void GywzOtExtSend(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& cot, uint32_t n,
-                   absl::Span<uint128_t> output);
+                   std::span<uint128_t> output);
 
 // --------------------------
 //         Customized
@@ -72,32 +72,32 @@ void GywzOtExtSend(const std::shared_ptr<link::Context>& ctx,
 // unless you know what you are doing
 void GywzOtExtRecv_ferret(const std::shared_ptr<link::Context>& ctx,
                           const OtRecvStore& cot, uint32_t n,
-                          absl::Span<uint128_t> output);
+                          std::span<uint128_t> output);
 
 // [Warning] For ferretOTe only
 void GywzOtExtSend_ferret(const std::shared_ptr<link::Context>& ctx,
                           const OtSendStore& cot, uint32_t n,
-                          absl::Span<uint128_t> output);
+                          std::span<uint128_t> output);
 
 // Notice that:
 //  > In such cases, punctured index would be the choice of cot
 //  > punctured index might be greater than n
 void GywzOtExtRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtRecvStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output);
+                               std::span<uint128_t> output);
 
 void GywzOtExtSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                                const OtSendStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output);
+                               std::span<uint128_t> output);
 
 // non-interactive function, Receiver should receive "recv_msgs" from Sender
 void GywzOtExtRecv_fixed_index(const OtRecvStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint128_t> recv_msgs);
+                               std::span<uint128_t> output,
+                               std::span<uint128_t> recv_msgs);
 
 // non-interactive function, Sender should send "send_msgs" to Receiver
 void GywzOtExtSend_fixed_index(const OtSendStore& cot, uint32_t n,
-                               absl::Span<uint128_t> output,
-                               absl::Span<uint128_t> send_msgs);
+                               std::span<uint128_t> output,
+                               std::span<uint128_t> send_msgs);
 
 }  // namespace yacl::crypto

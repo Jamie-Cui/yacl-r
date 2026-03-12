@@ -38,8 +38,8 @@ size_t GetMacSize(GcmCryptoSchema schema) {
 }  // namespace
 
 void GcmCrypto::Encrypt(ByteContainerView plaintext, ByteContainerView aad,
-                        absl::Span<uint8_t> ciphertext,
-                        absl::Span<uint8_t> mac) const {
+                        std::span<uint8_t> ciphertext,
+                        std::span<uint8_t> mac) const {
   YACL_ENFORCE_EQ(ciphertext.size(), plaintext.size());
   // YACL_ENFORCE_EQ(mac.size(), GetMacSize(schema_));
 
@@ -78,7 +78,7 @@ void GcmCrypto::Encrypt(ByteContainerView plaintext, ByteContainerView aad,
 
 void GcmCrypto::Decrypt(ByteContainerView ciphertext, ByteContainerView aad,
                         ByteContainerView mac,
-                        absl::Span<uint8_t> plaintext) const {
+                        std::span<uint8_t> plaintext) const {
   YACL_ENFORCE_EQ(ciphertext.size(), plaintext.size());
   // YACL_ENFORCE_EQ(mac.size(), GetMacSize(schema_));
 

@@ -71,8 +71,8 @@ TEST(AesTest, EncExample) {
   std::memcpy(plain_blocks.data(), kPlaintextExample.data(),
               kPlaintextExample.size());
 
-  AES_ecb_encrypt_blks(aes_key, absl::MakeConstSpan(plain_blocks),
-                       absl::MakeSpan(cipher_blocks));
+  AES_ecb_encrypt_blks(aes_key, std::span(plain_blocks),
+                       std::span(cipher_blocks));
 
   std::memcpy(cipher_bytes.data(), cipher_blocks.data(), cipher_bytes.size());
   EXPECT_EQ(cipher_bytes, kCiphertextExample);
@@ -91,8 +91,8 @@ TEST(AesTest, DecExample) {
   std::memcpy(cipher_blocks.data(), kCiphertextExample.data(),
               kCiphertextExample.size());
 
-  AES_ecb_decrypt_blks(aes_key, absl::MakeConstSpan(cipher_blocks),
-                       absl::MakeSpan(plain_blocks));
+  AES_ecb_decrypt_blks(aes_key, std::span(cipher_blocks),
+                       std::span(plain_blocks));
 
   std::memcpy(plain_bytes.data(), plain_blocks.data(), plain_bytes.size());
   EXPECT_EQ(plain_bytes, kPlaintextExample);

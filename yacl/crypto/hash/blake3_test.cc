@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/hash/blake3.h"
 
 #include <limits>
 #include <string>
 #include <vector>
 
-#include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
 
 #include "yacl/base/exception.h"
@@ -55,24 +55,24 @@ TEST(Blake3HashTest, TestVector1) {
   Blake3Hash blake3;
   std::string vector_bytes;
 
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector1, &vector_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector1, &vector_bytes));
 
   std::vector<uint8_t> hash = blake3.Update(vector_bytes).CumulativeHash();
 
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             test_data_blake3.result1);
 }
 
 TEST(Blake3HashTest, TestVector2) {
   Blake3Hash blake3;
   std::string vector_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector2, &vector_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector2, &vector_bytes));
 
   std::vector<uint8_t> hash = blake3.Update(vector_bytes).CumulativeHash();
 
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             test_data_blake3.result2);
 }
 
@@ -81,15 +81,15 @@ TEST(Blake3HashTest, TestVector2) {
 TEST(Blake3HashTest, ResetBetweenUpdates) {
   Blake3Hash blake3;
   std::string vector1_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
   std::string vector2_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector2, &vector2_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector2, &vector2_bytes));
   std::vector<uint8_t> hash = blake3.Update(vector1_bytes)
                                   .Reset()
                                   .Update(vector2_bytes)
                                   .CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             test_data_blake3.result2);
 }
 
@@ -98,18 +98,18 @@ TEST(Blake3HashTest, ResetBetweenUpdates) {
 TEST(Blake3HashTest, MultipleUpdates) {
   Blake3Hash blake3;
   std::string vector1_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
   std::string suffix_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.suffix, &suffix_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.suffix, &suffix_bytes));
 
   std::vector<uint8_t> result = blake3.Update(vector1_bytes).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)result.data(), result.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)result.data(), result.size())),
             test_data_blake3.result1);
 
   result = blake3.Update(suffix_bytes).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)result.data(), result.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)result.data(), result.size())),
             test_data_blake3.result2);
 }
 
@@ -124,15 +124,15 @@ TEST(Blake3HashTest, CustomOutLength) {
 
     std::string vector1_bytes;
     ASSERT_TRUE(
-        absl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
+        yacl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
 
     // Shorter outputs are prefixes of longer ones.
     // reference
     // https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf
     // Section 2.6
     std::vector<uint8_t> result = blake3.Update(vector1_bytes).CumulativeHash();
-    auto cur_result = absl::BytesToHexString(
-        absl::string_view((const char*)result.data(), result.size()));
+    auto cur_result = yacl::BytesToHexString(
+        std::string_view((const char*)result.data(), result.size()));
 
     // find minimum length
     auto len = std::min(i, static_cast<size_t>(BLAKE3_OUT_LEN));
@@ -154,14 +154,14 @@ TEST(Blake3HashTest, MaximumLength) {
   Blake3Hash blake3(max_size);
 
   std::string vector1_bytes;
-  ASSERT_TRUE(absl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
+  ASSERT_TRUE(yacl::HexStringToBytes(test_data_blake3.vector1, &vector1_bytes));
 
   auto len = std::min(max_size, static_cast<size_t>(BLAKE3_OUT_LEN));
 
   std::string std_result = test_data_blake3.result1.substr(0, 2 * len);
   std::vector<uint8_t> result = blake3.Update(vector1_bytes).CumulativeHash();
-  auto cur_result = absl::BytesToHexString(
-      absl::string_view((const char*)result.data(), result.size()));
+  auto cur_result = yacl::BytesToHexString(
+      std::string_view((const char*)result.data(), result.size()));
 
   EXPECT_EQ(cur_result.substr(0, 2 * len), std_result);
 }

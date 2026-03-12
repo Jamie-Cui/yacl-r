@@ -92,7 +92,7 @@ struct MpFssParam {
     indexes_[noise_num_ - 1] %= last_sp_vole_size_;
   }
 
-  void SetIndexes(absl::Span<const uint32_t> indexes) {
+  void SetIndexes(std::span<const uint32_t> indexes) {
     YACL_ENFORCE(indexes.size() >= noise_num_);
     for (uint32_t i = 0; i < noise_num_ - 1; ++i) {
       indexes_[i] = indexes[i] % sp_vole_size_;
@@ -158,23 +158,23 @@ MpfssOp<T> MakeMpfssOp(std::function<T(const T&, const T&)> op1,
 // GF(2^128) or Ring(2^128)
 void MpfssSend(const std::shared_ptr<link::Context>& ctx,
                const OtSendStore& /*cot*/ send_ot, const MpFssParam& param,
-               absl::Span<const uint128_t> w, absl::Span<uint128_t> output,
+               std::span<const uint128_t> w, std::span<uint128_t> output,
                const MpfssOp<uint128_t>& op = MpfssOp<uint128_t>());
 
 void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                const OtRecvStore& /*cot*/ recv_ot, const MpFssParam& param,
-               absl::Span<uint128_t> output,
+               std::span<uint128_t> output,
                const MpfssOp<uint128_t>& op = MpfssOp<uint128_t>());
 
 // GF(2^64) or Ring(2^64)
 void MpfssSend(const std::shared_ptr<link::Context>& ctx,
                const OtSendStore& /*cot*/ send_ot, const MpFssParam& param,
-               absl::Span<const uint64_t> w, absl::Span<uint64_t> output,
+               std::span<const uint64_t> w, std::span<uint64_t> output,
                const MpfssOp<uint64_t>& op = MpfssOp<uint64_t>());
 
 void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
                const OtRecvStore& /*cot*/ recv_ot, const MpFssParam& param,
-               absl::Span<uint64_t> output,
+               std::span<uint64_t> output,
                const MpfssOp<uint64_t>& op = MpfssOp<uint64_t>());
 //
 // --------------------------
@@ -190,25 +190,25 @@ void MpfssRecv(const std::shared_ptr<link::Context>& ctx,
 // GF(2^128) or Ring(2^128)
 void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtSendStore& /*cot*/ send_ot,
-                           MpFssParam& param, absl::Span<const uint128_t> w,
-                           absl::Span<uint128_t> output,
+                           MpFssParam& param, std::span<const uint128_t> w,
+                           std::span<uint128_t> output,
                            const MpfssOp<uint128_t>& op = MpfssOp<uint128_t>());
 
 void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtRecvStore& /*cot*/ recv_ot,
-                           MpFssParam& param, absl::Span<uint128_t> output,
+                           MpFssParam& param, std::span<uint128_t> output,
                            const MpfssOp<uint128_t>& op = MpfssOp<uint128_t>());
 
 // GF(2^64) or Ring(2^64)
 void MpfssSend_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtSendStore& /*cot*/ send_ot,
-                           MpFssParam& param, absl::Span<const uint64_t> w,
-                           absl::Span<uint64_t> output,
+                           MpFssParam& param, std::span<const uint64_t> w,
+                           std::span<uint64_t> output,
                            const MpfssOp<uint64_t>& op = MpfssOp<uint64_t>());
 
 void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            const OtRecvStore& /*cot*/ recv_ot,
-                           MpFssParam& param, absl::Span<uint64_t> output,
+                           MpFssParam& param, std::span<uint64_t> output,
                            const MpfssOp<uint64_t>& op = MpfssOp<uint64_t>());
 
 }  // namespace yacl::crypto

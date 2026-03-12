@@ -19,8 +19,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/strings/string_view.h"
-
 #include "yacl/io/rw/reader.h"
 
 namespace yacl::io {
@@ -108,7 +106,7 @@ class CsvReader : public Reader {
   void CountLines();
   void ParseHeader();
   void UpdateRowMap();
-  bool NextLine(std::vector<absl::string_view>*);
+  bool NextLine(std::vector<std::string>*);
 
   void BuildMmapFiles();
 

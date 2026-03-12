@@ -20,7 +20,7 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/exception.h"
 #include "yacl/utils/parallel.h"
@@ -101,12 +101,12 @@ class Item {
   // Ref a vector/span
   template <typename T, typename _ = std::enable_if_t<is_container_v<T>>>
   static Item Ref(T& c) {
-    return Item{absl::MakeSpan(c)};
+    return Item{std::span(c)};
   }
 
   template <typename T>
   static Item Ref(T* ptr, size_t len) {
-    return Item{absl::MakeSpan(ptr, len)};
+    return Item{std::span(ptr, len)};
   }
 
   // Take vector
@@ -186,12 +186,12 @@ class Item {
   }
 
   template <typename T>
-  absl::Span<T> AsSpan() {
+  std::span<T> AsSpan() {
     if (!IsArray()) {
       // single element as span
       YACL_ENFORCE(!IsReadOnly(), "Single const T is not supported now");
 
-      return absl::MakeSpan(&As<T>(), 1);
+      return std::span(&As<T>(), 1);
     }
 
     using RawT = std::remove_cv_t<T>;
@@ -204,28 +204,28 @@ class Item {
 
       // const value -> const T
       if (IsView()) {
-        return As<absl::Span<T>>();
+        return As<std::span<T>>();
       } else {
         // vector
-        return absl::MakeSpan(As<std::vector<RawT>>());
+        return std::span(As<std::vector<RawT>>());
       }
     }
 
     // non-const array case
     if (IsView()) {
       // span
-      return As<absl::Span<RawT>>();
+      return As<std::span<RawT>>();
     } else {
       // vector
-      return absl::MakeSpan(As<std::vector<RawT>>());
+      return std::span(As<std::vector<RawT>>());
     }
   }
 
   template <typename T>
-  absl::Span<const T> AsSpan() const {
+  std::span<const T> AsSpan() const {
     if (!IsArray()) {
       // single element as span
-      return absl::MakeSpan(&As<T>(), 1);
+      return std::span(&As<T>(), 1);
     }
 
     using RawT = std::remove_cv_t<T>;
@@ -233,17 +233,17 @@ class Item {
     if (IsView()) {
       if (IsReadOnly()) {
         // const value -> const T
-        return As<absl::Span<const T>>();
+        return As<std::span<const T>>();
       }
       // non-const value -> const T
-      return As<absl::Span<RawT>>();
+      return As<std::span<RawT>>();
     } else {
       static_assert(!std::is_same_v<bool, RawT>,
                     "Call AsSpan<bool> on a vector item is not allowed");
 
       // vector
       // non-const value -> const T
-      return absl::MakeConstSpan(As<std::vector<RawT>>());
+      return std::span(As<std::vector<RawT>>());
     }
   }
 
@@ -302,7 +302,7 @@ class Item {
   //  >   // ... now you can write data to out_sp
   //  > }
   template <typename T>
-  absl::Span<T> ResizeAndSpan(size_t expected_size) {
+  std::span<T> ResizeAndSpan(size_t expected_size) {
     static_assert(!std::is_const_v<T>, "Cannot resize as a const span");
 
     // If the underlying data is T
@@ -317,7 +317,7 @@ class Item {
       v_ = std::move(vec);
       Setup(true, false, false);
       // now return
-      return absl::MakeSpan(As<std::vector<T>>());
+      return std::span(As<std::vector<T>>());
     }
 
     // Now the underlying data is Vector or Span
@@ -330,11 +330,11 @@ class Item {
           vec.resize(expected_size);
         }
         // do span
-        return absl::MakeSpan(vec.data(), expected_size);
+        return std::span(vec.data(), expected_size);
       } else {
         // just discard vector<U> and replace with vector<T>
         v_ = std::vector<T>(expected_size);
-        return absl::MakeSpan(As<std::vector<T>>());
+        return std::span(As<std::vector<T>>());
       }
     }
 
@@ -343,11 +343,11 @@ class Item {
                  "The underlying data is readonly, Cannot create a read-write "
                  "span. Item detail: {}",
                  this->ToString());
-    YACL_ENFORCE(RawTypeIs<absl::Span<T>>(),
+    YACL_ENFORCE(RawTypeIs<std::span<T>>(),
                  "The underlying type of item is {}, excepted type is {}, "
                  "cannot resize",
                  v_.type().name(), typeid(T).name());
-    auto sp = As<absl::Span<T>>();
+    auto sp = As<std::span<T>>();
     if (sp.size() == expected_size) {
       return sp;
     } else if (sp.size() > expected_size) {
@@ -371,8 +371,8 @@ class Item {
   template <typename T>
   bool DataTypeIs() const noexcept {
     if (IsArray()) {
-      return RawTypeIs<std::vector<T>>() || RawTypeIs<absl::Span<T>>() ||
-             RawTypeIs<absl::Span<const T>>();
+      return RawTypeIs<std::vector<T>>() || RawTypeIs<std::span<T>>() ||
+             RawTypeIs<std::span<const T>>();
     } else {
       return RawTypeIs<T>();
     }
@@ -393,14 +393,14 @@ class Item {
     if (IsView()) {
       if (IsReadOnly()) {
         // const value -> const T
-        return As<absl::Span<const RawT>>().size();
+        return As<std::span<const RawT>>().size();
       }
       // non-const value -> const T
-      return As<absl::Span<RawT>>().size();
+      return As<std::span<RawT>>().size();
     } else {
       // vector
       // non-const value -> const T
-      return absl::MakeConstSpan(As<std::vector<RawT>>()).size();
+      return std::span(As<std::vector<RawT>>()).size();
     }
   }
 
@@ -427,7 +427,7 @@ class Item {
 
   // operations only for array
   template <typename T>
-  Item SubItem(size_t pos, size_t len = absl::Span<T>::npos) {
+  Item SubItem(size_t pos, size_t len = std::span<T>::npos) {
     YACL_ENFORCE(IsArray(), "You cannot do slice for scalar value");
 
     if (IsReadOnly() || is_const_v<T>) {
@@ -439,7 +439,7 @@ class Item {
   }
 
   template <typename T>
-  Item SubItem(size_t pos, size_t len = absl::Span<T>::npos) const {
+  Item SubItem(size_t pos, size_t len = std::span<T>::npos) const {
     YACL_ENFORCE(IsArray(), "You cannot do slice for scalar value");
     return SubConstItemImpl<remove_cvref_t<T>>(pos, len);
   }
@@ -449,7 +449,7 @@ class Item {
 
  protected:
   template <typename T>
-  constexpr explicit Item(const absl::Span<T>& span) : v_(span) {
+  constexpr explicit Item(const std::span<T>& span) : v_(span) {
     Setup(true, true, is_const_v<T>);
   }
 
@@ -490,10 +490,10 @@ class Item {
 
     Item item;
     if (IsView()) {
-      item.v_ = As<absl::Span<T>>().subspan(pos, len);
+      item.v_ = As<std::span<T>>().subspan(pos, len);
     } else {
       // vector
-      item.v_ = absl::MakeSpan(As<std::vector<T>>()).subspan(pos, len);
+      item.v_ = std::span(As<std::vector<T>>()).subspan(pos, len);
     }
 
     item.Setup(true, true, false);
@@ -506,15 +506,15 @@ class Item {
     if (IsView()) {
       if (IsReadOnly()) {
         // const span -> const span
-        item.v_ = As<absl::Span<const T>>().subspan(pos, len);
+        item.v_ = As<std::span<const T>>().subspan(pos, len);
       } else {
         // span -> const span
-        absl::Span<const T> sp = As<absl::Span<T>>().subspan(pos, len);
+        std::span<const T> sp = As<std::span<T>>().subspan(pos, len);
         item.v_ = sp;
       }
     } else {
       // vector -> const span
-      item.v_ = absl::MakeConstSpan(As<std::vector<T>>()).subspan(pos, len);
+      item.v_ = std::span(As<std::vector<T>>()).subspan(pos, len);
     }
 
     item.Setup(true, true, true);
@@ -522,9 +522,9 @@ class Item {
   }
 
   template <typename T>
-  bool IsAllSameTo(absl::Span<const T> real, const T& expected) const {
+  bool IsAllSameTo(std::span<const T> real, const T& expected) const {
     std::atomic<bool> res = true;
-    yacl::parallel_for(0, real.length(), [&](int64_t beg, int64_t end) {
+    yacl::parallel_for(0, real.size(), [&](int64_t beg, int64_t end) {
       for (int64_t i = beg; i < end; ++i) {
         if (!res) {
           return;

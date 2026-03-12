@@ -91,8 +91,8 @@ TEST(GFTest, Gf128_inner_product) {
 
   auto x = yacl::crypto::RandVec<uint128_t>(size);
   auto y = yacl::crypto::RandVec<uint128_t>(size);
-  auto x_span = absl::MakeSpan(x);
-  auto y_span = absl::MakeSpan(y);
+  auto x_span = std::span(x);
+  auto y_span = std::span(y);
   uint128_t ret;
 
   Gf128Mul(x_span, y_span, &ret);
@@ -114,8 +114,8 @@ TEST(GFTest, Gf64_inner_product) {
 
   auto x = yacl::crypto::RandVec<uint64_t>(size);
   auto y = yacl::crypto::RandVec<uint64_t>(size);
-  auto x_span = absl::MakeSpan(x);
-  auto y_span = absl::MakeSpan(y);
+  auto x_span = std::span(x);
+  auto y_span = std::span(y);
 
   uint64_t ret;
   Gf64Mul(x_span, y_span, &ret);

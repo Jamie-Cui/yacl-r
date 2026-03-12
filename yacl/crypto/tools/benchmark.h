@@ -60,7 +60,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, RP)(benchmark::State& state) {
     const auto& rp = RP(Ctype::AES128_CTR, 0x12345678);
 
     state.ResumeTiming();
-    rp.GenForMultiInputs(absl::MakeSpan(input));
+    rp.GenForMultiInputs(std::span(input));
   }
 }
 
@@ -74,7 +74,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, CRHASH)(benchmark::State& state) {
     std::fill(input.begin(), input.end(), 0);
 
     state.ResumeTiming();
-    ParaCrHash_128(absl::MakeSpan(input));
+    ParaCrHash_128(std::span(input));
   }
 }
 
@@ -88,7 +88,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, CRHASH_INPLACE)
     std::fill(input.begin(), input.end(), 0);
 
     state.ResumeTiming();
-    ParaCrHashInplace_128(absl::MakeSpan(input));
+    ParaCrHashInplace_128(std::span(input));
   }
 }
 
@@ -102,7 +102,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, CCRHASH)(benchmark::State& state) {
     std::fill(input.begin(), input.end(), 0);
 
     state.ResumeTiming();
-    ParaCcrHash_128(absl::MakeSpan(input));
+    ParaCcrHash_128(std::span(input));
   }
 }
 
@@ -117,7 +117,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, CCRHASH_INPLACE)
     std::fill(input.begin(), input.end(), 0);
 
     state.ResumeTiming();
-    ParaCcrHashInplace_128(absl::MakeSpan(input));
+    ParaCcrHashInplace_128(std::span(input));
   }
 }
 
@@ -132,7 +132,7 @@ BENCHMARK_DEFINE_F(PrgBench, PrgAesEcb)
     out.resize(n);
 
     state.ResumeTiming();
-    prg.Fill(absl::MakeSpan(out));
+    prg.Fill(std::span(out));
   }
 }
 
@@ -147,7 +147,7 @@ BENCHMARK_DEFINE_F(PrgBench, PrgSm4Ecb)
     out.resize(n);
 
     state.ResumeTiming();
-    prg.Fill(absl::MakeSpan(out));
+    prg.Fill(std::span(out));
   }
 }
 
@@ -164,7 +164,7 @@ BENCHMARK_DEFINE_F(FillPRandBench, FillPRand_AES128_ECB)
     out.resize(n);
 
     state.ResumeTiming();
-    FillPRand(ctype, seed, iv, count, absl::MakeSpan(out));
+    FillPRand(ctype, seed, iv, count, std::span(out));
   }
 }
 
@@ -181,7 +181,7 @@ BENCHMARK_DEFINE_F(FillPRandBench, FillPRandWithMersennePrime_AES128_ECB)
     out.resize(n);
 
     state.ResumeTiming();
-    FillPRandWithMersennePrime(ctype, seed, iv, count, absl::MakeSpan(out));
+    FillPRandWithMersennePrime(ctype, seed, iv, count, std::span(out));
   }
 }
 

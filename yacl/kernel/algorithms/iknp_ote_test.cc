@@ -48,10 +48,10 @@ TEST_P(IknpOtExtTest, Works) {
   std::vector<std::array<uint128_t, 2>> send_out(num_ot);
   std::vector<uint128_t> recv_out(num_ot);
   std::future<void> sender = std::async([&] {
-    IknpOtExtSend(lctxs[0], base_ot.recv, absl::MakeSpan(send_out), false);
+    IknpOtExtSend(lctxs[0], base_ot.recv, std::span(send_out), false);
   });
   std::future<void> receiver = std::async([&] {
-    IknpOtExtRecv(lctxs[1], base_ot.send, choices, absl::MakeSpan(recv_out),
+    IknpOtExtRecv(lctxs[1], base_ot.send, choices, std::span(recv_out),
                   false);
   });
   receiver.get();
@@ -101,10 +101,10 @@ TEST_P(IknpCotExtTest, Works) {
   std::vector<std::array<uint128_t, 2>> send_out(num_ot);
   std::vector<uint128_t> recv_out(num_ot);
   std::future<void> sender = std::async([&] {
-    IknpOtExtSend(lctxs[0], base_ot.recv, absl::MakeSpan(send_out), true);
+    IknpOtExtSend(lctxs[0], base_ot.recv, std::span(send_out), true);
   });
   std::future<void> receiver = std::async([&] {
-    IknpOtExtRecv(lctxs[1], base_ot.send, choices, absl::MakeSpan(recv_out),
+    IknpOtExtRecv(lctxs[1], base_ot.send, choices, std::span(recv_out),
                   true);
   });
   receiver.get();
@@ -181,7 +181,7 @@ TEST(IknpOtExtEdgeTest, Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     auto choices = RandBits<dynamic_bitset<uint128_t>>(kNumOt + 128);
     ASSERT_THROW(IknpOtExtRecv(lctxs[1], base_ot.send, choices,
-                               absl::MakeSpan(recv_out)),
+                               std::span(recv_out)),
                  ::yacl::Exception);
   }
   {
@@ -189,14 +189,14 @@ TEST(IknpOtExtEdgeTest, Test) {
     std::vector<uint128_t> recv_out(kNumOt);
     dynamic_bitset<uint128_t> choices;
     ASSERT_THROW(IknpOtExtRecv(lctxs[1], base_ot.send, choices,
-                               absl::MakeSpan(recv_out)),
+                               std::span(recv_out)),
                  ::yacl::Exception);
   }
   {
     // Empty send output.
     std::vector<std::array<uint128_t, 2>> send_out;
     ASSERT_THROW(
-        IknpOtExtSend(lctxs[1], base_ot.recv, absl::MakeSpan(send_out)),
+        IknpOtExtSend(lctxs[1], base_ot.recv, std::span(send_out)),
         ::yacl::Exception);
   }
 }

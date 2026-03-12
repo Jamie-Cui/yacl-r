@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
@@ -28,10 +28,10 @@ class BaseOTInterface {
  public:
   virtual ~BaseOTInterface();
   virtual void Send(const std::shared_ptr<link::Context>& ctx,
-                    absl::Span<std::array<Block, 2>> send_blocks) = 0;
+                    std::span<std::array<Block, 2>> send_blocks) = 0;
   virtual void Recv(const std::shared_ptr<link::Context>& ctx,
                     const dynamic_bitset<uint128_t>& choices,
-                    absl::Span<Block> recv_blocks) = 0;
+                    std::span<Block> recv_blocks) = 0;
 };
 
 }  // namespace yacl::crypto

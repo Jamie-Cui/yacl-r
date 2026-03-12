@@ -22,9 +22,9 @@
 
 // NOTE:
 // We add our own int128 due to:
-// - absl::int128 forget to support fully `constexpr`, i.e. `operator>>`. Giving
+// - int128_t forget to support fully `constexpr`, i.e. `operator>>`. Giving
 //   a patch for this will be a bit heavy.
-// - absl::int128 incorrectly instantiated std::numeric_limits<__int128>::traps,
+// - int128_t incorrectly instantiated std::numeric_limits<__int128>::traps,
 //   solved by trivial patch, easy to maintain.
 
 // Always require the compiler to support intrinsic 128 bits.

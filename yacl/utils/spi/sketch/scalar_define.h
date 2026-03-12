@@ -26,8 +26,8 @@
       auto xsp = x.AsSpan<T>();                                           \
       /* std::vector<bool> cannot write in parallel */                    \
       std::vector<uint8_t> res;                                           \
-      res.resize(xsp.length());                                           \
-      yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) { \
+      res.resize(xsp.size());                                           \
+      yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) { \
         for (int64_t i = beg; i < end; ++i) {                             \
           res[i] = FuncName(xsp[i]);                                      \
         }                                                                 \

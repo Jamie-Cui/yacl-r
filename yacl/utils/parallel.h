@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include "yacl/base/exception.h"
 
 namespace yacl {

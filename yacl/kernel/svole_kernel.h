@@ -45,24 +45,24 @@ class SVoleKernel : StreamingKernel {
 
   // evaluate function for sender
   void eval(const std::shared_ptr<link::Context>& lctx, uint128_t* out_delta,
-            absl::Span<uint128_t> out_c);
+            std::span<uint128_t> out_c);
   void eval_multithread(const std::shared_ptr<link::Context>& lctx,
-                        uint128_t* out_delta, absl::Span<uint128_t> out_c,
+                        uint128_t* out_delta, std::span<uint128_t> out_c,
                         int threads);
   void eval_streaming(const std::shared_ptr<link::Context>& lctx,
-                      uint128_t* out_delta, absl::Span<uint128_t> out_c,
+                      uint128_t* out_delta, std::span<uint128_t> out_c,
                       int threads, int step_size);
 
   // evaluate function for receiver
   void eval(const std::shared_ptr<link::Context>& lctx,
-            absl::Span<uint64_t> out_a, absl::Span<uint128_t> out_b);
+            std::span<uint64_t> out_a, std::span<uint128_t> out_b);
 
   void eval_multithread(const std::shared_ptr<link::Context>& lctx,
-                        absl::Span<uint64_t> out_a, absl::Span<uint128_t> out_b,
+                        std::span<uint64_t> out_a, std::span<uint128_t> out_b,
                         int threads);
 
   void eval_streaming(const std::shared_ptr<link::Context>& lctx,
-                      absl::Span<uint64_t> out_a, absl::Span<uint128_t> out_b,
+                      std::span<uint64_t> out_a, std::span<uint128_t> out_b,
                       int threads, int step_size);
 
  private:

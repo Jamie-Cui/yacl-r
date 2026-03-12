@@ -46,7 +46,7 @@ inline void PrcInit(const std::shared_ptr<link::Context>& ctx,
   ctx->SendAsync(ctx->NextRank(), SerializeUint128(my_seed), "SEED");
   auto peer_seed = DeserializeUint128(ctx->Recv(ctx->NextRank(), "SEED"));
   std::array<uint128_t, kKkrtWidth> keys_block;
-  PrgAesCtr<uint128_t>(my_seed ^ peer_seed, absl::MakeSpan(keys_block));
+  PrgAesCtr<uint128_t>(my_seed ^ peer_seed, std::span(keys_block));
   AES_opt_key_schedule<kKkrtWidth>(keys_block.data(), aes_key);
 }
 
@@ -213,8 +213,8 @@ std::unique_ptr<IGroupPRF> KkrtOtExtSend(
 
 void KkrtOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtSendStore& base_ot,
-                   absl::Span<const uint128_t> inputs,
-                   absl::Span<uint128_t> recv_blocks) {
+                   std::span<const uint128_t> inputs,
+                   std::span<uint128_t> recv_blocks) {
   YACL_ENFORCE(base_ot.Size() == kIknpWidth);
   YACL_ENFORCE(inputs.size() == recv_blocks.size() && !inputs.empty());
 
@@ -434,8 +434,8 @@ void KkrtOtExtReceiver::Init(const std::shared_ptr<link::Context>& ctx,
 }
 
 void KkrtOtExtReceiver::Encode(uint64_t ot_idx,
-                               absl::Span<const uint128_t> inputs,
-                               absl::Span<uint8_t> dest_encode) {
+                               std::span<const uint128_t> inputs,
+                               std::span<uint8_t> dest_encode) {
   YACL_ENFORCE(dest_encode.size() <= sizeof(uint128_t));
 
   KkrtRow prc;
@@ -454,7 +454,7 @@ void KkrtOtExtReceiver::Encode(uint64_t ot_idx,
 }
 
 void KkrtOtExtReceiver::Encode(uint64_t ot_idx, const uint128_t input,
-                               absl::Span<uint8_t> dest_encode) {
+                               std::span<uint8_t> dest_encode) {
   YACL_ENFORCE(dest_encode.size() <= sizeof(uint128_t));
 
   KkrtRow prc;

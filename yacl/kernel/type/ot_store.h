@@ -15,6 +15,7 @@
 #pragma once
 
 #include <memory>
+#include <span>
 #include <vector>
 
 #include "yacl/base/aligned_vector.h"
@@ -71,7 +72,7 @@ class OtRecvStore : public SliceBase {
   void SetBlock(uint64_t idx, uint128_t val);
 
   // get a span of the block
-  absl::Span<uint128_t> GetBlkBufSpan();
+  std::span<uint128_t> GetBlkBufSpan();
 
   // get a buffer copy of block buf (in bytes)
   Buffer GetBlkBuf();
@@ -174,7 +175,7 @@ class OtSendStore : public SliceBase {
   Buffer GetBlkBuf();
 
   // get a span of block buf
-  absl::Span<uint128_t> GetBlkBufSpan();
+  std::span<uint128_t> GetBlkBufSpan();
 
   // allow steal
   BlkBufPtr StealBlkBuf();

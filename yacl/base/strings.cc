@@ -56,32 +56,31 @@ bool HexStringToBytes(std::string_view hex, std::string* out) {
   return true;
 }
 
-std::vector<std::string_view> StrSplit(std::string_view sv, char delim) {
-  std::vector<std::string_view> result;
+std::vector<std::string> StrSplit(std::string_view sv, char delim) {
+  std::vector<std::string> result;
   size_t start = 0;
   for (size_t i = 0; i <= sv.size(); ++i) {
     if (i == sv.size() || sv[i] == delim) {
-      result.push_back(sv.substr(start, i - start));
+      result.emplace_back(sv.substr(start, i - start));
       start = i + 1;
     }
   }
   return result;
 }
 
-std::vector<std::string_view> StrSplit(std::string_view sv,
-                                       std::string_view sep) {
-  std::vector<std::string_view> result;
+std::vector<std::string> StrSplit(std::string_view sv, std::string_view sep) {
+  std::vector<std::string> result;
   if (sep.empty()) {
-    result.push_back(sv);
+    result.emplace_back(sv);
     return result;
   }
   size_t start = 0;
   size_t pos;
   while ((pos = sv.find(sep, start)) != std::string_view::npos) {
-    result.push_back(sv.substr(start, pos - start));
+    result.emplace_back(sv.substr(start, pos - start));
     start = pos + sep.size();
   }
-  result.push_back(sv.substr(start));
+  result.emplace_back(sv.substr(start));
   return result;
 }
 
@@ -154,6 +153,36 @@ std::string AsciiStrToLower(std::string_view sv) {
   std::string result(sv);
   AsciiStrToLower(&result);
   return result;
+}
+
+void AsciiStrToUpper(std::string* s) {
+  std::transform(s->begin(), s->end(), s->begin(),
+                 [](unsigned char c) { return std::toupper(c); });
+}
+
+std::string AsciiStrToUpper(std::string_view sv) {
+  std::string result(sv);
+  AsciiStrToUpper(&result);
+  return result;
+}
+
+std::string_view StripAsciiWhitespace(std::string_view sv) {
+  size_t start = 0;
+  while (start < sv.size() &&
+         std::isspace(static_cast<unsigned char>(sv[start]))) {
+    ++start;
+  }
+  size_t end = sv.size();
+  while (end > start &&
+         std::isspace(static_cast<unsigned char>(sv[end - 1]))) {
+    --end;
+  }
+  return sv.substr(start, end - start);
+}
+
+bool SimpleAtod(std::string_view sv, double* out) {
+  auto r = std::from_chars(sv.data(), sv.data() + sv.size(), *out);
+  return r.ec == std::errc{} && r.ptr == sv.data() + sv.size();
 }
 
 }  // namespace yacl

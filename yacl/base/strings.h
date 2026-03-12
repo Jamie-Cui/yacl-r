@@ -28,7 +28,7 @@ namespace yacl {
 // ---------------------------------------------------------------------------
 
 // Encode raw bytes (as a string_view) to lowercase hex string.
-// Equivalent to absl::BytesToHexString(string_view).
+// Equivalent to yacl::BytesToHexString(string_view).
 std::string BytesToHexString(std::string_view bytes);
 
 // Encode a span of bytes to lowercase hex string.
@@ -36,7 +36,7 @@ std::string BytesToHexString(std::span<const uint8_t> bytes);
 
 // Decode a hex string into binary bytes stored in *out.
 // Returns true on success, false if input is not valid hex or odd length.
-// Equivalent to absl::HexStringToBytes(hex, out).
+// Equivalent to yacl::HexStringToBytes(hex, out).
 bool HexStringToBytes(std::string_view hex, std::string* out);
 
 // ---------------------------------------------------------------------------
@@ -45,17 +45,14 @@ bool HexStringToBytes(std::string_view hex, std::string* out);
 // ---------------------------------------------------------------------------
 
 // Split sv on every occurrence of char delimiter.
-// Returns non-owning views into sv; sv must outlive the result.
-// Equivalent to absl::StrSplit(sv, delim) with char delimiter.
-std::vector<std::string_view> StrSplit(std::string_view sv, char delim);
+// Equivalent to yacl::StrSplit(sv, delim) with char delimiter.
+std::vector<std::string> StrSplit(std::string_view sv, char delim);
 
 // Split sv on every occurrence of string delimiter sep.
-// Returns non-owning views into sv; sv must outlive the result.
-std::vector<std::string_view> StrSplit(std::string_view sv,
-                                       std::string_view sep);
+std::vector<std::string> StrSplit(std::string_view sv, std::string_view sep);
 
 // Join a vector of strings with separator sep.
-// Equivalent to absl::StrJoin(parts, sep) for string ranges.
+// Equivalent to yacl::StrJoin(parts, sep) for string ranges.
 std::string StrJoin(const std::vector<std::string>& parts,
                     std::string_view sep);
 
@@ -64,7 +61,7 @@ std::string StrJoin(const std::vector<std::string_view>& parts,
                     std::string_view sep);
 
 // Join a span of int64_t values with separator sep.
-// Equivalent to absl::StrJoin(span_of_ints, sep).
+// Equivalent to yacl::StrJoin(span_of_ints, sep).
 std::string StrJoin(std::span<const int64_t> parts, std::string_view sep);
 
 // ---------------------------------------------------------------------------
@@ -73,37 +70,40 @@ std::string StrJoin(std::span<const int64_t> parts, std::string_view sep);
 
 // Parse a decimal integer from sv into *out.
 // Returns true on success, false if sv is not a valid decimal integer.
-// Equivalent to absl::SimpleAtoi(sv, out).
+// Equivalent to yacl::SimpleAtoi(sv, out).
 bool SimpleAtoi(std::string_view sv, int64_t* out);
 bool SimpleAtoi(std::string_view sv, int32_t* out);
 bool SimpleAtoi(std::string_view sv, uint64_t* out);
 bool SimpleAtoi(std::string_view sv, uint32_t* out);
 
 // Parse a hex integer from sv (without 0x prefix) into *out.
-// Equivalent to absl::SimpleHexAtoi(sv, out).
+// Equivalent to yacl::SimpleHexAtoi(sv, out).
 bool SimpleHexAtoi(std::string_view sv, uint64_t* out);
+
+// Parse a double from sv into *out.
+// Equivalent to yacl::SimpleAtod(sv, out).
+bool SimpleAtod(std::string_view sv, double* out);
 
 // ---------------------------------------------------------------------------
 // String matching (replacements for absl/strings/match.h)
 // ---------------------------------------------------------------------------
 
 // Returns true if haystack contains needle.
-// Equivalent to absl::StrContains.
+// Equivalent to yacl::StrContains.
 inline bool StrContains(std::string_view haystack, std::string_view needle) {
   return haystack.find(needle) != std::string_view::npos;
 }
 
 // Returns true if s starts with prefix.
-// Equivalent to absl::StartsWith.
+// Equivalent to yacl::StartsWith.
 inline bool StartsWith(std::string_view s, std::string_view prefix) {
-  return s.size() >= prefix.size() && s.substr(0, prefix.size()) == prefix;
+  return s.starts_with(prefix);
 }
 
 // Returns true if s ends with suffix.
-// Equivalent to absl::EndsWith.
+// Equivalent to yacl::EndsWith.
 inline bool EndsWith(std::string_view s, std::string_view suffix) {
-  return s.size() >= suffix.size() &&
-         s.substr(s.size() - suffix.size()) == suffix;
+  return s.ends_with(suffix);
 }
 
 // ---------------------------------------------------------------------------
@@ -130,11 +130,20 @@ inline char AsciiToUpper(char c) {
 }
 
 // Convert all ASCII characters in *s to lowercase in place.
-// Equivalent to absl::AsciiStrToLower(s) (in-place overload).
+// Equivalent to yacl::AsciiStrToLower(s) (in-place overload).
 void AsciiStrToLower(std::string* s);
 
 // Return a lowercase copy of sv.
-// Equivalent to absl::AsciiStrToLower(sv) (copy overload).
+// Equivalent to yacl::AsciiStrToLower(sv) (copy overload).
 std::string AsciiStrToLower(std::string_view sv);
+
+// Convert all ASCII characters in *s to uppercase in place.
+void AsciiStrToUpper(std::string* s);
+
+// Return an uppercase copy of sv.
+std::string AsciiStrToUpper(std::string_view sv);
+
+// Strip leading and trailing ASCII whitespace from sv. Returns a view into sv.
+std::string_view StripAsciiWhitespace(std::string_view sv);
 
 }  // namespace yacl

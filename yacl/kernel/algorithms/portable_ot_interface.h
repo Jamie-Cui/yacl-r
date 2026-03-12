@@ -35,11 +35,11 @@ class PortableOtInterface : public BaseOTInterface {
   ~PortableOtInterface() override = default;
 
   void Send(const std::shared_ptr<link::Context>& ctx,
-            absl::Span<std::array<Block, 2>> send_blocks) override;
+            std::span<std::array<Block, 2>> send_blocks) override;
 
   void Recv(const std::shared_ptr<link::Context>& ctx,
             const dynamic_bitset<uint128_t>& choices,
-            absl::Span<Block> recv_blocks) override;
+            std::span<Block> recv_blocks) override;
 };
 
 }  // namespace yacl::crypto

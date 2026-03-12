@@ -29,7 +29,7 @@ namespace {
 inline auto RandomBlocks(size_t length) {
   std::vector<uint128_t> rand_inputs(length);
   Prg<uint128_t> prg;
-  prg.Fill<uint128_t>(absl::MakeSpan(rand_inputs));
+  prg.Fill<uint128_t>(std::span(rand_inputs));
   return rand_inputs;
 }
 
@@ -48,8 +48,8 @@ TEST(RPTest, BlocksWorks) {
 
   auto input = RandomBlocks(20);
 
-  EXPECT_EQ(RP.GenForMultiInputs(absl::MakeSpan(input)),
-            RP.GenForMultiInputs(absl::MakeSpan(input)));
+  EXPECT_EQ(RP.GenForMultiInputs(std::span(input)),
+            RP.GenForMultiInputs(std::span(input)));
 }
 
 }  // namespace yacl::crypto

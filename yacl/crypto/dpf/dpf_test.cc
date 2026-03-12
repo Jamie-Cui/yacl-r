@@ -94,8 +94,8 @@ TEST(DpfTest, EvalAll) {
   size_t range = 1 << k_in_bitnum;
   auto out1 = std::vector<GE2n<k_out_bitnum>>(range);
   auto out2 = std::vector<GE2n<k_out_bitnum>>(range);
-  DpfEvalAll<k_in_bitnum, k_out_bitnum>(&k0, absl::MakeSpan(out1));
-  DpfEvalAll<k_in_bitnum, k_out_bitnum>(&k1, absl::MakeSpan(out2));
+  DpfEvalAll<k_in_bitnum, k_out_bitnum>(&k0, std::span(out1));
+  DpfEvalAll<k_in_bitnum, k_out_bitnum>(&k1, std::span(out2));
 
   for (size_t i = 0; i < range; i++) {
     auto result = out1[i] + out2[i];

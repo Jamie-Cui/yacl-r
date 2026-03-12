@@ -262,7 +262,7 @@ OtSendStore FerretOtExtSend(const std::shared_ptr<link::Context>& ctx,
 
   // placeholder for the outputs
   UninitAlignedVector<uint128_t> out(ot_num);
-  auto out_span = absl::MakeSpan(out.data(), out.size());
+  auto out_span = std::span(out.data(), out.size());
 
   // For uniform noise assumption only
   // CuckooIndex::Options option;
@@ -353,7 +353,7 @@ OtRecvStore FerretOtExtRecv(const std::shared_ptr<link::Context>& ctx,
 
   // placeholder for the outputs
   UninitAlignedVector<uint128_t> out(ot_num);
-  auto out_span = absl::MakeSpan(out);
+  auto out_span = std::span(out);
 
   // For uniform noise assumption only
   // CuckooIndex::Options option;
@@ -410,7 +410,7 @@ OtRecvStore FerretOtExtRecv(const std::shared_ptr<link::Context>& ctx,
 void FerretOtExtSend_cheetah(const std::shared_ptr<link::Context>& ctx,
                              const OtSendStore& base_cot,
                              const LpnParam& lpn_param, uint64_t ot_num,
-                             absl::Span<uint128_t> out, bool mal) {
+                             std::span<uint128_t> out, bool mal) {
   YACL_ENFORCE(ctx->WorldSize() == 2);  // Make sure that OT has two parties
   YACL_ENFORCE(base_cot.Type() == OtStoreType::Compact);
   YACL_ENFORCE(base_cot.Size() >= FerretCotHelper(lpn_param, ot_num));
@@ -493,7 +493,7 @@ void FerretOtExtSend_cheetah(const std::shared_ptr<link::Context>& ctx,
 void FerretOtExtRecv_cheetah(const std::shared_ptr<link::Context>& ctx,
                              const OtRecvStore& base_cot,
                              const LpnParam& lpn_param, uint64_t ot_num,
-                             absl::Span<uint128_t> out, bool mal) {
+                             std::span<uint128_t> out, bool mal) {
   YACL_ENFORCE(ctx->WorldSize() == 2);  // Make sure that OT has two parties
   YACL_ENFORCE(base_cot.Type() == OtStoreType::Compact);
   YACL_ENFORCE(base_cot.Size() >= FerretCotHelper(lpn_param, ot_num));

@@ -21,9 +21,9 @@
 #include <string>
 #include <vector>
 
-#include "absl/strings/escaping.h"
 #include "spdlog/spdlog.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
 #include "yacl/io/stream/file_io.h"
@@ -184,7 +184,7 @@ class BuiltinBFCircuit {
     offset += kFixPadSize;
 
     // original input message
-    // auto input_reverse = ReverseBytes(absl::MakeSpan(input));  // copy here
+    // auto input_reverse = ReverseBytes(std::span(input));  // copy here
     auto input_reverse = std::vector<uint8_t>(input.begin(), input.end());
     std::reverse(input_reverse.begin(), input_reverse.end());
     std::memcpy(result.data() + offset, input_reverse.data(), input_size);

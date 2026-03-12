@@ -16,11 +16,11 @@
 #include <filesystem>
 #include <random>
 
-#include "absl/strings/str_split.h"
 #include "fmt/format.h"
 #include "gflags/gflags.h"
 #include "gtest/gtest.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 #include "yacl/io/rw/csv_reader.h"
 #include "yacl/io/rw/csv_writer.h"
@@ -294,7 +294,7 @@ TEST(LARGE, test) {
 
   Schema file_schema;
   std::vector<std::string> feature_names =
-      absl::StrSplit(FLAGS_feature_names, ",");
+      yacl::StrSplit(FLAGS_feature_names, ",");
   file_schema.feature_names = feature_names;
   file_schema.feature_types.resize(feature_names.size(), Schema::FLOAT);
   if (FLAGS_string_col_index != -1) {

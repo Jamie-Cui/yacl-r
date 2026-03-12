@@ -96,11 +96,11 @@ TEST_P(FerretOtExtTest, CheetahWorks) {
   // WHEN
   auto sender = std::async([&] {
     FerretOtExtSend_cheetah(lctxs[0], cots_compact.send, lpn_param, ot_num,
-                            absl::MakeSpan(send_out));
+                            std::span(send_out));
   });
   auto receiver = std::async([&] {
     FerretOtExtRecv_cheetah(lctxs[1], cots_compact.recv, lpn_param, ot_num,
-                            absl::MakeSpan(recv_out));
+                            std::span(recv_out));
   });
   receiver.get();
   sender.get();

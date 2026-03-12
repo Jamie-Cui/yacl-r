@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/strings/escaping.h"
 #include "gtest/gtest.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 #include "yacl/crypto/hash/ssl_hash.h"
 
@@ -97,16 +97,16 @@ TYPED_TEST_SUITE(SslHashTest, MyTypes);
 TYPED_TEST(SslHashTest, TestVector1) {
   std::vector<uint8_t> hash =
       TypeParam().Update(this->Data().vector1).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             this->Data().result1);
 }
 
 TYPED_TEST(SslHashTest, TestVector2) {
   std::vector<uint8_t> hash =
       TypeParam().Update(this->Data().vector2).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             this->Data().result2);
 }
 
@@ -118,8 +118,8 @@ TYPED_TEST(SslHashTest, ResetBetweenUpdates) {
                                   .Reset()
                                   .Update(this->Data().vector2)
                                   .CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)hash.data(), hash.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)hash.data(), hash.size())),
             this->Data().result2);
 }
 
@@ -129,13 +129,13 @@ TYPED_TEST(SslHashTest, MultipleUpdates) {
   TypeParam hash;
   std::vector<uint8_t> result =
       hash.Update(this->Data().vector1).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)result.data(), result.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)result.data(), result.size())),
             this->Data().result1);
 
   result = hash.Update(this->Data().suffix).CumulativeHash();
-  EXPECT_EQ(absl::BytesToHexString(
-                absl::string_view((const char*)result.data(), result.size())),
+  EXPECT_EQ(yacl::BytesToHexString(
+                std::string_view((const char*)result.data(), result.size())),
             this->Data().result2);
 }
 

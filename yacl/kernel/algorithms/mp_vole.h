@@ -68,7 +68,7 @@ class MpVoleSender {
   MpVoleSender(uint64_t noise_num, uint64_t mp_vole_size, bool mal = false)
       : param_(noise_num, mp_vole_size, mal), is_mal_(mal) {}
 
-  void OneTimeSetup(K delta, absl::Span<K> pre_c) {
+  void OneTimeSetup(K delta, std::span<K> pre_c) {
     YACL_ENFORCE(param_.base_vole_num_ == pre_c.size());
 
     delta_ = delta;
@@ -89,16 +89,16 @@ class MpVoleSender {
   // Multi-Point VOLE
   // MpVoleSender.Send would set 'c' as a * delta + b.
   void Send(const std::shared_ptr<link::Context>& ctx,
-            const OtSendStore& /*cot*/ send_ot, absl::Span<K> c,
+            const OtSendStore& /*cot*/ send_ot, std::span<K> c,
             bool fixed_index = false) {
     YACL_ENFORCE(is_setup_ == true);
     YACL_ENFORCE(is_finish_ == false);
     YACL_ENFORCE(c.size() >= param_.mp_vole_size_);
     // Call MPFSS
     if (fixed_index) {
-      MpfssSend_fixed_index(ctx, send_ot, param_, absl::MakeSpan(pre_c_), c);
+      MpfssSend_fixed_index(ctx, send_ot, param_, std::span(pre_c_), c);
     } else {
-      MpfssSend(ctx, send_ot, param_, absl::MakeSpan(pre_c_), c);
+      MpfssSend(ctx, send_ot, param_, std::span(pre_c_), c);
     }
 
     if (is_mal_) {
@@ -140,7 +140,7 @@ class MpVoleReceiver {
   MpVoleReceiver(uint64_t noise_num, uint64_t mp_vole_size, bool mal = false)
       : param_(noise_num, mp_vole_size, mal), is_mal_(mal) {}
 
-  void OneTimeSetup(absl::Span<T> pre_a, absl::Span<K> pre_b) {
+  void OneTimeSetup(std::span<T> pre_a, std::span<K> pre_b) {
     YACL_ENFORCE(param_.base_vole_num_ == pre_a.size());
     YACL_ENFORCE(param_.base_vole_num_ == pre_b.size());
 
@@ -162,8 +162,8 @@ class MpVoleReceiver {
   // MpVoleReceiver.Recv would set 'a' and 'b'
   // s.t. c = a * delta + b, where a is t-weight vector.
   void Recv(const std::shared_ptr<link::Context>& ctx,
-            const OtRecvStore& /*cot*/ recv_ot, absl::Span<T> a,
-            absl::Span<K> b, bool fixed_index = false) {
+            const OtRecvStore& /*cot*/ recv_ot, std::span<T> a,
+            std::span<K> b, bool fixed_index = false) {
     YACL_ENFORCE(is_setup_ == true);
     YACL_ENFORCE(is_finish_ == false);
     YACL_ENFORCE(a.size() >= param_.mp_vole_size_);
@@ -192,8 +192,8 @@ class MpVoleReceiver {
           math::UniversalHash<K>(seed, b.subspan(0, param_.mp_vole_size_));
       auto coef = math::ExtractHashCoef<K>(seed, indexes);
       // Notice that: Sender.uhash + Receiver.uhash = payload * delta
-      auto payload = math::GfMul(absl::MakeSpan(coef),
-                                 absl::MakeSpan(pre_a_.data(), indexes.size()));
+      auto payload = math::GfMul(std::span(coef),
+                                 std::span(pre_a_.data(), indexes.size()));
 
       // mask uhash && payload by extra one VOLE correlation
       payload ^= pre_a_[param_.base_vole_num_ - 1];

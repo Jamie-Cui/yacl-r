@@ -108,7 +108,7 @@ inline void MpCotUNSend(const std::shared_ptr<link::Context>& ctx,
                         const OtSendStore& cot,
                         const std::unique_ptr<FerretSimpleMap>& simple_map,
                         const CuckooIndex::Options& cuckoo_option,
-                        absl::Span<uint128_t> out) {
+                        std::span<uint128_t> out) {
   const uint64_t bin_num = cuckoo_option.NumBins();
 
   // for each bin, call single-point cot
@@ -123,7 +123,7 @@ inline void MpCotUNSend(const std::shared_ptr<link::Context>& ctx,
 
     s[i].resize(spcot_range_n);
     auto cot_slice = cot.Slice(slice_begin, slice_begin + spot_option);
-    GywzOtExtSend(ctx, cot_slice, spcot_range_n, absl::MakeSpan(s[i]));
+    GywzOtExtSend(ctx, cot_slice, spcot_range_n, std::span(s[i]));
     slice_begin += spot_option;
   }
 
@@ -143,8 +143,8 @@ inline void MpCotUNRecv(const std::shared_ptr<link::Context>& ctx,
                         const OtRecvStore& cot,
                         const std::unique_ptr<FerretSimpleMap>& simple_map,
                         const CuckooIndex::Options& cuckoo_option,
-                        absl::Span<const uint64_t> idxes,
-                        absl::Span<uint128_t> out) {
+                        std::span<const uint64_t> idxes,
+                        std::span<uint128_t> out) {
   const uint64_t bin_num = cuckoo_option.NumBins();
 
   // random permutation
@@ -152,7 +152,7 @@ inline void MpCotUNRecv(const std::shared_ptr<link::Context>& ctx,
   auto idxes_h = kRP.GenForMultiInputs(idx_blocks);
 
   CuckooIndex cuckoo_index(cuckoo_option);
-  cuckoo_index.Insert(absl::MakeSpan(idxes_h));
+  cuckoo_index.Insert(std::span(idxes_h));
 
   // for each (non-empty) cuckoo bin, call single-point c-ot
   std::fill(out.begin(), out.end(), 0);
@@ -174,7 +174,7 @@ inline void MpCotUNRecv(const std::shared_ptr<link::Context>& ctx,
 
     auto cot_slice = cot.Slice(slice_begin, slice_begin + spot_option);
     GywzOtExtRecv(ctx, cot_slice, spcot_range_n, spcot_idx,
-                  absl::MakeSpan(r[i]));
+                  std::span(r[i]));
     slice_begin += spot_option;
   }
 

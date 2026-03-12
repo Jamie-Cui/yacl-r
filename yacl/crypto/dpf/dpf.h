@@ -126,6 +126,6 @@ template <size_t /* input bit num */ M, size_t /* output bit num */ N>
 void DpfEval(const DpfKey& key, const GE2n<M>& in, GE2n<N>* out);
 
 template <size_t /* input bit num */ M, size_t /* output bit num */ N>
-void DpfEvalAll(DpfKey* key, absl::Span<GE2n<N>> out);
+void DpfEvalAll(DpfKey* key, std::span<GE2n<N>> out);
 
 }  // namespace yacl::crypto

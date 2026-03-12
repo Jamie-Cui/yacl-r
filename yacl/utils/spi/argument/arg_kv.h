@@ -22,9 +22,9 @@
 #include <type_traits>
 #include <utility>
 
-#include "absl/strings/ascii.h"
 #include "spdlog/spdlog.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 #include "yacl/utils/spi/argument/util.h"
 

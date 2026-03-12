@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/secparam.h"
@@ -79,11 +79,11 @@ class GcmCrypto {
   // Encrypts `plaintext` into `ciphertext`.
   // For aes-128, mac size shall be 16 fixed size.
   void Encrypt(ByteContainerView plaintext, ByteContainerView aad,
-               absl::Span<uint8_t> ciphertext, absl::Span<uint8_t> mac) const;
+               std::span<uint8_t> ciphertext, std::span<uint8_t> mac) const;
 
   // Decrypts `ciphertext` into `plaintext`.
   void Decrypt(ByteContainerView ciphertext, ByteContainerView aad,
-               ByteContainerView mac, absl::Span<uint8_t> plaintext) const;
+               ByteContainerView mac, std::span<uint8_t> plaintext) const;
 
  private:
   const GcmCryptoSchema schema_;    // GCM crypto schema

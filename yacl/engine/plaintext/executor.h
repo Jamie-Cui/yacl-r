@@ -27,6 +27,7 @@
 #pragma once
 
 #include <memory>
+#include <span>
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/dynamic_bitset.h"
@@ -49,7 +50,7 @@ class PlainExecutor {
 
   // Setup the input wire (local operation)
   template <typename T = uint64_t>
-  void SetupInputs(absl::Span<T> inputs) {
+  void SetupInputs(std::span<T> inputs) {
     YACL_ENFORCE(inputs.size() == circ_->niv);
 
     dynamic_bitset<BlockType> input_wires;
@@ -74,7 +75,7 @@ class PlainExecutor {
 
   // Finalize and get the result
   template <typename T = uint64_t>
-  void Finalize(absl::Span<T> outputs) {
+  void Finalize(std::span<T> outputs) {
     YACL_ENFORCE(outputs.size() >= circ_->nov);
     size_t index = wires_.size();
     for (size_t i = 0; i < circ_->nov; ++i) {

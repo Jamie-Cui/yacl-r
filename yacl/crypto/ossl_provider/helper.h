@@ -19,9 +19,9 @@
 #include <string>
 #include <vector>
 
-#include "absl/strings/str_split.h"
 #include "spdlog/spdlog.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/base/exception.h"
 
 #ifdef __APPLE__
@@ -62,15 +62,15 @@ inline std::string GetProviderPath() {
 
     // step 1: determine if target is "cc_test" or "cc_library"
     if (selfdir_str.find("sandbox") != std::string::npos) {
-      std::vector<std::string> tmp = absl::StrSplit(selfdir_str, "sandbox");
+      std::vector<std::string> tmp = yacl::StrSplit(selfdir_str, "sandbox");
       path1 = tmp.at(0);
-      tmp = absl::StrSplit(selfdir_str, "execroot");
-      tmp = absl::StrSplit(tmp.at(1), "bin");
+      tmp = yacl::StrSplit(selfdir_str, "execroot");
+      tmp = yacl::StrSplit(tmp.at(1), "bin");
       path2 = tmp.at(0);
     } else {
-      std::vector<std::string> tmp = absl::StrSplit(selfdir_str, "execroot");
+      std::vector<std::string> tmp = yacl::StrSplit(selfdir_str, "execroot");
       path1 = tmp.at(0);
-      tmp = absl::StrSplit(tmp.at(1), "bin");
+      tmp = yacl::StrSplit(tmp.at(1), "bin");
       path2 = tmp.at(0);
     }
 

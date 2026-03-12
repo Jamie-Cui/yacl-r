@@ -79,20 +79,20 @@ TEST_P(Mpfss64Test, Work) {
 
   auto sender = std::async([&] {
     if (is_fixed) {
-      MpfssSend_fixed_index(lctxs[0], cot.send, param, absl::MakeSpan(w),
-                            absl::MakeSpan(s_output), op);
+      MpfssSend_fixed_index(lctxs[0], cot.send, param, std::span(w),
+                            std::span(s_output), op);
     } else {
-      MpfssSend(lctxs[0], cot.send, param, absl::MakeSpan(w),
-                absl::MakeSpan(s_output), op);
+      MpfssSend(lctxs[0], cot.send, param, std::span(w),
+                std::span(s_output), op);
     }
   });
 
   auto receiver = std::async([&] {
     if (is_fixed) {
-      MpfssRecv_fixed_index(lctxs[1], cot.recv, param, absl::MakeSpan(r_output),
+      MpfssRecv_fixed_index(lctxs[1], cot.recv, param, std::span(r_output),
                             op);
     } else {
-      MpfssRecv(lctxs[1], cot.recv, param, absl::MakeSpan(r_output), op);
+      MpfssRecv(lctxs[1], cot.recv, param, std::span(r_output), op);
     }
   });
 
@@ -142,20 +142,20 @@ TEST_P(Mpfss128Test, Work) {
 
   auto sender = std::async([&] {
     if (is_fixed) {
-      MpfssSend_fixed_index(lctxs[0], cot.send, param, absl::MakeSpan(w),
-                            absl::MakeSpan(s_output), op);
+      MpfssSend_fixed_index(lctxs[0], cot.send, param, std::span(w),
+                            std::span(s_output), op);
     } else {
-      MpfssSend(lctxs[0], cot.send, param, absl::MakeSpan(w),
-                absl::MakeSpan(s_output), op);
+      MpfssSend(lctxs[0], cot.send, param, std::span(w),
+                std::span(s_output), op);
     }
   });
 
   auto receiver = std::async([&] {
     if (is_fixed) {
-      MpfssRecv_fixed_index(lctxs[1], cot.recv, param, absl::MakeSpan(r_output),
+      MpfssRecv_fixed_index(lctxs[1], cot.recv, param, std::span(r_output),
                             op);
     } else {
-      MpfssRecv(lctxs[1], cot.recv, param, absl::MakeSpan(r_output), op);
+      MpfssRecv(lctxs[1], cot.recv, param, std::span(r_output), op);
     }
   });
 

@@ -46,10 +46,10 @@ TEST_P(GywzParamTest, CotWork) {
   std::vector<uint128_t> recv_out(n);
 
   std::future<void> sender = std::async([&] {
-    GywzOtExtRecv(lctxs[0], base_ot.recv, n, index, absl::MakeSpan(recv_out));
+    GywzOtExtRecv(lctxs[0], base_ot.recv, n, index, std::span(recv_out));
   });
   std::future<void> receiver = std::async([&] {
-    GywzOtExtSend(lctxs[1], base_ot.send, n, absl::MakeSpan(send_out));
+    GywzOtExtSend(lctxs[1], base_ot.send, n, std::span(send_out));
   });
   sender.get();
   receiver.get();
@@ -87,10 +87,10 @@ TEST_P(GywzParamTest, FerretSpCotWork) {
   std::vector<uint128_t> recv_out(n);
 
   std::future<void> sender = std::async([&] {
-    GywzOtExtRecv_ferret(lctxs[0], base_ot.recv, n, absl::MakeSpan(recv_out));
+    GywzOtExtRecv_ferret(lctxs[0], base_ot.recv, n, std::span(recv_out));
   });
   std::future<void> receiver = std::async([&] {
-    GywzOtExtSend_ferret(lctxs[1], base_ot.send, n, absl::MakeSpan(send_out));
+    GywzOtExtSend_ferret(lctxs[1], base_ot.send, n, std::span(send_out));
   });
   sender.get();
   receiver.get();
@@ -124,11 +124,11 @@ TEST_P(GywzParamTest, FixIndexSpCotWork) {
 
   std::future<void> sender = std::async([&] {
     GywzOtExtRecv_fixed_index(lctxs[0], base_ot.recv, n,
-                              absl::MakeSpan(recv_out));
+                              std::span(recv_out));
   });
   std::future<void> receiver = std::async([&] {
     GywzOtExtSend_fixed_index(lctxs[1], base_ot.send, n,
-                              absl::MakeSpan(send_out));
+                              std::span(send_out));
   });
   sender.get();
   receiver.get();
@@ -172,12 +172,12 @@ TEST(GywzEdgeTest, Work) {
 
   std::future<void> sender = std::async([&] {
     ASSERT_THROW(GywzOtExtRecv(lctxs[0], base_ot.recv, n, index,
-                               absl::MakeSpan(recv_out)),
+                               std::span(recv_out)),
                  ::yacl::Exception);
   });
   std::future<void> receiver = std::async([&] {
     ASSERT_THROW(
-        GywzOtExtSend(lctxs[1], base_ot.send, n, absl::MakeSpan(send_out)),
+        GywzOtExtSend(lctxs[1], base_ot.send, n, std::span(send_out)),
         ::yacl::Exception);
   });
   sender.get();

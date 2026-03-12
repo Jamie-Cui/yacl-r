@@ -52,7 +52,7 @@
 #include <cstring>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
@@ -241,8 +241,8 @@ inline AES_KEY AES_set_decrypt_key(uint128_t userkey) {
 }
 
 inline void AES_ecb_encrypt_blks(const AES_KEY &key,
-                                 absl::Span<const uint128_t> in_blks,
-                                 absl::Span<uint128_t> out_blks) {
+                                 std::span<const uint128_t> in_blks,
+                                 std::span<uint128_t> out_blks) {
   YACL_ENFORCE_EQ(in_blks.size(), out_blks.size());
   const auto *in_ptr = reinterpret_cast<const __m128i *>(in_blks.data());
   auto *out_ptr = reinterpret_cast<__m128i *>(out_blks.data());
@@ -250,9 +250,9 @@ inline void AES_ecb_encrypt_blks(const AES_KEY &key,
 }
 
 inline std::vector<uint128_t> AES_ecb_encrypt_blks(
-    const AES_KEY &key, absl::Span<const uint128_t> in_blks) {
+    const AES_KEY &key, std::span<const uint128_t> in_blks) {
   std::vector<uint128_t> out(in_blks.size());
-  AES_ecb_encrypt_blks(key, in_blks, absl::MakeSpan(out));
+  AES_ecb_encrypt_blks(key, in_blks, std::span(out));
   return out;
 }
 
@@ -265,8 +265,8 @@ inline void AES_ecb_encrypt_blks(const AES_KEY &key, const uint128_t *in_blks,
 }
 
 inline void AES_ecb_decrypt_blks(const AES_KEY &key,
-                                 absl::Span<const uint128_t> in_blks,
-                                 absl::Span<uint128_t> out_blks) {
+                                 std::span<const uint128_t> in_blks,
+                                 std::span<uint128_t> out_blks) {
   YACL_ENFORCE_EQ(in_blks.size(), out_blks.size());
   const auto *in_ptr = reinterpret_cast<const __m128i *>(in_blks.data());
   auto *out_ptr = reinterpret_cast<__m128i *>(out_blks.data());
@@ -274,9 +274,9 @@ inline void AES_ecb_decrypt_blks(const AES_KEY &key,
 }
 
 inline std::vector<uint128_t> AES_ecb_decrypt_blks(
-    const AES_KEY &key, absl::Span<const uint128_t> in_blks) {
+    const AES_KEY &key, std::span<const uint128_t> in_blks) {
   std::vector<uint128_t> out(in_blks.size());
-  AES_ecb_decrypt_blks(key, in_blks, absl::MakeSpan(out));
+  AES_ecb_decrypt_blks(key, in_blks, std::span(out));
   return out;
 }
 

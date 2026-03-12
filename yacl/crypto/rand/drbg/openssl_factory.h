@@ -59,13 +59,13 @@ class OpensslDrbg : public Drbg {
   static std::unique_ptr<Drbg> Create(const std::string &type,
                                       const SpiArgs &config) {
     YACL_ENFORCE(Check(type, config));  // make sure check passes
-    return std::make_unique<OpensslDrbg>(absl::AsciiStrToUpper(type));
+    return std::make_unique<OpensslDrbg>(yacl::AsciiStrToUpper(type));
   }
 
   // SPI: Check drbg avaliability
   static bool Check(const std::string &type,
                     [[maybe_unused]] const SpiArgs &config) {
-    return find(begin(TypeList), end(TypeList), absl::AsciiStrToUpper(type)) !=
+    return find(begin(TypeList), end(TypeList), yacl::AsciiStrToUpper(type)) !=
            end(TypeList);
   }
 

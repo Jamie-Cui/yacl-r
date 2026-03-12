@@ -89,7 +89,7 @@ class Polynomial {
    * @param prime
    * @param result
    */
-  void LagrangeInterpolation(absl::Span<const MPInt>, absl::Span<const MPInt>,
+  void LagrangeInterpolation(std::span<const MPInt>, std::span<const MPInt>,
                              MPInt* result) const;
 
   /**
@@ -109,11 +109,11 @@ class Polynomial {
    */
   std::vector<MPInt> GetCoeffs() const { return coeffs_; }
 
-  static MPInt LagrangeInterpolation(absl::Span<const MPInt> xs,
-                                     absl::Span<const MPInt> ys,
+  static MPInt LagrangeInterpolation(std::span<const MPInt> xs,
+                                     std::span<const MPInt> ys,
                                      const MPInt& target_x,
                                      const MPInt& modulus);
-  static MPInt LagrangeComputeAtX(absl::Span<const MPInt> xs, uint64_t index,
+  static MPInt LagrangeComputeAtX(std::span<const MPInt> xs, uint64_t index,
                                   const MPInt& y, const MPInt& target_x,
                                   const MPInt& modulus);
 

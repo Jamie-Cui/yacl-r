@@ -60,7 +60,7 @@ size_t GetTerminateLevel(bool enable_evalall, size_t m, size_t n) {
 }
 
 template <size_t /* input bit num */ M, size_t /* output bit num */ N>
-void Traverse(DpfKey* key, absl::Span<GE2n<N>> result, size_t current_level,
+void Traverse(DpfKey* key, std::span<GE2n<N>> result, size_t current_level,
               uint64_t current_pos, uint128_t seed_working, bool t_working,
               size_t term_level) {
   if (current_level < term_level) {
@@ -267,7 +267,7 @@ void DpfEval(const DpfKey& key, const GE2n<M>& in, GE2n<N>* out) {
 }
 
 template <size_t /* input bit num */ M, size_t /* output bit num */ N>
-void DpfEvalAll(DpfKey* key, absl::Span<GE2n<N>> out) {
+void DpfEvalAll(DpfKey* key, std::span<GE2n<N>> out) {
   YACL_ENFORCE(key->enable_evalall == true);
 
   uint128_t seed_working = key->GetSeed();  // the initial value
@@ -294,7 +294,7 @@ void DpfEvalAll(DpfKey* key, absl::Span<GE2n<N>> out) {
   template void DpfEval<M, N>(const DpfKey& key, const GE2n<M>& in,        \
                               GE2n<N>* out);                               \
                                                                            \
-  template void DpfEvalAll<M, N>(DpfKey * key, absl::Span<GE2n<(N)>> out);
+  template void DpfEvalAll<M, N>(DpfKey * key, std::span<GE2n<(N)>> out);
 
 DPF_T_SPECIFY_FUNC(64, 64)
 DPF_T_SPECIFY_FUNC(32, 64)

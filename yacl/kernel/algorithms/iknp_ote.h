@@ -17,7 +17,7 @@
 #include <memory>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/secparam.h"
@@ -56,13 +56,13 @@ namespace yacl::crypto {
 
 void IknpOtExtSend(const std::shared_ptr<link::Context> &ctx,
                    const OtRecvStore &base_ot,
-                   absl::Span<std::array<uint128_t, 2>> send_blocks,
+                   std::span<std::array<uint128_t, 2>> send_blocks,
                    bool cot = false);
 
 void IknpOtExtRecv(const std::shared_ptr<link::Context> &ctx,
                    const OtSendStore &base_ot,
                    const dynamic_bitset<uint128_t> &choices,
-                   absl::Span<uint128_t> recv_blocks, bool cot = false);
+                   std::span<uint128_t> recv_blocks, bool cot = false);
 
 // ==================== //
 //   Support OT Store   //
@@ -72,7 +72,7 @@ inline OtSendStore IknpOtExtSend(const std::shared_ptr<link::Context> &ctx,
                                  const OtRecvStore &base_ot, uint32_t ot_num,
                                  bool cot = false) {
   std::vector<std::array<uint128_t, 2>> blocks(ot_num);
-  IknpOtExtSend(ctx, base_ot, absl::MakeSpan(blocks), cot);
+  IknpOtExtSend(ctx, base_ot, std::span(blocks), cot);
   auto ret = MakeOtSendStore(std::move(blocks));
   if (cot) {
     auto tmp_choice = base_ot.CopyBitBuf();
@@ -86,7 +86,7 @@ inline OtRecvStore IknpOtExtRecv(const std::shared_ptr<link::Context> &ctx,
                                  const dynamic_bitset<uint128_t> &choices,
                                  uint32_t ot_num, bool cot = false) {
   std::vector<uint128_t> blocks(ot_num);
-  IknpOtExtRecv(ctx, base_ot, choices, absl::MakeSpan(blocks), cot);
+  IknpOtExtRecv(ctx, base_ot, choices, std::span(blocks), cot);
   return MakeOtRecvStore(choices, std::move(blocks));
 }
 

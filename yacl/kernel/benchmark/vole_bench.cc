@@ -58,28 +58,28 @@ std::future<double> inline async(Function&& fn, Args&&... args) {
 // Wrapper
 template <typename T, typename K>
 void SendWrapper(SilentVoleSender& sender, std::shared_ptr<link::Context>& lctx,
-                 absl::Span<K> c) {
+                 std::span<K> c) {
   sender.Send(lctx, c);
 }
 
 template <>
 void SendWrapper<GF64, GF128>(SilentVoleSender& sender,
                               std::shared_ptr<link::Context>& lctx,
-                              absl::Span<GF128> c) {
+                              std::span<GF128> c) {
   sender.SfSend(lctx, c);
 }
 
 template <typename T, typename K>
 void RecvWrapper(SilentVoleReceiver& receiver,
-                 std::shared_ptr<link::Context>& lctx, absl::Span<T> a,
-                 absl::Span<K> b) {
+                 std::shared_ptr<link::Context>& lctx, std::span<T> a,
+                 std::span<K> b) {
   receiver.Recv(lctx, a, b);
 }
 
 template <>
 void RecvWrapper<GF64, GF128>(SilentVoleReceiver& receiver,
                               std::shared_ptr<link::Context>& lctx,
-                              absl::Span<GF64> a, absl::Span<GF128> b) {
+                              std::span<GF64> a, std::span<GF128> b) {
   receiver.SfRecv(lctx, a, b);
 }
 
@@ -122,11 +122,11 @@ void GilboaVoleBench(benchmark::State& state, Args&&... args) {
       recv_byte -= lctxs[0]->GetStats()->recv_bytes;
       state.ResumeTiming();
       auto sender = decorator::async([&] {
-        GilboaVoleSend<T, K>(lctxs[0], rot.recv, absl::MakeSpan(w), mal);
+        GilboaVoleSend<T, K>(lctxs[0], rot.recv, std::span(w), mal);
       });
       auto receiver = decorator::async([&] {
-        GilboaVoleRecv<T, K>(lctxs[1], rot.send, absl::MakeSpan(u),
-                             absl::MakeSpan(v), mal);
+        GilboaVoleRecv<T, K>(lctxs[1], rot.send, std::span(u),
+                             std::span(v), mal);
       });
       state.counters["send"] += sender.get();
       state.counters["recv"] += receiver.get();
@@ -181,10 +181,10 @@ void SilentVoleBench(benchmark::State& state, Args&&... args) {
 
       state.ResumeTiming();
       auto sender_task = decorator::async(
-          [&] { SendWrapper<T, K>(sender, lctxs[0], absl::MakeSpan(c)); });
+          [&] { SendWrapper<T, K>(sender, lctxs[0], std::span(c)); });
       auto receiver_task = decorator::async([&] {
-        RecvWrapper<T, K>(receiver, lctxs[1], absl::MakeSpan(a),
-                          absl::MakeSpan(b));
+        RecvWrapper<T, K>(receiver, lctxs[1], std::span(a),
+                          std::span(b));
       });
       state.counters["send"] += sender_task.get();
       state.counters["recv"] += receiver_task.get();

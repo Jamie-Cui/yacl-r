@@ -27,16 +27,16 @@ class UrandomEntropySource : public EntropySource {
   static std::unique_ptr<EntropySource> Create(
       const std::string &type, [[maybe_unused]] const SpiArgs &config) {
     // this entropy source should be used only if the CPU has rdseed support
-    YACL_ENFORCE(absl::AsciiStrToLower(type) == "software" ||
-                 absl::AsciiStrToLower(type) == "auto");
+    YACL_ENFORCE(yacl::AsciiStrToLower(type) == "software" ||
+                 yacl::AsciiStrToLower(type) == "auto");
     return std::make_unique<UrandomEntropySource>();
   }
 
   // this checker would always return ture
   static bool Check(const std::string &type,
                     [[maybe_unused]] const SpiArgs &config) {
-    return absl::AsciiStrToLower(type) == "software" ||
-           absl::AsciiStrToLower(type) == "auto";
+    return yacl::AsciiStrToLower(type) == "software" ||
+           yacl::AsciiStrToLower(type) == "auto";
   }
 
   Buffer GetEntropy(uint32_t bits_of_entropy) override;

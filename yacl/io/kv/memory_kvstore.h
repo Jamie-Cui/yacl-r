@@ -24,8 +24,8 @@ namespace yacl::io {
 
 class MemoryKVStore : public KVStore {
  public:
-  void Put(absl::string_view key, ByteContainerView value) override;
-  bool Get(absl::string_view key, std::string *value) const override;
+  void Put(std::string_view key, ByteContainerView value) override;
+  bool Get(std::string_view key, std::string *value) const override;
 
   size_t Count() const override;
 

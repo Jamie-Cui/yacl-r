@@ -146,7 +146,7 @@ class PairingCurveTest : public ::testing::TestWithParam<std::string> {
     auto s = 12345_mp;
     auto p1 = ec->MulBase(s);  // p1 = sG
     // test ZCash_BLS12_381 format
-    if (absl::AsciiStrToLower(ec->GetCurveName()) == "bls12-381") {
+    if (yacl::AsciiStrToLower(ec->GetCurveName()) == "bls12-381") {
       std::cout << "start\n";
       auto p3 = ec->Mul(p1, 67890_mp);
       auto buf = ec->SerializePoint(p3, PointOctetFormat::ZCash_BLS12_381);

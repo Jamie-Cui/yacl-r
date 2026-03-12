@@ -14,15 +14,15 @@
 
 #include "yacl/base/exception.h"
 
-#include "absl/strings/match.h"
 #include "gtest/gtest.h"
+#include "yacl/base/strings.h"
 
 namespace yacl {
 namespace {
 
 void CheckExceptionContains(const std::exception& e,
                             const std::string& expected) {
-  EXPECT_TRUE(absl::StrContains(e.what(), expected));
+  EXPECT_TRUE(yacl::StrContains(e.what(), expected));
 }
 
 }  // namespace

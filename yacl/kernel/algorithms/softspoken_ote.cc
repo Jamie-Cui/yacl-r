@@ -89,7 +89,7 @@ inline dynamic_bitset<uint128_t> ExtendChoice(
   return choices_ext;
 }
 
-inline void XorBlock(absl::Span<const uint128_t> in, absl::Span<uint128_t> out,
+inline void XorBlock(std::span<const uint128_t> in, std::span<uint128_t> out,
                      const uint128_t block) {
   YACL_ENFORCE(out.size() >= in.size());
   auto reg_block = _mm_load_si128(reinterpret_cast<const __m128i*>(&block));
@@ -103,7 +103,7 @@ inline void XorBlock(absl::Span<const uint128_t> in, absl::Span<uint128_t> out,
 // Implementation mostly from:
 // https://github.com/osu-crypto/libOTe/blob/master/libOTe/Vole/SoftSpokenOT/SmallFieldVole.cpp
 template <uint64_t k>
-inline void XorReduce(absl::Span<uint128_t> inout) {
+inline void XorReduce(std::span<uint128_t> inout) {
   XorReduce<k - 1>(inout);
   const uint64_t buf_size = inout.size();
   constexpr uint64_t stride = 1 << (k - 1);
@@ -118,9 +118,9 @@ inline void XorReduce(absl::Span<uint128_t> inout) {
 }
 
 template <>
-inline void XorReduce<0>([[maybe_unused]] absl::Span<uint128_t> inout) {}
+inline void XorReduce<0>([[maybe_unused]] std::span<uint128_t> inout) {}
 
-inline void XorReduce(uint64_t k, absl::Span<uint128_t> inout) {
+inline void XorReduce(uint64_t k, std::span<uint128_t> inout) {
   YACL_ENFORCE(k <= 64);
   const uint64_t buf_size = inout.size();
 
@@ -135,7 +135,7 @@ inline void XorReduce(uint64_t k, absl::Span<uint128_t> inout) {
   }
 }
 
-inline void XorReduceImpl(uint64_t k, absl::Span<uint128_t> inout) {
+inline void XorReduceImpl(uint64_t k, std::span<uint128_t> inout) {
   switch (k) {
 #define SWITCH_CASE(n)   \
   case n:                \
@@ -269,7 +269,7 @@ void SoftspokenOtExtSender::OneTimeSetup(
   auto recv_size = 128 * 2 * sizeof(uint128_t) + pprf_num_ * (mal_ ? 64 : 0);
   auto recv_buf = ctx->Recv(ctx->NextRank(), "SGRR_OTE:RECV-CORR");
   YACL_ENFORCE((uint64_t)recv_buf.size() == recv_size);
-  auto recv_span = absl::MakeSpan((recv_buf.data<const uint8_t>()), recv_size);
+  auto recv_span = std::span((recv_buf.data<const uint8_t>()), recv_size);
   auto single_buf_size = SgrrOtExtHelper(pprf_range_, mal_);
   // One-time Setup for Softspoken
   // k 1-out-of-2 ROT to (2^k-1)-out-of-(2^k) ROT
@@ -283,7 +283,7 @@ void SoftspokenOtExtSender::OneTimeSetup(
     punctured_idx_[i] = sub_ot.CopyBitBuf().data()[0];
     // punctured leaves for the i-th pprf
     auto leaves =
-        absl::MakeSpan(punctured_leaves_.data() + i * pprf_range_, range_limit);
+        std::span(punctured_leaves_.data() + i * pprf_range_, range_limit);
     // prepare for cur_recv_buf
     auto cur_buf_size = SgrrOtExtHelper(range_limit, mal_);
     auto cur_recv_buf = recv_span.subspan(single_buf_size * i, cur_buf_size);
@@ -301,7 +301,7 @@ void SoftspokenOtExtSender::OneTimeSetup(
     // move leaves[0] to punctured entry
     leaves[punctured_idx_[i]] = leaves[0];
     // copy entry 1 to range_limit for leaves into c_leaves
-    auto c_leaves = absl::MakeSpan(
+    auto c_leaves = std::span(
         compress_leaves_.data() + i * (pprf_range_ - 1), range_limit - 1);
     for (uint64_t j = 0; j < range_limit - 1; ++j) {
       c_leaves[j] = leaves[j + 1];
@@ -338,7 +338,7 @@ void SoftspokenOtExtReceiver::OneTimeSetup(
   // Send Message Buffer
   auto send_size = 128 * 2 * sizeof(uint128_t) + pprf_num_ * (mal_ ? 64 : 0);
   auto send_buf = Buffer(send_size);
-  auto send_span = absl::MakeSpan(send_buf.data<uint8_t>(), send_size);
+  auto send_span = std::span(send_buf.data<uint8_t>(), send_size);
   auto single_buf_size = SgrrOtExtHelper(pprf_range_, mal_);
   // One-time Setup for Softspoken
   // k 1-out-of-2 ROT to (2^k-1)-out-of-(2^k) ROT
@@ -349,7 +349,7 @@ void SoftspokenOtExtReceiver::OneTimeSetup(
     auto sub_ot = dup_base_ot.NextSlice(k_limit);
     // leaves in i-th pprf
     auto leaves =
-        absl::MakeSpan(all_leaves_.data() + i * pprf_range_, range_limit);
+        std::span(all_leaves_.data() + i * pprf_range_, range_limit);
     // prepare cur_send_buf
     auto cur_buf_size = SgrrOtExtHelper(range_limit, mal_);
     auto cur_send_span = send_span.subspan(i * single_buf_size, cur_buf_size);
@@ -366,7 +366,7 @@ void SoftspokenOtExtSender::GenRot(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(out->Size() == num_ot);
   YACL_ENFORCE(out->Type() == OtStoreType::Normal);
   std::vector<std::array<uint128_t, 2>> send_blocks(num_ot);
-  Send(ctx, absl::MakeSpan(send_blocks), false);
+  Send(ctx, std::span(send_blocks), false);
   for (uint64_t i = 0; i < num_ot; ++i) {
     out->SetNormalBlock(i, 0, send_blocks[i][0]);
     out->SetNormalBlock(i, 1, send_blocks[i][1]);
@@ -378,7 +378,7 @@ void SoftspokenOtExtSender::GenCot(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(out->Size() == num_ot);
   YACL_ENFORCE(out->Type() == OtStoreType::Compact);
   std::vector<std::array<uint128_t, 2>> send_blocks(num_ot);
-  Send(ctx, absl::MakeSpan(send_blocks), true);
+  Send(ctx, std::span(send_blocks), true);
   out->SetDelta(GetDelta());
   for (uint64_t i = 0; i < num_ot; ++i) {
     out->SetCompactBlock(i, send_blocks[i][0]);
@@ -405,7 +405,7 @@ void SoftspokenOtExtReceiver::GenRot(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(out->Type() == OtStoreType::Normal);
   auto choices = SecureRandBits<dynamic_bitset<uint128_t>>(num_ot);
   auto recv_blocks = std::vector<uint128_t>(num_ot);
-  Recv(ctx, choices, absl::MakeSpan(recv_blocks), false);
+  Recv(ctx, choices, std::span(recv_blocks), false);
 
   // out->SetChoices did not implement
   // [Warning] low efficiency
@@ -422,7 +422,7 @@ void SoftspokenOtExtReceiver::GenRot(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(out->Size() == num_ot);
   YACL_ENFORCE(out->Type() == OtStoreType::Normal);
   auto recv_blocks = std::vector<uint128_t>(num_ot);
-  Recv(ctx, choices, absl::MakeSpan(recv_blocks), false);
+  Recv(ctx, choices, std::span(recv_blocks), false);
 
   // out->SetChoices did not implement
   // [Warning] low efficiency
@@ -446,7 +446,7 @@ void SoftspokenOtExtReceiver::GenCot(const std::shared_ptr<link::Context>& ctx,
   YACL_ENFORCE(out->Type() ==
                (compact_ ? OtStoreType::Compact : OtStoreType::Normal));
   auto recv_blocks = std::vector<uint128_t>(num_ot);
-  Recv(ctx, choices, absl::MakeSpan(recv_blocks), true);
+  Recv(ctx, choices, std::span(recv_blocks), true);
   // out->SetChoices did not implement
   // [Warning] low efficiency
   if (compact_) {
@@ -509,10 +509,10 @@ OtRecvStore SoftspokenOtExtReceiver::GenCot(
 // Generate Smallfield VOLE and Subspace VOLE
 // Reference: https://eprint.iacr.org/2022/192.pdf Figure 7 & Figure 8
 // s.t.  V = choice * delta + W
-void SoftspokenOtExtSender::GenSfVole(absl::Span<uint128_t> hash_buff,
-                                      absl::Span<uint128_t> xor_buff,
-                                      absl::Span<uint128_t> u,
-                                      absl::Span<uint128_t> V) {
+void SoftspokenOtExtSender::GenSfVole(std::span<uint128_t> hash_buff,
+                                      std::span<uint128_t> xor_buff,
+                                      std::span<uint128_t> u,
+                                      std::span<uint128_t> V) {
   YACL_ENFORCE(V.size() == 128);
 
   // Notice: It should generate the pesudorandomness for smallfield VOLE by PRG
@@ -520,7 +520,7 @@ void SoftspokenOtExtSender::GenSfVole(absl::Span<uint128_t> hash_buff,
   // much better performance
 
   // 1. Refresh seed
-  XorBlock(absl::MakeSpan(compress_leaves_), hash_buff, counter_);
+  XorBlock(std::span(compress_leaves_), hash_buff, counter_);
   ++counter_;
   // 2. perform Crhash
   ParaCrHashInplace_128(hash_buff);
@@ -545,7 +545,7 @@ void SoftspokenOtExtSender::GenSfVole(absl::Span<uint128_t> hash_buff,
   }
 
   // 4. tensor product: \sum x PRG(M_x)
-  XorReduceImpl(k_, absl::MakeSpan(xor_buff));
+  XorReduceImpl(k_, std::span(xor_buff));
 
   // 5. compute delta \sum PRG(M_x) - \sum x PRG(M_x)
   {
@@ -574,9 +574,9 @@ void SoftspokenOtExtSender::GenSfVole(absl::Span<uint128_t> hash_buff,
 // Reference: https://eprint.iacr.org/2022/192.pdf Figure 7 & Figure 8
 // s.t.  W = choice * delta + V
 void SoftspokenOtExtReceiver::GenSfVole(const uint128_t choice,
-                                        absl::Span<uint128_t> xor_buff,
-                                        absl::Span<uint128_t> u,
-                                        absl::Span<uint128_t> W) {
+                                        std::span<uint128_t> xor_buff,
+                                        std::span<uint128_t> u,
+                                        std::span<uint128_t> W) {
   YACL_ENFORCE(W.size() == 128);
 
   // Notice: It should generate the pesudorandomness for smallfield VOLE by PRG
@@ -584,14 +584,14 @@ void SoftspokenOtExtReceiver::GenSfVole(const uint128_t choice,
   // much better performance
 
   // 1. refresh seed
-  XorBlock(absl::MakeConstSpan(all_leaves_),
-           absl::MakeSpan(xor_buff).subspan(0, all_leaves_.size()), counter_);
+  XorBlock(std::span(all_leaves_),
+           std::span(xor_buff).subspan(0, all_leaves_.size()), counter_);
   ++counter_;
   // 2. perform CrHash
   ParaCrHashInplace_128(
-      absl::MakeSpan(xor_buff).subspan(0, all_leaves_.size()));
+      std::span(xor_buff).subspan(0, all_leaves_.size()));
   // 3. tensor product: \sum x PRG(M_x)
-  XorReduceImpl(k_, absl::MakeSpan(xor_buff));
+  XorReduceImpl(k_, std::span(xor_buff));
   // 4. convert to chosen choices
   {
     uint64_t W_offset = 0;
@@ -615,7 +615,7 @@ void SoftspokenOtExtReceiver::GenSfVole(const uint128_t choice,
 // old style interface
 void SoftspokenOtExtSender::Send(
     const std::shared_ptr<link::Context>& ctx,
-    absl::Span<std::array<uint128_t, 2>> send_blocks, bool cot) {
+    std::span<std::array<uint128_t, 2>> send_blocks, bool cot) {
   if (!inited_) {
     OneTimeSetup(ctx);
   }
@@ -651,26 +651,26 @@ void SoftspokenOtExtSender::Send(
     // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
-    auto recv_U = absl::MakeSpan(static_cast<uint128_t*>(recv_buff.data()),
+    auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
                                  recv_buff.size() / sizeof(uint128_t));
     YACL_ENFORCE(recv_U.size() == step * pprf_num_);
 
     for (uint64_t s = 0; s < step; ++s) {
       // 2. smallfield/subspace VOLE
-      GenSfVole(absl::MakeSpan(hash_buff), absl::MakeSpan(xor_buff),
-                absl::MakeSpan(recv_U.data() + s * pprf_num_, pprf_num_),
-                absl::MakeSpan(V[s]));
+      GenSfVole(std::span(hash_buff), std::span(xor_buff),
+                std::span(recv_U.data() + s * pprf_num_, pprf_num_),
+                std::span(V[s]));
       if (mal_) {
         allV[t * step + s] = V[s];
       }
 
       // 3. Matrix Transpose
       MatrixTranspose128(&V[s]);
-      XorBlock(absl::MakeSpan(V[s]), absl::MakeSpan(V_xor_delta[s]), delta);
+      XorBlock(std::span(V[s]), std::span(V_xor_delta[s]), delta);
       // 4. perform CrHash to break the correlation if cot flag is false
       if (!cot) {
-        ParaCrHashInplace_128(absl::MakeSpan(V[s]));
-        ParaCrHashInplace_128(absl::MakeSpan(V_xor_delta[s]));
+        ParaCrHashInplace_128(std::span(V[s]));
+        ParaCrHashInplace_128(std::span(V_xor_delta[s]));
       }
 
       for (uint64_t j = 0; j < kBatchSize; ++j) {
@@ -686,13 +686,13 @@ void SoftspokenOtExtSender::Send(
     // The same as IKNP OTe
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
-    auto recv_U = absl::MakeSpan(static_cast<uint128_t*>(recv_buff.data()),
+    auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
                                  recv_buff.size() / sizeof(uint128_t));
     YACL_ENFORCE(recv_U.size() == pprf_num_);
 
     // 2. smallfield/subspace VOLE
-    GenSfVole(absl::MakeSpan(hash_buff), absl::MakeSpan(xor_buff),
-              absl::MakeSpan(recv_U), absl::MakeSpan(V[t]));
+    GenSfVole(std::span(hash_buff), std::span(xor_buff),
+              std::span(recv_U), std::span(V[t]));
     if (mal_) {
       allV[super_batch_num * step + t] = V[t];
     }
@@ -700,11 +700,11 @@ void SoftspokenOtExtSender::Send(
     // 3. Matrix Transpose
     if (numOt > batch_offset + t * kBatchSize) {
       MatrixTranspose128(&V[t]);
-      XorBlock(absl::MakeSpan(V[t]), absl::MakeSpan(V_xor_delta[t]), delta);
+      XorBlock(std::span(V[t]), std::span(V_xor_delta[t]), delta);
       // 4. perform CrHash to break the correlation if cot flag is false
       if (!cot) {
-        ParaCrHashInplace_128(absl::MakeSpan(V[t]));
-        ParaCrHashInplace_128(absl::MakeSpan(V_xor_delta[t]));
+        ParaCrHashInplace_128(std::span(V[t]));
+        ParaCrHashInplace_128(std::span(V_xor_delta[t]));
       }
 
       const uint64_t limit =
@@ -722,14 +722,14 @@ void SoftspokenOtExtSender::Send(
 
     // Consistency check
     std::vector<uint64_t> rand_samples(all_batch_num * 2);
-    PrgAesCtr(seed, absl::Span<uint64_t>(rand_samples));
+    PrgAesCtr(seed, std::span<uint64_t>(rand_samples));
 
     CheckMsg<uint128_t> check_msgs;
     for (size_t i = 0; i < all_batch_num; ++i) {
       for (size_t k = 0; k < kKappa; ++k) {
         check_msgs.t[k] ^= math::Gf64ClMul(
-            absl::MakeSpan(rand_samples.data() + i * 2, 2),
-            absl::MakeSpan(reinterpret_cast<uint64_t*>(allV[i].data() + k), 2));
+            std::span(rand_samples.data() + i * 2, 2),
+            std::span(reinterpret_cast<uint64_t*>(allV[i].data() + k), 2));
       }
     }
 
@@ -788,15 +788,15 @@ void SoftspokenOtExtSender::Send(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
-    auto recv_U = absl::MakeSpan(static_cast<uint128_t*>(recv_buff.data()),
+    auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
                                  recv_buff.size() / sizeof(uint128_t));
     YACL_ENFORCE(recv_U.size() == step * pprf_num_);
 
     for (uint64_t s = 0; s < step; ++s) {
       // 2. smallfield/subspace VOLE
-      GenSfVole(absl::MakeSpan(hash_buff), absl::MakeSpan(xor_buff),
-                absl::MakeSpan(recv_U.data() + s * pprf_num_, pprf_num_),
-                absl::MakeSpan(V[s]));
+      GenSfVole(std::span(hash_buff), std::span(xor_buff),
+                std::span(recv_U.data() + s * pprf_num_, pprf_num_),
+                std::span(V[s]));
       if (mal_) {
         allV[t * step + s] = V[s];
       }
@@ -816,13 +816,13 @@ void SoftspokenOtExtSender::Send(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
-    auto recv_U = absl::MakeSpan(static_cast<uint128_t*>(recv_buff.data()),
+    auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
                                  recv_buff.size() / sizeof(uint128_t));
     YACL_ENFORCE(recv_U.size() == pprf_num_);
 
     // 2. smallfield/subspace VOLE
-    GenSfVole(absl::MakeSpan(hash_buff), absl::MakeSpan(xor_buff),
-              absl::MakeSpan(recv_U), absl::MakeSpan(V[t]));
+    GenSfVole(std::span(hash_buff), std::span(xor_buff),
+              std::span(recv_U), std::span(V[t]));
     if (mal_) {
       allV[super_batch_num * step + t] = V[t];
     }
@@ -845,14 +845,14 @@ void SoftspokenOtExtSender::Send(const std::shared_ptr<link::Context>& ctx,
 
     // Consistency check
     std::vector<uint64_t> rand_samples(all_batch_num * 2);
-    PrgAesCtr(seed, absl::Span<uint64_t>(rand_samples));
+    PrgAesCtr(seed, std::span<uint64_t>(rand_samples));
 
     CheckMsg<uint128_t> check_msgs;
     for (size_t i = 0; i < all_batch_num; ++i) {
       for (size_t k = 0; k < kKappa; ++k) {
         check_msgs.t[k] ^= math::Gf64ClMul(
-            absl::MakeSpan(rand_samples.data() + i * 2, 2),
-            absl::MakeSpan(reinterpret_cast<uint64_t*>(allV[i].data() + k), 2));
+            std::span(rand_samples.data() + i * 2, 2),
+            std::span(reinterpret_cast<uint64_t*>(allV[i].data() + k), 2));
       }
     }
 
@@ -908,9 +908,9 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
     // 1. smallfield/subspace VOLE
     for (uint64_t s = 0; s < step; ++s) {
-      GenSfVole(choice_ext.data()[t * step + s], absl::MakeSpan(xor_buff),
-                absl::MakeSpan(U.data() + s * pprf_num_, pprf_num_),
-                absl::MakeSpan(W[s]));
+      GenSfVole(choice_ext.data()[t * step + s], std::span(xor_buff),
+                std::span(U.data() + s * pprf_num_, pprf_num_),
+                std::span(W[s]));
       if (mal_) {
         allW[t * step + s] = W[s];
       }
@@ -933,8 +933,8 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe
     // 1. smallfield/subspace VOLE
     GenSfVole(choice_ext.data()[super_batch_num * step + t],
-              absl::MakeSpan(xor_buff), absl::MakeSpan(U),
-              absl::MakeSpan(W[t]));
+              std::span(xor_buff), std::span(U),
+              std::span(W[t]));
     if (mal_) {
       allW[super_batch_num * step + t] = W[t];
     }
@@ -960,18 +960,18 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
 
     // Consistency check
     std::vector<uint64_t> rand_samples(all_batch_num * 2);
-    PrgAesCtr(seed, absl::Span<uint64_t>(rand_samples));
+    PrgAesCtr(seed, std::span<uint64_t>(rand_samples));
 
     CheckMsg<uint128_t> check_msgs;
-    auto choice_span = absl::MakeSpan(
+    auto choice_span = std::span(
         reinterpret_cast<uint64_t*>(choice_ext.data()), all_batch_num * 2);
-    check_msgs.x ^= math::Gf64ClMul(absl::MakeSpan(rand_samples), choice_span);
+    check_msgs.x ^= math::Gf64ClMul(std::span(rand_samples), choice_span);
 
     for (size_t i = 0; i < all_batch_num; ++i) {
       for (size_t k = 0; k < kKappa; ++k) {
         check_msgs.t[k] ^= math::Gf64ClMul(
-            absl::MakeSpan(rand_samples.data() + i * 2, 2),
-            absl::MakeSpan(reinterpret_cast<uint64_t*>(allW[i].data() + k), 2));
+            std::span(rand_samples.data() + i * 2, 2),
+            std::span(reinterpret_cast<uint64_t*>(allW[i].data() + k), 2));
       }
     }
 
@@ -988,7 +988,7 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
 // old style interface
 void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
                                    const dynamic_bitset<uint128_t>& choices,
-                                   absl::Span<uint128_t> recv_blocks,
+                                   std::span<uint128_t> recv_blocks,
                                    bool cot) {
   if (!inited_) {
     OneTimeSetup(ctx);
@@ -1022,9 +1022,9 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
     // 1. smallfield/subspace VOLE
     for (uint64_t s = 0; s < step; ++s) {
-      GenSfVole(choice_ext.data()[t * step + s], absl::MakeSpan(xor_buff),
-                absl::MakeSpan(U.data() + s * pprf_num_, pprf_num_),
-                absl::MakeSpan(W[s]));
+      GenSfVole(choice_ext.data()[t * step + s], std::span(xor_buff),
+                std::span(U.data() + s * pprf_num_, pprf_num_),
+                std::span(W[s]));
       if (mal_) {
         allW[t * step + s] = W[s];
       }
@@ -1038,7 +1038,7 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
       MatrixTranspose128(&W[s]);
       // 4. perform CrHash to break the correlation if cot flag is false
       if (!cot) {
-        ParaCrHashInplace_128(absl::MakeSpan(W[s]));
+        ParaCrHashInplace_128(std::span(W[s]));
       }
       for (uint64_t j = 0; j < kBatchSize; ++j) {
         recv_blocks[t * super_batch_size + s * batch_size + j] = W[s][j];
@@ -1051,8 +1051,8 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
     // The same as IKNP OTe
     // 1. smallfield/subspace VOLE
     GenSfVole(choice_ext.data()[super_batch_num * step + t],
-              absl::MakeSpan(xor_buff), absl::MakeSpan(U),
-              absl::MakeSpan(W[t]));
+              std::span(xor_buff), std::span(U),
+              std::span(W[t]));
     if (mal_) {
       allW[super_batch_num * step + t] = W[t];
     }
@@ -1068,7 +1068,7 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
           std::min(kBatchSize, numOt - batch_offset - t * kBatchSize);
       // 4. perform CrHash to break the correlation if cot flag is false
       if (!cot) {
-        ParaCrHashInplace_128(absl::MakeSpan(W[t]));
+        ParaCrHashInplace_128(std::span(W[t]));
       }
       for (uint64_t j = 0; j < limit; ++j) {
         recv_blocks[batch_offset + t * kBatchSize + j] = W[t][j];
@@ -1082,18 +1082,18 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
 
     // Consistency check
     std::vector<uint64_t> rand_samples(all_batch_num * 2);
-    PrgAesCtr(seed, absl::Span<uint64_t>(rand_samples));
+    PrgAesCtr(seed, std::span<uint64_t>(rand_samples));
 
     CheckMsg<uint128_t> check_msgs;
-    auto choice_span = absl::MakeSpan(
+    auto choice_span = std::span(
         reinterpret_cast<uint64_t*>(choice_ext.data()), all_batch_num * 2);
-    check_msgs.x ^= math::Gf64ClMul(absl::MakeSpan(rand_samples), choice_span);
+    check_msgs.x ^= math::Gf64ClMul(std::span(rand_samples), choice_span);
 
     for (size_t i = 0; i < all_batch_num; ++i) {
       for (size_t k = 0; k < kKappa; ++k) {
         check_msgs.t[k] ^= math::Gf64ClMul(
-            absl::MakeSpan(rand_samples.data() + i * 2, 2),
-            absl::MakeSpan(reinterpret_cast<uint64_t*>(allW[i].data() + k), 2));
+            std::span(rand_samples.data() + i * 2, 2),
+            std::span(reinterpret_cast<uint64_t*>(allW[i].data() + k), 2));
       }
     }
 

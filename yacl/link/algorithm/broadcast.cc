@@ -14,7 +14,7 @@
 
 #include "yacl/link/algorithm/broadcast.h"
 
-#include "absl/numeric/bits.h"
+#include <bit>
 #include "fmt/format.h"
 
 #include "yacl/base/exception.h"
@@ -51,7 +51,7 @@ Buffer Broadcast(const std::shared_ptr<Context>& ctx, ByteContainerView input,
   // But the actual Send/Recv rank is constructed in physical rank space.
   const size_t vrank = RingOffset(root, ctx->Rank(), ctx->WorldSize());
   bool received = (vrank == 0);
-  for (size_t stride = absl::bit_floor(ctx->WorldSize()); stride > 0;
+  for (size_t stride = std::bit_floor(ctx->WorldSize()); stride > 0;
        stride >>= 1) {
     if (!received) {
       if (vrank % stride) {

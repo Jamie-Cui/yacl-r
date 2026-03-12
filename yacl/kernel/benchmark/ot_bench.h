@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-#include "absl/numeric/bits.h"
+#include <bit>
 #include "benchmark/benchmark.h"
 
 #include "yacl/base/aligned_vector.h"
@@ -69,9 +69,9 @@ BENCHMARK_DEFINE_F(OtBench, SimplestOT)(benchmark::State& state) {
 
       // run base OT
       auto sender = std::async(
-          [&] { BaseOtSend(lctxs_[0], absl::MakeSpan(send_blocks)); });
+          [&] { BaseOtSend(lctxs_[0], std::span(send_blocks)); });
       auto receiver = std::async(
-          [&] { BaseOtRecv(lctxs_[1], choices, absl::MakeSpan(recv_blocks)); });
+          [&] { BaseOtRecv(lctxs_[1], choices, std::span(recv_blocks)); });
       sender.get();
       receiver.get();
       state.PauseTiming();
@@ -97,11 +97,11 @@ BENCHMARK_DEFINE_F(OtBench, IknpOTe)(benchmark::State& state) {
 
       // run base OT
       auto sender = std::async([&] {
-        IknpOtExtSend(lctxs_[0], base_ot.recv, absl::MakeSpan(send_blocks));
+        IknpOtExtSend(lctxs_[0], base_ot.recv, std::span(send_blocks));
       });
       auto receiver = std::async([&] {
         IknpOtExtRecv(lctxs_[1], base_ot.send, choices,
-                      absl::MakeSpan(recv_blocks));
+                      std::span(recv_blocks));
       });
       sender.get();
       receiver.get();
@@ -128,11 +128,11 @@ BENCHMARK_DEFINE_F(OtBench, KosOTe)(benchmark::State& state) {
 
       // run base OT
       auto sender = std::async([&] {
-        KosOtExtSend(lctxs_[0], base_ot.recv, absl::MakeSpan(send_blocks));
+        KosOtExtSend(lctxs_[0], base_ot.recv, std::span(send_blocks));
       });
       auto receiver = std::async([&] {
         KosOtExtRecv(lctxs_[1], base_ot.send, choices,
-                     absl::MakeSpan(recv_blocks));
+                     std::span(recv_blocks));
       });
       sender.get();
       receiver.get();
@@ -161,7 +161,7 @@ BENCHMARK_DEFINE_F(OtBench, KkrtOTe)(benchmark::State& state) {
           std::async([&] { KkrtOtExtSend(lctxs_[0], base_ot.recv, num_ot); });
       auto receiver = std::async([&] {
         KkrtOtExtRecv(lctxs_[1], base_ot.send, inputs,
-                      absl::MakeSpan(recv_out));
+                      std::span(recv_out));
       });
       sender.get();
       receiver.get();
@@ -189,11 +189,11 @@ BENCHMARK_DEFINE_F(OtBench, SgrrOTe)(benchmark::State& state) {
       // run base OT
       auto sender = std::async([&] {
         SgrrOtExtSend(lctxs_[0], base_ot.send, range_n,
-                      absl::MakeSpan(send_out));
+                      std::span(send_out));
       });
       auto receiver = std::async([&] {
         SgrrOtExtRecv(lctxs_[1], base_ot.recv, range_n, choice_value,
-                      absl::MakeSpan(recv_out));
+                      std::span(recv_out));
       });
       sender.get();
       receiver.get();
@@ -222,11 +222,11 @@ BENCHMARK_DEFINE_F(OtBench, GywzOTe)(benchmark::State& state) {
       // run base OT
       auto sender = std::async([&] {
         GywzOtExtSend(lctxs_[0], base_ot.send, range_n,
-                      absl::MakeSpan(send_out));
+                      std::span(send_out));
       });
       auto receiver = std::async([&] {
         GywzOtExtRecv(lctxs_[1], base_ot.recv, range_n, choice_value,
-                      absl::MakeSpan(recv_out));
+                      std::span(recv_out));
       });
       sender.get();
       receiver.get();
@@ -262,10 +262,10 @@ BENCHMARK_DEFINE_F(OtBench, GywzOTe)(benchmark::State& state) {
         state.ResumeTiming();                                               \
         /* true (default) for COT, false for ROT */                         \
         auto sender = std::async([&] {                                      \
-          ssSender.Send(lctxs_[0], absl::MakeSpan(send_blocks), true);      \
+          ssSender.Send(lctxs_[0], std::span(send_blocks), true);      \
         });                                                                 \
         auto receiver = std::async([&] {                                    \
-          ssReceiver.Recv(lctxs_[1], choices, absl::MakeSpan(recv_blocks),  \
+          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks),  \
                           true);                                            \
         });                                                                 \
         sender.get();                                                       \
@@ -371,10 +371,10 @@ BENCHMARK_DEFINE_F(OtBench, MalFerretOTe)(benchmark::State& state) {
         state.ResumeTiming();                                                  \
         /* true (default) for COT, false for ROT */                            \
         auto sender = std::async([&] {                                         \
-          ssSender.Send(lctxs_[0], absl::MakeSpan(send_blocks), true);         \
+          ssSender.Send(lctxs_[0], std::span(send_blocks), true);         \
         });                                                                    \
         auto receiver = std::async([&] {                                       \
-          ssReceiver.Recv(lctxs_[1], choices, absl::MakeSpan(recv_blocks),     \
+          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks),     \
                           true);                                               \
         });                                                                    \
         sender.get();                                                          \

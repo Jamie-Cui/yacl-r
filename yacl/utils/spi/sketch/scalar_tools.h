@@ -54,20 +54,20 @@ class ScalarSketchTools {
       // reserve space and pack header
       // we predict total size based on item[0]
       auto item_size = this_ptr->Serialize(xsp[0], nullptr, 0) + 5;
-      sbuf.Expand(item_size * xsp.length() * 1.1);
+      sbuf.Expand(item_size * xsp.size() * 1.1);
       if (header >= 0) {
         packer.pack_int8(header);
       }
-      packer.pack_array(xsp.length());
+      packer.pack_array(xsp.size());
 
       // todo: need parallel
       size_t total_sz = 0;
-      for (size_t i = 0; i < xsp.length(); ++i) {
+      for (size_t i = 0; i < xsp.size(); ++i) {
         auto body_sz = this_ptr->Serialize(xsp[i], nullptr, 0);
         total_sz += body_sz;
         packer.pack_str(body_sz);
         if (sbuf.FreeSize() < body_sz) {
-          size_t exp_size = (total_sz / (i + 1) + 5) * (xsp.length() - i);
+          size_t exp_size = (total_sz / (i + 1) + 5) * (xsp.size() - i);
           sbuf.Expand(std::max(exp_size, body_sz));
         }
         body_sz = this_ptr->Serialize(
@@ -104,8 +104,8 @@ class ScalarSketchTools {
       if (x.IsArray()) {
         auto xsp = x.AsSpan<T>();
         std::atomic<size_t> totel_len =
-            yacl::io::msgpack_traits::HeadSizeOfArray(xsp.length());
-        yacl::parallel_for(0, xsp.length(), [&](int64_t beg, int64_t end) {
+            yacl::io::msgpack_traits::HeadSizeOfArray(xsp.size());
+        yacl::parallel_for(0, xsp.size(), [&](int64_t beg, int64_t end) {
           for (int64_t i = beg; i < end; ++i) {
             auto body_sz = this_ptr->Serialize(xsp[i], nullptr, 0);
             totel_len +=
@@ -130,8 +130,8 @@ class ScalarSketchTools {
 
     if (x.IsArray()) {
       auto xsp = x.AsSpan<T>();
-      packer.pack_array(xsp.length());  // pack meta: array length
-      for (size_t i = 0; i < xsp.length(); ++i) {
+      packer.pack_array(xsp.size());  // pack meta: array length
+      for (size_t i = 0; i < xsp.size(); ++i) {
         // pack meta: pack current element size
         packer.pack_str(this_ptr->Serialize(xsp[i], nullptr, 0));
         auto body_sz = this_ptr->Serialize(

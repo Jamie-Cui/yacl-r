@@ -90,7 +90,7 @@ LeveldbKVStore::~LeveldbKVStore() {
   }
 }
 
-void LeveldbKVStore::Put(absl::string_view key, ByteContainerView value) {
+void LeveldbKVStore::Put(std::string_view key, ByteContainerView value) {
   leveldb::Slice key_slice(key.data(), key.length());
   leveldb::Slice data_slice((const char *)value.data(), value.size());
 
@@ -102,7 +102,7 @@ void LeveldbKVStore::Put(absl::string_view key, ByteContainerView value) {
   }
 }
 
-bool LeveldbKVStore::Get(absl::string_view key, std::string *value) const {
+bool LeveldbKVStore::Get(std::string_view key, std::string *value) const {
   leveldb::Status db_status = db_->Get(
       leveldb::ReadOptions(),
       static_cast<std::basic_string<char, std::char_traits<char>>>(key), value);

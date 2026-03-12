@@ -47,11 +47,11 @@ TEST_P(SgrrParamTest, SemiHonestWorks) {
 
   std::future<void> receiver = std::async([&] {
     SgrrOtExtRecv(lctxs[0], std::move(base_ot.recv), n, index,
-                  absl::MakeSpan(recv_out), false);
+                  std::span(recv_out), false);
   });
   std::future<void> sender = std::async([&] {
     SgrrOtExtSend(lctxs[1], std::move(base_ot.send), n,
-                  absl::MakeSpan(send_out), false);
+                  std::span(send_out), false);
   });
   sender.get();
   receiver.get();
@@ -81,11 +81,11 @@ TEST_P(SgrrParamTest, MaliciousWorks) {
 
   std::future<void> receiver = std::async([&] {
     SgrrOtExtRecv(lctxs[0], std::move(base_ot.recv), n, index,
-                  absl::MakeSpan(recv_out), true);
+                  std::span(recv_out), true);
   });
   std::future<void> sender = std::async([&] {
     SgrrOtExtSend(lctxs[1], std::move(base_ot.send), n,
-                  absl::MakeSpan(send_out), true);
+                  std::span(send_out), true);
   });
   sender.get();
   receiver.get();
@@ -119,11 +119,11 @@ TEST_P(SgrrParamTest, SemiHonestFixedIndextWorks) {
 
   std::future<void> receiver = std::async([&] {
     SgrrOtExtRecv_fixed_index(lctxs[0], std::move(base_ot.recv), n,
-                              absl::MakeSpan(recv_out));
+                              std::span(recv_out));
   });
   std::future<void> sender = std::async([&] {
     SgrrOtExtSend_fixed_index(lctxs[1], std::move(base_ot.send), n,
-                              absl::MakeSpan(send_out));
+                              std::span(send_out));
   });
   sender.get();
   receiver.get();
@@ -157,14 +157,14 @@ TEST_P(SgrrParamTest, MaliciousFixedIndextWorks) {
     YACL_ENFORCE(recv_buf.size() ==
                  static_cast<int64_t>(SgrrOtExtHelper(n, true)));
     SgrrOtExtRecv_fixed_index(
-        std::move(base_ot.recv), n, absl::MakeSpan(recv_out),
-        absl::MakeSpan(recv_buf.data<const uint8_t>(), recv_buf.size()), true);
+        std::move(base_ot.recv), n, std::span(recv_out),
+        std::span(recv_buf.data<const uint8_t>(), recv_buf.size()), true);
   });
   std::future<void> sender = std::async([&] {
     auto send_buf = Buffer(SgrrOtExtHelper(n, true));
     SgrrOtExtSend_fixed_index(
-        std::move(base_ot.send), n, absl::MakeSpan(send_out),
-        absl::MakeSpan(send_buf.data<uint8_t>(), send_buf.size()), true);
+        std::move(base_ot.send), n, std::span(send_out),
+        std::span(send_buf.data<uint8_t>(), send_buf.size()), true);
     lctxs[1]->SendAsync(lctxs[1]->NextRank(), ByteContainerView(send_buf),
                         "SGRR_OTE:SEND-CORR");
   });
@@ -202,18 +202,18 @@ TEST(SgrrEdgeTest, Work) {
 
   std::future<void> receiver = std::async([&] {
     ASSERT_THROW(SgrrOtExtRecv(lctxs[0], std::move(base_ot.recv), n, index,
-                               absl::MakeSpan(recv_out), false),
+                               std::span(recv_out), false),
                  ::yacl::Exception);
     ASSERT_THROW(SgrrOtExtRecv(lctxs[0], std::move(base_ot.recv), n, index,
-                               absl::MakeSpan(recv_out), true),
+                               std::span(recv_out), true),
                  ::yacl::Exception);
   });
   std::future<void> sender = std::async([&] {
     ASSERT_THROW(SgrrOtExtSend(lctxs[1], std::move(base_ot.send), n,
-                               absl::MakeSpan(send_out), false),
+                               std::span(send_out), false),
                  ::yacl::Exception);
     ASSERT_THROW(SgrrOtExtSend(lctxs[1], std::move(base_ot.send), n,
-                               absl::MakeSpan(send_out), true),
+                               std::span(send_out), true),
                  ::yacl::Exception);
   });
   sender.get();

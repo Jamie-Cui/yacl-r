@@ -74,14 +74,14 @@ void Polynomial::EvaluatePolynomial(const MPInt& x, MPInt* result) const {
 }
 
 // Lagrange Interpolation algorithm for polynomial interpolation.
-void Polynomial::LagrangeInterpolation(absl::Span<const MPInt> xs,
-                                       absl::Span<const MPInt> ys,
+void Polynomial::LagrangeInterpolation(std::span<const MPInt> xs,
+                                       std::span<const MPInt> ys,
                                        MPInt* result) const {
   *result = LagrangeInterpolation(xs, ys, 0_mp, modulus_);
 }
 
-MPInt Polynomial::LagrangeInterpolation(absl::Span<const MPInt> xs,
-                                        absl::Span<const MPInt> ys,
+MPInt Polynomial::LagrangeInterpolation(std::span<const MPInt> xs,
+                                        std::span<const MPInt> ys,
                                         const MPInt& target_x,
                                         const MPInt& modulus) {
   YACL_ENFORCE(xs.size() == ys.size());
@@ -97,7 +97,7 @@ MPInt Polynomial::LagrangeInterpolation(absl::Span<const MPInt> xs,
   return acc;
 }
 
-MPInt Polynomial::LagrangeComputeAtX(absl::Span<const MPInt> xs, uint64_t index,
+MPInt Polynomial::LagrangeComputeAtX(std::span<const MPInt> xs, uint64_t index,
                                      const MPInt& y, const MPInt& target_x,
                                      const MPInt& modulus) {
   YACL_ENFORCE(index < xs.size(), "X index should be < xs.size()");

@@ -19,8 +19,8 @@
 #include <utility>
 #include <vector>
 
-#include "absl/strings/str_split.h"
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/ecc/ecc_spi.h"
 #include "yacl/crypto/hash/hash_interface.h"
 
@@ -112,7 +112,7 @@ class OprfConfig {
 
   // Get config from context string
   static OprfConfig FromContextString(const std::string& str) {
-    std::vector<std::string> split = absl::StrSplit(str, '-');
+    std::vector<std::string> split = yacl::StrSplit(str, '-');
     YACL_ENFORCE(split.size() == 3);
     YACL_ENFORCE_EQ(split[0], "OPRFV1");
     YACL_ENFORCE(split[1].size() == 1);

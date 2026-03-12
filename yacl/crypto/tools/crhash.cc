@@ -40,7 +40,7 @@ inline uint128_t Sigma(uint128_t x) {
   return reinterpret_cast<uint128_t>(_mm_xor_si128(exchange, left));
 }
 
-inline std::vector<uint128_t> Sigma(absl::Span<const uint128_t> x) {
+inline std::vector<uint128_t> Sigma(std::span<const uint128_t> x) {
   const uint32_t num = x.size();
 
   std::vector<uint128_t> ret(num);
@@ -60,7 +60,7 @@ inline std::vector<uint128_t> Sigma(absl::Span<const uint128_t> x) {
   return ret;
 }
 
-inline void SigmaInplace(absl::Span<uint128_t> x) {
+inline void SigmaInplace(std::span<uint128_t> x) {
   const uint32_t num = x.size();
   auto zero = _mm_setzero_si128();
   auto* ptr = reinterpret_cast<__m128i*>(x.data());
@@ -89,21 +89,21 @@ uint128_t CrHash_128(uint128_t x) {
 }
 
 // FIXME: Rename to BatchCrHash_128
-std::vector<uint128_t> ParaCrHash_128(absl::Span<const uint128_t> x) {
+std::vector<uint128_t> ParaCrHash_128(std::span<const uint128_t> x) {
   std::vector<uint128_t> out(x.size());
   const auto& RP = GetCrHashDefaultRP();
-  RP.GenForMultiInputs(x, absl::MakeSpan(out));
+  RP.GenForMultiInputs(x, std::span(out));
   std::transform(x.begin(), x.end(), out.begin(), out.begin(),
                  std::bit_xor<uint128_t>());
   return out;
 }
 
 // FIXME: Rename to BatchCrHashInplace_128
-void ParaCrHashInplace_128(absl::Span<uint128_t> inout) {
+void ParaCrHashInplace_128(std::span<uint128_t> inout) {
   const auto& RP = GetCrHashDefaultRP();
   // TODO: add dynamic batch size
   alignas(32) std::array<uint128_t, kBatchSize> tmp;
-  auto tmp_span = absl::MakeSpan(tmp);
+  auto tmp_span = std::span(tmp);
   const uint64_t size = inout.size();
 
   uint64_t offset = 0;
@@ -127,18 +127,18 @@ void ParaCrHashInplace_128(absl::Span<uint128_t> inout) {
 uint128_t CcrHash_128(uint128_t x) { return CrHash_128(Sigma(x)); }
 
 // FIXME: Rename to BatchCcrHash_128
-std::vector<uint128_t> ParaCcrHash_128(absl::Span<const uint128_t> x) {
+std::vector<uint128_t> ParaCcrHash_128(std::span<const uint128_t> x) {
   auto tmp = Sigma(x);
-  ParaCrHashInplace_128(absl::MakeSpan(tmp));
+  ParaCrHashInplace_128(std::span(tmp));
   return tmp;
 }
 
 // FIXME: Rename to BatchCcrHashInplace_128
-void ParaCcrHashInplace_128(absl::Span<uint128_t> inout) {
+void ParaCcrHashInplace_128(std::span<uint128_t> inout) {
   const uint64_t size = inout.size();
   uint64_t offset = 0;
 
-  auto inout_span = absl::MakeSpan(inout);
+  auto inout_span = std::span(inout);
   for (; offset + kBatchSize < size; offset += kBatchSize) {
     SigmaInplace(inout_span.subspan(offset, kBatchSize));
     ParaCrHashInplace_128(inout_span.subspan(offset, kBatchSize));

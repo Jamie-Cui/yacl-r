@@ -38,7 +38,7 @@ void GgmPrg(uint128_t in, uint128_t* out1, uint128_t* out2) {
   }
 }
 
-[[maybe_unused]] void GgmFullExpand(absl::Span<uint128_t> working_span) {
+[[maybe_unused]] void GgmFullExpand(std::span<uint128_t> working_span) {
   const size_t num = working_span.size();
   if (num > 1) {
     GgmPrg(working_span[0], &working_span[0], &working_span[num / 2]);
@@ -50,7 +50,7 @@ void GgmPrg(uint128_t in, uint128_t* out1, uint128_t* out2) {
 }
 
 template <size_t M>
-void GgmExpandAndPunc(absl::Span<uint128_t> working_span, GE2n<M> punc_point,
+void GgmExpandAndPunc(std::span<uint128_t> working_span, GE2n<M> punc_point,
                       PprfPuncKey* out) {
   const size_t num = working_span.size();  // total number of levels
   const size_t i = M - log2<size_t>(num);  // current level, starting from 0
@@ -78,7 +78,7 @@ void PprfPunc(uint128_t prf_key, GE2n<M> punc_point, PprfPuncKey* out) {
 
   std::vector<uint128_t> working_vec(num);
   working_vec[0] = prf_key;
-  GgmExpandAndPunc(absl::MakeSpan(working_vec), punc_point, out);
+  GgmExpandAndPunc(std::span(working_vec), punc_point, out);
   out->punc_point = punc_point.GetVal();
 }
 

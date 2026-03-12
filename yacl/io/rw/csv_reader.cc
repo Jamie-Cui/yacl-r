@@ -24,12 +24,10 @@
 #include <string>
 #include <utility>
 
-#include "absl/strings/ascii.h"
-#include "absl/strings/numbers.h"
-#include "absl/strings/str_split.h"
 #include "fmt/format.h"
 
 #include "yacl/base/exception.h"
+#include "yacl/base/strings.h"
 #include "yacl/io/rw/float.h"
 #include "yacl/io/rw/mmapped_file.h"
 #include "yacl/io/stream/file_io.h"
@@ -114,23 +112,23 @@ void CsvReader::CountLines() {
   total_rows_ = current_index_;
 }
 
-bool CsvReader::NextLine(std::vector<absl::string_view>* fields) {
+bool CsvReader::NextLine(std::vector<std::string>* fields) {
   if (!in_->GetLine(&current_line_, line_delimiter_)) {
     return false;
   }
   if (fields != nullptr) {
-    *fields = absl::StrSplit(current_line_, field_delimiter_);
+    *fields = yacl::StrSplit(current_line_, field_delimiter_);
   }
   return true;
 }
 
 void CsvReader::ParseHeader() {
-  std::vector<absl::string_view> headers;
+  std::vector<std::string> headers;
   YACL_ENFORCE(NextLine(&headers), "Can't get header from file '{}'",
                in_->GetName());
   headers_.reserve(headers.size());
   for (auto& h : headers) {
-    auto striped_h = static_cast<std::string>(absl::StripAsciiWhitespace(h));
+    auto striped_h = std::string(yacl::StripAsciiWhitespace(h));
     if (striped_h.empty()) {
       YACL_THROW_INVALID_FORMAT(
           "Input CSV file format error: "
@@ -160,7 +158,7 @@ void CsvReader::UpdateRowMap() {
 }
 
 void CsvReader::BuildMmapFiles() {
-  std::vector<absl::string_view> fields;
+  std::vector<std::string> fields;
   std::vector<std::unique_ptr<OutputStream>> oss;
   oss.reserve(selected_features_.size());
   cols_mmap_file_.reserve(selected_features_.size());
@@ -392,7 +390,7 @@ bool CsvReader::NextRow(ColumnVectorBatch* data, size_t batch_size) {
   InitBatchCols(&cols, batch_size);
 
   size_t count = 0;
-  std::vector<absl::string_view> fields;
+  std::vector<std::string> fields;
   while (count < batch_size && NextLine(&fields)) {
     if (fields.size() != headers_.size()) {
       YACL_THROW_INVALID_FORMAT(

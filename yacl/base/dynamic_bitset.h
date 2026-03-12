@@ -3191,8 +3191,8 @@ dynamic_bitset<Block, Allocator>::block_count(
         __builtin_popcountll(static_cast<uint64_t>(block)));
   } else if constexpr (bits_per_block <= u128_bits_number) {
     return static_cast<size_type>(
-        __builtin_popcountll(absl::Uint128High64(block)) +
-        __builtin_popcountll(absl::Uint128Low64(block)));
+        __builtin_popcountll(static_cast<uint64_t>((block) >> 64)) +
+        __builtin_popcountll(static_cast<uint64_t>(block)));
   }
 #endif
 
@@ -3241,8 +3241,8 @@ dynamic_bitset<Block, Allocator>::block_count(const block_type& block,
         __builtin_popcountll(static_cast<uint64_t>(shifted_block)));
   } else if constexpr (bits_per_block <= u128_bits_number) {
     return static_cast<size_type>(
-        __builtin_popcountll(absl::Uint128High64(block)) +
-        __builtin_popcountll(absl::Uint128Low64(block)));
+        __builtin_popcountll(static_cast<uint64_t>((block) >> 64)) +
+        __builtin_popcountll(static_cast<uint64_t>(block)));
   }
 #endif
 
@@ -3281,11 +3281,11 @@ dynamic_bitset<Block, Allocator>::count_block_trailing_zero(
     return static_cast<size_type>(
         __builtin_ctzll(static_cast<uint64_t>(block)));
   } else if constexpr (bits_per_block <= u128_bits_number) {
-    if (absl::Uint128Low64(block) == 0) {
+    if (static_cast<uint64_t>(block) == 0) {
       return static_cast<size_type>(
-          __builtin_ctzll(absl::Uint128High64(block)) + 64);
+          __builtin_ctzll(static_cast<uint64_t>((block) >> 64)) + 64);
     } else {
-      return static_cast<size_type>(__builtin_ctzll(absl::Uint128Low64(block)));
+      return static_cast<size_type>(__builtin_ctzll(static_cast<uint64_t>(block)));
     }
     return 0;
   }

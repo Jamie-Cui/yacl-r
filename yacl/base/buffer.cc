@@ -14,6 +14,8 @@
 
 #include "yacl/base/buffer.h"
 
+#include <memory>
+
 namespace yacl {
 
 std::shared_ptr<Buffer> makeBuffer(int64_t size) {

@@ -43,7 +43,7 @@ inline uint64_t MpCotRNHelper(uint64_t idx_num, uint64_t idx_range,
 inline void MpCotRNSend(const std::shared_ptr<link::Context>& ctx,
                         const OtSendStore& cot, uint64_t idx_range,
                         uint64_t idx_num, uint64_t spcot_size,
-                        absl::Span<uint128_t> out, bool mal = false) {
+                        std::span<uint128_t> out, bool mal = false) {
   const uint64_t full_size = idx_range;
   const uint64_t batch_size = spcot_size;
   const uint64_t batch_num = math::DivCeil(full_size, batch_size);
@@ -89,7 +89,7 @@ inline void MpCotRNSend(const std::shared_ptr<link::Context>& ctx,
     for (size_t i = 0; i < 128; ++i) {
       check_cot_data[i] = check_cot.GetBlock(i, choices[i]);
     }
-    auto diff = math::Gf128Pack(absl::MakeSpan(check_cot_data));
+    auto diff = math::Gf128Pack(std::span(check_cot_data));
     uhash = uhash ^ diff;
 
     auto hash = Blake3(SerializeUint128(uhash));
@@ -101,7 +101,7 @@ inline void MpCotRNSend(const std::shared_ptr<link::Context>& ctx,
 inline void MpCotRNRecv(const std::shared_ptr<link::Context>& ctx,
                         const OtRecvStore& cot, uint64_t idx_range,
                         uint64_t idx_num, uint64_t spcot_size,
-                        absl::Span<uint128_t> out, bool mal = false) {
+                        std::span<uint128_t> out, bool mal = false) {
   const uint64_t full_size = idx_range;
   const uint64_t batch_size = spcot_size;
   const uint64_t batch_num = math::DivCeil(full_size, batch_size);
@@ -142,7 +142,7 @@ inline void MpCotRNRecv(const std::shared_ptr<link::Context>& ctx,
     uint128_t choices = check_cot.CopyBitBuf().data()[0];
 
     auto check_cot_data = check_cot.CopyBlkBuf();
-    auto diff = math::Gf128Pack(absl::MakeSpan(check_cot_data));
+    auto diff = math::Gf128Pack(std::span(check_cot_data));
     uhash = uhash ^ diff;
 
     // find punctured indexes
@@ -153,8 +153,8 @@ inline void MpCotRNRecv(const std::shared_ptr<link::Context>& ctx,
       }
     }
     // extract the coefficent for universal hash
-    auto ceof = math::ExtractHashCoef(seed, absl::MakeConstSpan(indexes));
-    choices = std::accumulate(ceof.cbegin(), ceof.cend(), choices,
+    auto ceof = math::ExtractHashCoef(seed, std::span(indexes));
+    choices = std::accumulate(ceof.begin(), ceof.end(), choices,
                               std::bit_xor<uint128_t>());
 
     ctx->SendAsync(ctx->NextRank(), SerializeUint128(choices),

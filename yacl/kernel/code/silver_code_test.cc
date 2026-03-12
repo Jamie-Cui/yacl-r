@@ -43,9 +43,9 @@ using GF128 = uint128_t;
     auto check = inout;                                            \
     auto check1 = std::vector<type>(n);                            \
     /* WHEN */                                                     \
-    slv.DualEncodeInplace(absl::MakeSpan(inout));                  \
-    slv.DualEncode(absl::MakeSpan(check), absl::MakeSpan(check1)); \
-    dup_slv.DualEncodeInplace(absl::MakeSpan(check));              \
+    slv.DualEncodeInplace(std::span(inout));                  \
+    slv.DualEncode(std::span(check), std::span(check1)); \
+    dup_slv.DualEncodeInplace(std::span(check));              \
     /* THEN */                                                     \
     uint32_t zero_counter = 0;                                     \
     for (uint32_t i = 0; i < n; ++i) {                             \
@@ -72,10 +72,10 @@ using GF128 = uint128_t;
     auto check2 = std::vector<type0>(n);                                    \
     auto check3 = std::vector<type1>(n);                                    \
     /* WHEN */                                                              \
-    slv.DualEncodeInplace2(absl::MakeSpan(inout0), absl::MakeSpan(inout1)); \
-    slv.DualEncode2(absl::MakeSpan(check0), absl::MakeSpan(check2),         \
-                    absl::MakeSpan(check1), absl::MakeSpan(check3));        \
-    slv.DualEncodeInplace2(absl::MakeSpan(check0), absl::MakeSpan(check1)); \
+    slv.DualEncodeInplace2(std::span(inout0), std::span(inout1)); \
+    slv.DualEncode2(std::span(check0), std::span(check2),         \
+                    std::span(check1), std::span(check3));        \
+    slv.DualEncodeInplace2(std::span(check0), std::span(check1)); \
     /* THEN */                                                              \
     uint32_t zero_counter = 0;                                              \
     for (uint32_t i = 0; i < n; ++i) {                                      \

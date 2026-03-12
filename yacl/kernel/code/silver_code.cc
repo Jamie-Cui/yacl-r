@@ -98,12 +98,12 @@ SilverCode::SilverCode(uint64_t n, uint32_t weight)
     case 5:
       YACL_ENFORCE(n >= 5);
       gap_ = 16;
-      InitLeftMatrix(absl::MakeSpan(Left_R5));
+      InitLeftMatrix(std::span(Left_R5));
       break;
     case 11:
       YACL_ENFORCE(n >= 11);
       gap_ = 32;
-      InitLeftMatrix(absl::MakeSpan(Left_R11));
+      InitLeftMatrix(std::span(Left_R11));
       break;
     default:
       YACL_THROW("Only support Silver5 & Silver11");
@@ -112,9 +112,9 @@ SilverCode::SilverCode(uint64_t n, uint32_t weight)
 
 #define REGISTER_DUALENCODE(Type)                                           \
   template void SilverCode::DualEncodeInplaceImpl<Type>(                    \
-      absl::Span<Type> inout) const;                                        \
-  template void SilverCode::DualEncodeImpl<Type>(absl::Span<const Type> in, \
-                                                 absl::Span<Type> out) const;
+      std::span<Type> inout) const;                                        \
+  template void SilverCode::DualEncodeImpl<Type>(std::span<const Type> in, \
+                                                 std::span<Type> out) const;
 
 // REGISTER_TEMPLATE(uint32_t);
 REGISTER_DUALENCODE(uint64_t);
@@ -123,10 +123,10 @@ REGISTER_DUALENCODE(uint128_t);
 
 #define REGISTER_DUALENCODE2(Type0, Type1)                        \
   template void SilverCode::DualEncodeInplace2Impl<Type0, Type1>( \
-      absl::Span<Type0> inout0, absl::Span<Type1> inout1) const;  \
+      std::span<Type0> inout0, std::span<Type1> inout1) const;  \
   template void SilverCode::DualEncode2Impl<Type0, Type1>(        \
-      absl::Span<const Type0> in0, absl::Span<Type0> out0,        \
-      absl::Span<const Type1> in1, absl::Span<Type1> out1) const;
+      std::span<const Type0> in0, std::span<Type0> out0,        \
+      std::span<const Type1> in1, std::span<Type1> out1) const;
 
 REGISTER_DUALENCODE2(uint64_t, uint64_t);
 REGISTER_DUALENCODE2(uint128_t, uint128_t);
@@ -134,7 +134,7 @@ REGISTER_DUALENCODE2(uint64_t, uint128_t);
 #undef REGISTER_DUALENCODE2
 
 template <typename T>
-void SilverCode::DualEncodeInplaceImpl(absl::Span<T> inout) const {
+void SilverCode::DualEncodeInplaceImpl(std::span<T> inout) const {
   YACL_ENFORCE(inout.size() >= m_);
 
   // x[n:2n] = x[n:2n] * R^{-1}
@@ -144,24 +144,24 @@ void SilverCode::DualEncodeInplaceImpl(absl::Span<T> inout) const {
 }
 
 template <typename T>
-void SilverCode::DualEncodeImpl(absl::Span<const T> in,
-                                absl::Span<T> out) const {
+void SilverCode::DualEncodeImpl(std::span<const T> in,
+                                std::span<T> out) const {
   YACL_ENFORCE(in.size() >= m_);
   YACL_ENFORCE(out.size() >= n_);
 
   // Copy in[n:2n] to buff
   std::vector<T> buff(in.data() + n_, in.data() + m_);
   // buff = buff * R^{-1}
-  RightEncode(absl::MakeSpan(buff));
+  RightEncode(std::span(buff));
   // Copy in[0:n] to out[0:n]
   memcpy(out.data(), in.data(), n_ * sizeof(T));
   // out = out + buff * L
-  LeftEncode<T>(absl::MakeSpan(buff), out.subspan(0, n_));
+  LeftEncode<T>(std::span(buff), out.subspan(0, n_));
 }
 
 template <typename T, typename K>
-void SilverCode::DualEncodeInplace2Impl(absl::Span<T> inout0,
-                                        absl::Span<K> inout1) const {
+void SilverCode::DualEncodeInplace2Impl(std::span<T> inout0,
+                                        std::span<K> inout1) const {
   YACL_ENFORCE(inout0.size() >= m_);
   YACL_ENFORCE(inout1.size() >= m_);
 
@@ -173,9 +173,9 @@ void SilverCode::DualEncodeInplace2Impl(absl::Span<T> inout0,
 }
 
 template <typename T, typename K>
-void SilverCode::DualEncode2Impl(absl::Span<const T> in0, absl::Span<T> out0,
-                                 absl::Span<const K> in1,
-                                 absl::Span<K> out1) const {
+void SilverCode::DualEncode2Impl(std::span<const T> in0, std::span<T> out0,
+                                 std::span<const K> in1,
+                                 std::span<K> out1) const {
   YACL_ENFORCE(in0.size() >= m_);
   YACL_ENFORCE(out0.size() >= n_);
   YACL_ENFORCE(in1.size() >= m_);
@@ -185,16 +185,16 @@ void SilverCode::DualEncode2Impl(absl::Span<const T> in0, absl::Span<T> out0,
   std::vector<T> buff0(in0.data() + n_, in0.data() + m_);
   std::vector<K> buff1(in1.data() + n_, in1.data() + m_);
   // buff = buff * R^{-1}
-  RightEncode2<T, K>(absl::MakeSpan(buff0), absl::MakeSpan(buff1));
+  RightEncode2<T, K>(std::span(buff0), std::span(buff1));
   // Copy in[0:n] to out[0:n]
   memcpy(out0.data(), in0.data(), n_ * sizeof(T));
   memcpy(out1.data(), in1.data(), n_ * sizeof(K));
   // out = out + buff * L
-  LeftEncode2<T, K>(absl::MakeSpan(buff0), out0.subspan(0, n_),
-                    absl::MakeSpan(buff1), out1.subspan(0, n_));
+  LeftEncode2<T, K>(std::span(buff0), out0.subspan(0, n_),
+                    std::span(buff1), out1.subspan(0, n_));
 }
 
-void SilverCode::InitLeftMatrix(absl::Span<const double> R) {
+void SilverCode::InitLeftMatrix(std::span<const double> R) {
   YACL_ENFORCE(R.size() == weight_);
 
   size_t one_num = R.size();
@@ -217,7 +217,7 @@ void SilverCode::InitLeftMatrix(absl::Span<const double> R) {
 }
 
 template <typename T>
-void SilverCode::LeftEncode(absl::Span<const T> in, absl::Span<T> out) const {
+void SilverCode::LeftEncode(std::span<const T> in, std::span<T> out) const {
   auto one_entry = std::deque<uint32_t>(L_one_idx_.begin(), L_one_idx_.end());
   const size_t size = one_entry.size();
 
@@ -291,9 +291,9 @@ void SilverCode::LeftEncode(absl::Span<const T> in, absl::Span<T> out) const {
 }
 
 template <typename T, typename K>
-void SilverCode::LeftEncode2(absl::Span<const T> in0, absl::Span<T> out0,
-                             absl::Span<const K> in1,
-                             absl::Span<K> out1) const {
+void SilverCode::LeftEncode2(std::span<const T> in0, std::span<T> out0,
+                             std::span<const K> in1,
+                             std::span<K> out1) const {
   auto one_entry = std::deque<uint32_t>(L_one_idx_.begin(), L_one_idx_.end());
   const size_t size = one_entry.size();
 
@@ -412,7 +412,7 @@ void SilverCode::LeftEncode2(absl::Span<const T> in0, absl::Span<T> out0,
 // y[n-3] = x[n-3] + R[n-1][n-3] * x[n-1] + R[n-2][n-3] * x[n-2]
 // ....
 template <typename T>
-void SilverCode::RightEncode(absl::Span<T> inout) const {
+void SilverCode::RightEncode(std::span<T> inout) const {
   YACL_ENFORCE(inout.size() >= n_);
 
   uint32_t offset0 = n_ - gap_ - 1 - R_offset_[0];
@@ -520,8 +520,8 @@ void SilverCode::RightEncode(absl::Span<T> inout) const {
 }
 
 template <typename T, typename K>
-void SilverCode::RightEncode2(absl::Span<T> inout0,
-                              absl::Span<K> inout1) const {
+void SilverCode::RightEncode2(std::span<T> inout0,
+                              std::span<K> inout1) const {
   YACL_ENFORCE(inout0.size() >= n_);
   YACL_ENFORCE(inout1.size() >= n_);
 

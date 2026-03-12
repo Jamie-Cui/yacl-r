@@ -70,14 +70,14 @@ uint128_t Gf128Mul(uint128_t x, uint128_t y);
 void Gf128Mul(block x, block y, block* out);
 block Gf128Mul(block x, block y);
 
-void Gf128Mul(absl::Span<const uint128_t> x, absl::Span<const uint128_t> y,
+void Gf128Mul(std::span<const uint128_t> x, std::span<const uint128_t> y,
               uint128_t* out);
-uint128_t Gf128Mul(absl::Span<const uint128_t> x,
-                   absl::Span<const uint128_t> y);
+uint128_t Gf128Mul(std::span<const uint128_t> x,
+                   std::span<const uint128_t> y);
 
 void Gf128ClMul(uint128_t x, uint128_t y, uint128_t* out1, uint128_t* out2);
 void Gf128ClMul(block x, block y, block* out1, block* out2);
-void Gf128ClMul(absl::Span<const uint128_t> x, absl::Span<const uint128_t> y,
+void Gf128ClMul(std::span<const uint128_t> x, std::span<const uint128_t> y,
                 uint128_t* out1, uint128_t* out2);
 
 void Gf128Reduce(uint128_t high, uint128_t low, uint128_t* out);
@@ -86,8 +86,8 @@ uint128_t Gf128Reduce(uint128_t high, uint128_t low);
 void Gf128Reduce(block high, block low, block* out);
 block Gf128Reduce(block high, block low);
 
-void Gf128Pack(absl::Span<const uint128_t> data, uint128_t* out);
-uint128_t Gf128Pack(absl::Span<const uint128_t> data);
+void Gf128Pack(std::span<const uint128_t> data, uint128_t* out);
+uint128_t Gf128Pack(std::span<const uint128_t> data);
 
 // ----------------------------------
 // GF 64
@@ -95,16 +95,16 @@ uint128_t Gf128Pack(absl::Span<const uint128_t> data);
 void Gf64Mul(uint64_t x, uint64_t y, uint64_t* out);
 uint64_t Gf64Mul(uint64_t x, uint64_t y);
 
-void Gf64Mul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y,
+void Gf64Mul(std::span<const uint64_t> x, std::span<const uint64_t> y,
              uint64_t* out);
-uint64_t Gf64Mul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y);
+uint64_t Gf64Mul(std::span<const uint64_t> x, std::span<const uint64_t> y);
 
 void Gf64ClMul(uint64_t x, uint64_t y, uint128_t* out);
 uint128_t Gf64ClMul(uint64_t x, uint64_t y);
 
-void Gf64ClMul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y,
+void Gf64ClMul(std::span<const uint64_t> x, std::span<const uint64_t> y,
                uint128_t* out);
-uint128_t Gf64ClMul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y);
+uint128_t Gf64ClMul(std::span<const uint64_t> x, std::span<const uint64_t> y);
 
 void Gf64Reduce(uint128_t x, uint64_t* out);
 uint64_t Gf64Reduce(uint128_t x);
@@ -112,22 +112,22 @@ uint64_t Gf64Reduce(uint128_t x);
 void Gf64Inv(uint64_t x, uint64_t* out);
 uint64_t Gf64Inv(uint64_t x);
 
-void Gf64Pack(absl::Span<const uint64_t> data, uint64_t* out);
-uint64_t Gf64Pack(absl::Span<const uint64_t> data);
+void Gf64Pack(std::span<const uint64_t> data, uint64_t* out);
+uint64_t Gf64Pack(std::span<const uint64_t> data);
 
 // ------------------------
 // Generic Multiplication
 // ------------------------
 
 inline uint128_t GfMul(uint128_t x, uint128_t y) { return Gf128Mul(x, y); }
-inline uint128_t GfMul(absl::Span<const uint128_t> a,
-                       absl::Span<const uint128_t> b) {
+inline uint128_t GfMul(std::span<const uint128_t> a,
+                       std::span<const uint128_t> b) {
   return Gf128Mul(a, b);
 }
 
 inline uint64_t GfMul(uint64_t x, uint64_t y) { return Gf64Mul(x, y); }
-inline uint64_t GfMul(absl::Span<const uint64_t> a,
-                      absl::Span<const uint64_t> b) {
+inline uint64_t GfMul(std::span<const uint64_t> a,
+                      std::span<const uint64_t> b) {
   return Gf64Mul(a, b);
 }
 
@@ -135,8 +135,8 @@ inline uint64_t GfMul(absl::Span<const uint64_t> a,
 // GF(2^128)) to proceed with arithmatic operations. Therefore, all subfield ops
 // such as multiplications and additions are defined in GF(2^128)
 //
-uint128_t GfMul(absl::Span<const uint128_t> a, absl::Span<const uint64_t> b);
-uint128_t GfMul(absl::Span<const uint64_t> a, absl::Span<const uint128_t> b);
+uint128_t GfMul(std::span<const uint128_t> a, std::span<const uint64_t> b);
+uint128_t GfMul(std::span<const uint64_t> a, std::span<const uint128_t> b);
 inline uint128_t GfMul(uint128_t a, uint64_t b) {
   return Gf128Mul(a, MakeUint128(0, b));
 }
@@ -152,7 +152,7 @@ inline uint128_t GfMul(uint64_t a, uint128_t b) {
 // see difference between universal hash and collision-resistent hash functions:
 // https://crypto.stackexchange.com/a/88247/61581
 template <typename T>
-T UniversalHash(T seed, absl::Span<const T> data) {
+T UniversalHash(T seed, std::span<const T> data) {
   T ret = 0;
   for_each(data.rbegin(), data.rend(), [&ret, &seed](const T& val) {
     ret ^= val;
@@ -163,7 +163,7 @@ T UniversalHash(T seed, absl::Span<const T> data) {
 
 template <typename T>
 std::vector<T> ExtractHashCoef(T seed,
-                               absl::Span<const uint64_t> indexes /*sorted*/) {
+                               std::span<const uint64_t> indexes /*sorted*/) {
   std::array<T, 64> buff = {};
   auto max_bits = math::Log2Ceil(indexes.back());
   buff[0] = seed;

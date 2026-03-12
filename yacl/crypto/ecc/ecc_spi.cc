@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/crypto/ecc/ecc_spi.h"
 
-#include "absl/strings/ascii.h"
 
 namespace yacl::crypto {
 

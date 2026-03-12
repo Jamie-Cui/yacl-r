@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "absl/types/span.h"
+#include <span>
 
 #include "yacl/math/galois_field/factory/gf_spi.h"
 
@@ -25,42 +25,42 @@ class GFVectorizedSketch : public GaloisField {
  public:
   // if x is scalar, returns bool
   // if x is vectored, returns std::vector<bool>
-  virtual std::vector<bool> IsIdentityOne(absl::Span<const T> x) const = 0;
-  virtual std::vector<bool> IsIdentityZero(absl::Span<const T> x) const = 0;
-  virtual std::vector<bool> IsInField(absl::Span<const T> x) const = 0;
+  virtual std::vector<bool> IsIdentityOne(std::span<const T> x) const = 0;
+  virtual std::vector<bool> IsIdentityZero(std::span<const T> x) const = 0;
+  virtual std::vector<bool> IsInField(std::span<const T> x) const = 0;
 
-  virtual bool Equal(absl::Span<const T> x, absl::Span<const T> y) const = 0;
+  virtual bool Equal(std::span<const T> x, std::span<const T> y) const = 0;
 
   //================================//
   //   operations defined on set    //
   //================================//
 
   // get the additive inverse −a for all elements in set
-  virtual std::vector<T> Neg(absl::Span<const T> x) const = 0;
-  virtual void NegInplace(absl::Span<T> x) const = 0;
+  virtual std::vector<T> Neg(std::span<const T> x) const = 0;
+  virtual void NegInplace(std::span<T> x) const = 0;
 
   // get the multiplicative inverse 1/b for every nonzero element in set
-  virtual std::vector<T> Inv(absl::Span<const T> x) const = 0;
-  virtual void InvInplace(absl::Span<T> x) const = 0;
+  virtual std::vector<T> Inv(std::span<const T> x) const = 0;
+  virtual void InvInplace(std::span<T> x) const = 0;
 
-  virtual std::vector<T> Add(absl::Span<const T> x,
-                             absl::Span<const T> y) const = 0;
-  virtual void AddInplace(absl::Span<T> x, absl::Span<const T> y) const = 0;
+  virtual std::vector<T> Add(std::span<const T> x,
+                             std::span<const T> y) const = 0;
+  virtual void AddInplace(std::span<T> x, std::span<const T> y) const = 0;
 
-  virtual std::vector<T> Sub(absl::Span<const T> x,
-                             absl::Span<const T> y) const = 0;
-  virtual void SubInplace(absl::Span<T> x, absl::Span<const T> y) const = 0;
+  virtual std::vector<T> Sub(std::span<const T> x,
+                             std::span<const T> y) const = 0;
+  virtual void SubInplace(std::span<T> x, std::span<const T> y) const = 0;
 
-  virtual std::vector<T> Mul(absl::Span<const T> x,
-                             absl::Span<const T> y) const = 0;
-  virtual void MulInplace(absl::Span<T> x, absl::Span<const T> y) const = 0;
+  virtual std::vector<T> Mul(std::span<const T> x,
+                             std::span<const T> y) const = 0;
+  virtual void MulInplace(std::span<T> x, std::span<const T> y) const = 0;
 
-  virtual std::vector<T> Div(absl::Span<const T> x,
-                             absl::Span<const T> y) const = 0;
-  virtual void DivInplace(absl::Span<T> x, absl::Span<const T> y) const = 0;
+  virtual std::vector<T> Div(std::span<const T> x,
+                             std::span<const T> y) const = 0;
+  virtual void DivInplace(std::span<T> x, std::span<const T> y) const = 0;
 
-  virtual std::vector<T> Pow(absl::Span<const T> x, const MPInt& y) const = 0;
-  virtual void PowInplace(absl::Span<T> x, const MPInt& y) const = 0;
+  virtual std::vector<T> Pow(std::span<const T> x, const MPInt& y) const = 0;
+  virtual void PowInplace(std::span<T> x, const MPInt& y) const = 0;
 
   virtual std::vector<T> RandomT(size_t count) const = 0;
 
@@ -68,16 +68,16 @@ class GFVectorizedSketch : public GaloisField {
   //              I/O               //
   //================================//
 
-  virtual std::vector<T> DeepCopy(absl::Span<const T> x) const = 0;
+  virtual std::vector<T> DeepCopy(std::span<const T> x) const = 0;
 
   // To human-readable string
-  virtual std::string ToString(absl::Span<const T> x) const = 0;
+  virtual std::string ToString(std::span<const T> x) const = 0;
 
-  virtual Buffer Serialize(absl::Span<const T> x) const = 0;
+  virtual Buffer Serialize(std::span<const T> x) const = 0;
   // serialize field element(s) to already allocated buffer.
   // if buf is nullptr, then calc serialize size only
   // @return: the actual size of serialized buffer
-  virtual size_t Serialize(absl::Span<const T> x, uint8_t* buf,
+  virtual size_t Serialize(std::span<const T> x, uint8_t* buf,
                            size_t buf_len) const = 0;
 
   virtual std::vector<T> DeserializeT(ByteContainerView buffer) const = 0;

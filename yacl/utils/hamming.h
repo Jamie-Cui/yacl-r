@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/numeric/bits.h"
-#include "absl/types/span.h"
+#include <bit>
+#include <span>
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
@@ -30,7 +30,7 @@ inline constexpr size_t HammingWeight(T i) {
     return HammingWeight(low64) + HammingWeight(high64);
   } else {
     // TODO(shuyan.ycf): use `std::popcount` when we switch to c++20.
-    return absl::popcount(i);
+    return std::popcount(i);
   }
 }
 

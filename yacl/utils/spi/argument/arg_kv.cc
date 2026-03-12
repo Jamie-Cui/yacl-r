@@ -23,12 +23,12 @@ const std::string& SpiArg::Key() const { return key_; }
 bool SpiArg::HasValue() const { return value_.has_value(); }
 
 SpiArg& SpiArg::operator=(const char* value) {
-  value_ = absl::AsciiStrToLower(std::string(value));
+  value_ = yacl::AsciiStrToLower(std::string(value));
   return *this;
 }
 
 SpiArg& SpiArg::operator=(const std::string& value) {
-  value_ = absl::AsciiStrToLower(value);
+  value_ = yacl::AsciiStrToLower(value);
   return *this;
 }
 

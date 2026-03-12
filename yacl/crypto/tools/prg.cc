@@ -33,13 +33,13 @@ uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
     // CTR mode does not requires padding or manully build counter...
     crypto = std::make_unique<SymmetricCrypto>(type, seed, count);
     std::memset(buf, 0, nbytes);
-    auto bv = absl::MakeSpan(reinterpret_cast<uint8_t*>(buf), nbytes);
+    auto bv = std::span(reinterpret_cast<uint8_t*>(buf), nbytes);
     crypto->Encrypt(bv, bv);
   } else {
     crypto = std::make_unique<SymmetricCrypto>(type, seed, iv);
     if (padding_bytes == 0) {
       // No padding, fast path
-      auto s = absl::MakeSpan(reinterpret_cast<uint128_t*>(buf), nblock);
+      auto s = std::span(reinterpret_cast<uint128_t*>(buf), nblock);
       SymmetricCrypto::EcbMakeContentBlocks(count, s);
       crypto->Encrypt(s, s);
     } else {
@@ -48,7 +48,7 @@ uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
         if (nblock > 1) {
           // first n-1 block
           auto s =
-              absl::MakeSpan(reinterpret_cast<uint128_t*>(buf), nblock - 1);
+              std::span(reinterpret_cast<uint128_t*>(buf), nblock - 1);
           SymmetricCrypto::EcbMakeContentBlocks(count, s);
           crypto->Encrypt(s, s);
         }
@@ -59,7 +59,7 @@ uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
                     padding_bytes);
       } else {
         std::vector<uint128_t> cipher(nblock);
-        auto s = absl::MakeSpan(cipher);
+        auto s = std::span(cipher);
         SymmetricCrypto::EcbMakeContentBlocks(count, s);
         crypto->Encrypt(s, s);
         std::memcpy(buf, cipher.data(), nbytes);

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/link/transport/channel.h"
 
 #include <memory>
 #include <set>
 
-#include "absl/strings/numbers.h"
 #include "spdlog/spdlog.h"
 
 #include "yacl/base/buffer.h"
@@ -44,8 +44,8 @@ void NormalMessageKeyEnforce(std::string_view k) {
 template <class View>
 size_t ViewToSizeT(View v) {
   size_t ret = 0;
-  YACL_ENFORCE(absl::SimpleAtoi(
-      absl::string_view(reinterpret_cast<const char*>(v.data()), v.size()),
+  YACL_ENFORCE(yacl::SimpleAtoi(
+      std::string_view(reinterpret_cast<const char*>(v.data()), v.size()),
       &ret));
   return ret;
 }

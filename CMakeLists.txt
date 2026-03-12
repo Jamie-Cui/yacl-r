@@ -178,7 +178,6 @@ set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 # ASIO is always required for link module
 include(deps/asio)
 
-include(deps/abseil)
 include(deps/blake3)
 include(deps/cpu_features)
 include(deps/fmt)
@@ -261,8 +260,7 @@ target_include_directories(yacl_obj PRIVATE
 
 target_link_libraries(
   yacl_obj
-  PUBLIC Deps::absl
-         Deps::blake3
+  PUBLIC Deps::blake3
          Deps::cpu_features
          Deps::fmt
          Deps::fourq

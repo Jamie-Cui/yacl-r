@@ -21,7 +21,7 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/span.h"
+#include <span>
 #include "fmt/format.h"
 
 #include "yacl/base/byte_container_view.h"
@@ -73,7 +73,7 @@ uint64_t SSExecutor::RecvU64(std::string_view tag) {
 }
 
 void SSExecutor::SendU64Span(std::string_view tag,
-                             absl::Span<const uint64_t> data) {
+                             std::span<const uint64_t> data) {
   lctx_->SendAsync(
       1 - rank_, ByteContainerView(data.data(), data.size() * sizeof(uint64_t)),
       std::string(tag));
@@ -393,7 +393,7 @@ AShare SSExecutor::MulA(AShare x, AShare y) {
 
   auto tag = NextTag("mla");
   std::vector<uint64_t> send_ef = {e_local, f_local};
-  SendU64Span(tag, absl::MakeSpan(send_ef));
+  SendU64Span(tag, std::span(send_ef));
   auto recv_ef = RecvU64Vec(tag, 2);
 
   uint64_t e = e_local + recv_ef[0];
@@ -444,7 +444,7 @@ BShare SSExecutor::AndB(BShare x, BShare y) {
 
   auto tag = NextTag("anb");
   std::vector<uint64_t> send_ef = {e_local, f_local};
-  SendU64Span(tag, absl::MakeSpan(send_ef));
+  SendU64Span(tag, std::span(send_ef));
   auto recv_ef = RecvU64Vec(tag, 2);
 
   uint64_t e = e_local ^ recv_ef[0];

@@ -84,7 +84,7 @@ VerifiableSecretSharing::CreateShareWithCommits(
 
 // Recover the secret from the shares using Lagrange interpolation.
 MPInt VerifiableSecretSharing::RecoverSecret(
-    absl::Span<const VerifiableSecretSharing::Share> shares) const {
+    std::span<const VerifiableSecretSharing::Share> shares) const {
   YACL_ENFORCE(shares.size() >= threshold_);
 
   MPInt secret(0);

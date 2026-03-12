@@ -18,14 +18,14 @@
 
 namespace yacl::io {
 
-void MemoryKVStore::Put(absl::string_view key, ByteContainerView value) {
+void MemoryKVStore::Put(std::string_view key, ByteContainerView value) {
   Buffer value_vec(value.size());
 
   std::memcpy(value_vec.data(), value.data(), value.size());
   kv_map.insert(std::make_pair(key, value_vec));
 }
 
-bool MemoryKVStore::Get(absl::string_view key, std::string *value) const {
+bool MemoryKVStore::Get(std::string_view key, std::string *value) const {
   auto it = kv_map.find(
       static_cast<std::basic_string<char, std::char_traits<char>>>(key));
   if (it != kv_map.end()) {

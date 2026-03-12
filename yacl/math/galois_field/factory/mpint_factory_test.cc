@@ -137,10 +137,10 @@ TEST_F(IntrinsicFieldTest, VectorWorks) {
   // test item (not) equal
   auto sum_sp = sum_v.AsSpan<MPInt>();
   EXPECT_EQ(sum_sp.length(), 3);
-  EXPECT_EQ(sum_sp, absl::MakeConstSpan({12_mp, 1_mp, 3_mp}));
-  EXPECT_NE(sum_sp, absl::MakeConstSpan({12_mp, 1_mp}));
-  EXPECT_NE(sum_sp, absl::MakeConstSpan({12_mp, 1_mp, 3_mp, 12_mp}));
-  EXPECT_NE(sum_sp, absl::MakeConstSpan({12_mp, 1_mp, 4_mp}));
+  EXPECT_EQ(sum_sp, std::span({12_mp, 1_mp, 3_mp}));
+  EXPECT_NE(sum_sp, std::span({12_mp, 1_mp}));
+  EXPECT_NE(sum_sp, std::span({12_mp, 1_mp, 3_mp, 12_mp}));
+  EXPECT_NE(sum_sp, std::span({12_mp, 1_mp, 4_mp}));
 
   EXPECT_EQ(gf->IsIdentityZero(Item::Take<MPInt>({0_mp, 1_mp, 2_mp, 0_mp})),
             std::vector({true, false, false, true}));
@@ -215,7 +215,7 @@ TEST_F(IntrinsicFieldTest, VectorIoWorks) {
   auto item2 = item1.SubItem<MPInt>(0, 1);
   ASSERT_TRUE(item2.IsView());
   ASSERT_FALSE(item2.IsReadOnly());
-  ASSERT_TRUE(item2.RawTypeIs<absl::Span<MPInt>>());
+  ASSERT_TRUE(item2.RawTypeIs<std::span<MPInt>>());
   ASSERT_TRUE(gf->Equal(item2, Item::Take<MPInt>({0_mp})));
 
   // deepcopy

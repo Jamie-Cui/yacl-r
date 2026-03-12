@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "yacl/base/strings.h"
 #include "yacl/link/trace.h"
 
 #include <mutex>
 
-#include "absl/strings/escaping.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 
 #include "yacl/base/exception.h"
@@ -70,7 +70,7 @@ void DefaultLogger::LinkTraceImpl(std::string_view event, std::string_view tag,
   // write to link file trace if enabled.
   if (logger_) {
     SPDLOG_LOGGER_INFO(logger_, "[link] key={},tag={},value={}", event, tag,
-                       absl::BytesToHexString(content));
+                       yacl::BytesToHexString(content));
   }
 }
 

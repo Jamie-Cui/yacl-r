@@ -44,7 +44,7 @@ BENCHMARK_DEFINE_F(CodeBench, LLC)(benchmark::State& state) {
 
       state.ResumeTiming();
 
-      llc.Encode(input, absl::MakeSpan(out));
+      llc.Encode(input, std::span(out));
 
       state.PauseTiming();
     }
@@ -63,7 +63,7 @@ BENCHMARK_DEFINE_F(CodeBench, LLC)(benchmark::State& state) {
         SilverCode slv(n, weight);                       \
         auto input = RandVec<uint128_t>(n * 2);          \
         state.ResumeTiming();                            \
-        slv.DualEncodeInplace(absl::MakeSpan(input));    \
+        slv.DualEncodeInplace(std::span(input));    \
         state.PauseTiming();                             \
       }                                                  \
       state.ResumeTiming();                              \
@@ -81,7 +81,7 @@ BENCHMARK_DEFINE_F(CodeBench, LLC)(benchmark::State& state) {
         auto input = RandVec<uint128_t>(n * 2);                             \
         auto output = std::vector<uint128_t>(n);                            \
         state.ResumeTiming();                                               \
-        slv.DualEncode(absl::MakeSpan(input), absl::MakeSpan(output));      \
+        slv.DualEncode(std::span(input), std::span(output));      \
         state.PauseTiming();                                                \
       }                                                                     \
       state.ResumeTiming();                                                 \
@@ -104,7 +104,7 @@ DELCARE_SLV_INPLACE_BENCH(11);
         auto input = RandVec<uint128_t>(n * 2);                            \
         auto output = std::vector<uint128_t>(n);                           \
         state.ResumeTiming();                                              \
-        acc.DualEncode(absl::MakeSpan(input), absl::MakeSpan(output));     \
+        acc.DualEncode(std::span(input), std::span(output));     \
         state.PauseTiming();                                               \
       }                                                                    \
       state.ResumeTiming();                                                \

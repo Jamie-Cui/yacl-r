@@ -35,9 +35,9 @@ TEST(Llc, LlcWorks) {
   std::vector<uint128_t> check1(n);
   std::vector<uint128_t> check2(n);
   // WHEN
-  llc.Encode(input, absl::MakeSpan(out));
-  dup_llc.Encode(input, absl::MakeSpan(check));
-  llc.Encode2(input, absl::MakeSpan(check1), input, absl::MakeSpan(check2));
+  llc.Encode(input, std::span(out));
+  dup_llc.Encode(input, std::span(check));
+  llc.Encode2(input, std::span(check1), input, std::span(check2));
 
   uint32_t zero_counter = 0;
   for (uint32_t i = 0; i < n; ++i) {

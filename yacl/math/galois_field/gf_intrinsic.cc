@@ -14,6 +14,8 @@
 
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
+#include <algorithm>
+
 namespace yacl::math {
 
 // ----------------------------------
@@ -33,7 +35,7 @@ void Gf128Mul(block x, block y, block* out) {
   Gf128Reduce(high, low, out);
 }
 
-void Gf128Mul(absl::Span<const uint128_t> x, absl::Span<const uint128_t> y,
+void Gf128Mul(std::span<const uint128_t> x, std::span<const uint128_t> y,
               uint128_t* out) {
   YACL_ENFORCE(x.size() == y.size());
   uint128_t high;
@@ -65,7 +67,7 @@ void Gf128ClMul(block x, block y, block* out1, block* out2) {
   *out2 = _mm_xor_si128(low, mid2);   // low ^ (mid << 64)
 }
 
-void Gf128ClMul(absl::Span<const uint128_t> x, absl::Span<const uint128_t> y,
+void Gf128ClMul(std::span<const uint128_t> x, std::span<const uint128_t> y,
                 uint128_t* out1, uint128_t* out2) {
   YACL_ENFORCE(x.size() == y.size());
 
@@ -102,10 +104,10 @@ void Gf128Reduce(uint128_t high, uint128_t low, uint128_t* out) {
   *out = toU128(temp);
 }
 
-void Gf128Pack(absl::Span<const uint128_t> data, uint128_t* out) {
+void Gf128Pack(std::span<const uint128_t> data, uint128_t* out) {
   const size_t size = data.size();
   YACL_ENFORCE(size <= 128);
-  Gf128Mul(data, absl::MakeSpan(kGf128Basis().data(), size), out);
+  Gf128Mul(data, std::span(kGf128Basis().data(), size), out);
 }
 
 // ----------------------------------
@@ -118,7 +120,7 @@ void Gf64Mul(uint64_t x, uint64_t y, uint64_t* out) {
   Gf64Reduce(temp, out);
 }
 
-void Gf64Mul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y,
+void Gf64Mul(std::span<const uint64_t> x, std::span<const uint64_t> y,
              uint64_t* out) {
   YACL_ENFORCE(x.size() == y.size());
   uint128_t temp;
@@ -132,7 +134,7 @@ void Gf64ClMul(uint64_t x, uint64_t y, uint128_t* out) {
                                   _mm_loadl_epi64((const __m128i*)&(y)), 0x00));
 }
 
-void Gf64ClMul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y,
+void Gf64ClMul(std::span<const uint64_t> x, std::span<const uint64_t> y,
                uint128_t* out) {
   YACL_ENFORCE(x.size() == y.size());
 
@@ -238,21 +240,21 @@ uint64_t Gf64Mul(uint64_t x, uint64_t y) {
   return ret;
 }
 
-uint64_t Gf64Mul(absl::Span<const uint64_t> x, absl::Span<const uint64_t> y) {
+uint64_t Gf64Mul(std::span<const uint64_t> x, std::span<const uint64_t> y) {
   uint64_t ret;
   Gf64Mul(x, y, &ret);
   return ret;
 }
 
-uint64_t Gf64Pack(absl::Span<const uint64_t> data) {
+uint64_t Gf64Pack(std::span<const uint64_t> data) {
   uint64_t ret;
   Gf64Pack(data, &ret);
   return ret;
 }
-void Gf64Pack(absl::Span<const uint64_t> data, uint64_t* out) {
+void Gf64Pack(std::span<const uint64_t> data, uint64_t* out) {
   const size_t size = data.size();
   YACL_ENFORCE(size <= 64);
-  Gf64Mul(data, absl::MakeSpan(kGf64Basis().data(), size), out);
+  Gf64Mul(data, std::span(kGf64Basis().data(), size), out);
 }
 
 uint64_t Gf64Inv(uint64_t x) {
@@ -273,8 +275,8 @@ uint128_t Gf64ClMul(uint64_t x, uint64_t y) {
   return ret;
 }
 
-uint128_t Gf64ClMul(absl::Span<const uint64_t> x,
-                    absl::Span<const uint64_t> y) {
+uint128_t Gf64ClMul(std::span<const uint64_t> x,
+                    std::span<const uint64_t> y) {
   uint128_t ret;
   Gf64ClMul(x, y, &ret);
   return ret;
@@ -304,28 +306,28 @@ block Gf128Reduce(block high, block low) {
   return ret;
 }
 
-uint128_t Gf128Mul(absl::Span<const uint128_t> x,
-                   absl::Span<const uint128_t> y) {
+uint128_t Gf128Mul(std::span<const uint128_t> x,
+                   std::span<const uint128_t> y) {
   uint128_t ret;
   Gf128Mul(x, y, &ret);
   return ret;
 }
 
-uint128_t Gf128Pack(absl::Span<const uint128_t> data) {
+uint128_t Gf128Pack(std::span<const uint128_t> data) {
   uint128_t ret;
   Gf128Pack(data, &ret);
   return ret;
 }
 
-uint128_t GfMul(absl::Span<const uint128_t> a, absl::Span<const uint64_t> b) {
+uint128_t GfMul(std::span<const uint128_t> a, std::span<const uint64_t> b) {
   UninitAlignedVector<uint128_t> tmp(b.size());
-  std::transform(b.cbegin(), b.cend(), tmp.begin(), [](const uint64_t& val) {
+  std::transform(b.begin(), b.end(), tmp.begin(), [](const uint64_t& val) {
     return static_cast<uint128_t>(val);
   });
-  return Gf128Mul(a, absl::MakeSpan(tmp));
+  return Gf128Mul(a, std::span(tmp));
 }
 
-uint128_t GfMul(absl::Span<const uint64_t> a, absl::Span<const uint128_t> b) {
+uint128_t GfMul(std::span<const uint64_t> a, std::span<const uint128_t> b) {
   return GfMul(b, a);
 }
 

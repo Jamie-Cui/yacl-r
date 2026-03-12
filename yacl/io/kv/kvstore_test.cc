@@ -35,8 +35,8 @@ TEST(KVStore, memory_test) {
   std::string value(32, '\0');
   yacl::crypto::Prg<uint8_t> prg(rd());
 
-  prg.Fill(absl::MakeSpan(&key[0], key.length()));
-  prg.Fill(absl::MakeSpan(&value[0], value.size()));
+  prg.Fill(std::span(&key[0], key.length()));
+  prg.Fill(std::span(&value[0], value.size()));
 
   memory_store->Put(key, value);
 
@@ -56,8 +56,8 @@ TEST(KVStore, leveldb_test) {
   std::string value(32, '\0');
   yacl::crypto::Prg<uint8_t> prg(rd());
 
-  prg.Fill(absl::MakeSpan(&key[0], key.length()));
-  prg.Fill(absl::MakeSpan(&value[0], value.size()));
+  prg.Fill(std::span(&key[0], key.length()));
+  prg.Fill(std::span(&value[0], value.size()));
 
   leveldb_store->Put(key, value);
 
@@ -78,7 +78,7 @@ TEST(KVStore, index_memory_test) {
   yacl::crypto::Prg<uint8_t> prg(rd());
 
   key = prg();
-  prg.Fill(absl::MakeSpan(&value[0], value.size()));
+  prg.Fill(std::span(&value[0], value.size()));
 
   index_store.Put(key, value);
 
@@ -99,7 +99,7 @@ TEST(KVStore, index_leveldb_test) {
   yacl::crypto::Prg<uint8_t> prg(rd());
 
   key = prg();
-  prg.Fill(absl::MakeSpan(&value[0], value.size()));
+  prg.Fill(std::span(&value[0], value.size()));
 
   index_store.Put(key, value);
 

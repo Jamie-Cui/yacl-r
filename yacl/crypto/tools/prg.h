@@ -55,7 +55,7 @@ template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
 inline uint64_t FillPRand(SymmetricCrypto::CryptoType crypto_type,
                           uint128_t seed, uint64_t iv, uint64_t count,
-                          absl::Span<T> out) {
+                          std::span<T> out) {
   return FillPRand(crypto_type, seed, iv, count, (char*)out.data(),
                    out.size() * sizeof(T));
 }
@@ -67,7 +67,7 @@ inline uint64_t FillPRand(SymmetricCrypto::CryptoType crypto_type,
 // useful way of using Prg.
 template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
-inline void PrgAesCtr(const uint128_t seed, absl::Span<T> out) {
+inline void PrgAesCtr(const uint128_t seed, std::span<T> out) {
   FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, 0, out);
 }
 
@@ -76,7 +76,7 @@ template <typename T,
 inline std::vector<T> PrgAesCtr(const uint128_t seed, const size_t num) {
   std::vector<T> res(num);
   FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, 0,
-               absl::MakeSpan(res));
+               std::span(res));
   return res;
 }
 
@@ -85,7 +85,7 @@ template <typename T,
 inline std::vector<T> PrgAesCbc(const uint128_t seed, const size_t num) {
   std::vector<T> res(num);
   FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CBC, seed, 0, 0,
-               absl::MakeSpan(res));
+               std::span(res));
   return res;
 }
 
@@ -193,7 +193,7 @@ template <typename T,
                            bool> = true>
 uint64_t FillPRandWithMersennePrime(SymmetricCrypto::CryptoType crypto_type,
                                     uint128_t seed, uint64_t iv, uint64_t count,
-                                    absl::Span<T> out) {
+                                    std::span<T> out) {
   if constexpr (std::is_same_v<T, uint128_t> || std::is_same_v<T, uint64_t>) {
     // first, fill all outputs with randomness
     auto ret = FillPRand(crypto_type, seed, iv, count, (char*)out.data(),
@@ -243,13 +243,13 @@ template <typename T,
           std::enable_if_t<IsSupportedLtNContainerType<T>::value, bool> = true>
 uint64_t FillPRandWithLtN(SymmetricCrypto::CryptoType crypto_type,
                           uint128_t seed, uint64_t iv, uint64_t count,
-                          absl::Span<T> out, T n) {
+                          std::span<T> out, T n) {
   size_t n_bit_width = 0;
   // first, fill all outputs with randomness
   if constexpr (std::is_same_v<T, uint128_t>) {
     n_bit_width = CountBitWidth(n);
   } else {
-    n_bit_width = absl::bit_width(n);
+    n_bit_width = std::bit_width(n);
   }
 
   auto required_size =
@@ -341,18 +341,18 @@ class Prg {
   // counter.
   template <typename Y,
             std::enable_if_t<std::is_trivially_copyable_v<Y>, int> = 0>
-  void Fill(absl::Span<Y> out) {
+  void Fill(std::span<Y> out) {
     switch (mode_) {
       case PRG_MODE::kAesEcb:
         counter_ = FillPRand(
             SymmetricCrypto::CryptoType::AES128_ECB, seed_, kInitVector,
             counter_,
-            absl::Span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
+            std::span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
         break;
       case PRG_MODE::kSm4Ecb:
         counter_ = FillPRand(
             SymmetricCrypto::CryptoType::SM4_ECB, seed_, kInitVector, counter_,
-            absl::Span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
+            std::span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
         break;
     }
   }
@@ -369,12 +369,12 @@ class Prg {
       case PRG_MODE::kAesEcb:
         counter_ = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, seed_,
                              kInitVector, counter_,
-                             absl::MakeSpan(cipher_ptr, cipher_size));
+                             std::span(cipher_ptr, cipher_size));
         break;
       case PRG_MODE::kSm4Ecb:
         counter_ =
             FillPRand(SymmetricCrypto::CryptoType::SM4_ECB, seed_, kInitVector,
-                      counter_, absl::MakeSpan(cipher_ptr, cipher_size));
+                      counter_, std::span(cipher_ptr, cipher_size));
         break;
     }
   }
