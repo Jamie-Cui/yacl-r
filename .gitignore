@@ -1,5 +1,6 @@
 # devtools
 .idea/
+.claude/
 output/*
 *.plist
 clion/
