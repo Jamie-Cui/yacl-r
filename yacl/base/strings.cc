@@ -146,7 +146,7 @@ bool SimpleHexAtoi(std::string_view sv, uint64_t* out) {
 
 void AsciiStrToLower(std::string* s) {
   std::transform(s->begin(), s->end(), s->begin(),
-                 [](unsigned char c) { return std::tolower(c); });
+                 [](char c) { return AsciiToLower(c); });
 }
 
 std::string AsciiStrToLower(std::string_view sv) {
@@ -157,7 +157,7 @@ std::string AsciiStrToLower(std::string_view sv) {
 
 void AsciiStrToUpper(std::string* s) {
   std::transform(s->begin(), s->end(), s->begin(),
-                 [](unsigned char c) { return std::toupper(c); });
+                 [](char c) { return AsciiToUpper(c); });
 }
 
 std::string AsciiStrToUpper(std::string_view sv) {
@@ -168,13 +168,11 @@ std::string AsciiStrToUpper(std::string_view sv) {
 
 std::string_view StripAsciiWhitespace(std::string_view sv) {
   size_t start = 0;
-  while (start < sv.size() &&
-         std::isspace(static_cast<unsigned char>(sv[start]))) {
+  while (start < sv.size() && AsciiIsWhitespace(sv[start])) {
     ++start;
   }
   size_t end = sv.size();
-  while (end > start &&
-         std::isspace(static_cast<unsigned char>(sv[end - 1]))) {
+  while (end > start && AsciiIsWhitespace(sv[end - 1])) {
     --end;
   }
   return sv.substr(start, end - start);

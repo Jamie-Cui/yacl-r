@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include <cctype>
 #include <cstdint>
 #include <span>
 #include <string>
@@ -110,23 +109,22 @@ inline bool EndsWith(std::string_view s, std::string_view suffix) {
 // ASCII character utilities (replacements for absl/strings/ascii.h)
 // ---------------------------------------------------------------------------
 
-inline bool AsciiIsDigit(char c) {
-  return std::isdigit(static_cast<unsigned char>(c)) != 0;
+inline constexpr bool AsciiIsDigit(char c) { return c >= '0' && c <= '9'; }
+inline constexpr bool AsciiIsAlpha(char c) {
+  return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 }
-inline bool AsciiIsAlpha(char c) {
-  return std::isalpha(static_cast<unsigned char>(c)) != 0;
+inline constexpr bool AsciiIsWhitespace(char c) {
+  return c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' ||
+         c == '\v';
 }
-inline bool AsciiIsWhitespace(char c) {
-  return std::isspace(static_cast<unsigned char>(c)) != 0;
+inline constexpr bool AsciiIsAlNum(char c) {
+  return AsciiIsAlpha(c) || AsciiIsDigit(c);
 }
-inline bool AsciiIsAlNum(char c) {
-  return std::isalnum(static_cast<unsigned char>(c)) != 0;
+inline constexpr char AsciiToLower(char c) {
+  return c >= 'A' && c <= 'Z' ? static_cast<char>(c - 'A' + 'a') : c;
 }
-inline char AsciiToLower(char c) {
-  return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-}
-inline char AsciiToUpper(char c) {
-  return static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+inline constexpr char AsciiToUpper(char c) {
+  return c >= 'a' && c <= 'z' ? static_cast<char>(c - 'a' + 'A') : c;
 }
 
 // Convert all ASCII characters in *s to lowercase in place.

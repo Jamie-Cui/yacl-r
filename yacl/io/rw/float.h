@@ -19,8 +19,10 @@
 #include <cstdio>
 #include <limits>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
+#include "yacl/base/strings.h"
 
 namespace yacl::io {
 

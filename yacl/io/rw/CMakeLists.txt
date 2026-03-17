@@ -31,6 +31,8 @@ set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
+add_yacl_test_if(float_test)
+
 # add_executable(rw_test rw_test.cc) target_link_libraries(rw_test PRIVATE yacl
 # gtest_main gflags) add_test(NAME rw_test COMMAND rw_test WORKING_DIRECTORY
 # ${PROJECT_SOURCE_DIR})
