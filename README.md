@@ -82,7 +82,7 @@ Vendored third-party dependencies are installed into a private subtree inside
 the install prefix instead of being copied into system-wide include/library
 locations:
 
-- public headers: `include/yacl/...`
+- public headers: `include/yacl-r/yacl/...`
 - private vendored headers: `include/yacl-r/deps/...`
 - private vendored libraries: `lib*/yacl-r/deps/...`
 
@@ -96,6 +96,9 @@ Consumers can use the installed package via CMake:
 find_package(Yacl CONFIG REQUIRED)
 target_link_libraries(your_target PRIVATE Yacl::yacl)
 ```
+
+The exported target adds `include/yacl-r` to the include path, so installed
+consumers still include public headers as `#include "yacl/..."`.
 
 ## License
 
