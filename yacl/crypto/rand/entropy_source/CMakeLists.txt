@@ -13,11 +13,6 @@
 # the License.
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/entropy_source.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/urandom_factory.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/entropy_source/rdseed_factory.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/entropy_source)
 
 # ------------
 # Test

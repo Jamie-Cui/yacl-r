@@ -1,0 +1,92 @@
+set(_YACL_DEPS_INCLUDE_DIR "${PACKAGE_PREFIX_DIR}/@YACL_INSTALL_DEPS_INCLUDEDIR@")
+set(_YACL_DEPS_LIB_DIR "${PACKAGE_PREFIX_DIR}/@YACL_INSTALL_DEPS_LIBDIR@")
+
+function(_yacl_import_interface_dep target)
+  if(TARGET ${target})
+    return()
+  endif()
+
+  add_library(${target} INTERFACE IMPORTED GLOBAL)
+  set_target_properties(
+    ${target}
+    PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_YACL_DEPS_INCLUDE_DIR}"
+               INTERFACE_LINK_LIBRARIES "${ARGN}")
+endfunction()
+
+function(_yacl_alias_dep alias target)
+  if(TARGET ${alias})
+    return()
+  endif()
+
+  add_library(${alias} ALIAS ${target})
+endfunction()
+
+_yacl_import_interface_dep(libasio)
+set_property(
+  TARGET libasio
+  APPEND
+  PROPERTY INTERFACE_COMPILE_DEFINITIONS ASIO_STANDALONE ASIO_NO_DEPRECATED)
+_yacl_alias_dep(Deps::asio libasio)
+
+_yacl_import_interface_dep(
+  libblake3 "${_YACL_DEPS_LIB_DIR}/libblake3@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::blake3 libblake3)
+
+_yacl_import_interface_dep(
+  libcpu_features
+  "${_YACL_DEPS_LIB_DIR}/libcpu_features@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::cpu_features libcpu_features)
+
+_yacl_import_interface_dep(
+  libfmt "${_YACL_DEPS_LIB_DIR}/libfmt@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::fmt libfmt)
+
+_yacl_import_interface_dep(
+  libFourQ "${_YACL_DEPS_LIB_DIR}/libFourQ@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::fourq libFourQ)
+
+_yacl_import_interface_dep(
+  libgflags "${_YACL_DEPS_LIB_DIR}/libgflags@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::gflags libgflags)
+
+_yacl_import_interface_dep(
+  libleveldb "${_YACL_DEPS_LIB_DIR}/libleveldb@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::leveldb libleveldb)
+
+_yacl_import_interface_dep(
+  libtommath "${_YACL_DEPS_LIB_DIR}/libtommath@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::libtommath libtommath)
+
+_yacl_import_interface_dep(
+  libmcl_interface
+  "${_YACL_DEPS_LIB_DIR}/libmclbn256@CMAKE_STATIC_LIBRARY_SUFFIX@"
+  "${_YACL_DEPS_LIB_DIR}/libmclbn384@CMAKE_STATIC_LIBRARY_SUFFIX@"
+  "${_YACL_DEPS_LIB_DIR}/libmcl@CMAKE_STATIC_LIBRARY_SUFFIX@")
+_yacl_alias_dep(Deps::mcl libmcl_interface)
+
+_yacl_import_interface_dep(libmsgpack)
+set_property(
+  TARGET libmsgpack
+  APPEND
+  PROPERTY INTERFACE_COMPILE_DEFINITIONS MSGPACK_NO_BOOST)
+_yacl_alias_dep(Deps::msgpack libmsgpack)
+
+_yacl_import_interface_dep(
+  libssl "${_YACL_DEPS_LIB_DIR}/libssl@CMAKE_STATIC_LIBRARY_SUFFIX@"
+  "${_YACL_DEPS_LIB_DIR}/libcrypto@CMAKE_STATIC_LIBRARY_SUFFIX@"
+  Threads::Threads "@CMAKE_DL_LIBS@")
+_yacl_alias_dep(Deps::openssl libssl)
+
+_yacl_import_interface_dep(
+  libspdlog "${_YACL_DEPS_LIB_DIR}/libspdlog@CMAKE_STATIC_LIBRARY_SUFFIX@")
+set_property(
+  TARGET libspdlog
+  APPEND
+  PROPERTY INTERFACE_COMPILE_DEFINITIONS SPDLOG_FMT_EXTERNAL)
+_yacl_alias_dep(Deps::spdlog libspdlog)
+
+_yacl_import_interface_dep(libsse2neon)
+_yacl_alias_dep(Deps::sse2neon libsse2neon)
+
+unset(_YACL_DEPS_INCLUDE_DIR)
+unset(_YACL_DEPS_LIB_DIR)

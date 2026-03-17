@@ -62,6 +62,41 @@ cmake -S . -B build -G Ninja
 cmake --build build -j$(nproc)
 ```
 
+## Installing
+
+Yacl-r now supports `make install` / `cmake --install`.
+
+```sh
+# configure
+cmake -S . -B build
+
+# build and install into the default prefix: ./output
+cmake --build build -j$(nproc)
+cmake --install build
+
+# or install into a custom prefix
+cmake --install build --prefix /path/to/prefix
+```
+
+Vendored third-party dependencies are installed into a private subtree inside
+the install prefix instead of being copied into system-wide include/library
+locations:
+
+- public headers: `include/yacl/...`
+- private vendored headers: `include/yacl-r/deps/...`
+- private vendored libraries: `lib*/yacl-r/deps/...`
+
+This keeps Yacl-r's bundled dependencies isolated from the system toolchain and
+from unrelated projects. The current exception is GMP, which is still resolved
+as a system dependency at package-consume time.
+
+Consumers can use the installed package via CMake:
+
+```cmake
+find_package(Yacl CONFIG REQUIRED)
+target_link_libraries(your_target PRIVATE Yacl::yacl)
+```
+
 ## License
 
 See [LICENSE](LICENSE) 

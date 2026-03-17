@@ -18,16 +18,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/secparam.cc ${CMAKE_CURRENT_LIST_DIR}/strings.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/base/aligned_vector.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/block.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/secparam.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/buffer.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/byte_container_view.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/dynamic_bitset.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/exception.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/base/int128.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/base)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

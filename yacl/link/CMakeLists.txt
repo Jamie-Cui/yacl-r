@@ -28,17 +28,3 @@ set(YACL_SOURCE_FILES
 
 add_yacl_test_if(context_test)
 add_yacl_test_if(factory_test)
-
-# Add header files for installation
-set(LINK_HEADERS
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/context.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_asio.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/factory_mem.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/trace.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/link.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/retry_options.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/ssl_options.h)
-
-install(
-  FILES ${LINK_HEADERS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/link)

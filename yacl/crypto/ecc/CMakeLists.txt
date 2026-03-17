@@ -20,20 +20,6 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/curve_meta.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/ec_point.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/ecc_spi.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/group_sketch.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ecc/any_ptr.h
-        ${CMAKE_CURRENT_LIST_DIR}/FourQlib/FourQ_group.h
-        ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_ec_group.h
-        ${CMAKE_CURRENT_LIST_DIR}/mcl/mcl_util.h
-        ${CMAKE_CURRENT_LIST_DIR}/openssl/openssl_group.h
-        ${CMAKE_CURRENT_LIST_DIR}/toy/common.h
-        ${CMAKE_CURRENT_LIST_DIR}/toy/montgomery.h
-        ${CMAKE_CURRENT_LIST_DIR}/toy/weierstrass.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ecc)
 
 # ------------------------------------------------------------------------------
 # For libyacl_spi_ecc

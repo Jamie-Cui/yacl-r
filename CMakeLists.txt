@@ -75,6 +75,7 @@ include(CTest)
 include(ExternalProject)
 include(GNUInstallDirs)
 include(FetchContent)
+include(CMakePackageConfigHelpers)
 
 set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
@@ -164,6 +165,36 @@ set(CMAKE_DEPS_LIBDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_DEPS_BINDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_BINDIR})
 set(CMAKE_DEPS_INCLUDEDIR ${CMAKE_DEPS_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
 set(CMAKE_DEPS_SRCDIR ${CMAKE_DEPS_PREFIX}/src)
+set(YACL_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Yacl)
+set(YACL_INSTALL_DEPS_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/yacl-r/deps)
+set(YACL_INSTALL_DEPS_LIBDIR ${CMAKE_INSTALL_LIBDIR}/yacl-r/deps)
+
+set(YACL_PUBLIC_COMPILE_DEFINITIONS
+    ASIO_STANDALONE
+    ASIO_NO_DEPRECATED
+    MSGPACK_NO_BOOST
+    SPDLOG_FMT_EXTERNAL
+    MCL_ALL_PAIRING_FOR_YACL)
+
+set(YACL_PUBLIC_COMPILE_OPTIONS "")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|amd64")
+  list(APPEND YACL_PUBLIC_COMPILE_OPTIONS -mbmi2 -maes -mavx -mpclmul)
+endif()
+
+set(YACL_BUNDLED_DEP_LIB_FILES
+    ${CMAKE_DEPS_LIBDIR}/libFourQ${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libblake3${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libcpu_features${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libfmt${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libgflags${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libleveldb${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libmcl${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libmclbn256${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libmclbn384${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libspdlog${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_DEPS_LIBDIR}/libtommath${CMAKE_STATIC_LIBRARY_SUFFIX})
 
 # Explicitly create build/deps directory
 file(MAKE_DIRECTORY ${CMAKE_DEPS_PREFIX})
@@ -246,13 +277,9 @@ add_library(yacl_obj OBJECT ${YACL_SOURCE_FILES}) # main object lib
 
 target_include_directories(
   yacl_obj
-  PUBLIC # these dirs are only used when building inside the build tree
-         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
-         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
+  PUBLIC "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
          "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
-         # these dirs are only used when linking against a prebuilt package
-         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-         ${CMAKE_DEPS_INCLUDEDIR})
+         "$<BUILD_INTERFACE:${CMAKE_DEPS_INCLUDEDIR}>")
 
 # Add include path for simplest-ot
 target_include_directories(yacl_obj PRIVATE 
@@ -289,28 +316,116 @@ else()
   add_library(yacl STATIC) # main static lib
 endif()
 
+target_sources(yacl PRIVATE $<TARGET_OBJECTS:yacl_obj>)
+
 target_include_directories(
-  yacl PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include
-              ${CMAKE_DEPS_INCLUDEDIR})
+  yacl
+  PUBLIC "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+         "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
+         "$<BUILD_INTERFACE:${CMAKE_DEPS_INCLUDEDIR}>"
+         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+         "$<INSTALL_INTERFACE:${YACL_INSTALL_DEPS_INCLUDEDIR}>")
 
-target_link_libraries(yacl PUBLIC yacl_obj)
+target_compile_features(yacl PUBLIC cxx_std_20)
+target_compile_definitions(yacl PUBLIC ${YACL_PUBLIC_COMPILE_DEFINITIONS})
 
-# NOTE it's IMPORTANT to link all spi libs in PUBLIC scope.
-# All spi libs must be included in binaries.
+if(YACL_PUBLIC_COMPILE_OPTIONS)
+  target_compile_options(yacl INTERFACE ${YACL_PUBLIC_COMPILE_OPTIONS})
+endif()
+
+target_link_libraries(
+  yacl
+  PRIVATE "$<BUILD_INTERFACE:Threads::Threads>"
+          "$<INSTALL_INTERFACE:Threads::Threads>"
+          "$<BUILD_INTERFACE:Deps::asio>"
+          "$<INSTALL_INTERFACE:Deps::asio>"
+          "$<BUILD_INTERFACE:Deps::blake3>"
+          "$<INSTALL_INTERFACE:Deps::blake3>"
+          "$<BUILD_INTERFACE:Deps::cpu_features>"
+          "$<INSTALL_INTERFACE:Deps::cpu_features>"
+          "$<BUILD_INTERFACE:Deps::fmt>"
+          "$<INSTALL_INTERFACE:Deps::fmt>"
+          "$<BUILD_INTERFACE:Deps::fourq>"
+          "$<INSTALL_INTERFACE:Deps::fourq>"
+          "$<BUILD_INTERFACE:Deps::gflags>"
+          "$<INSTALL_INTERFACE:Deps::gflags>"
+          "$<BUILD_INTERFACE:Deps::gmp>"
+          "$<INSTALL_INTERFACE:Deps::gmp>"
+          "$<BUILD_INTERFACE:Deps::leveldb>"
+          "$<INSTALL_INTERFACE:Deps::leveldb>"
+          "$<BUILD_INTERFACE:Deps::libtommath>"
+          "$<INSTALL_INTERFACE:Deps::libtommath>"
+          "$<BUILD_INTERFACE:Deps::mcl>"
+          "$<INSTALL_INTERFACE:Deps::mcl>"
+          "$<BUILD_INTERFACE:Deps::msgpack>"
+          "$<INSTALL_INTERFACE:Deps::msgpack>"
+          "$<BUILD_INTERFACE:Deps::openssl>"
+          "$<INSTALL_INTERFACE:Deps::openssl>"
+          "$<BUILD_INTERFACE:Deps::spdlog>"
+          "$<INSTALL_INTERFACE:Deps::spdlog>"
+          "$<BUILD_INTERFACE:Deps::sse2neon>"
+          "$<INSTALL_INTERFACE:Deps::sse2neon>")
+
+# NOTE all spi objects must be embedded into libyacl itself.
 foreach(spilib IN LISTS YACL_SPI_LIBS)
-  target_link_libraries(yacl PRIVATE $<TARGET_OBJECTS:${spilib}>)
+  target_sources(yacl PRIVATE $<TARGET_OBJECTS:${spilib}>)
 endforeach()
 
 add_library(Yacl::yacl ALIAS yacl)
 
 #
-# Install headers
+# Install headers and exported package metadata
 #
+
+configure_package_config_file(
+  ${PROJECT_SOURCE_DIR}/cmake/YaclConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/YaclConfig.cmake
+  INSTALL_DESTINATION ${YACL_INSTALL_CMAKEDIR})
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/YaclConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion)
+
+configure_file(${PROJECT_SOURCE_DIR}/cmake/YaclDeps.cmake.in
+               ${CMAKE_CURRENT_BINARY_DIR}/YaclDeps.cmake @ONLY)
 
 install(
   TARGETS yacl
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+  EXPORT YaclTargets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-install(DIRECTORY ${CMAKE_DEPS_INCLUDEDIR} DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(
+  DIRECTORY ${PROJECT_SOURCE_DIR}/yacl/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl
+  FILES_MATCHING
+  PATTERN "*.h")
+
+install(
+  DIRECTORY ${CMAKE_DEPS_INCLUDEDIR}/
+  DESTINATION ${YACL_INSTALL_DEPS_INCLUDEDIR}
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.hpp"
+  PATTERN "*.ipp"
+  PATTERN "*.inc"
+  PATTERN "*.tcc")
+
+install(
+  FILES ${YACL_BUNDLED_DEP_LIB_FILES}
+  DESTINATION ${YACL_INSTALL_DEPS_LIBDIR})
+
+install(
+  EXPORT YaclTargets
+  NAMESPACE Yacl::
+  DESTINATION ${YACL_INSTALL_CMAKEDIR})
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/YaclConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/YaclConfigVersion.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/YaclDeps.cmake
+        ${PROJECT_SOURCE_DIR}/cmake/FindGMP.cmake
+  DESTINATION ${YACL_INSTALL_CMAKEDIR})

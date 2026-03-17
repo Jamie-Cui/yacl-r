@@ -18,14 +18,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/mmapped_file.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/csv_reader.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/csv_writer.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/mmapped_file.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/reader.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/writer.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/rw/schema.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

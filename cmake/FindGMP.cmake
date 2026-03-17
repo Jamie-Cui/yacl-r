@@ -74,7 +74,7 @@ endif()
 
 if(GMP_FOUND)
 	message(STATUS "Configured GMP: -I${GMP_INCLUDE_DIR} -L${GMP_LIBRARIES}")
-	add_library(libgmp STATIC IMPORTED)
+	add_library(libgmp UNKNOWN IMPORTED)
 	target_include_directories(libgmp INTERFACE ${GMP_INCLUDE_DIR})
 	set_target_properties(libgmp PROPERTIES IMPORTED_LOCATION ${GMP_LIBRARIES})
 	add_library(Deps::gmp ALIAS libgmp)

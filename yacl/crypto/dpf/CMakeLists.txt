@@ -17,9 +17,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/dpf.cc ${CMAKE_CURRENT_LIST_DIR}/pprf.cc)
 
 # Add header files for installation
-install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/dpf/dcf.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/dpf/dpf.h
-              ${PROJECT_SOURCE_DIR}/include/yacl/crypto/dpf/pprf.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/dpf/ge2n.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/dpf)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

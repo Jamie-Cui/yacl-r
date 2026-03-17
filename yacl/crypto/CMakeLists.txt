@@ -16,9 +16,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/key_utils.cc)
 
 # Add header files for installation
-install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/key_utils.h
-              ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_wrappers.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto)
 
 add_subdirectory(aead)
 add_subdirectory(aes)

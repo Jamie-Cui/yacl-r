@@ -13,8 +13,6 @@
 # the License.
 
 # Add header files for installation
-install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/math/gadget.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math)
 
 add_subdirectory(galois_field)
 add_subdirectory(mpint)

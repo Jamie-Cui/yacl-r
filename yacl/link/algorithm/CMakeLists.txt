@@ -18,8 +18,6 @@ file(GLOB SRC_H *.h)
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${SRC_CC})
 
 # Add header files for installation
-install(FILES ${SRC_H}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link/algorithm)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

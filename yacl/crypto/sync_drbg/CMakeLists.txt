@@ -16,8 +16,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
                       ${CMAKE_CURRENT_LIST_DIR}/sync_drbg.cc)
 
 # Add header files for installation
-install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/sync_drbg/sync_drbg.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/sync_drbg)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

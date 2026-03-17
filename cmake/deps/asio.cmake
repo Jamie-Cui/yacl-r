@@ -31,7 +31,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libasio INTERFACE)
+add_library(libasio INTERFACE IMPORTED GLOBAL)
 target_include_directories(libasio INTERFACE ${CMAKE_DEPS_INCLUDEDIR}/asio)
 target_compile_definitions(libasio INTERFACE ASIO_STANDALONE ASIO_NO_DEPRECATED)
 

@@ -13,11 +13,6 @@
 # the License.
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/drbg.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/native_factory.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/rand/drbg/openssl_factory.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/rand/drbg)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

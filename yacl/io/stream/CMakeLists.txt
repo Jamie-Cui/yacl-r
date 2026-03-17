@@ -16,10 +16,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/file_io.cc
                       ${CMAKE_CURRENT_LIST_DIR}/mem_io.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/io/stream/file_io.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/stream/interface.h ${PROJECT_SOURCE_DIR}/include/yacl/io/stream/mem_io.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/stream)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

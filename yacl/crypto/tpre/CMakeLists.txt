@@ -18,11 +18,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/keys.cc ${CMAKE_CURRENT_LIST_DIR}/tpre.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tpre/capsule.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tpre/hash.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tpre/kdf.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tpre/keys.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/tpre/tpre.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/tpre)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

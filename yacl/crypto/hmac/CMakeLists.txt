@@ -15,10 +15,6 @@
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/hmac.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hmac/hmac.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hmac/hmac_sha256.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/hmac/hmac_sm3.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/hmac)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

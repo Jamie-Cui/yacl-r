@@ -30,7 +30,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libsse2neon INTERFACE)
+add_library(libsse2neon INTERFACE IMPORTED GLOBAL)
 add_dependencies(libsse2neon sse2neon)
 
 # -----------------------------

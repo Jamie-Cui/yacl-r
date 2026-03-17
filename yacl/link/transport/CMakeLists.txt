@@ -21,13 +21,10 @@ set(YACL_SOURCE_FILES
 
 # Header files for installation
 set(LINK_TRANSPORT_HEADERS
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/asio_link.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel.h
-    ${PROJECT_SOURCE_DIR}/include/yacl/link/transport/channel_mem.h)
+    ${PROJECT_SOURCE_DIR}/yacl/link/transport/asio_link.h
+    ${PROJECT_SOURCE_DIR}/yacl/link/transport/channel.h
+    ${PROJECT_SOURCE_DIR}/yacl/link/transport/channel_mem.h)
 
-install(
-  FILES ${LINK_TRANSPORT_HEADERS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/link)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

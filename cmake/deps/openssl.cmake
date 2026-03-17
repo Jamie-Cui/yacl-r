@@ -37,6 +37,7 @@ ExternalProject_Add(
 import_static_lib_from(libcrypto openssl)
 import_static_lib_from(libssl openssl)
 
+target_link_libraries(libcrypto INTERFACE Threads::Threads ${CMAKE_DL_LIBS})
 target_link_libraries(libssl INTERFACE libcrypto)
 
 # -----------------------------

@@ -16,8 +16,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/poly.cc
                       ${CMAKE_CURRENT_LIST_DIR}/vss.cc)
 
 # Add header files for installation
-install(FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/vss/poly.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/vss/vss.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/vss)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

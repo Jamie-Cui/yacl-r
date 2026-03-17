@@ -23,7 +23,6 @@ set(YACL_SOURCE_FILES
 file(GLOB SRC_H *.h)
 
 # Add header files for installation
-install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils)
 
 add_subdirectory(spi)
 

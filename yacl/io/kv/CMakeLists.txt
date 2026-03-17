@@ -17,11 +17,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/memory_kvstore.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/io/kv/kvstore.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/kv/leveldb_kvstore.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/io/kv/memory_kvstore.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/io/kv)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

@@ -13,14 +13,6 @@
 # the License.
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/montgomery_math.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int_enforce.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/mp_int_private.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/tommath_ext_types.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/math/mpint/tommath_ext_features.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/math/mpint)
 
 add_yacl_test_if(montgomery_math_test)
 add_yacl_test_if(mp_int_test)

@@ -39,7 +39,7 @@ ExternalProject_Add(
   LOG_BUILD On
   LOG_INSTALL On)
 
-add_library(libmcl_interface INTERFACE)
+add_library(libmcl_interface INTERFACE IMPORTED GLOBAL)
 
 import_static_lib_from(libmcl mcl)
 import_static_lib_from(libmclbn256 mcl)

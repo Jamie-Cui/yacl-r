@@ -55,4 +55,3 @@ add_yacl_test_if(ot_kernel_test)
 add_yacl_test_if(svole_kernel_test)
 
 # Add header files for installation
-install(FILES ${SRC_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/kernel)

@@ -13,33 +13,8 @@
 # the License.
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/item.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/spi_factory.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/utils/spi/type_traits.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi)
 
-install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_call.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_define.h
-        ${CMAKE_CURRENT_LIST_DIR}/sketch/scalar_tools.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi/sketch)
 
-install(
-  FILES ${CMAKE_CURRENT_LIST_DIR}/argument/arg_kv.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_k.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/arg_set.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/argument.h
-        ${CMAKE_CURRENT_LIST_DIR}/argument/util.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/utils/spi/argument)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

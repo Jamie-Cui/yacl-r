@@ -12,10 +12,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/helper.h ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/rand_impl.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/ossl_provider/version.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/ossl_provider)
 
 # ------------------------------------------------------------------------------
 # For libossl_provider.so

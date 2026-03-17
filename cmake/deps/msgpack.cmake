@@ -34,7 +34,7 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 # msgpack is header-only, we need some magic
-add_library(libmsgpack INTERFACE)
+add_library(libmsgpack INTERFACE IMPORTED GLOBAL)
 add_dependencies(libmsgpack msgpack)
 
 # -----------------------------

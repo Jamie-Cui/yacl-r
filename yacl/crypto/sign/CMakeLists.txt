@@ -17,11 +17,6 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/sm2_signing.cc)
 
 # Add header files for installation
-install(
-  FILES ${PROJECT_SOURCE_DIR}/include/yacl/crypto/sign/rsa_signing.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/sign/signing.h
-        ${PROJECT_SOURCE_DIR}/include/yacl/crypto/sign/sm2_signing.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yacl/crypto/sign)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
