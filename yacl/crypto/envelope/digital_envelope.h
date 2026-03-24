@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "yacl/base/byte_container_view.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/aead/all_gcm.h"
@@ -27,6 +28,10 @@
 #include "yacl/crypto/pke/rsa_enc.h"
 #include "yacl/crypto/pke/sm2_enc.h"
 #include "yacl/crypto/rand/rand.h"
+
+/* security parameter declaration */
+YACL_MODULE_DECLARE("sm_env", SecParam::C::k128, SecParam::S::INF);
+YACL_MODULE_DECLARE("rsa_env", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl::crypto {
 

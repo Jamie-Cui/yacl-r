@@ -49,3 +49,4 @@ set(YACL_SPI_LIBS
 # ------------
 
 add_yacl_test_if(key_utils_test)
+add_yacl_test_if(secparam_coverage_test)

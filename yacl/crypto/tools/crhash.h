@@ -19,9 +19,14 @@
 #include <span>
 
 #include "yacl/base/int128.h"
+#include "yacl/base/secparam.h"
 
 /* submodules */
 #include "yacl/crypto/tools/rp.h"
+
+/* security parameter declaration */
+YACL_MODULE_DECLARE("crhash_128", SecParam::C::k128, SecParam::S::INF);
+YACL_MODULE_DECLARE("ccrhash_128", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl::crypto {
 

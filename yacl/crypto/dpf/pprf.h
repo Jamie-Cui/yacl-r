@@ -17,10 +17,14 @@
 #include <unordered_map>
 
 #include "yacl/base/int128.h"
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/dpf/ge2n.h"
 
 /* submodules */
 #include "yacl/crypto/tools/prg.h"
+
+/* security parameter declaration */
+YACL_MODULE_DECLARE("pprf", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl::crypto {
 

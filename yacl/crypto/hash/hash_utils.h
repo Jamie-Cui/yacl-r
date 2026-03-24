@@ -19,6 +19,10 @@
 #include "yacl/base/int128.h"
 #include "yacl/crypto/hash/ssl_hash.h"
 
+/* security parameter declaration */
+// this header provides convenience wrappers over concrete hash modules, no
+// standalone security parameter definition
+
 namespace yacl::crypto {
 
 std::array<uint8_t, 32> Sha256(ByteContainerView data);  // 256-bits

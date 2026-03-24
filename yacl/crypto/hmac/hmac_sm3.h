@@ -14,7 +14,11 @@
 
 #pragma once
 
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/hmac/hmac.h"
+
+/* security parameter declaration */
+YACL_MODULE_DECLARE("hmac_sm3", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl::crypto {
 

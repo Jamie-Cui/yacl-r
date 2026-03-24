@@ -25,6 +25,10 @@
 // #include "yacl/crypto/aes/aes_intrinsics.h"
 #include "yacl/crypto/block_cipher/symmetric_crypto.h"
 
+/* security parameter declaration */
+// this header selects the block cipher mode at runtime, no standalone security
+// parameter definition
+
 namespace yacl::crypto {
 
 // This is an implementation of the **theoretical tool**: Random Permutation.

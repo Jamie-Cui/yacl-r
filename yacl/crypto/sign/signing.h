@@ -18,6 +18,10 @@
 
 #include "yacl/base/byte_container_view.h"
 
+/* security parameter declaration */
+// this header dispatches between concrete signature schemes at runtime,
+// concrete scheme headers declare their own security parameters
+
 namespace yacl::crypto {
 
 enum class SignatureScheme : int {

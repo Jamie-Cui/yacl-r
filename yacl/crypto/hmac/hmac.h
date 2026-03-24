@@ -22,6 +22,10 @@
 /* submodules */
 #include "yacl/crypto/hash/hash_interface.h"
 
+/* security parameter declaration */
+// this header selects the hash algorithm at runtime, concrete HMAC wrappers
+// declare their own security parameters
+
 namespace yacl::crypto {
 
 // Hmac defines an base for hmac functions.

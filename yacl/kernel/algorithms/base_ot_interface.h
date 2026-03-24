@@ -20,6 +20,10 @@
 #include "yacl/base/int128.h"
 #include "yacl/link/link.h"
 
+/* security parameter declaration */
+// this header is a transport-agnostic interface, concrete implementations
+// declare their own security parameters
+
 namespace yacl::crypto {
 
 using Block = uint128_t;

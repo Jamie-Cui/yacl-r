@@ -24,6 +24,10 @@
 /* submodules */
 #include "yacl/crypto/hash/hash_utils.h"
 
+/* security parameter declaration */
+// this header selects the hash algorithm and output length at runtime, no
+// standalone security parameter definition
+
 namespace yacl::crypto {
 
 // This is an implementation of the **theoretical tool**: Random oracle.

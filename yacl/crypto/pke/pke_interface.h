@@ -18,6 +18,10 @@
 
 #include "yacl/base/byte_container_view.h"
 
+/* security parameter declaration */
+// this header dispatches between concrete public-key encryption schemes at
+// runtime, concrete scheme headers declare their own security parameters
+
 namespace yacl::crypto {
 
 enum class PkeScheme { UNKNOWN, RSA2048_OAEP, RSA3072_OAEP, SM2 };

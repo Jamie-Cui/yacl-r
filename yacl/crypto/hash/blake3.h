@@ -21,6 +21,10 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/crypto/hash/hash_interface.h"
 
+/* security parameter declaration */
+// this header exposes variable-output BLAKE3, effective strength depends on
+// output_len, no standalone security parameter definition
+
 namespace yacl::crypto {
 
 // Specification document of the blake3 hash function

@@ -17,8 +17,17 @@
 #include <vector>
 
 #include "yacl/base/byte_container_view.h"
+#include "yacl/base/secparam.h"
 #include "yacl/crypto/hash/hash_interface.h"
 #include "yacl/crypto/ossl_wrappers.h"
+
+/* security parameter declaration */
+YACL_MODULE_DECLARE("sha256_hash", SecParam::C::k128, SecParam::S::INF);
+YACL_MODULE_DECLARE("sm3_hash", SecParam::C::k128, SecParam::S::INF);
+
+#ifndef YACL_WITH_TONGSUO
+YACL_MODULE_DECLARE("blake2_hash", SecParam::C::k256, SecParam::S::INF);
+#endif
 
 namespace yacl::crypto {
 
