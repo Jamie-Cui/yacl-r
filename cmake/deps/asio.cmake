@@ -20,10 +20,10 @@ ExternalProject_Add(
   PREFIX ${CMAKE_DEPS_PREFIX}
   CONFIGURE_COMMAND "" # no configure
   BUILD_COMMAND "" # header-only, no build
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_DEPS_INCLUDEDIR}/asio
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_DEPS_INCLUDEDIR}
   COMMAND ${CMAKE_COMMAND} -E copy_directory 
           ${CMAKE_DEPS_PREFIX}/src/asio/asio/include 
-          ${CMAKE_DEPS_INCLUDEDIR}/asio
+          ${CMAKE_DEPS_INCLUDEDIR}
   EXCLUDE_FROM_ALL true
   DOWNLOAD_EXTRACT_TIMESTAMP On
   LOG_DOWNLOAD On
@@ -32,7 +32,7 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 add_library(libasio INTERFACE IMPORTED GLOBAL)
-target_include_directories(libasio INTERFACE ${CMAKE_DEPS_INCLUDEDIR}/asio)
+target_include_directories(libasio INTERFACE ${CMAKE_DEPS_INCLUDEDIR})
 target_compile_definitions(libasio INTERFACE ASIO_STANDALONE ASIO_NO_DEPRECATED)
 
 add_dependencies(libasio asio)
