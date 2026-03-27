@@ -14,7 +14,9 @@
 
 find_program(NASM_EXECUTABLE nasm)
 if(NOT NASM_EXECUTABLE)
-  message(FATAL_ERROR "FourQ requires NASM to build. Please install nasm and try again.")
+  message(
+    FATAL_ERROR
+      "FourQ requires NASM to build. Please install nasm and try again.")
 endif()
 
 ExternalProject_Add(
@@ -31,6 +33,7 @@ ExternalProject_Add(
                 FourQ_64bit_and_portable libFourQ
   INSTALL_COMMAND mkdir -p ${CMAKE_DEPS_LIBDIR}
   COMMAND mkdir -p ${CMAKE_DEPS_INCLUDEDIR}/fourq
+  COMMAND mkdir -p ${CMAKE_DEPS_PREFIX}/lib
   # HACK fourq does not support ninja, so use gnumake
   COMMAND make PREFIX=${CMAKE_DEPS_PREFIX} -C FourQ_64bit_and_portable install
   COMMAND mv -n ${CMAKE_DEPS_PREFIX}/lib/libFourQ${CMAKE_STATIC_LIBRARY_SUFFIX}
