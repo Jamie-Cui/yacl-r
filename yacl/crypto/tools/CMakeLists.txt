@@ -14,7 +14,8 @@
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
-    ${CMAKE_CURRENT_LIST_DIR}/prg.cc ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
+    ${CMAKE_CURRENT_LIST_DIR}/cuckoo_index.cc ${CMAKE_CURRENT_LIST_DIR}/prg.cc
+    ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
 
 # Add header files for installation
 
