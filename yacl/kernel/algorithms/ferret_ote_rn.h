@@ -19,8 +19,8 @@
 #include <vector>
 
 #include "yacl/base/secparam.h"
-#include "yacl/crypto/hash/hash_utils.h"
-#include "yacl/crypto/tools/common.h"
+#include "yacl/hash/hash_utils.h"
+#include "yacl/tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
 /* submodules */

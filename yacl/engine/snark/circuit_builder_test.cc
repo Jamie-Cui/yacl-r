@@ -23,6 +23,8 @@ const math::MPInt kMod(97);
 
 TEST(CircuitBuilderTest, SimpleMultiplication) {
   CircuitBuilder cb;
+
+  // this is the circuit for z = x * y
   auto x = cb.AllocPublic();
   auto y = cb.AllocPrivate();
   auto z = cb.Mul(x, y);

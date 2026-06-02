@@ -18,9 +18,9 @@
 
 /* submodules */
 #include "yacl/base/secparam.h"
-#include "yacl/crypto/hash/hash_utils.h"
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/common.h"
+#include "yacl/hash/hash_utils.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/common.h"
 #include "yacl/kernel/algorithms/mpfss.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/math/gadget.h"

@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 
 namespace yacl::crypto {
 

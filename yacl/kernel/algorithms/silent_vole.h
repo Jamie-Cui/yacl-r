@@ -20,7 +20,7 @@
 #include "yacl/link/context.h"
 
 /* submodules */
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 #include "yacl/kernel/algorithms/base_vole.h"
 #include "yacl/kernel/algorithms/mp_vole.h"
 #include "yacl/kernel/code/code_interface.h"

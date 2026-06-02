@@ -107,7 +107,7 @@ throw yacl::Exception("Something went wrong");
 ### Test Structure
 ```cpp
 #include "gtest/gtest.h"
-#include "yacl/crypto/my_feature.h"
+#include "yacl/my_feature.h"
 
 namespace yacl::crypto {
 namespace {
@@ -144,12 +144,12 @@ add_yacl_fuzz_if(my_feature_fuzz)
 yacl-r/
 ├── yacl/                 # Main source directory
 │   ├── base/             # Fundamental types (Buffer, int128, Exception)
-│   ├── crypto/           # Cryptographic algorithms (no network dependencies)
 │   ├── engine/           # Interactive engines
 │   ├── io/               # Streaming I/O library
 │   ├── kernel/           # Crypto kernel with network support
 │   ├── link/             # RPC-based MPI framework
-│   ├── math/             # Math library (galois_field, big integers)
+│   ├── math/             # Math library (galois_field, big integers, ECC, pairing)
+│   ├── rand/             # Randomness, DRBG, and OpenSSL provider code
 │   └── utils/            # Utilities
 ├── cmake/                # CMake modules and dependency scripts
 └── include/              # Public headers

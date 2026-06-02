@@ -20,7 +20,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/tools/prg.h"
+#include "yacl/tools/prg.h"
 #include "yacl/io/kv/leveldb_kvstore.h"
 #include "yacl/io/kv/memory_kvstore.h"
 

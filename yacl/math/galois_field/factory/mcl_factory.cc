@@ -17,8 +17,8 @@
 #include "mcl/fp_tower.hpp"
 #include "mcl/op.hpp"
 
-#include "yacl/crypto/ecc/mcl/mcl_util.h"
-#include "yacl/crypto/pairing/factory/mcl_pairing_header.h"
+#include "yacl/math/ecc/mcl/mcl_util.h"
+#include "yacl/math/pairing/factory/mcl_pairing_header.h"
 
 namespace yacl::math {
 

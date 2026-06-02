@@ -34,7 +34,7 @@ TEST(Groth16Test, SquareRoot) {
   auto r1cs = cb.Build();
 
   // Setup
-  auto [pk, vk] = snark::Setup(r1cs);
+  auto [pk, vk] = Groth16::Setup(r1cs);
 
   // Prove with x=3, y=9
   std::map<Variable, math::MPInt> assignments;
@@ -45,15 +45,15 @@ TEST(Groth16Test, SquareRoot) {
   auto order = pk.pairing->GetOrder();
   assignments[x_sq] = math::MPInt(9);
   auto witness = cb.ComputeWitness(assignments, order);
-  auto proof = Prove(pk, witness, r1cs);
+  auto proof = Groth16::Prove(pk, witness, r1cs);
 
   // Verify
   std::vector<math::MPInt> public_inputs = {math::MPInt(9)};
-  EXPECT_TRUE(Verify(vk, public_inputs, proof));
+  EXPECT_TRUE(Groth16::Verify(vk, public_inputs, proof));
 
   // Verify with wrong public input should fail
   std::vector<math::MPInt> wrong_inputs = {math::MPInt(10)};
-  EXPECT_FALSE(Verify(vk, wrong_inputs, proof));
+  EXPECT_FALSE(Groth16::Verify(vk, wrong_inputs, proof));
 }
 
 // Test: x^3 + x + 5 = 35, so x = 3
@@ -74,7 +74,7 @@ TEST(Groth16Test, CubicEquation) {
   cb.AssertEqual(result, out);
 
   auto r1cs = cb.Build();
-  auto [pk, vk] = snark::Setup(r1cs);
+  auto [pk, vk] = Groth16::Setup(r1cs);
 
   auto order = pk.pairing->GetOrder();
 
@@ -86,10 +86,10 @@ TEST(Groth16Test, CubicEquation) {
   assignments[x_cu] = math::MPInt(27);
 
   auto witness = cb.ComputeWitness(assignments, order);
-  auto proof = Prove(pk, witness, r1cs);
+  auto proof = Groth16::Prove(pk, witness, r1cs);
 
   std::vector<math::MPInt> public_inputs = {math::MPInt(35)};
-  EXPECT_TRUE(Verify(vk, public_inputs, proof));
+  EXPECT_TRUE(Groth16::Verify(vk, public_inputs, proof));
 }
 
 // Test proof serialization round-trip
@@ -101,7 +101,7 @@ TEST(Groth16Test, ProofSerialization) {
   cb.AssertEqual(x_sq, y);
 
   auto r1cs = cb.Build();
-  auto [pk, vk] = snark::Setup(r1cs);
+  auto [pk, vk] = Groth16::Setup(r1cs);
   auto order = pk.pairing->GetOrder();
 
   std::map<Variable, math::MPInt> assignments;
@@ -110,15 +110,15 @@ TEST(Groth16Test, ProofSerialization) {
   assignments[x_sq] = math::MPInt(49);
 
   auto witness = cb.ComputeWitness(assignments, order);
-  auto proof = Prove(pk, witness, r1cs);
+  auto proof = Groth16::Prove(pk, witness, r1cs);
 
   // Serialize and deserialize
-  auto buf = SerializeProof(proof, pk.pairing);
-  auto proof2 = DeserializeProof(buf, pk.pairing);
+  auto buf = Groth16::SerializeProof(proof, pk.pairing);
+  auto proof2 = Groth16::DeserializeProof(buf, pk.pairing);
 
   // Verify deserialized proof
   std::vector<math::MPInt> public_inputs = {math::MPInt(49)};
-  EXPECT_TRUE(Verify(vk, public_inputs, proof2));
+  EXPECT_TRUE(Groth16::Verify(vk, public_inputs, proof2));
 }
 
 // Test VK serialization round-trip
@@ -130,7 +130,7 @@ TEST(Groth16Test, VkSerialization) {
   cb.AssertEqual(x_sq, y);
 
   auto r1cs = cb.Build();
-  auto [pk, vk] = snark::Setup(r1cs);
+  auto [pk, vk] = Groth16::Setup(r1cs);
   auto order = pk.pairing->GetOrder();
 
   std::map<Variable, math::MPInt> assignments;
@@ -139,14 +139,14 @@ TEST(Groth16Test, VkSerialization) {
   assignments[x_sq] = math::MPInt(25);
 
   auto witness = cb.ComputeWitness(assignments, order);
-  auto proof = Prove(pk, witness, r1cs);
+  auto proof = Groth16::Prove(pk, witness, r1cs);
 
   // Serialize and deserialize VK
-  auto vk_buf = SerializeVerificationKey(vk);
-  auto vk2 = DeserializeVerificationKey(vk_buf, vk.pairing);
+  auto vk_buf = Groth16::SerializeVerificationKey(vk);
+  auto vk2 = Groth16::DeserializeVerificationKey(vk_buf, vk.pairing);
 
   std::vector<math::MPInt> public_inputs = {math::MPInt(25)};
-  EXPECT_TRUE(Verify(vk2, public_inputs, proof));
+  EXPECT_TRUE(Groth16::Verify(vk2, public_inputs, proof));
 }
 
 }  // namespace

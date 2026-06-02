@@ -256,13 +256,39 @@ set(YACL_SOURCE_FILES "")
 set(YACL_SPI_LIBS "")
 
 add_subdirectory(yacl/base)
-add_subdirectory(yacl/crypto)
+add_subdirectory(yacl/rand)
 add_subdirectory(yacl/math)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+                      ${CMAKE_CURRENT_LIST_DIR}/yacl/ossl_key_utils.cc)
+add_subdirectory(yacl/aead)
+add_subdirectory(yacl/aes)
+add_subdirectory(yacl/block_cipher)
+add_subdirectory(yacl/dpf)
+add_subdirectory(yacl/envelope)
+add_subdirectory(yacl/hash)
+add_subdirectory(yacl/hmac)
+add_subdirectory(yacl/oprf)
+add_subdirectory(yacl/pke)
+add_subdirectory(yacl/sign)
+add_subdirectory(yacl/tools)
+add_subdirectory(yacl/tpre)
+# add_subdirectory(yacl/vss)
 add_subdirectory(yacl/utils)
 add_subdirectory(yacl/io)
 add_subdirectory(yacl/engine)
 add_subdirectory(yacl/kernel)
 add_subdirectory(yacl/link)
+
+if(BUILD_TEST)
+  add_executable(ossl_key_utils_test
+                 ${CMAKE_CURRENT_LIST_DIR}/yacl/ossl_key_utils_test.cc)
+  target_link_libraries(ossl_key_utils_test PRIVATE Yacl::yacl Deps::gtest
+                                                    Deps::gmock)
+  add_test(NAME ossl_key_utils_test COMMAND ossl_key_utils_test)
+  set_tests_properties(
+    ossl_key_utils_test
+    PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH:${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+endif()
 
 # TODO Remove all test files from ${YACL_SOURCE_FILES}
 file(GLOB_RECURSE SRC_TEST_CC *_test.cc)

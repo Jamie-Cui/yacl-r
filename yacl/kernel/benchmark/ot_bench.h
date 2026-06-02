@@ -24,7 +24,7 @@
 #include "yacl/base/aligned_vector.h"
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 #include "yacl/kernel/algorithms/base_ot.h"
 #include "yacl/kernel/algorithms/ferret_ote.h"
 #include "yacl/kernel/algorithms/gywz_ote.h"

@@ -19,8 +19,8 @@
 #include <utility>
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/prg.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/prg.h"
 
 namespace yacl::crypto {
 

@@ -21,7 +21,7 @@
 
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/tools/rp.h"
 #include "yacl/kernel/code/code_interface.h"
 #include "yacl/math/gadget.h"
 

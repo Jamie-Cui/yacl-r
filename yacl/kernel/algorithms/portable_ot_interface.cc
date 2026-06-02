@@ -18,7 +18,7 @@
 #include "simplest_ot_portable/ot_sender.h"
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/tools/ro.h"
+#include "yacl/tools/ro.h"
 
 namespace yacl::crypto {
 

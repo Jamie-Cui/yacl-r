@@ -36,8 +36,8 @@ uint64_t ReadU64(const uint8_t* buf, int64_t offset) {
 
 }  // namespace
 
-Buffer SerializeProof(const Proof& proof,
-                      const std::shared_ptr<crypto::PairingGroup>& pairing) {
+Buffer Groth16::SerializeProof(
+    const Proof& proof, const std::shared_ptr<crypto::PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
 
@@ -69,8 +69,9 @@ Buffer SerializeProof(const Proof& proof,
   return result;
 }
 
-Proof DeserializeProof(ByteContainerView buf,
-                       const std::shared_ptr<crypto::PairingGroup>& pairing) {
+Groth16::Proof Groth16::DeserializeProof(
+    ByteContainerView buf,
+    const std::shared_ptr<crypto::PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
 
@@ -118,7 +119,7 @@ Proof DeserializeProof(ByteContainerView buf,
   return Proof{std::move(a_point), std::move(b_point), std::move(c_point)};
 }
 
-Buffer SerializeVerificationKey(const VerificationKey& vk) {
+Buffer Groth16::SerializeVerificationKey(const VerificationKey& vk) {
   auto g1 = vk.pairing->GetGroup1();
   auto g2 = vk.pairing->GetGroup2();
   auto gt = vk.pairing->GetGroupT();
@@ -181,7 +182,7 @@ Buffer SerializeVerificationKey(const VerificationKey& vk) {
   return result;
 }
 
-VerificationKey DeserializeVerificationKey(
+Groth16::VerificationKey Groth16::DeserializeVerificationKey(
     ByteContainerView buf,
     const std::shared_ptr<crypto::PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();

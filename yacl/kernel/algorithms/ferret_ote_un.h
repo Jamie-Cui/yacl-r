@@ -20,11 +20,11 @@
 #include <vector>
 
 #include "yacl/base/secparam.h"
-#include "yacl/crypto/tools/cuckoo_index.h"
+#include "yacl/tools/cuckoo_index.h"
 #include "yacl/math/gadget.h"
 
 /* submodules */
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/tools/rp.h"
 #include "yacl/kernel/algorithms/gywz_ote.h"
 
 /* security parameter declaration */

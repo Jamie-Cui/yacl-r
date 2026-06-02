@@ -16,8 +16,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/ecc/mcl/mcl_util.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/math/ecc/mcl/mcl_util.h"
+#include "yacl/rand/rand.h"
 #include "yacl/math/galois_field/factory/gf_spi.h"
 
 namespace yacl::math::test {

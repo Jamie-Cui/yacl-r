@@ -18,60 +18,82 @@
 #include <optional>
 #include <vector>
 
-#include "yacl/crypto/pairing/pairing.h"
+#include "yacl/base/buffer.h"
+#include "yacl/base/byte_container_view.h"
 #include "yacl/engine/snark/r1cs.h"
+#include "yacl/math/pairing/pairing.h"
 #include "yacl/math/mpint/mp_int.h"
 
 namespace yacl::engine::snark {
 
-struct ProvingKey {
-  crypto::EcPoint alpha_g1;
-  crypto::EcPoint beta_g1;
-  crypto::EcPoint beta_g2;
-  crypto::EcPoint delta_g1;
-  crypto::EcPoint delta_g2;
-  std::vector<crypto::EcPoint> h_query;     // [tau^i * t(tau) / delta]_1
-  std::vector<crypto::EcPoint> l_query;     // private input commitments
-  std::vector<crypto::EcPoint> a_query;     // [u_i(tau)]_1 for all vars
-  std::vector<crypto::EcPoint> b_g1_query;  // [v_i(tau)]_1 for all vars
-  std::vector<crypto::EcPoint> b_g2_query;  // [v_i(tau)]_2 for all vars
-  std::shared_ptr<crypto::PairingGroup> pairing;
+class Groth16 {
+ public:
+  struct ProvingKey {
+    crypto::EcPoint alpha_g1;
+    crypto::EcPoint beta_g1;
+    crypto::EcPoint beta_g2;
+    crypto::EcPoint delta_g1;
+    crypto::EcPoint delta_g2;
+    std::vector<crypto::EcPoint> h_query;     // [tau^i * t(tau) / delta]_1
+    std::vector<crypto::EcPoint> l_query;     // private input commitments
+    std::vector<crypto::EcPoint> a_query;     // [u_i(tau)]_1 for all vars
+    std::vector<crypto::EcPoint> b_g1_query;  // [v_i(tau)]_1 for all vars
+    std::vector<crypto::EcPoint> b_g2_query;  // [v_i(tau)]_2 for all vars
+    std::shared_ptr<crypto::PairingGroup> pairing;
+  };
+
+  struct VerificationKey {
+    crypto::EcPoint alpha_g1;
+    crypto::EcPoint beta_g2;
+    crypto::EcPoint gamma_g2;
+    crypto::EcPoint delta_g2;
+    // precomputed e(alpha, beta)
+    std::optional<crypto::GtElement> alpha_beta_gt;
+    std::vector<crypto::EcPoint> ic;  // public input commitments
+    std::shared_ptr<crypto::PairingGroup> pairing;
+  };
+
+  struct Proof {
+    crypto::EcPoint a;  // G1
+    crypto::EcPoint b;  // G2
+    crypto::EcPoint c;  // G1
+  };
+
+  struct SetupResult {
+    ProvingKey pk;
+    VerificationKey vk;
+  };
+
+  // Run the trusted setup. Generates proving and verification keys from the
+  // R1CS. pairing_name: name of the pairing curve (e.g., "bn_snark1",
+  // "bls12-381").
+  static SetupResult Setup(const R1csSystem& r1cs,
+                           const std::string& pairing_name = "bn_snark1");
+
+  // Generate a proof given the proving key and full witness vector.
+  // Witness layout: [1, public_1..public_l, private_1..private_k]
+  static Proof Prove(const ProvingKey& pk,
+                     const std::vector<math::MPInt>& witness,
+                     const R1csSystem& r1cs);
+
+  // Verify a proof given the verification key and public inputs.
+  // public_inputs should NOT include the constant "one" wire.
+  static bool Verify(const VerificationKey& vk,
+                     const std::vector<math::MPInt>& public_inputs,
+                     const Proof& proof);
+
+  // Serialize and deserialize Groth16 proof material.
+  static Buffer SerializeProof(
+      const Proof& proof, const std::shared_ptr<crypto::PairingGroup>& pairing);
+  static Proof DeserializeProof(
+      ByteContainerView buf,
+      const std::shared_ptr<crypto::PairingGroup>& pairing);
+
+  // Serialize and deserialize Groth16 verification keys.
+  static Buffer SerializeVerificationKey(const VerificationKey& vk);
+  static VerificationKey DeserializeVerificationKey(
+      ByteContainerView buf,
+      const std::shared_ptr<crypto::PairingGroup>& pairing);
 };
-
-struct VerificationKey {
-  crypto::EcPoint alpha_g1;
-  crypto::EcPoint beta_g2;
-  crypto::EcPoint gamma_g2;
-  crypto::EcPoint delta_g2;
-  std::optional<crypto::GtElement> alpha_beta_gt;  // precomputed e(alpha, beta)
-  std::vector<crypto::EcPoint> ic;                // public input commitments
-  std::shared_ptr<crypto::PairingGroup> pairing;
-};
-
-struct Proof {
-  crypto::EcPoint a;  // G1
-  crypto::EcPoint b;  // G2
-  crypto::EcPoint c;  // G1
-};
-
-struct SetupResult {
-  ProvingKey pk;
-  VerificationKey vk;
-};
-
-// Run the trusted setup. Generates proving and verification keys from the R1CS.
-// pairing_name: name of the pairing curve (e.g., "bn_snark1", "bls12-381").
-SetupResult Setup(const R1csSystem& r1cs,
-                  const std::string& pairing_name = "bn_snark1");
-
-// Generate a proof given the proving key and full witness vector.
-// Witness layout: [1, public_1..public_l, private_1..private_k]
-Proof Prove(const ProvingKey& pk, const std::vector<math::MPInt>& witness,
-            const R1csSystem& r1cs);
-
-// Verify a proof given the verification key and public inputs.
-// public_inputs should NOT include the constant "one" wire.
-bool Verify(const VerificationKey& vk,
-            const std::vector<math::MPInt>& public_inputs, const Proof& proof);
 
 }  // namespace yacl::engine::snark

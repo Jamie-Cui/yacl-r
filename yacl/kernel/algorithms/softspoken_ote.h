@@ -27,10 +27,10 @@
 #include "yacl/link/link.h"
 
 /* submodules */
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/crhash.h"
-#include "yacl/crypto/tools/prg.h"
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/crhash.h"
+#include "yacl/tools/prg.h"
+#include "yacl/tools/rp.h"
 #include "yacl/kernel/algorithms/base_ot.h"
 #include "yacl/kernel/algorithms/sgrr_ote.h"
 #include "yacl/kernel/type/ot_store_utils.h"
@@ -61,7 +61,7 @@ namespace yacl::crypto {
 //
 // Security assumptions:
 // => correlation-robust hash function, for more details about its
-// implementation, see `yacl/crypto/tools/rp.h`
+// implementation, see `yacl/tools/rp.h`
 //
 // NOTE:
 // => OT Extension sender requires receiver base ot context.

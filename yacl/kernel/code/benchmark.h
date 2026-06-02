@@ -20,7 +20,7 @@
 #include "benchmark/benchmark.h"
 
 #include "yacl/base/aligned_vector.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 #include "yacl/kernel/code/ea_code.h"
 #include "yacl/kernel/code/linear_code.h"
 #include "yacl/kernel/code/silver_code.h"

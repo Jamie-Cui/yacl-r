@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 #include "yacl/math/gadget.h"

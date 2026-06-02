@@ -14,8 +14,8 @@
 
 #include "yacl/kernel/type/ot_store_utils.h"
 
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/prg.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/prg.h"
 
 namespace yacl::crypto {
 

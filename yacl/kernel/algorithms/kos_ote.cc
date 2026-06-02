@@ -21,7 +21,7 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/int128.h"
-#include "yacl/crypto/tools/common.h"
+#include "yacl/tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/utils/matrix_utils.h"
 #include "yacl/utils/serialize.h"

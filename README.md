@@ -19,12 +19,13 @@ Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch6
 ## Repo Layout
 
 - [base](yacl/base/): some basic types and utils in yacl.
-- [crypto](yacl/crypto/): **crypto algorithms** without [link](yacl/link/).
+- Top-level crypto modules: **crypto algorithms** without [link](yacl/link/), such as [aead](yacl/aead/), [hash](yacl/hash/), [pke](yacl/pke/), and [tools](yacl/tools/).
 - [engine](yacl/engine/): **interactive engines** that is desgined for a purpose.
 - [io](yacl/io/): a simple streaming-based io library.
 - [kernel](yacl/kernel/): **crypto kernel** that includes [link](yacl/link/) with (WIP) multi-thread support, i.e. OT, DPF.
 - [link](yacl/link/): a simple rpc-based MPI framework, providing the [SPMD](https://en.wikipedia.org/wiki/SPMD) parallel programming capability.
-- [math](yacl/math/): a simplified math lib (or interface), supporting big integer.
+- [math](yacl/math/): a simplified math lib (or interface), supporting big integer, ECC, and pairing.
+- [rand](yacl/rand/): randomness, DRBG, and OpenSSL provider code.
 - [utils](yacl/utils/): other good-to-have utilities
 
 ## Prerequisites

@@ -26,9 +26,9 @@
 #include "yacl/utils/matrix_utils.h"
 
 /* submodules */
-#include "yacl/crypto/tools/crhash.h"
-#include "yacl/crypto/tools/prg.h"
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/tools/crhash.h"
+#include "yacl/tools/prg.h"
+#include "yacl/tools/rp.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("iknp_ote", SecParam::C::k128, SecParam::S::INF);
@@ -52,7 +52,7 @@ namespace yacl::crypto {
 //
 // Security assumptions:
 //  *. correlation-robust hash function, for more details about its
-//  implementation, see `yacl/crypto/tools/rp.h`
+//  implementation, see `yacl/tools/rp.h`
 
 void IknpOtExtSend(const std::shared_ptr<link::Context> &ctx,
                    const OtRecvStore &base_ot,

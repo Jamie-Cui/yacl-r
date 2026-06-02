@@ -21,7 +21,7 @@
 #include "fmt/format.h"
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/key_utils.h"
+#include "yacl/ossl_key_utils.h"
 #include "yacl/link/context.h"
 #include "yacl/link/link.h"
 

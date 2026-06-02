@@ -14,8 +14,10 @@
 
 # Add header files for installation
 
-add_subdirectory(galois_field)
 add_subdirectory(mpint)
+add_subdirectory(galois_field)
+add_subdirectory(ecc)
+add_subdirectory(pairing)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

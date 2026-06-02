@@ -23,7 +23,7 @@
 #include "yacl/base/aligned_vector.h"
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
-#include "yacl/crypto/tools/common.h"
+#include "yacl/tools/common.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/utils/matrix_utils.h"
@@ -648,7 +648,7 @@ void SoftspokenOtExtSender::Send(
 
   // deal with super batch
   for (uint64_t t = 0; t < super_batch_num; ++t) {
-    // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
+    // The same as IKNP OTe, see `yacl/primitive/ot/iknp_ote_cc`
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
     auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
@@ -785,7 +785,7 @@ void SoftspokenOtExtSender::Send(const std::shared_ptr<link::Context>& ctx,
 
   // deal with super batch
   for (uint64_t t = 0; t < super_batch_num; ++t) {
-    // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
+    // The same as IKNP OTe, see `yacl/primitive/ot/iknp_ote_cc`
     // 1. receive the masked choices
     auto recv_buff = ctx->Recv(ctx->NextRank(), "softspoken_switch_u");
     auto recv_U = std::span(static_cast<uint128_t*>(recv_buff.data()),
@@ -905,7 +905,7 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
 
   // deal with super batch
   for (uint64_t t = 0; t < super_batch_num; ++t) {
-    // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
+    // The same as IKNP OTe, see `yacl/primitive/ot/iknp_ote_cc`
     // 1. smallfield/subspace VOLE
     for (uint64_t s = 0; s < step; ++s) {
       GenSfVole(choice_ext.data()[t * step + s], std::span(xor_buff),
@@ -1019,7 +1019,7 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
 
   // deal with super batch
   for (uint64_t t = 0; t < super_batch_num; ++t) {
-    // The same as IKNP OTe, see `yacl/crypto/primitive/ot/iknp_ote_cc`
+    // The same as IKNP OTe, see `yacl/primitive/ot/iknp_ote_cc`
     // 1. smallfield/subspace VOLE
     for (uint64_t s = 0; s < step; ++s) {
       GenSfVole(choice_ext.data()[t * step + s], std::span(xor_buff),

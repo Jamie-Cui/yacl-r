@@ -23,12 +23,12 @@
 #include "yacl/link/link.h"
 
 /* submodules */
-#include "yacl/crypto/aes/aes_opt.h"
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/crhash.h"
-#include "yacl/crypto/tools/prg.h"
-#include "yacl/crypto/tools/ro.h"
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/aes/aes_opt.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/crhash.h"
+#include "yacl/tools/prg.h"
+#include "yacl/tools/ro.h"
+#include "yacl/tools/rp.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sgrr_ote", SecParam::C::INF, SecParam::S::INF);
@@ -56,7 +56,7 @@ namespace yacl::crypto {
 //
 // Security assumptions:
 //  - Correlation-robust Hash, but here we use two-key PRF with AES key
-// scheduling to optimize CrHash, see yacl/crypto/aes/aes_opt.h for more
+// scheduling to optimize CrHash, see yacl/aes/aes_opt.h for more
 // details.
 //
 // Some Discussions in the community:

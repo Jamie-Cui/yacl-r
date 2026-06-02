@@ -19,7 +19,8 @@
 
 namespace yacl::engine::snark {
 
-SetupResult Setup(const R1csSystem& r1cs, const std::string& pairing_name) {
+Groth16::SetupResult Groth16::Setup(const R1csSystem& r1cs,
+                                    const std::string& pairing_name) {
   // Create pairing group
   auto pairing =
       crypto::PairingGroupFactory::Instance().Create(pairing_name);
@@ -147,8 +148,9 @@ SetupResult Setup(const R1csSystem& r1cs, const std::string& pairing_name) {
   return {std::move(pk), std::move(vk)};
 }
 
-Proof Prove(const ProvingKey& pk, const std::vector<math::MPInt>& witness,
-            const R1csSystem& r1cs) {
+Groth16::Proof Groth16::Prove(const ProvingKey& pk,
+                              const std::vector<math::MPInt>& witness,
+                              const R1csSystem& r1cs) {
   auto g1 = pk.pairing->GetGroup1();
   auto g2 = pk.pairing->GetGroup2();
   auto order = pk.pairing->GetOrder();
@@ -276,9 +278,9 @@ Proof Prove(const ProvingKey& pk, const std::vector<math::MPInt>& witness,
   return Proof{std::move(proof_a), std::move(proof_b), std::move(proof_c)};
 }
 
-bool Verify(const VerificationKey& vk,
-            const std::vector<math::MPInt>& public_inputs,
-            const Proof& proof) {
+bool Groth16::Verify(const VerificationKey& vk,
+                     const std::vector<math::MPInt>& public_inputs,
+                     const Proof& proof) {
   auto g1 = vk.pairing->GetGroup1();
   auto g2 = vk.pairing->GetGroup2();
   auto gt = vk.pairing->GetGroupT();

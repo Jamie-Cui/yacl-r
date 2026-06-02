@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 
 #include "yacl/base/int128.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 
 namespace yacl::crypto {
 

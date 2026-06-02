@@ -19,19 +19,6 @@
 
 namespace yacl::engine::snark {
 
-// Serialize a Groth16 proof to a binary buffer.
-Buffer SerializeProof(const Proof& proof,
-                      const std::shared_ptr<crypto::PairingGroup>& pairing);
-
-// Deserialize a Groth16 proof from a binary buffer.
-Proof DeserializeProof(ByteContainerView buf,
-                       const std::shared_ptr<crypto::PairingGroup>& pairing);
-
-// Serialize a verification key to a binary buffer.
-Buffer SerializeVerificationKey(const VerificationKey& vk);
-
-// Deserialize a verification key from a binary buffer.
-VerificationKey DeserializeVerificationKey(
-    ByteContainerView buf, const std::shared_ptr<crypto::PairingGroup>& pairing);
+// Serialization helpers are exposed as Groth16 static methods.
 
 }  // namespace yacl::engine::snark

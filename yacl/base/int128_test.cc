@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 
 TEST(Int128Test, NumericLimitsTest) {
 #ifdef __clang__

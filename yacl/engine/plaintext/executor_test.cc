@@ -19,9 +19,9 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/dynamic_bitset.h"
-#include "yacl/crypto/block_cipher/symmetric_crypto.h"
-#include "yacl/crypto/hash/ssl_hash.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/hash/ssl_hash.h"
+#include "yacl/rand/rand.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 
 namespace yacl::engine {

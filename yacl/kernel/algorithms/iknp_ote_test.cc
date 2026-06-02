@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "yacl/base/exception.h"
-#include "yacl/crypto/rand/rand.h"
+#include "yacl/rand/rand.h"
 #include "yacl/link/test_util.h"
 
 namespace yacl::crypto {

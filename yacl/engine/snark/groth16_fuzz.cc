@@ -15,8 +15,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "yacl/crypto/pairing/pairing.h"
 #include "yacl/engine/snark/serialization.h"
+#include "yacl/math/pairing/pairing.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   if (size < 24) {
@@ -28,8 +28,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
         yacl::crypto::PairingGroupFactory::Instance().Create("bn_snark1");
 
     yacl::ByteContainerView buf(data, size);
-    auto proof =
-        yacl::engine::snark::DeserializeProof(buf, std::move(pairing));
+    auto proof = yacl::engine::snark::Groth16::DeserializeProof(
+        buf, std::move(pairing));
   } catch (...) {
     // Expected: malformed input should throw, not crash.
   }

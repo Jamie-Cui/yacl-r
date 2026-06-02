@@ -20,8 +20,8 @@
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
-#include "yacl/crypto/tools/common.h"
-#include "yacl/crypto/tools/ro.h"
+#include "yacl/tools/common.h"
+#include "yacl/tools/ro.h"
 #include "yacl/kernel/algorithms/silent_vole.h"
 #include "yacl/link/context.h"
 #include "yacl/utils/thread_pool.h"

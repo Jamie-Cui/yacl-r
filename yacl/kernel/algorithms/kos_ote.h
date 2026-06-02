@@ -24,10 +24,10 @@
 #include "yacl/link/link.h"
 
 /* submodules */
-#include "yacl/crypto/rand/rand.h"
-#include "yacl/crypto/tools/crhash.h"
-#include "yacl/crypto/tools/prg.h"
-#include "yacl/crypto/tools/rp.h"
+#include "yacl/rand/rand.h"
+#include "yacl/tools/crhash.h"
+#include "yacl/tools/prg.h"
+#include "yacl/tools/rp.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("kos_ote", SecParam::C::k128, SecParam::S::k64);
