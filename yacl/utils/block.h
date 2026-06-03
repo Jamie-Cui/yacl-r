@@ -22,7 +22,7 @@
 
 #include <span>
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 
 #ifndef __aarch64__
 // sse

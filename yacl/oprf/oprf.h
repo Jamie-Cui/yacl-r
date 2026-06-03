@@ -16,7 +16,7 @@
 
 #include <memory>
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/math/ecc/ec_point.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/oprf/oprf_ctx.h"

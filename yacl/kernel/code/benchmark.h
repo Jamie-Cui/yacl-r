@@ -19,7 +19,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/aligned_vector.h"
+#include "yacl/utils/aligned_vector.h"
 #include "yacl/rand/rand.h"
 #include "yacl/kernel/code/ea_code.h"
 #include "yacl/kernel/code/linear_code.h"

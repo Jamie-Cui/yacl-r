@@ -22,7 +22,7 @@
 #include <string_view>
 #include <type_traits>
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl::io {
 

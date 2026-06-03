@@ -21,7 +21,7 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 #include "yacl/rand/rand.h"
 #include "yacl/link/test_util.h"
 

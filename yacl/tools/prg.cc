@@ -14,7 +14,7 @@
 
 #include "yacl/tools/prg.h"
 
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 namespace yacl {
 

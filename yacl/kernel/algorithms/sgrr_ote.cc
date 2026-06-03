@@ -20,11 +20,11 @@
 #include <string>
 #include <vector>
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 #include "yacl/math/gadget.h"
 
 namespace yacl {

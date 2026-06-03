@@ -18,7 +18,7 @@
 
 #include <span>
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
 

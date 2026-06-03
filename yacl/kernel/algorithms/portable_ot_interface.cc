@@ -17,7 +17,7 @@
 #include "simplest_ot_portable/ot_receiver.h"
 #include "simplest_ot_portable/ot_sender.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/tools/ro.h"
 
 namespace yacl {

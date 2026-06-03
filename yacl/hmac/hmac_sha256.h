@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/hmac/hmac.h"
 
 /* security parameter declaration */

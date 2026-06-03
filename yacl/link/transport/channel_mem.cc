@@ -14,7 +14,7 @@
 
 #include "yacl/link/transport/channel_mem.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl::link::transport {
 

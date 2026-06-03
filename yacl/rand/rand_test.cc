@@ -20,8 +20,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/int128.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/utils/int128.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 namespace yacl {
 

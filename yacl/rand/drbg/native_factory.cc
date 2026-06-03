@@ -23,13 +23,13 @@
 
 #include "openssl/evp.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
+#include "yacl/bc/symmetric_crypto.h"
 #include "yacl/hash/hash_utils.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 
 namespace yacl {

@@ -16,7 +16,7 @@
 
 #include <future>
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/dpf/ge2n.h"
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"

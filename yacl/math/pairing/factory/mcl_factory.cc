@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/math/pairing/factory/mcl_pairing_group.h"
 
 namespace yacl {

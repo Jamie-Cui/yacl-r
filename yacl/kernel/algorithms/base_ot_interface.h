@@ -16,8 +16,8 @@
 
 #include <span>
 
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/int128.h"
 #include "yacl/link/link.h"
 
 /* security parameter declaration */

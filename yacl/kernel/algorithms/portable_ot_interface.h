@@ -22,7 +22,7 @@
 #error "OT interface already defined"
 #endif
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/kernel/algorithms/base_ot_interface.h"
 
 /* security parameter declaration */

@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "yacl/math/ecc/hash_to_curve_util.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/utils/scope_guard.h"
 #include "yacl/utils/spi/type_traits.h"
 

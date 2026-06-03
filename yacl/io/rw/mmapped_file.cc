@@ -21,7 +21,7 @@
 #include <cstdio>
 #include <filesystem>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/utils/scope_guard.h"
 
 namespace yacl::io {

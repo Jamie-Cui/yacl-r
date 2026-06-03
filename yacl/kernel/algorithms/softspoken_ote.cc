@@ -20,9 +20,9 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/tools/common.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"

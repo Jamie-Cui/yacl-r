@@ -17,7 +17,7 @@
 #include <memory>
 #include <string>
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 #include "yacl/utils/spi/spi_factory.h"
 

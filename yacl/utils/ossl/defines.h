@@ -32,7 +32,7 @@
 #include "openssl/x509v3.h"
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/scope_guard.h"
 
 namespace yacl::ossl {

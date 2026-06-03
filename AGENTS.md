@@ -82,7 +82,7 @@ clang-tidy path/to/file.cc -- -p build
 1. Standard library headers (e.g., `<string>`, `<vector>`)
 2. System headers (e.g., `<cstdint>`)
 3. Third-party headers (e.g., `"gtest/gtest.h"`)
-4. Project headers (e.g., `"yacl/base/buffer.h"`)
+4. Project headers (e.g., `"yacl/utils/buffer.h"`)
 
 ### Header Guards
 Use `#pragma once` instead of traditional include guards.

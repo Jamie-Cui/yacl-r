@@ -17,8 +17,8 @@
 #include <limits>
 #include <memory>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
 #include "yacl/rand/ossl_provider/helper.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 #include "yacl/math/gadget.h"

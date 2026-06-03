@@ -20,15 +20,15 @@
 #include <string_view>
 #include <unordered_set>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/rand/drbg/drbg.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
 /* submodules */
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 namespace yacl {
 
@@ -91,7 +91,7 @@ class Sm4Drbg {
   std::array<uint8_t, kBlockSize> cbc_mac(uint128_t key,
                                           ByteContainerView data);
 
-  // Q: why not use SymmetricCrypto in yacl/block_cipher?
+  // Q: why not use SymmetricCrypto in yacl/bc?
   // A: SymmetricCrypto is originally designed to be use to entrypt large amount
   // of plaintexts with the same key, and in DRBG we need to change the key
   // oftenly. It's more efficient to use openssl's native APIs.

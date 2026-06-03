@@ -17,9 +17,9 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/secparam.h"
-#include "yacl/ossl_key_utils.h"
 #include "yacl/sign/signing.h"
+#include "yacl/utils/ossl/key_utils.h"
+#include "yacl/utils/secparam.h"
 
 /* submodules */
 #include "yacl/hash/hash_utils.h"

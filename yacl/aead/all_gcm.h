@@ -18,8 +18,8 @@
 
 #include <span>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("all_gcm", SecParam::C::k128, SecParam::S::INF);

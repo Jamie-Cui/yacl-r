@@ -17,7 +17,7 @@
 #include <vector>
 
 /* submodules */
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/rand/rand.h"
 #include "yacl/tools/common.h"

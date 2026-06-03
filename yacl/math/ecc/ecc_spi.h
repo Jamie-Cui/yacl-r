@@ -19,7 +19,7 @@
 #include <utility>
 #include <variant>
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/math/ecc/curve_meta.h"
 #include "yacl/math/ecc/ec_point.h"
 #include "yacl/math/mpint/mp_int.h"

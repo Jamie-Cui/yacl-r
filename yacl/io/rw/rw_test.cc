@@ -20,8 +20,8 @@
 #include "gflags/gflags.h"
 #include "gtest/gtest.h"
 
-#include "yacl/base/strings.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/strings.h"
+#include "yacl/utils/exception.h"
 #include "yacl/io/rw/csv_reader.h"
 #include "yacl/io/rw/csv_writer.h"
 #include "yacl/io/rw/schema.h"

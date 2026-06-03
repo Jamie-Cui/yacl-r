@@ -14,7 +14,7 @@
 
 #include "yacl/tpre/capsule.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/tpre/hash.h"
 #include "yacl/tpre/kdf.h"

@@ -23,7 +23,7 @@
 
 #include "yacl/link/context.h"
 #include "yacl/link/link.h"
-#include "yacl/ossl_key_utils.h"
+#include "yacl/utils/ossl/key_utils.h"
 
 namespace yacl::link::test {
 

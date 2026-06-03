@@ -18,8 +18,8 @@
 #include <variant>
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/tools/common.h"
 #include "yacl/tools/ro.h"
 #include "yacl/kernel/algorithms/silent_vole.h"

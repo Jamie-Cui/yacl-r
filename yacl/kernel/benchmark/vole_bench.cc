@@ -18,7 +18,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/kernel/algorithms/base_vole.h"
 #include "yacl/kernel/algorithms/silent_vole.h"
 #include "yacl/link/test_util.h"

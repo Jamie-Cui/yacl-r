@@ -16,8 +16,8 @@
 
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/ossl/defines.h"
 
 /* submodules */
 #include "yacl/hash/hash_interface.h"

@@ -23,7 +23,7 @@
 #include "openssl/randerr.h"
 #include "spdlog/spdlog.h"
 
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 
 namespace yc = yacl;

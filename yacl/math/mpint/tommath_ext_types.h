@@ -16,7 +16,7 @@
 
 #include "libtommath/tommath.h"
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 
 #define MP_BITS_TO_DIGITS(bits) ((bits) + MP_DIGIT_BIT - 1) / MP_DIGIT_BIT
 #define MP_BYTES_TO_DIGITS(bytes) MP_BITS_TO_DIGITS((bytes)*CHAR_BIT)

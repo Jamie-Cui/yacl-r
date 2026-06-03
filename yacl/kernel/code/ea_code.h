@@ -26,9 +26,9 @@
 #include <span>
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/block.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/block.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 #include "yacl/kernel/code/code_interface.h"
 #include "yacl/kernel/code/linear_code.h"
 

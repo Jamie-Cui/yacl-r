@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 #include <algorithm>
 #include <climits>
@@ -20,8 +20,8 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/exception.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 namespace {

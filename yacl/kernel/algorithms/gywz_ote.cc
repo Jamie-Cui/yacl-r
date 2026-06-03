@@ -16,10 +16,10 @@
 
 #include <cstdint>
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/exception.h"
 #include "yacl/math/gadget.h"
 
 namespace yacl {

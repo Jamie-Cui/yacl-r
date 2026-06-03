@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl::io {
 

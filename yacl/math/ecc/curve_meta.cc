@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/math/ecc/curve_meta.h"
 
 #include <map>
 
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

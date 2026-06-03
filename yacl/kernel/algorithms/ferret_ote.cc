@@ -19,7 +19,7 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/aligned_vector.h"
+#include "yacl/utils/aligned_vector.h"
 #include "yacl/tools/cuckoo_index.h"
 #include "yacl/utils/serialize.h"
 

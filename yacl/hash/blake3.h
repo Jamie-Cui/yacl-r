@@ -18,7 +18,7 @@
 
 #include "blake3/blake3.h"
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/hash/hash_interface.h"
 
 /* security parameter declaration */

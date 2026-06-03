@@ -22,14 +22,14 @@
 #include <type_traits>
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/math/mpint/mp_int.h"
 
 /* submodules */
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("prg", SecParam::C::k128, SecParam::S::k40);

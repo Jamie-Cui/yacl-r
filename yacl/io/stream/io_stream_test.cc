@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/io/stream/file_io.h"
 #include "yacl/io/stream/mem_io.h"
 

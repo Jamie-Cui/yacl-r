@@ -1,4 +1,4 @@
-// Copyright 2022 Ant Group Co., Ltd.
+// Copyright 2023 Ant Group Co., Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/buffer.h"
-
-#include <memory>
+#include "yacl/utils/secparam.h"
 
 namespace yacl {
-
-std::shared_ptr<Buffer> makeBuffer(int64_t size) {
-  return std::make_shared<Buffer>(size);
-}
-
-std::shared_ptr<Buffer> makeBuffer(void const* ptr, int64_t size) {
-  return std::make_shared<Buffer>(ptr, size);
-}
-
-std::shared_ptr<Buffer> makeBuffer(Buffer&& buf) {
-  return std::make_shared<Buffer>(std::move(buf));
-}
-
-std::ostream& operator<<(std::ostream& out, const Buffer& v) {
-  out << fmt::format("Buffer<{},{}>", v.data(), v.size());
-  return out;
-}
-
+SecParam::C SecParam::glob_c = SecParam::C::INF;  // init to infinity
+SecParam::S SecParam::glob_s = SecParam::S::INF;  // init to infinity
 }  // namespace yacl

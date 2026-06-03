@@ -21,7 +21,7 @@
 #include <execinfo.h>
 
 #include "fmt/format.h"
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 
 template <>
 struct fmt::formatter<std::span<const int64_t>> {

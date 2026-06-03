@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

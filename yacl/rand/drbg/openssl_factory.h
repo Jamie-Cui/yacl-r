@@ -19,7 +19,7 @@
 #include <string_view>
 #include <unordered_set>
 
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/rand/drbg/drbg.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 

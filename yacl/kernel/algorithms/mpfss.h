@@ -18,7 +18,7 @@
 #include <vector>
 
 /* submodules */
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/rand/rand.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 

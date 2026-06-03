@@ -14,7 +14,7 @@
 
 #include "yacl/aead/sm4_mte.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

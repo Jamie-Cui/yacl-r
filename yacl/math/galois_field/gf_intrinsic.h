@@ -20,10 +20,10 @@
 #include <limits>
 #include <utility>
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/block.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/block.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 #include "yacl/math/gadget.h"
 
 namespace yacl::math {

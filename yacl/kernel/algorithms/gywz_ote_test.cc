@@ -20,7 +20,7 @@
 #include "fmt/format.h"
 #include "gtest/gtest.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"

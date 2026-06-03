@@ -19,8 +19,8 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
 #include "yacl/tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/utils/matrix_utils.h"

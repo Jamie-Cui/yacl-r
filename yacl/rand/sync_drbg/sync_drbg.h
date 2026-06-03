@@ -25,10 +25,10 @@
 #include "hash_drbg_error_codes.h"  // from @com_github_greendow_hash_drbg//:hash_drbg
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
-#include "yacl/ossl_wrappers.h"  // for TyHelper
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
+#include "yacl/utils/ossl/defines.h"  // for TyHelper
 #include "yacl/link/context.h"
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"

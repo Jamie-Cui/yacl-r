@@ -19,9 +19,9 @@
 #include <string>
 #include <type_traits>
 
-#include "yacl/base/block.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/block.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
 
 namespace yacl {
 

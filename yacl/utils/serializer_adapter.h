@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 #include "yacl/utils/serializer.h"
 
 // clang-format off

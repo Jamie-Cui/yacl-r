@@ -14,7 +14,7 @@
 
 #include "yacl/engine/snark/r1cs.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl::engine::snark {
 

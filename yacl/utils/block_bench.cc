@@ -18,7 +18,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/block.h"
+#include "yacl/utils/block.h"
 #include "yacl/tools/prg.h"
 #include "yacl/utils/matrix_utils.h"
 

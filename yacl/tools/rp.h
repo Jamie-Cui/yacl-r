@@ -18,12 +18,12 @@
 #include <array>
 #include <vector>
 
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 
 /* submodules */
 // #include "yacl/aes/aes_intrinsics.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 /* security parameter declaration */
 // this header selects the block cipher mode at runtime, no standalone security

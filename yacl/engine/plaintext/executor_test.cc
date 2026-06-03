@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/engine/plaintext/executor.h"
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/bc/symmetric_crypto.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/rand/rand.h"
 #include "yacl/io/circuit/bristol_fashion.h"

@@ -16,10 +16,10 @@
 
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/secparam.h"
 #include "yacl/hash/hash_interface.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/ossl/defines.h"
+#include "yacl/utils/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sha256_hash", SecParam::C::k128, SecParam::S::INF);

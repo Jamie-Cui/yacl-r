@@ -19,14 +19,14 @@
 
 #include <span>
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/link.h"
 
 /* submodules */
 #include "yacl/aes/aes_intrinsics.h"
 #include "yacl/aes/aes_opt.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"

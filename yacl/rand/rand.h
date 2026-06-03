@@ -23,14 +23,14 @@
 #include <type_traits>
 #include <vector>
 
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/math/mpint/mp_int.h"
 #include "yacl/rand/drbg/drbg.h"
 #include "yacl/tools/prg.h"
-#include "yacl/math/mpint/mp_int.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/ossl/defines.h"
+#include "yacl/utils/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rand", SecParam::C::k128, SecParam::S::k64);
@@ -46,7 +46,7 @@ namespace yacl {
 // NOTE: this function is the core of yacl's random generator, all other
 // functions below use this function to generate associate randomness for each
 // own purporse.
-void FillRand(char *buf, size_t len, bool fast_mode = false);
+void FillRand(char* buf, size_t len, bool fast_mode = false);
 
 // --------------------------------
 // Random Support for Generic Types
@@ -123,7 +123,7 @@ inline T SecureRandBits(uint64_t len) {
 template <typename T, std::enable_if_t<std::is_standard_layout_v<T>, int> = 0>
 inline std::vector<T> RandVec(uint64_t len, bool fast_mode = false) {
   std::vector<T> out(len);
-  FillRand((char *)out.data(), sizeof(T) * len, fast_mode);
+  FillRand((char*)out.data(), sizeof(T) * len, fast_mode);
   return out;
 }
 
@@ -184,7 +184,7 @@ class YaclStdUrbg {
 
   T operator()() {
     T ret;
-    drbg_->Fill((char *)&ret, sizeof(T));
+    drbg_->Fill((char*)&ret, sizeof(T));
     return ret;
   }
 
@@ -219,7 +219,7 @@ class YaclReplayUrbg {
 
   T operator()() {
     T ret;
-    ctr_ = FillPRand(ctype_, seed_, iv_, ctr_, (char *)&ret, sizeof(T));
+    ctr_ = FillPRand(ctype_, seed_, iv_, ctr_, (char*)&ret, sizeof(T));
     return ret;
   }
 
@@ -237,7 +237,7 @@ class YaclReplayUrbg {
 
 template <class RandomIt>
 void ReplayShuffle(RandomIt first, RandomIt last, uint128_t seed,
-                   uint64_t *ctr) {
+                   uint64_t* ctr) {
   YACL_ENFORCE(ctr != nullptr);
 
   using diff_t = typename std::iterator_traits<RandomIt>::difference_type;
@@ -247,9 +247,8 @@ void ReplayShuffle(RandomIt first, RandomIt last, uint128_t seed,
   // ind[0] in [0, 1], ind[1] in [0, 2] ... ind[n-2] in [0, n-1]
   std::vector<uint128_t> ind(n - 1);
 
-  *ctr = yacl::FillPRand(
-      yacl::SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, *ctr,
-      (char *)ind.data(), (n - 1) * sizeof(uint128_t));
+  *ctr = yacl::FillPRand(yacl::SymmetricCrypto::CryptoType::AES128_CTR, seed, 0,
+                         *ctr, (char*)ind.data(), (n - 1) * sizeof(uint128_t));
 
   // Though this is not strictly uniform random. it will
   // provide statistical security of no less than 40 bits.

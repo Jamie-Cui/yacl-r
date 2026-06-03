@@ -16,7 +16,7 @@
 
 #include "fmt/format.h"
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/link/trace.h"
 
 namespace yacl::link {

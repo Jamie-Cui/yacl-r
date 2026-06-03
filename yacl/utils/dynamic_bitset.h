@@ -52,8 +52,8 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 
 // define DYNAMIC_BITSET_CAN_USE_LIBPOPCNT
 #if !defined(DYNAMIC_BITSET_NO_LIBPOPCNT)

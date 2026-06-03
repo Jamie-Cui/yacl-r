@@ -26,7 +26,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

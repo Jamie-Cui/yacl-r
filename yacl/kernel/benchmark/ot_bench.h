@@ -21,9 +21,9 @@
 #include <bit>
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 #include "yacl/rand/rand.h"
 #include "yacl/kernel/algorithms/base_ot.h"
 #include "yacl/kernel/algorithms/ferret_ote.h"

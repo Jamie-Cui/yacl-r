@@ -17,7 +17,7 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/factory.h"
 #include "yacl/link/transport/channel_mem.h"
 

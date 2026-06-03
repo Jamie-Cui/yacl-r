@@ -18,8 +18,8 @@
 #include <optional>
 #include <vector>
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/engine/snark/r1cs.h"
 #include "yacl/math/mpint/mp_int.h"
 #include "yacl/math/pairing/pairing.h"

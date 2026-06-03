@@ -24,7 +24,7 @@
 #include "fmt/format.h"
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/trace.h"
 
 namespace yacl::link {

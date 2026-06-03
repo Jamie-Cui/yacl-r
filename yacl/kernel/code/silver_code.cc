@@ -18,7 +18,7 @@
 #include <cstdint>
 #include <deque>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

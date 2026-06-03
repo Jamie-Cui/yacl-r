@@ -20,7 +20,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 
 namespace {
 

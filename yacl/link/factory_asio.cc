@@ -14,7 +14,7 @@
 
 #include <memory>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/factory.h"
 #include "yacl/link/transport/asio_link.h"
 #include "yacl/link/transport/channel.h"

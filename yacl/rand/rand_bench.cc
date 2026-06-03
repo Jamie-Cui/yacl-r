@@ -18,7 +18,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/rand/rand.h"
 
 namespace yacl {

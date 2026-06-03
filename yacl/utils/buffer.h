@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

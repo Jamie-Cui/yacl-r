@@ -17,8 +17,8 @@
 #include <memory>
 #include <string>
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/utils/spi/spi_factory.h"
 
 namespace yacl {

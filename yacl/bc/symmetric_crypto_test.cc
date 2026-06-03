@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/utils/strings.h"
+#include "yacl/bc/symmetric_crypto.h"
 
 #include <cstdint>
 #include <limits>
@@ -22,9 +22,9 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 
 namespace yacl {
 

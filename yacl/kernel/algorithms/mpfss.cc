@@ -17,9 +17,9 @@
 #include <algorithm>
 #include <numeric>
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
 #include "yacl/tools/crhash.h"
 #include "yacl/kernel/algorithms/gywz_ote.h"
 #include "yacl/kernel/algorithms/sgrr_ote.h"

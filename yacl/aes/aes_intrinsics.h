@@ -54,9 +54,9 @@
 
 #include <span>
 
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
 
 #ifndef __aarch64__
 // sse

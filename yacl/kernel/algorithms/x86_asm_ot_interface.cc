@@ -21,8 +21,8 @@
 #include "simplest_ot_x86_asm/ot_receiver.h"
 #include "simplest_ot_x86_asm/ot_sender.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/tools/ro.h"
 #include "yacl/math/gadget.h"
 

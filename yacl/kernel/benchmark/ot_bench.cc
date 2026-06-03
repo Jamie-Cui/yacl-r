@@ -19,7 +19,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/test_util.h"
 
 namespace yacl {

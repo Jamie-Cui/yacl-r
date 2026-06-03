@@ -20,7 +20,7 @@
 #include <vector>
 
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/math/ecc/ecc_spi.h"
 #include "yacl/hash/hash_interface.h"
 

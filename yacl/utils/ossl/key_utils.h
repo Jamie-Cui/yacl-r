@@ -19,7 +19,7 @@
 #include <utility>
 
 #include "yacl/hash/hash_interface.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

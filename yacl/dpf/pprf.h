@@ -16,8 +16,8 @@
 
 #include <unordered_map>
 
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/dpf/ge2n.h"
 
 /* submodules */

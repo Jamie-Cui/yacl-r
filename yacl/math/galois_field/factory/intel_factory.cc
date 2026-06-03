@@ -17,8 +17,8 @@
 #include <array>
 #include <utility>
 
-#include "yacl/base/block.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/block.h"
+#include "yacl/utils/int128.h"
 #ifndef __aarch64__
 // sse
 #include <emmintrin.h>

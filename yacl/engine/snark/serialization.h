@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "yacl/base/buffer.h"
+#include "yacl/utils/buffer.h"
 #include "yacl/engine/snark/groth16.h"
 
 namespace yacl::engine::snark {

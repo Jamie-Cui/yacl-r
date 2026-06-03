@@ -14,8 +14,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/strings.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/strings.h"
+#include "yacl/utils/exception.h"
 #include "yacl/hmac/hmac_sha256.h"
 #include "yacl/hmac/hmac_sm3.h"
 

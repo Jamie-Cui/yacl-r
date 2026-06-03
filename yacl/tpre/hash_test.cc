@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/math/mpint/mp_int.h"
 
 namespace yacl::test {

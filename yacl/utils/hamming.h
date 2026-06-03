@@ -15,8 +15,8 @@
 #include <bit>
 #include <span>
 
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 
 namespace yacl {
 

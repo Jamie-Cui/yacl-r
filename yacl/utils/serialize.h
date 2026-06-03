@@ -16,9 +16,9 @@
 
 #include <vector>
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"
 

@@ -26,8 +26,8 @@
 
 #include "fmt/format.h"
 
-#include "yacl/base/exception.h"
-#include "yacl/base/strings.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/strings.h"
 #include "yacl/io/rw/float.h"
 #include "yacl/io/rw/mmapped_file.h"
 #include "yacl/io/stream/file_io.h"

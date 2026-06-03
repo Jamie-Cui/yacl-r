@@ -18,7 +18,7 @@
 #include <string>
 
 #include "yacl/math/ecc/group_sketch.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl::ossl {
 

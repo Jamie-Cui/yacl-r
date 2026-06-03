@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 #include "yacl/hash/ssl_hash.h"
 
 /* security parameter declaration */

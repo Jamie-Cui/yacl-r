@@ -18,15 +18,14 @@
 #include <cstring>
 #include <memory>
 #include <numeric>
+#include <span>
 #include <string>
 #include <vector>
 
-#include <span>
-
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/ossl/defines.h"
+#include "yacl/utils/secparam.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("aes_all_modes", SecParam::C::k128, SecParam::S::INF);

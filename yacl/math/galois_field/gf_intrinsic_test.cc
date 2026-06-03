@@ -21,8 +21,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/block.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/block.h"
+#include "yacl/utils/int128.h"
 #include "yacl/rand/rand.h"
 
 namespace yacl::math {

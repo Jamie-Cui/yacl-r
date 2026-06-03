@@ -18,8 +18,8 @@
 
 #include <span>
 
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/link/link.h"
 
 /* submodules */

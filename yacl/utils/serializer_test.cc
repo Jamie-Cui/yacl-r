@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/int128.h"
+#include "yacl/utils/int128.h"
 #include "yacl/utils/serializer_adapter.h"
 
 namespace yacl::test {

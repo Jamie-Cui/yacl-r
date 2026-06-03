@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/ossl_key_utils.h"
+#include "yacl/utils/ossl/key_utils.h"
 
 #include "gtest/gtest.h"
 

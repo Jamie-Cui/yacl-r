@@ -16,7 +16,7 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/utils/spi/argument/arg_kv.h"
 #include "yacl/utils/spi/argument/util.h"
 

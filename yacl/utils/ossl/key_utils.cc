@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/ossl_key_utils.h"
+#include "yacl/utils/ossl/key_utils.h"
 
 #include <cstddef>
 
-#include "yacl/ossl_wrappers.h"
 #include "yacl/io/stream/file_io.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

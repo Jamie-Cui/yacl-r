@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
 #include "yacl/math/gadget.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
 /* submodules */
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/kernel/algorithms/softspoken_ote.h"
 #include "yacl/kernel/type/ot_store_utils.h"
 

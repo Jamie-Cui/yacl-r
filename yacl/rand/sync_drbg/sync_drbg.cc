@@ -14,7 +14,7 @@
 
 #include "yacl/rand/sync_drbg/sync_drbg.h"
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 
 namespace yacl {
 

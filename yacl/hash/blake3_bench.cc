@@ -17,7 +17,7 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/hash/blake3.h"
 
 namespace yacl {

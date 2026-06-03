@@ -24,7 +24,7 @@
 #include "openssl/randerr.h"
 
 #include "yacl/rand/ossl_provider/helper.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

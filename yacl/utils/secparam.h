@@ -21,7 +21,7 @@
 
 #include "fmt/color.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/math/gadget.h"
 #include "yacl/utils/compile_time_utils.h"
 

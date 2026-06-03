@@ -14,7 +14,7 @@
 
 #include "yacl/aead/all_gcm.h"
 
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

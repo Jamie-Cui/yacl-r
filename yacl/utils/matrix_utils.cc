@@ -23,7 +23,7 @@
 #include "immintrin.h"
 #endif
 
-#include "yacl/base/block.h"
+#include "yacl/utils/block.h"
 
 #ifdef __x86_64
 #include "cpu_features/cpuinfo_x86.h"

@@ -1,4 +1,4 @@
-// Copyright 2019 Ant Group Co., Ltd.
+// Copyright 2022 Ant Group Co., Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-
 #include "yacl/utils/buffer.h"
-#include "yacl/utils/byte_container_view.h"
-#include "yacl/link/context.h"
 
-namespace yacl::link {
+#include <memory>
 
-Buffer Broadcast(const std::shared_ptr<Context>& ctx, ByteContainerView input,
-                 size_t root, std::string_view tag);
+namespace yacl {
 
-}  // namespace yacl::link
+std::shared_ptr<Buffer> makeBuffer(int64_t size) {
+  return std::make_shared<Buffer>(size);
+}
+
+std::shared_ptr<Buffer> makeBuffer(void const* ptr, int64_t size) {
+  return std::make_shared<Buffer>(ptr, size);
+}
+
+std::shared_ptr<Buffer> makeBuffer(Buffer&& buf) {
+  return std::make_shared<Buffer>(std::move(buf));
+}
+
+std::ostream& operator<<(std::ostream& out, const Buffer& v) {
+  out << fmt::format("Buffer<{},{}>", v.data(), v.size());
+  return out;
+}
+
+}  // namespace yacl

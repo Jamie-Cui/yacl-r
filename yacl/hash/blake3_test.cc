@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/hash/blake3.h"
 
 #include <limits>
@@ -21,7 +21,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 struct TestData {

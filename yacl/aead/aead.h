@@ -14,7 +14,7 @@
 
 #include <span>
 
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/byte_container_view.h"
 
 /* security parameter declaration */
 // this header dispatches between multiple AEAD schemes at runtime, concrete

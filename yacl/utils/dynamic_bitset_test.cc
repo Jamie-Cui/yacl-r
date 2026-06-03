@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/dynamic_bitset.h"
+#include "yacl/utils/dynamic_bitset.h"
 
 #include <cstdint>
 
 #include "gtest/gtest.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"
 

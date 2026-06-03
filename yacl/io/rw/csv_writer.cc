@@ -21,7 +21,7 @@
 
 #include "fmt/ranges.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/io/rw/float.h"
 
 namespace yacl::io {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/base/strings.h"
+#include "yacl/utils/strings.h"
 #include "yacl/tpre/tpre.h"
 
 #include "gtest/gtest.h"

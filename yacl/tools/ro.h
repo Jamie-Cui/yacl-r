@@ -18,8 +18,8 @@
 #include <cstring>
 #include <vector>
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/exception.h"
 
 /* submodules */
 #include "yacl/hash/hash_utils.h"

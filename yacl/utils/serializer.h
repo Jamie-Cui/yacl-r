@@ -19,8 +19,8 @@
 
 #include "msgpack.hpp"
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/io/msgpack/buffer.h"
 
 namespace yacl {

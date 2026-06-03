@@ -19,7 +19,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "yacl/base/secparam.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/tools/cuckoo_index.h"
 #include "yacl/math/gadget.h"
 

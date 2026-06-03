@@ -29,9 +29,9 @@
 #include <memory>
 #include <span>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/int128.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 
 namespace yacl::engine {

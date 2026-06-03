@@ -20,7 +20,7 @@
 
 #include "blake3/blake3.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

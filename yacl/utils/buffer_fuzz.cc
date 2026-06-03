@@ -15,7 +15,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "yacl/base/buffer.h"
+#include "yacl/utils/buffer.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // Limit input size to avoid OOM from large allocations during resize/reserve

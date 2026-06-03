@@ -21,8 +21,8 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/factory.h"
 #include "yacl/link/transport/channel_mem.h"
 

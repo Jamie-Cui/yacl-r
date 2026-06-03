@@ -14,8 +14,8 @@
 
 #include "yacl/hash/ssl_hash.h"
 
-#include "yacl/base/exception.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/ossl/defines.h"
 #include "yacl/utils/scope_guard.h"
 
 namespace yacl {

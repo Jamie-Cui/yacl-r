@@ -24,8 +24,8 @@
 
 #include "fmt/format.h"
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/kernel/ot_kernel.h"
 #include "yacl/kernel/type/ot_store.h"
 #include "yacl/rand/rand.h"

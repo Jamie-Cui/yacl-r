@@ -14,8 +14,8 @@
 
 #include "yacl/hmac/hmac.h"
 
-#include "yacl/base/exception.h"
-#include "yacl/ossl_wrappers.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/ossl/defines.h"
 
 namespace yacl {
 

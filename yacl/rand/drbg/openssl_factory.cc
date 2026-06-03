@@ -19,8 +19,8 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/base/exception.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/rand/ossl_provider/helper.h"
 
 namespace yacl {

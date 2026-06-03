@@ -24,8 +24,8 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/strings.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/strings.h"
+#include "yacl/utils/exception.h"
 #include "yacl/utils/spi/argument/util.h"
 
 namespace yacl {

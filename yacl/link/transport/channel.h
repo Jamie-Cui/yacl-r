@@ -26,9 +26,9 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/link/retry_options.h"
 #include "yacl/utils/segment_tree.h"
 

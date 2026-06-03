@@ -14,7 +14,7 @@
 
 #include "yacl/engine/snark/groth16.h"
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/engine/snark/qap.h"
 
 namespace yacl::engine::snark {

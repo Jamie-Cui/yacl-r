@@ -18,18 +18,27 @@ set(YACL_SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/matrix_utils.cc
     ${CMAKE_CURRENT_LIST_DIR}/parallel.cc
     ${CMAKE_CURRENT_LIST_DIR}/platform_utils.cc
-    ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc)
+    ${CMAKE_CURRENT_LIST_DIR}/thread_pool.cc
+    ${CMAKE_CURRENT_LIST_DIR}/exception.cc
+    ${CMAKE_CURRENT_LIST_DIR}/buffer.cc
+    ${CMAKE_CURRENT_LIST_DIR}/int128.cc
+    ${CMAKE_CURRENT_LIST_DIR}/secparam.cc
+    ${CMAKE_CURRENT_LIST_DIR}/strings.cc)
 
 file(GLOB SRC_H *.h)
 
 # Add header files for installation
 
 add_subdirectory(spi)
+add_subdirectory(ossl)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
 
+add_yacl_test_if(buffer_test)
+add_yacl_test_if(secparam_test)
+add_yacl_test_if(strings_test)
 add_yacl_test_if(elapsed_timer_test)
 add_yacl_test_if(hamming_test)
 add_yacl_test_if(matrix_transpose_test)
@@ -43,3 +52,4 @@ add_yacl_test_if(serializer_test)
 # Fuzz
 # ------------
 add_yacl_fuzz_if(serializer_fuzz)
+add_yacl_fuzz_if(buffer_fuzz)

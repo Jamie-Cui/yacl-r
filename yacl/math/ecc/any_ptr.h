@@ -19,7 +19,7 @@
 #include <type_traits>
 #include <variant>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 

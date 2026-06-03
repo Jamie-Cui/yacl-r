@@ -22,7 +22,7 @@
 
 #include <span>
 
-#include "yacl/base/exception.h"
+#include "yacl/utils/exception.h"
 #include "yacl/utils/parallel.h"
 
 namespace yacl {

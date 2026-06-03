@@ -17,9 +17,9 @@
 #include <algorithm>
 #include <memory>
 
-#include "yacl/base/aligned_vector.h"
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/int128.h"
+#include "yacl/utils/aligned_vector.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/int128.h"
 
 namespace yacl {
 

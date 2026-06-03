@@ -19,10 +19,10 @@
 
 #include <span>
 
-#include "yacl/base/dynamic_bitset.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/int128.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/dynamic_bitset.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/int128.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/link/context.h"
 #include "yacl/link/link.h"
 

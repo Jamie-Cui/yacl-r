@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "yacl/base/buffer.h"
+#include "yacl/utils/buffer.h"
 
 namespace yacl::io {
 

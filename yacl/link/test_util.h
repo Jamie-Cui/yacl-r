@@ -19,7 +19,7 @@
 
 #include "fmt/format.h"
 
-#include "yacl/base/buffer.h"
+#include "yacl/utils/buffer.h"
 #include "yacl/link/context.h"
 #include "yacl/link/factory.h"
 

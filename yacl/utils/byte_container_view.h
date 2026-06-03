@@ -20,7 +20,7 @@
 #include <string_view>
 #include <type_traits>
 
-#include "yacl/base/buffer.h"
+#include "yacl/utils/buffer.h"
 
 namespace yacl {
 

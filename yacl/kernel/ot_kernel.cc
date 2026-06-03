@@ -18,9 +18,9 @@
 #include <variant>
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/exception.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/rand/rand.h"
 #include "yacl/tools/common.h"
 #include "yacl/tools/ro.h"

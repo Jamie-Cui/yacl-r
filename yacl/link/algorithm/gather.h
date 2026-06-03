@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "yacl/base/buffer.h"
-#include "yacl/base/byte_container_view.h"
+#include "yacl/utils/buffer.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/link/context.h"
 
 namespace yacl::link {

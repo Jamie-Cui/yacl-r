@@ -16,11 +16,11 @@
 
 #include <vector>
 
-#include "yacl/base/byte_container_view.h"
-#include "yacl/base/secparam.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/block_cipher/symmetric_crypto.h"
+#include "yacl/bc/symmetric_crypto.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/hmac/hmac_sm3.h"
 
