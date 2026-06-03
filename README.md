@@ -9,73 +9,113 @@
    ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚══════╝      ╚═╝  ╚═╝
 ```
 
-Yacl-r is a fork and extension of the C++ crypto library [secretflow/yacl](https://github.com/secretflow/yacl). The crypto modules in Yacl implement many state-of-art secure computation protocols, including primitives like OT, VOLE, TPRE, and tools like PRG, RO. Check the full list of Yacl's supported algorithms in [ALGORITHMS.md](ALGORITHMS.md).
+Yacl-r is a fork and extension of the C++ crypto library
+[secretflow/yacl](https://github.com/secretflow/yacl). It provides research
+implementations of cryptographic and secure-computation building blocks,
+including OT, VOLE, TPRE, DPF, PRG, RO, AES, hashing, public-key encryption,
+signatures, and supporting math/link utilities.
 
 > [!WARNING]
-> Yacl-r is under heavy development, please use at your own risk
+> Yacl-r is under heavy development. APIs, module layout, and build options may
+> change.
 
-Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch64.
+Target platforms: Linux x86_64, Linux aarch64, and macOS Apple Silicon.
 
 ## Repo Layout
 
-- [base](yacl/utils/): some basic types and utils in yacl.
-- Top-level crypto modules: **crypto algorithms** without [link](yacl/link/), such as [aead](yacl/aead/), [hash](yacl/hash/), [pke](yacl/pke/), and [tools](yacl/experimental/).
-- [engine](yacl/engine/): **interactive engines** that is desgined for a purpose.
-- [io](yacl/io/): a simple streaming-based io library.
-- [kernel](yacl/kernel/): **crypto kernel** that includes [link](yacl/link/) with (WIP) multi-thread support, i.e. OT, DPF.
-- [link](yacl/link/): a simple rpc-based MPI framework, providing the [SPMD](https://en.wikipedia.org/wiki/SPMD) parallel programming capability.
-- [math](yacl/math/): a simplified math lib (or interface), supporting big integer, ECC, and pairing.
-- [rand](yacl/rand/): randomness, DRBG, and OpenSSL provider code.
-- [utils](yacl/utils/): other good-to-have utilities
+- [aead](yacl/aead/), [aes](yacl/aes/), [bc](yacl/bc/), [hash](yacl/hash/),
+  [hmac](yacl/hmac/): symmetric crypto, hashing, and authentication primitives.
+- [pke](yacl/pke/), [sign](yacl/sign/), [envelope](yacl/envelope/),
+  [tpre](yacl/tpre/): public-key, signature, envelope, and threshold proxy
+  re-encryption code.
+- [ot](yacl/ot/): base OT, OT extension, OT stores, and SimplestOT backends.
+- [vole](yacl/vole/): base VOLE, MP-VOLE, MPFSS, and silent VOLE code.
+- [mpc](yacl/mpc/): higher-level MPC kernels and plaintext/secret-sharing
+  executors.
+- [dpf](yacl/dpf/), [oprf](yacl/oprf/), [snark](yacl/snark/): additional
+  protocol implementations.
+- [io](yacl/io/): streaming I/O and Bristol Fashion circuit parsing.
+- [link](yacl/link/): RPC-style SPMD communication utilities.
+- [math](yacl/math/): big integers, finite fields, ECC, and pairing support.
+- [rand](yacl/rand/): randomness, DRBG, entropy source, and OpenSSL provider
+  code.
+- [utils](yacl/utils/): common types, buffers, exceptions, serialization, and
+  helper utilities.
+- [experimental](yacl/experimental/): experimental PRG/RO/code utilities.
+- [cmake](cmake/): CMake modules, dependency scripts, and dependency patches.
 
 ## Prerequisites
 
-- **gcc >= 11** or **clang >= 12** (C++20 support required)
-- **cmake >= 3.20**
-- **[ninja/ninja-build](https://ninja-build.org/)**
-- **Perl 5 with core modules** (Required by [OpenSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites))
-- **patch** (required for dependency patching)
+- GCC >= 11 or Clang >= 12 with C++20 support
+- CMake >= 3.20
+- Ninja or Make
+- Perl 5 with core modules, required by OpenSSL
+- `patch`, required for dependency patching
+- GMP development files available on the system
 
-## Getting Started
+Ubuntu example:
 
-Yacl-r uses [cmake](https://cmake.org/) as its build system.
+```sh
+sudo apt install -y git cmake ninja-build gcc g++ patch libgmp-dev
+```
 
-**Ubuntu with CMake**
+## Build
 
-``` sh
-# install dependencies
-sudo apt install -y git cmake ninja-build gcc-11 g++-11 patch
+Yacl-r uses CMake.
 
-# optional, make gcc-11 g++-11 system default
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 10
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 10
-
-# download yacl-r
-git clone https://github.com/Jamie-Cui/yacl-r.git
-
-# enter the project
-cd yacl-r
-
-# configure (Ninja recommended)
+```sh
+# Configure a Release build.
 cmake -S . -B build -G Ninja
 
-# build (this may take a while)
+# Configure a Debug build.
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+
+# Build.
 cmake --build build -j$(nproc)
 ```
 
-## Installing
-
-Yacl-r now supports `make install` / `cmake --install`.
+Build fuzz targets with Clang/libFuzzer:
 
 ```sh
-# configure
-cmake -S . -B build
+cmake -S . -B build-fuzz -G Ninja \
+  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+  -DBUILD_FUZZ=On
+cmake --build build-fuzz -j$(nproc)
+```
 
-# build and install into the default prefix: ./output
+## Test
+
+Run tests from the build directory:
+
+```sh
+cd build
+ctest --output-on-failure
+ctest -R plaintext_executor_test --output-on-failure
+./bin/buffer_test
+```
+
+## Formatting And Checks
+
+No pre-commit or automated license-header check is configured in this repo.
+Use the regular build, test, and focused formatting/linting commands instead:
+
+```sh
+clang-format -i path/to/file.cc
+clang-tidy path/to/file.cc -- -p build
+cmake --build build -j$(nproc)
+ctest --output-on-failure
+```
+
+## Install
+
+Yacl-r supports `cmake --install`.
+
+```sh
+cmake -S . -B build
 cmake --build build -j$(nproc)
 cmake --install build
 
-# or install into a custom prefix
+# Or install into a custom prefix.
 cmake --install build --prefix /path/to/prefix
 ```
 
@@ -88,8 +128,8 @@ locations:
 - private vendored libraries: `lib*/yacl-r/deps/...`
 
 This keeps Yacl-r's bundled dependencies isolated from the system toolchain and
-from unrelated projects. The current exception is GMP, which is still resolved
-as a system dependency at package-consume time.
+from unrelated projects. GMP is still resolved as a system dependency at
+package-consume time.
 
 Consumers can use the installed package via CMake:
 
@@ -99,8 +139,8 @@ target_link_libraries(your_target PRIVATE Yacl::yacl)
 ```
 
 The exported target adds `include/yacl-r` to the include path, so installed
-consumers still include public headers as `#include "yacl/..."`.
+consumers include public headers as `#include "yacl/..."`.
 
 ## License
 
-See [LICENSE](LICENSE)
+See [LICENSE](LICENSE).

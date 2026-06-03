@@ -1,20 +1,21 @@
 # AGENTS.md - Guidelines for AI Coding Agents
 
-This document provides essential information for AI agents working on the YACL-r codebase.
+This document gives AI agents the project-specific commands and conventions for
+working on YACL-r.
 
 ## Build Commands
 
 ```bash
-# Configure (Release build by default)
+# Configure a Release build.
 cmake -S . -B build -G Ninja
 
-# Debug build
+# Configure a Debug build.
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 
-# Build
+# Build.
 cmake --build build -j$(nproc)
 
-# Build with fuzzing (requires Clang)
+# Build with fuzzing. Requires Clang/libFuzzer.
 cmake -S . -B build-fuzz -G Ninja \
   -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
   -DBUILD_FUZZ=On
@@ -23,81 +24,85 @@ cmake --build build-fuzz -j$(nproc)
 
 ## Testing
 
+Run tests from the build directory so CTest properties and runtime paths are
+applied correctly.
+
 ```bash
 cd build
 
-# Run all tests
-ctest
-
-# Run single test (matches test binary name pattern)
-ctest -R buffer_test
-
-# Run with verbose output
+# Run all tests.
 ctest --output-on-failure
 
-# Run specific test executable directly
+# Run a single test by executable/test name pattern.
+ctest -R buffer_test --output-on-failure
+
+# Run a specific test executable directly when no CTest working-directory
+# property is needed.
 ./bin/buffer_test
 ```
 
-## Linting and Formatting
+## Formatting And Linting
+
+No pre-commit hook configuration is maintained in this repo. Use focused manual
+checks when needed:
 
 ```bash
-# Run pre-commit checks on all files
-pre-commit run --all-files
-
-# Format specific file
+# Format a specific file.
 clang-format -i path/to/file.cc
 
-# Run clang-tidy
+# Run clang-tidy.
 clang-tidy path/to/file.cc -- -p build
 ```
 
 ## Code Style Guidelines
 
 ### General Style
-- Follow Google C++ Style Guide with Envoy extensions
-- Use C++20 features where appropriate
-- Use exceptions for error handling (encouraged in this codebase)
+
+- Follow Google C++ Style Guide with Envoy extensions.
+- Use C++20 features where appropriate.
+- Use exceptions for error handling.
+- Keep edits scoped to the relevant module.
 
 ### File Organization
-- Headers: `.h` extension
-- Source: `.cc` extension
-- Tests: `*_test.cc` suffix, placed alongside tested code
-- Fuzz targets: `*_fuzz.cc` suffix, placed alongside tested code
+
+- Headers: `.h` extension.
+- Source: `.cc` extension.
+- Tests: `*_test.cc` suffix, placed alongside tested code.
+- Fuzz targets: `*_fuzz.cc` suffix, placed alongside tested code.
 
 ### Naming Conventions
+
 | Type | Convention | Example |
 |------|------------|---------|
 | Files | `snake_case` | `buffer_test.cc`, `prg.h` |
 | Classes/Structs | `PascalCase` | `Buffer`, `Prg` |
-| Functions/Methods | `PascalCase` (camelBack) | `GetData()`, `resize()` |
-| Member Variables | `snake_case_` (trailing underscore) | `buffer_size_`, `ptr_` |
+| Functions/Methods | `PascalCase` or existing local style | `GetData()`, `resize()` |
+| Member Variables | `snake_case_` | `buffer_size_`, `ptr_` |
 | Local Variables | `snake_case` | `input_size`, `result` |
 | Constants | `kPascalCase` | `kMaxSize`, `kKey1` |
-| Enum Constants | `UPPER_CASE` | `kMaxStackTraceDep` |
 | Macros | `UPPER_SNAKE_CASE` | `YACL_ENFORCE` |
-| Namespaces | `lowercase` | `yacl`, `yacl` |
+| Namespaces | `lowercase` | `yacl`, `mpc` |
 
 ### Include Order
-1. Standard library headers (e.g., `<string>`, `<vector>`)
-2. System headers (e.g., `<cstdint>`)
-3. Third-party headers (e.g., `"gtest/gtest.h"`)
-4. Project headers (e.g., `"yacl/utils/buffer.h"`)
 
-### Header Guards
-Use `#pragma once` instead of traditional include guards.
+1. Standard library headers, e.g. `<string>`, `<vector>`.
+2. System headers, e.g. `<cstdint>`.
+3. Third-party headers, e.g. `"gtest/gtest.h"`.
+4. Project headers, e.g. `"yacl/utils/buffer.h"`.
+
+Use `#pragma once` in headers.
 
 ## Error Handling
 
-### YACL_ENFORCE Macro
 Use `YACL_ENFORCE` for runtime assertions with formatted messages:
+
 ```cpp
 YACL_ENFORCE(size >= 0, "Size must be non-negative, got {}", size);
 YACL_ENFORCE(ptr != nullptr, "Pointer cannot be null");
 ```
 
-### Exceptions
-The codebase uses a custom `Exception` class:
+The codebase also uses the custom `Exception` class:
+
 ```cpp
 throw yacl::Exception("Something went wrong");
 ```
@@ -105,6 +110,7 @@ throw yacl::Exception("Something went wrong");
 ## Testing Guidelines
 
 ### Test Structure
+
 ```cpp
 #include "gtest/gtest.h"
 #include "yacl/my_feature.h"
@@ -122,70 +128,70 @@ TEST(MyFeatureTest, BasicFunctionalityWorks) {
 ```
 
 ### Test Naming
-- Test suite: `<ClassOrFeature>Test` (e.g., `BufferTest`, not `buffer_test`)
-- Test case: Descriptive name in PascalCase
+
+- Test suite: `<ClassOrFeature>Test`, e.g. `BufferTest`.
+- Test case: descriptive PascalCase.
 
 ### Adding New Tests
-Add to the relevant `CMakeLists.txt`:
+
+Add the test to the relevant `CMakeLists.txt`:
+
 ```cmake
 add_yacl_test_if(my_feature_test)
 ```
 
+If the test depends on source-tree data files, set a CTest working directory for
+that test instead of relying on the process current directory.
+
 ### Adding New Fuzz Targets
+
 Fuzz targets use libFuzzer and require Clang. Create a `*_fuzz.cc` file with an
-`LLVMFuzzerTestOneInput` entry point, then add to the relevant `CMakeLists.txt`:
+`LLVMFuzzerTestOneInput` entry point, then add it to the relevant
+`CMakeLists.txt`:
+
 ```cmake
 add_yacl_fuzz_if(my_feature_fuzz)
 ```
 
 ## Project Structure
 
-```
+```text
 yacl-r/
-├── yacl/                 # Main source directory
-│   ├── base/             # Fundamental types (Buffer, int128, Exception)
-│   ├── engine/           # Interactive engines
-│   ├── io/               # Streaming I/O library
-│   ├── kernel/           # Crypto kernel with network support
-│   ├── link/             # RPC-based MPI framework
-│   ├── math/             # Math library (galois_field, big integers, ECC, pairing)
-│   ├── rand/             # Randomness, DRBG, and OpenSSL provider code
-│   └── utils/            # Utilities
-├── cmake/                # CMake modules and dependency scripts
-└── include/              # Public headers
+├── yacl/
+│   ├── aead/             # AEAD implementations
+│   ├── aes/              # AES intrinsics and wrappers
+│   ├── bc/               # Block-cipher helpers
+│   ├── dpf/              # DPF/DCF/PPRF protocols
+│   ├── envelope/         # Envelope encryption
+│   ├── experimental/     # Experimental PRG/RO/code utilities
+│   ├── hash/             # Hashing utilities
+│   ├── hmac/             # HMAC
+│   ├── io/               # Streaming I/O and circuit parsing
+│   ├── link/             # RPC-based SPMD framework
+│   ├── math/             # Big integers, fields, ECC, pairing
+│   ├── mpc/              # MPC kernels and executors
+│   ├── oprf/             # OPRF
+│   ├── ot/               # Base OT, OT extension, OT stores
+│   ├── pke/              # Public-key encryption
+│   ├── rand/             # Randomness, DRBG, entropy source code
+│   ├── sign/             # Signatures
+│   ├── snark/            # SNARK-related code
+│   ├── tpre/             # Threshold proxy re-encryption
+│   ├── utils/            # Common utilities
+│   └── vole/             # VOLE and MPFSS code
+└── cmake/                # CMake modules and dependency scripts
 ```
 
-## Pre-commit Hooks
+## License Notes
 
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-Hooks include: trailing-whitespace, clang-format, codespell
-
-## License Headers
-
-All source files must include the Apache 2.0 license header:
-```cpp
-// Copyright 2024 Jamie Cui
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-```
+There is no automated license-header check configured. Preserve existing
+license headers when editing files, but do not add or enforce a repository-wide
+license check unless it is explicitly requested.
 
 ## Important Notes
 
-- Use `constexpr` for compile-time constants
-- Prefer `std::byte` for raw memory buffers
-- Use `int64_t` for sizes and indices (not `size_t`)
-- Run tests from the build directory to ensure library paths are correct
+- Use `constexpr` for compile-time constants.
+- Prefer `std::byte` for raw memory buffers when it fits the local code.
+- Prefer `int64_t` for sizes and indices when adding new APIs, unless local code
+  already uses another type.
+- Run tests from the build directory to ensure CTest properties are applied.
