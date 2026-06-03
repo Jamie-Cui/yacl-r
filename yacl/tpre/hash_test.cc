@@ -19,7 +19,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(HashTest, Test1) {
   std::unique_ptr<EcGroup> ecc_group = EcGroupFactory::Instance().Create("sm2");
@@ -39,4 +39,4 @@ TEST(HashTest, Test1) {
             "2A37F6D7231C9CC72D8B8FBEF9A859992B9BDADAC1BDB9E73D881967EB145854");
 }
 
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

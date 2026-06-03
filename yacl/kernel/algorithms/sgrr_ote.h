@@ -33,7 +33,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sgrr_ote", SecParam::C::INF, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Implementation of (n-1)-out-of-n Random OT (also called oblivious punctured
 // vector), paper: https://eprint.iacr.org/2019/1084.
@@ -111,4 +111,4 @@ void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
                                std::span<uint128_t> output,
                                std::span<uint8_t> send_buf, bool mal = false);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

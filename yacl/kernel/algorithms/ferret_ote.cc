@@ -23,7 +23,7 @@
 #include "yacl/tools/cuckoo_index.h"
 #include "yacl/utils/serialize.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 uint64_t FerretCotHelper(const LpnParam& lpn_param, uint64_t /*ot_num*/,
                          bool mal) {
@@ -573,4 +573,4 @@ void FerretOtExtRecv_cheetah(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

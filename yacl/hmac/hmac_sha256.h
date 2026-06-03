@@ -20,11 +20,11 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("hmac_sha256", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 class HmacSha256 final : public Hmac {
  public:
   HmacSha256(ByteContainerView key) : Hmac(HashAlgorithm::SHA256, key) {}
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

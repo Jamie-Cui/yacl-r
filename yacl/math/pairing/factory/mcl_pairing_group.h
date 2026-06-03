@@ -20,7 +20,7 @@
 #include "yacl/math/pairing/factory/pairing_spi.h"
 #include "yacl/math/galois_field/factory/mcl_factory.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class MclPGFactory {
  public:
@@ -115,4 +115,4 @@ PAIRING_GROUP_ALIAS(Bls12461, bls124);
 PAIRING_GROUP_ALIAS(BN256, bn256);
 #endif
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -16,7 +16,7 @@
 
 #include "yacl/block_cipher/symmetric_crypto.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
                    uint64_t iv, uint64_t count, char* buf, size_t len) {
@@ -69,4 +69,4 @@ uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
   return count + nblock;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

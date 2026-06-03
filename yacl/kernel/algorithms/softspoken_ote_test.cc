@@ -26,7 +26,7 @@
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct OtTestParams {
   unsigned num_ot;
@@ -462,4 +462,4 @@ INSTANTIATE_TEST_SUITE_P(Works_Instances, SoftspokenOtExtTest,
                                          OtTestParams{65536, true, true},  //
                                          OtTestParams{100000, true, true}));
 
-}  // namespace yacl::crypto
+}  // namespace yacl

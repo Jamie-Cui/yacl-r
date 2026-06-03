@@ -20,7 +20,7 @@
 #include "yacl/math/ecc/group_sketch.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto::ossl {
+namespace yacl::ossl {
 
 class OpensslGroup : public EcGroupSketch {
  public:
@@ -97,4 +97,4 @@ class OpensslGroup : public EcGroupSketch {
   static thread_local UniqueBnCtx ctx_;
 };
 
-}  // namespace yacl::crypto::ossl
+}  // namespace yacl::ossl

@@ -17,7 +17,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 Hmac::Hmac(HashAlgorithm hash_algo, ByteContainerView key)
     : hash_algo_(hash_algo), key_(key.begin(), key.end()) {
@@ -75,4 +75,4 @@ std::vector<uint8_t> Hmac::CumulativeMac() const {
   return mac;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

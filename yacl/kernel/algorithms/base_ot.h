@@ -35,7 +35,7 @@
 /* security parameter declaration */
 // this module is only a wrapper, no need for security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 using Block = uint128_t;
 
@@ -65,4 +65,4 @@ inline OtSendStore BaseOtSend(const std::shared_ptr<link::Context>& ctx,
   return MakeOtSendStore(std::move(blocks));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

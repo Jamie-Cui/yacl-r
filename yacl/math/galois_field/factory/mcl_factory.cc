@@ -144,7 +144,7 @@ MPInt MclField<T, degree>::GetAddGroupOrder() const {
 
 template <typename T, size_t degree>
 MPInt MclField<T, degree>::GetBaseFieldOrder() const {
-  return crypto::Mpz2Mp(T::BaseFp::getOp().mp);
+  return Mpz2Mp(T::BaseFp::getOp().mp);
 }
 
 template <typename T, size_t degree>
@@ -246,13 +246,13 @@ void MclField<T, degree>::DivInplace(T* x, const T& y) const {
 template <typename T, size_t degree>
 T MclField<T, degree>::Pow(const T& x, const MPInt& y) const {
   T ret;
-  T::pow(ret, x, crypto::Mp2Mpz(y));
+  T::pow(ret, x, Mp2Mpz(y));
   return ret;
 }
 
 template <typename T, size_t degree>
 void MclField<T, degree>::PowInplace(T* x, const MPInt& y) const {
-  T::pow(*x, *x, crypto::Mp2Mpz(y));
+  T::pow(*x, *x, Mp2Mpz(y));
 }
 
 template <typename T, size_t degree>
@@ -325,7 +325,7 @@ MclField<T, degree>::MclField(const MPInt& order, Type field_type) {
 template <typename T, size_t degree>
 MclField<T, degree>::MclField(const MPInt& base_prime_p, mcl::fp::Mode mode,
                               int xi_a) {
-  auto base_p = crypto::Mp2Mpz(base_prime_p);
+  auto base_p = Mp2Mpz(base_prime_p);
   if (degree == 1) {
     T::BaseFp::init(base_p, mode);
     order_ = base_prime_p;

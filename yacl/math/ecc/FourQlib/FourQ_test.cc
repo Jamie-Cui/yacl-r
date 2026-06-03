@@ -19,14 +19,14 @@
 #include "yacl/math/ecc/ecc_spi.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto::FourQ {
+namespace yacl::FourQ {
 
 extern MPInt F2elm2MPInt(const f2elm_t f2elm);
 extern void MPIntToF2elm(const MPInt& x, f2elm_t f2elm);
 
-}  // namespace yacl::crypto::FourQ
+}  // namespace yacl::FourQ
 
-namespace yacl::crypto::FourQ::test {
+namespace yacl::FourQ::test {
 
 std::ostream& operator<<(std::ostream& os, const EcPoint& p) {
   const auto* r1 =
@@ -130,4 +130,4 @@ TEST_F(FourQTest, NegateWorks) {
                               ec_->Negate(ec_->MulBase(1000_mp))));
 }
 
-}  // namespace yacl::crypto::FourQ::test
+}  // namespace yacl::FourQ::test

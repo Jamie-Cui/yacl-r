@@ -29,7 +29,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/kernel/code/code_interface.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Implementation of Low-density Parity-check Code for SILent Vole and transfER
 // over F2k, for more details, see original paper:
@@ -152,4 +152,4 @@ class SilverCode : public LinearCodeInterface {
   void RightEncode2(std::span<T> inout0, std::span<K> inout1) const;
 };
 
-};  // namespace yacl::crypto
+};  // namespace yacl

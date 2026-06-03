@@ -30,7 +30,7 @@
 /* submodules */
 #include "yacl/block_cipher/symmetric_crypto.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // internal implementation
 // note: those class/functions are not designed to be called externally
@@ -142,4 +142,4 @@ class NativeDrbg : public Drbg {
   std::unique_ptr<internal::Sm4Drbg> drbg_impl_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -16,7 +16,7 @@
 
 #include "yacl/hash/ssl_hash.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::pair<OprfCtx::SkTy, OprfCtx::PkTy> OprfCtx::GenKeyPair() {
   SkTy sk;
@@ -72,4 +72,4 @@ std::pair<OprfCtx::SkTy, OprfCtx::PkTy> OprfCtx::DeriveKeyPair(
   }
   return {sk, pk};
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

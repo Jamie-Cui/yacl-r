@@ -30,7 +30,7 @@
 
 #include "yacl/aes/aes_intrinsics.h"
 
-namespace yacl::crypto {
+namespace yacl {
 template <int NumKeys>
 static inline void ks_rounds(AES_KEY *keys, __m128i con, __m128i con3,
                              __m128i mask, int r) {
@@ -175,4 +175,4 @@ static inline void ParaEnc(uint128_t *blks, const AES_KEY *keys,
   ParaEnc<numKeys>(tmp, keys, num_encs);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

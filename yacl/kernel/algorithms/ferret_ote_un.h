@@ -30,7 +30,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("ferret_ote_un", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 using FerretSimpleMap = std::vector<std::unordered_map<uint64_t, uint64_t>>;
 
@@ -186,4 +186,4 @@ inline void MpCotUNRecv(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

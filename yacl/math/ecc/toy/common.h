@@ -16,7 +16,7 @@
 
 #include "yacl/math/ecc/group_sketch.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 static const std::string kLibName = "Toy";
 
@@ -57,4 +57,4 @@ class ToyEcGroup : public EcGroupSketch {
   CurveParam params_;
 };
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

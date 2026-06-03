@@ -27,7 +27,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rsa_sign", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // RSA sign with sha256 (wrapper for OpenSSL)
 class RsaSigner final : public AsymmetricSigner {
@@ -68,4 +68,4 @@ class RsaVerifier final : public AsymmetricVerifier {
   const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

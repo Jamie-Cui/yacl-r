@@ -17,7 +17,7 @@
 
 #include <cstdint>
 
-namespace yacl::crypto {
+namespace yacl {
 
 class SliceBase {
  public:
@@ -78,4 +78,4 @@ class SliceBase {
   uint64_t internal_buf_size_ = 0;  // underlying buf max size
                                     // (will not be affected by slice op)
 };
-}  // namespace yacl::crypto
+}  // namespace yacl

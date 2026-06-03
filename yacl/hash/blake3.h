@@ -25,7 +25,7 @@
 // this header exposes variable-output BLAKE3, effective strength depends on
 // output_len, no standalone security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Specification document of the blake3 hash function
 // https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf
@@ -62,4 +62,4 @@ class Blake3Hash : public HashInterface {
 
   void Init();
 };
-}  // namespace yacl::crypto
+}  // namespace yacl

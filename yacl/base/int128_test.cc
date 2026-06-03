@@ -85,11 +85,11 @@ TEST(Int128Test, CountLzTest) {
   x = 1;
   EXPECT_EQ(yacl::CountLZ(x), 127);
 
-  x = yacl::crypto::FastRandU128();
+  x = yacl::FastRandU128();
   EXPECT_EQ(yacl::CountLZ(x), yacl::CountLZ(x));
 
   x = std::numeric_limits<uint128_t>::max();
-  int offset = yacl::crypto::RandLtN(128);
+  int offset = yacl::RandLtN(128);
   x >>= offset;
   EXPECT_EQ(yacl::CountLZ(x), offset);
 }

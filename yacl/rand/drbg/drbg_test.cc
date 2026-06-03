@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(OpensslTest, CtrDrbgWorks) {
   auto drbg = DrbgFactory::Instance().Create("ctr-drbg");
@@ -130,4 +130,4 @@ TEST(NativeTest, GmDrbgWorks) {
 //   EXPECT_NE(std::memcmp(out1.data(), out2.data(), 8), 0);
 // }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

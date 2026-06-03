@@ -20,7 +20,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class RandomOracleTest : public testing::TestWithParam<size_t> {};
 
@@ -85,4 +85,4 @@ TEST_P(RandomOracleTest, TwoParamTest) {
             RO.Gen<uint128_t>(input_bytes, input_u64));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

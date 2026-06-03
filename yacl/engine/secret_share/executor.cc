@@ -17,18 +17,18 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <span>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include <span>
 #include "fmt/format.h"
 
 #include "yacl/base/byte_container_view.h"
 #include "yacl/base/exception.h"
-#include "yacl/rand/rand.h"
 #include "yacl/kernel/ot_kernel.h"
 #include "yacl/kernel/type/ot_store.h"
+#include "yacl/rand/rand.h"
 
 namespace yacl::engine {
 
@@ -135,8 +135,8 @@ std::vector<uint64_t> SSExecutor::RunChosenOT(
 
   auto ctx = std::shared_ptr<link::Context>(parent_ctx->Spawn());
 
-  crypto::OtKernel kernel(is_sender ? crypto::OtKernel::Role::Sender
-                                    : crypto::OtKernel::Role::Receiver);
+  OtKernel kernel(is_sender ? OtKernel::Role::Sender
+                            : OtKernel::Role::Receiver);
   kernel.init(ctx);
 
   // Ferret OT extension requires a minimum batch size. Pad if needed.
@@ -146,7 +146,7 @@ std::vector<uint64_t> SSExecutor::RunChosenOT(
   if (is_sender) {
     YACL_ENFORCE(static_cast<int64_t>(sender_msgs.size()) == num_ots);
 
-    crypto::OtSendStore rot_send(padded, crypto::OtStoreType::Normal);
+    OtSendStore rot_send(padded, OtStoreType::Normal);
     kernel.eval_rot(ctx, padded, &rot_send);
 
     // Receive flip bits from receiver.
@@ -178,7 +178,7 @@ std::vector<uint64_t> SSExecutor::RunChosenOT(
   // Receiver side.
   YACL_ENFORCE(static_cast<int64_t>(receiver_choices.size()) == num_ots);
 
-  crypto::OtRecvStore rot_recv(padded, crypto::OtStoreType::Normal);
+  OtRecvStore rot_recv(padded, OtStoreType::Normal);
   kernel.eval_rot(ctx, padded, &rot_recv);
 
   // Send flip bits (real choices for first num_ots, zeros for padding).
@@ -229,7 +229,7 @@ std::vector<uint64_t> SSExecutor::RunArithOtDirection(
     msgs.resize(num_ots);
     for (int64_t i = 0; i < n; ++i) {
       for (int64_t k = 0; k < kBits; ++k) {
-        uint64_t r = crypto::FastRandU64();
+        uint64_t r = FastRandU64();
         msgs[(i * kBits) + k].m0 = r;
         msgs[(i * kBits) + k].m1 = r + (a_local[i] << k);
         cross[i] -= r;
@@ -267,8 +267,8 @@ void SSExecutor::PreprocessArithTriples(int64_t n) {
   std::vector<uint64_t> a_local(n);
   std::vector<uint64_t> b_local(n);
   for (int64_t i = 0; i < n; ++i) {
-    a_local[i] = crypto::FastRandU64();
-    b_local[i] = crypto::FastRandU64();
+    a_local[i] = FastRandU64();
+    b_local[i] = FastRandU64();
   }
 
   // Direction A: rank-0 = OT sender (has a_0), rank-1 = OT receiver (has b_1).
@@ -299,7 +299,7 @@ std::vector<uint64_t> SSExecutor::RunBoolOtDirection(
     msgs.resize(num_ots);
     for (int64_t i = 0; i < n; ++i) {
       for (int64_t k = 0; k < kBits; ++k) {
-        uint64_t r_bit = crypto::FastRandU64() & 1;
+        uint64_t r_bit = FastRandU64() & 1;
         uint64_t a_bit = (a_local[i] >> k) & 1;
         msgs[(i * kBits) + k].m0 = r_bit;
         msgs[(i * kBits) + k].m1 = r_bit ^ a_bit;
@@ -338,8 +338,8 @@ void SSExecutor::PreprocessBoolTriples(int64_t n) {
   std::vector<uint64_t> a_local(n);
   std::vector<uint64_t> b_local(n);
   for (int64_t i = 0; i < n; ++i) {
-    a_local[i] = crypto::FastRandU64();
-    b_local[i] = crypto::FastRandU64();
+    a_local[i] = FastRandU64();
+    b_local[i] = FastRandU64();
   }
 
   // Direction A: rank-0 = OT sender, rank-1 = OT receiver.
@@ -361,7 +361,7 @@ void SSExecutor::PreprocessBoolTriples(int64_t n) {
 AShare SSExecutor::ShareA(uint64_t secret) {
   auto tag = NextTag("sha");
   if (rank_ == 0) {
-    uint64_t r = crypto::FastRandU64();
+    uint64_t r = FastRandU64();
     SendU64(tag, r);
     return AShare{secret - r};
   }
@@ -413,7 +413,7 @@ AShare SSExecutor::MulA(AShare x, AShare y) {
 BShare SSExecutor::ShareB(uint64_t secret) {
   auto tag = NextTag("shb");
   if (rank_ == 0) {
-    uint64_t r = crypto::FastRandU64();
+    uint64_t r = FastRandU64();
     SendU64(tag, r);
     return BShare{secret ^ r};
   }
@@ -529,7 +529,7 @@ AShare SSExecutor::B2A(BShare x) {
     msgs.resize(kBits);
     for (int64_t k = 0; k < kBits; ++k) {
       uint64_t b1_k = (x.v >> k) & 1;
-      uint64_t r_k = crypto::FastRandU64();
+      uint64_t r_k = FastRandU64();
       uint64_t weight = 1ULL << k;
       // (1 - 2*b1_k) * weight: if b1_k=0 then +weight; if b1_k=1 then -weight.
       uint64_t correction =

@@ -20,7 +20,7 @@
 #include "yacl/math/pairing/factory/pairing_spi.h"
 #include "yacl/utils/parallel.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class PairingCurveTest : public ::testing::TestWithParam<std::string> {
  protected:
@@ -404,4 +404,4 @@ TEST(DISABLED_Pairing_Multi_Instance_Test, Works) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

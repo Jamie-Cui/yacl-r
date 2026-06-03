@@ -21,7 +21,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -116,4 +116,4 @@ TYPED_TEST(AllGcmTest, EncryptDecrypt_withErrorAAD_ShouldThrowException) {
   });
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

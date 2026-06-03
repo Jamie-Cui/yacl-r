@@ -29,7 +29,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("ferret_ote_rn", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 inline uint64_t MpCotRNHelper(uint64_t idx_num, uint64_t idx_range,
                               bool mal = false) {
@@ -168,4 +168,4 @@ inline void MpCotRNRecv(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

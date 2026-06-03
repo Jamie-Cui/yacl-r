@@ -20,7 +20,7 @@
 #include "yacl/math/pairing/factory/pairing_spi.h"
 #include "yacl/math/galois_field/factory/mcl_factory.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 using MclPairingBls12381G1 = MclGroupT<mcl::bls12::Fp, mcl::bls12::Fr>;
 using MclPairingBls12381G2 = MclGroupT<mcl::bls12::Fp2, mcl::bls12::Fr>;
@@ -58,4 +58,4 @@ class MclPairingBls12381 : public PairingGroup {
                      std::unique_ptr<GroupTarget>& gt);
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -23,7 +23,7 @@
 #include "yacl/rand/entropy_source/entropy_source.h"
 #include "yacl/math/gadget.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -147,4 +147,4 @@ SPECIFY_RANDBIT_TEMPLATE(uint16_t);
 
 #undef SPECIFY_RANDBIT_TEMPLATE
 
-}  // namespace yacl::crypto
+}  // namespace yacl

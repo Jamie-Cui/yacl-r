@@ -14,7 +14,7 @@
 
 #include "yacl/math/ecc/group_sketch.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void EcGroupSketch::AddInplace(EcPoint *p1, const EcPoint &p2) const {
   *p1 = Add(*p1, p2);
@@ -72,4 +72,4 @@ void EcGroupSketch::NegateInplace(EcPoint *point) const {
   *point = Negate(*point);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

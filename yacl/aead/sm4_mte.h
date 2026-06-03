@@ -27,7 +27,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sm4_mac", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 constexpr size_t kSm4MteMacCipherSize = 32;  // the encrypted sm3 hmac size
 constexpr size_t kSm4MteKeySize = 16;
@@ -57,4 +57,4 @@ std::vector<uint8_t> Sm4MteEncrypt(ByteContainerView key, ByteContainerView iv,
 std::vector<uint8_t> Sm4MteDecrypt(ByteContainerView key, ByteContainerView iv,
                                    ByteContainerView ciphertext);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

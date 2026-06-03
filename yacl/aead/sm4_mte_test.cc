@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(Sm4Mac, Sm4Mac_shouldOk) {
   // GIVEN
@@ -33,4 +33,4 @@ TEST(Sm4Mac, Sm4Mac_shouldOk) {
   EXPECT_EQ(plaintext, std::string(decrypted.begin(), decrypted.end()));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

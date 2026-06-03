@@ -26,7 +26,7 @@
 #include "yacl/utils/matrix_utils.h"
 #include "yacl/utils/serialize.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -309,4 +309,4 @@ void KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
     recv_blocks[i] = t_ext[i];
   }
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

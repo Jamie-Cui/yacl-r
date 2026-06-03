@@ -18,7 +18,7 @@
 
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(Sm2Enc, EncryptDecrypt_shouldOk) {
   // GIVEN
@@ -36,4 +36,4 @@ TEST(Sm2Enc, EncryptDecrypt_shouldOk) {
   EXPECT_EQ(std::memcmp(m.data(), m_check.data(), m.size()), 0);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

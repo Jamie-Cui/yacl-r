@@ -16,7 +16,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 namespace {
 
 std::unique_ptr<BaseOTInterface> GetOtInterface() {
@@ -52,4 +52,4 @@ void BaseOtSend(const std::shared_ptr<link::Context>& ctx,
   ot_interface->Send(ctx, send_blocks);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

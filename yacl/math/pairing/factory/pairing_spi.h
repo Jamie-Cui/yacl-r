@@ -19,10 +19,10 @@
 #include "yacl/math/galois_field/gf.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 #define REGISTER_PAIRING_LIBRARY(lib_name, performance, checker, creator) \
   REGISTER_SPI_LIBRARY_HELPER(PairingGroupFactory, lib_name, performance, \
                               checker, creator)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

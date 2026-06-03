@@ -17,11 +17,11 @@
 #include "yacl/math/pairing/factory/mcl_pairing_group.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 extern std::map<CurveName, int> Name2MclPairingEnum;
-}  // namespace yacl::crypto
+}  // namespace yacl
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 class MclPairingTest : public ::testing::Test {
  protected:
@@ -134,4 +134,4 @@ TEST(MultInstance, OK) {
   }
 }
 
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

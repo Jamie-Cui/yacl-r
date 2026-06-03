@@ -23,7 +23,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 struct TestData {
   // Hash data
   std::string vector1;
@@ -166,4 +166,4 @@ TEST(Blake3HashTest, MaximumLength) {
   EXPECT_EQ(cur_result.substr(0, 2 * len), std_result);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -20,7 +20,7 @@
 
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParams {
   unsigned length;
@@ -133,4 +133,4 @@ INSTANTIATE_TEST_SUITE_P(Works_Instances, ExAccCodeTest,
                                          TestParams{10000},  // ten thousand
                                          TestParams{100000}));
 
-}  // namespace yacl::crypto
+}  // namespace yacl

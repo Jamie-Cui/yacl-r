@@ -21,8 +21,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/rand/rand.h"
 #include "yacl/link/test_util.h"
+#include "yacl/rand/rand.h"
 
 namespace yacl::engine {
 namespace {
@@ -43,7 +43,7 @@ std::pair<uint64_t, uint64_t> Run2Party(Func&& func) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, ShareAndRevealA) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -61,8 +61,8 @@ TEST(SSExecutorTest, ShareAndRevealA) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, AddA) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t b = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t b = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -78,8 +78,8 @@ TEST(SSExecutorTest, AddA) {
 }
 
 TEST(SSExecutorTest, SubA) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t b = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t b = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -95,7 +95,7 @@ TEST(SSExecutorTest, SubA) {
 }
 
 TEST(SSExecutorTest, NegA) {
-  uint64_t a = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -110,8 +110,8 @@ TEST(SSExecutorTest, NegA) {
 }
 
 TEST(SSExecutorTest, MulConstA) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t c = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t c = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, c](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -130,8 +130,8 @@ TEST(SSExecutorTest, MulConstA) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, MulA) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t b = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t b = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -152,7 +152,7 @@ TEST(SSExecutorTest, MulA) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, ShareAndRevealB) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -170,8 +170,8 @@ TEST(SSExecutorTest, ShareAndRevealB) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, XorB) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t b = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t b = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -187,7 +187,7 @@ TEST(SSExecutorTest, XorB) {
 }
 
 TEST(SSExecutorTest, NotB) {
-  uint64_t a = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -206,8 +206,8 @@ TEST(SSExecutorTest, NotB) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, AndB) {
-  uint64_t a = crypto::FastRandU64();
-  uint64_t b = crypto::FastRandU64();
+  uint64_t a = FastRandU64();
+  uint64_t b = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([a, b](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -228,7 +228,7 @@ TEST(SSExecutorTest, AndB) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, A2B) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -248,7 +248,7 @@ TEST(SSExecutorTest, A2B) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, B2A) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -267,7 +267,7 @@ TEST(SSExecutorTest, B2A) {
 // ---------------------------------------------------------------
 
 TEST(SSExecutorTest, RoundtripA2B2A) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {
@@ -284,7 +284,7 @@ TEST(SSExecutorTest, RoundtripA2B2A) {
 }
 
 TEST(SSExecutorTest, RoundtripB2A2B) {
-  uint64_t secret = crypto::FastRandU64();
+  uint64_t secret = FastRandU64();
 
   auto [r0, r1] =
       Run2Party([secret](size_t rank, std::shared_ptr<link::Context> lctx) {

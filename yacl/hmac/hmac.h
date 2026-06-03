@@ -26,7 +26,7 @@
 // this header selects the hash algorithm at runtime, concrete HMAC wrappers
 // declare their own security parameters
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Hmac defines an base for hmac functions.
 //
@@ -70,4 +70,4 @@ class Hmac {
   ossl::UniqueMacCtx ctx_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

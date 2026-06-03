@@ -32,7 +32,7 @@
 #include "yacl/ossl_wrappers.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 NativeDrbg::NativeDrbg(std::string type,
                        const std::shared_ptr<EntropySource>& es)
@@ -311,4 +311,4 @@ Buffer Sm4Drbg::Generate(size_t len, ByteContainerView additional_input) {
 
 REGISTER_DRBG_LIBRARY("NativeImpl", 100, NativeDrbg::Check, NativeDrbg::Create);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

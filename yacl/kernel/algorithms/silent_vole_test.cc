@@ -28,7 +28,7 @@
 #include "yacl/math/gadget.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class SilentVoleTest
     : public ::testing::TestWithParam<std::tuple<CodeType, size_t, bool>> {};
@@ -114,4 +114,4 @@ INSTANTIATE_TEST_SUITE_P(
           kCodeName[std::get<0>(p.param)], (int)std::get<1>(p.param));
     });
 
-}  // namespace yacl::crypto
+}  // namespace yacl

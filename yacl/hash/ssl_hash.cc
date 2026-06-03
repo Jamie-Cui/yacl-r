@@ -18,7 +18,7 @@
 #include "yacl/ossl_wrappers.h"
 #include "yacl/utils/scope_guard.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 SslHash::SslHash(HashAlgorithm hash_algo)
     : hash_algo_(hash_algo),
@@ -66,4 +66,4 @@ std::vector<uint8_t> SslHash::CumulativeHash() const {
   return out;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -179,4 +179,4 @@ void IknpOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

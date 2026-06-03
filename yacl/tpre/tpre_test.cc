@@ -17,7 +17,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(TpreTest, Test1) {
   std::string iv = "123456789";
@@ -100,4 +100,4 @@ TEST(TpreTest, Test1) {
 
   EXPECT_EQ(message_2, message_3);
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

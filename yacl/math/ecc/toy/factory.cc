@@ -17,7 +17,7 @@
 #include "yacl/math/ecc/toy/montgomery.h"
 #include "yacl/math/ecc/toy/weierstrass.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 static std::map<CurveName, CurveParam> kPredefinedCurves = {
     {"secp256k1",
@@ -69,4 +69,4 @@ bool IsSupported(const CurveMeta &meta) {
 
 REGISTER_EC_LIBRARY(kLibName, 10, IsSupported, Create);
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

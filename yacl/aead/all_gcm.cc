@@ -16,7 +16,7 @@
 
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -117,4 +117,4 @@ void GcmCrypto::Decrypt(ByteContainerView ciphertext, ByteContainerView aad,
                "Failed to verfiy mac.");
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

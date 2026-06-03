@@ -19,7 +19,7 @@
 #include "yacl/aead/sm4_mte.h"
 #include "yacl/tpre/capsule.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::pair<Capsule::CapsuleStruct, std::vector<uint8_t>> TPRE::Encrypt(
     const std::unique_ptr<EcGroup>& ecc_group, const Keys::PublicKey& pk_A,
@@ -89,4 +89,4 @@ std::string TPRE::DecryptFrags(
 
   return plaintext_str;
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

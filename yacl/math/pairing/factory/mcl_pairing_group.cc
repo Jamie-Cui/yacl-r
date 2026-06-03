@@ -14,7 +14,7 @@
 
 #include "yacl/math/pairing/factory/mcl_pairing_group.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <typename G1_, typename G2_, typename GT_>
 std::string MclPairingGroup<G1_, G2_, GT_>::GetLibraryName() const {
@@ -115,4 +115,4 @@ TEMPLATE_PARING_INSTANCE(Bls12461, bls124);
 TEMPLATE_PARING_INSTANCE(BN256, bn256);
 #endif
 
-}  // namespace yacl::crypto
+}  // namespace yacl

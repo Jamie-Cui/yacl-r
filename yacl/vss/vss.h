@@ -24,7 +24,7 @@
 #include "yacl/vss/poly.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 /**
  * Verifiable Secret Sharing (VSS) is a cryptographic technique that
@@ -121,7 +121,7 @@ class VerifiableSecretSharing {
   // New name for the type representing the result of GenerateShareWithCommits
   // function.
   using ShareWithCommitsResult =
-      std::pair<std::vector<Share>, std::vector<yacl::crypto::EcPoint>>;
+      std::pair<std::vector<Share>, std::vector<yacl::EcPoint>>;
 
   /**
    * @brief Generate shares with commitments for the given secret and elliptic
@@ -134,7 +134,7 @@ class VerifiableSecretSharing {
    */
   ShareWithCommitsResult CreateShareWithCommits(
       const MPInt& secret,
-      const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+      const std::unique_ptr<yacl::EcGroup>& ecc_group,
       Polynomial& poly) const;
 
   /**
@@ -172,10 +172,10 @@ class VerifiableSecretSharing {
  *
  * @param ecc_group
  * @param coefficients
- * @return std::vector<yacl::crypto::EcPoint>
+ * @return std::vector<yacl::EcPoint>
  */
-std::vector<yacl::crypto::EcPoint> CreateCommits(
-    const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+std::vector<yacl::EcPoint> CreateCommits(
+    const std::unique_ptr<yacl::EcGroup>& ecc_group,
     const std::vector<MPInt>& coefficients);
 
 /**
@@ -189,9 +189,9 @@ std::vector<yacl::crypto::EcPoint> CreateCommits(
  * @return true
  * @return false
  */
-bool VerifyCommits(const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+bool VerifyCommits(const std::unique_ptr<yacl::EcGroup>& ecc_group,
                    const VerifiableSecretSharing::Share& share,
-                   const std::vector<yacl::crypto::EcPoint>& commits,
+                   const std::vector<yacl::EcPoint>& commits,
                    const MPInt& prime);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

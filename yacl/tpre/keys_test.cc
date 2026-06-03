@@ -21,7 +21,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(KeyTest, Test1) {
   std::unique_ptr<EcGroup> ecc_group = EcGroupFactory::Instance().Create("sm2");
@@ -64,4 +64,4 @@ TEST(KeyTest, Test1) {
     EXPECT_TRUE(kfrags[i].id > 0_mp);
   }
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

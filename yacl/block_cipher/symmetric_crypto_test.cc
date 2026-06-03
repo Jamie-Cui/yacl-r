@@ -26,7 +26,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -366,4 +366,4 @@ TEST(SymmetricCrypto, CbcSameKeyAndIVDifferentResult) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

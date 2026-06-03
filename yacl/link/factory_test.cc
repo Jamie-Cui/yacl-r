@@ -21,9 +21,9 @@
 #include "fmt/format.h"
 #include "gtest/gtest.h"
 
-#include "yacl/ossl_key_utils.h"
 #include "yacl/link/context.h"
 #include "yacl/link/link.h"
+#include "yacl/ossl_key_utils.h"
 
 namespace yacl::link::test {
 
@@ -46,37 +46,35 @@ inline std::pair<std::string, std::string> GenCertFiles(
   auto cert_path = fmt::format("{}.cer", prefix);
 
   if (mode == SslMode::RSA_SHA256) {
-    auto key_pair = crypto::GenRsaKeyPair();
-    crypto::ExportPublicKeyToPemFile(key_pair, pk_path);
-    crypto::ExportSecretKeyToPemBuf(key_pair, sk_path);
-    auto cert = crypto::MakeX509Cert(crypto::LoadKeyFromFile(pk_path),
-                                     crypto::LoadKeyFromFile(sk_path),
-                                     {
-                                         {"C", "CN"},
-                                         {"ST", "ZJ"},
-                                         {"L", "HZ"},
-                                         {"O", "TEE"},
-                                         {"OU", "EGG"},
-                                         {"CN", "demo.trustedegg.com"},
-                                     },
-                                     3, crypto::HashAlgorithm::SHA256);
-    crypto::ExportX509CertToFile(cert, cert_path);
+    auto key_pair = GenRsaKeyPair();
+    ExportPublicKeyToPemFile(key_pair, pk_path);
+    ExportSecretKeyToPemBuf(key_pair, sk_path);
+    auto cert = MakeX509Cert(LoadKeyFromFile(pk_path), LoadKeyFromFile(sk_path),
+                             {
+                                 {"C", "CN"},
+                                 {"ST", "ZJ"},
+                                 {"L", "HZ"},
+                                 {"O", "TEE"},
+                                 {"OU", "EGG"},
+                                 {"CN", "demo.trustedegg.com"},
+                             },
+                             3, HashAlgorithm::SHA256);
+    ExportX509CertToFile(cert, cert_path);
   } else if (mode == SslMode::SM2_SM3) {
-    auto key_pair = crypto::GenSm2KeyPair();
-    crypto::ExportPublicKeyToPemFile(key_pair, pk_path);
-    crypto::ExportSecretKeyToPemBuf(key_pair, sk_path);
-    auto cert = crypto::MakeX509Cert(crypto::LoadKeyFromFile(pk_path),
-                                     crypto::LoadKeyFromFile(sk_path),
-                                     {
-                                         {"C", "CN"},
-                                         {"ST", "ZJ"},
-                                         {"L", "HZ"},
-                                         {"O", "TEE"},
-                                         {"OU", "EGG"},
-                                         {"CN", "demo.trustedegg.com"},
-                                     },
-                                     3, crypto::HashAlgorithm::SM3);
-    crypto::ExportX509CertToFile(cert, cert_path);
+    auto key_pair = GenSm2KeyPair();
+    ExportPublicKeyToPemFile(key_pair, pk_path);
+    ExportSecretKeyToPemBuf(key_pair, sk_path);
+    auto cert = MakeX509Cert(LoadKeyFromFile(pk_path), LoadKeyFromFile(sk_path),
+                             {
+                                 {"C", "CN"},
+                                 {"ST", "ZJ"},
+                                 {"L", "HZ"},
+                                 {"O", "TEE"},
+                                 {"OU", "EGG"},
+                                 {"CN", "demo.trustedegg.com"},
+                             },
+                             3, HashAlgorithm::SM3);
+    ExportX509CertToFile(cert, cert_path);
   } else {
     YACL_THROW("Unknown SSL mode.");
   }

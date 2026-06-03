@@ -16,7 +16,7 @@
 
 #ifdef __x86_64
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -128,6 +128,6 @@ Buffer RdSeedEntropySource::GetEntropy(uint32_t bits_of_entropy) noexcept {
 REGISTER_ENTROPY_SOURCE_LIBRARY("RdSeed", 100, RdSeedEntropySource::Check,
                                 RdSeedEntropySource::Create);
 
-}  // namespace yacl::crypto
+}  // namespace yacl
 
 #endif

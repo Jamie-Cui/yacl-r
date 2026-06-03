@@ -22,7 +22,7 @@
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 //----------------------------------
 //           OtRecvStore
@@ -351,4 +351,4 @@ UninitAlignedVector<uint128_t> OtSendStore::CopyCotBlkBuf() const {
           blk_buf_->begin() + internal_buf_ctr_ + internal_use_size_};
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

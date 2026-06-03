@@ -24,7 +24,7 @@
 #include "yacl/tpre/hash.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 /**
  * This class encapsulates the definition of the keys and their generation
  * algorithm in the TPRE cryptosystem
@@ -88,4 +88,4 @@ class Keys {
                                    int N, int t) const;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -17,7 +17,7 @@
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 MockOtStore MockRots(uint64_t num) {
   auto recv_choices = RandBits<dynamic_bitset<uint128_t>>(num);
@@ -300,4 +300,4 @@ OtRecvStore MakeCompactOtRecvStore(UninitAlignedVector<uint128_t>&& blocks) {
           tmp_ptr->size(),
           OtStoreType::Compact};
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

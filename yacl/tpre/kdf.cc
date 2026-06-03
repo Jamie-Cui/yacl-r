@@ -16,7 +16,7 @@
 
 #include <string>
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::vector<uint8_t> KDF(ByteContainerView Z, size_t key_len) {
   unsigned int counter = 1;
@@ -50,4 +50,4 @@ std::vector<uint8_t> KDF(ByteContainerView Z, size_t key_len) {
   return key_bytes;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

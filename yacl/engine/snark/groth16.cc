@@ -22,8 +22,7 @@ namespace yacl::engine::snark {
 Groth16::SetupResult Groth16::Setup(const R1csSystem& r1cs,
                                     const std::string& pairing_name) {
   // Create pairing group
-  auto pairing =
-      crypto::PairingGroupFactory::Instance().Create(pairing_name);
+  auto pairing = PairingGroupFactory::Instance().Create(pairing_name);
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
   auto gt = pairing->GetGroupT();
@@ -31,7 +30,7 @@ Groth16::SetupResult Groth16::Setup(const R1csSystem& r1cs,
 
   int64_t n = r1cs.GetNumVariables();
   int64_t l = r1cs.GetNumPublicInputs();  // number of public inputs (not
-                                           // counting constant wire)
+                                          // counting constant wire)
   int64_t m = r1cs.GetNumConstraints();
 
   YACL_ENFORCE(n > 0, "R1CS must have variables");
@@ -172,15 +171,12 @@ Groth16::Proof Groth16::Prove(const ProvingKey& pk,
     if (witness[i].IsZero()) {
       continue;
     }
-    a_poly = poly_ops::Add(a_poly,
-                           poly_ops::ScalarMul(qap.u[i], witness[i], order),
-                           order);
-    b_poly = poly_ops::Add(b_poly,
-                           poly_ops::ScalarMul(qap.v[i], witness[i], order),
-                           order);
-    c_poly = poly_ops::Add(c_poly,
-                           poly_ops::ScalarMul(qap.w[i], witness[i], order),
-                           order);
+    a_poly = poly_ops::Add(
+        a_poly, poly_ops::ScalarMul(qap.u[i], witness[i], order), order);
+    b_poly = poly_ops::Add(
+        b_poly, poly_ops::ScalarMul(qap.v[i], witness[i], order), order);
+    c_poly = poly_ops::Add(
+        c_poly, poly_ops::ScalarMul(qap.w[i], witness[i], order), order);
   }
 
   // Compute h(x) = (a(x)*b(x) - c(x)) / t(x)
@@ -245,9 +241,8 @@ Groth16::Proof Groth16::Prove(const ProvingKey& pk,
   auto proof_c = g1->MulBase(math::MPInt(0));  // start at infinity
 
   // Add h polynomial contribution
-  for (int64_t i = 0;
-       i < static_cast<int64_t>(h_poly.size()) &&
-       i < static_cast<int64_t>(pk.h_query.size());
+  for (int64_t i = 0; i < static_cast<int64_t>(h_poly.size()) &&
+                      i < static_cast<int64_t>(pk.h_query.size());
        ++i) {
     if (h_poly[i].IsZero()) {
       continue;
@@ -285,11 +280,10 @@ bool Groth16::Verify(const VerificationKey& vk,
   auto g2 = vk.pairing->GetGroup2();
   auto gt = vk.pairing->GetGroupT();
 
-  YACL_ENFORCE(
-      static_cast<int64_t>(public_inputs.size()) + 1 ==
-          static_cast<int64_t>(vk.ic.size()),
-      "Public inputs size {} + 1 != ic size {}", public_inputs.size(),
-      vk.ic.size());
+  YACL_ENFORCE(static_cast<int64_t>(public_inputs.size()) + 1 ==
+                   static_cast<int64_t>(vk.ic.size()),
+               "Public inputs size {} + 1 != ic size {}", public_inputs.size(),
+               vk.ic.size());
 
   // Compute L = ic[0] + sum(x_i * ic[i+1]) for public inputs
   auto acc = g1->CopyPoint(vk.ic[0]);

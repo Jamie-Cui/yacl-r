@@ -15,7 +15,7 @@
 #pragma once
 #include "yacl/math/ecc/ecc_spi.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class EcGroupSketch : public EcGroup {
  public:
@@ -56,4 +56,4 @@ class EcGroupSketch : public EcGroup {
   CurveMeta meta_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

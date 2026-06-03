@@ -23,7 +23,7 @@
 #include "yacl/base/secparam.h"
 #include "yacl/rand/ossl_provider/helper.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -129,4 +129,4 @@ void OpensslDrbg::ReSeed() {
 
 REGISTER_DRBG_LIBRARY("OpenSSL", 100, OpensslDrbg::Check, OpensslDrbg::Create);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

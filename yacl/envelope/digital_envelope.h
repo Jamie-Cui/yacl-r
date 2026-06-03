@@ -33,7 +33,7 @@
 YACL_MODULE_DECLARE("sm_env", SecParam::C::k128, SecParam::S::INF);
 YACL_MODULE_DECLARE("rsa_env", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // SM envelope sealing with sm4-ctr + hmac-sm3 + sm2.
 //
@@ -89,4 +89,4 @@ void RsaEnvOpen(ByteContainerView pri_key, ByteContainerView iv,
                 ByteContainerView encrypted_key, ByteContainerView ciphertext,
                 ByteContainerView mac, std::vector<uint8_t>* plaintext);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

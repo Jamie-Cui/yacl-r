@@ -24,7 +24,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("all_gcm", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ===============================
 // GCM Supported Schema/Algorithms
@@ -115,4 +115,4 @@ class Sm4GcmCrypto : public GcmCrypto {
 };
 #endif
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -19,7 +19,7 @@
 
 #include "yacl/block_cipher/symmetric_crypto.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void RP::Gen(uint128_t in, uint128_t* out) const {
   *out = SymmetricCrypto(ctype_, key_, iv_).Encrypt(in);
@@ -48,4 +48,4 @@ void RP::GenForMultiInputsInplace(std::span<uint128_t> inout) const {
   SymmetricCrypto(ctype_, key_, iv_).Encrypt(inout, inout);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

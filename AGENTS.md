@@ -76,7 +76,7 @@ clang-tidy path/to/file.cc -- -p build
 | Constants | `kPascalCase` | `kMaxSize`, `kKey1` |
 | Enum Constants | `UPPER_CASE` | `kMaxStackTraceDep` |
 | Macros | `UPPER_SNAKE_CASE` | `YACL_ENFORCE` |
-| Namespaces | `lowercase` | `yacl`, `yacl::crypto` |
+| Namespaces | `lowercase` | `yacl`, `yacl` |
 
 ### Include Order
 1. Standard library headers (e.g., `<string>`, `<vector>`)
@@ -109,7 +109,7 @@ throw yacl::Exception("Something went wrong");
 #include "gtest/gtest.h"
 #include "yacl/my_feature.h"
 
-namespace yacl::crypto {
+namespace yacl {
 namespace {
 
 TEST(MyFeatureTest, BasicFunctionalityWorks) {
@@ -118,7 +118,7 @@ TEST(MyFeatureTest, BasicFunctionalityWorks) {
 }
 
 }  // namespace
-}  // namespace yacl::crypto
+}  // namespace yacl
 ```
 
 ### Test Naming

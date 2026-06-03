@@ -18,7 +18,7 @@
 
 #include "yacl/math/ecc/group_sketch.h"
 
-namespace yacl::crypto::FourQ {
+namespace yacl::FourQ {
 
 class FourQGroup : public EcGroupSketch {
  public:
@@ -81,4 +81,4 @@ class FourQGroup : public EcGroupSketch {
   MPInt h_;    // cofactor
 };
 
-}  // namespace yacl::crypto::FourQ
+}  // namespace yacl::FourQ

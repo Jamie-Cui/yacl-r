@@ -26,7 +26,7 @@
 #include "yacl/link/context.h"
 #include "yacl/utils/thread_pool.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 inline std::vector<std::shared_ptr<link::Context>> SetupLink(
@@ -179,4 +179,4 @@ void SVoleKernel::eval_streaming(const std::shared_ptr<link::Context>& lctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

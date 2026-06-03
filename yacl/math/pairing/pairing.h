@@ -18,7 +18,7 @@
 #include "yacl/math/galois_field/gf.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 using PairingName = CurveName;
 using PairingMeta = CurveMeta;
@@ -95,4 +95,4 @@ class PairingGroupFactory final : public SpiFactoryBase<PairingGroup> {
                 const PairingCheckerT &checker, const PairingCreatorT &creator);
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

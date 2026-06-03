@@ -31,7 +31,7 @@
 // 1. recv would record the average time (ms) VoleReceiver is needed.
 // 2. send would record the average time (ms) VoleSender is needed.
 
-namespace yacl::crypto {
+namespace yacl {
 
 using GF64 = uint64_t;
 using GF128 = uint128_t;
@@ -265,4 +265,4 @@ DECLARE_GILBOA_VOLE_BM(BM_DefaultArguments)
 DECLARE_SILVER_VOLE_BM(BM_PerfArguments)
 DECLARE_EXACC_VOLE_BM(BM_PerfArguments)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

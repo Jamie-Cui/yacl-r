@@ -33,7 +33,7 @@
 /* security parameter declaration */
 // this module is only a wrapper, no need for security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Ferret OT Extension Implementation
 //
@@ -95,4 +95,4 @@ void FerretOtExtRecv_cheetah(const std::shared_ptr<link::Context>& ctx,
                              const LpnParam& lpn_param, uint64_t ot_num,
                              std::span<uint128_t> out, bool mal = false);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

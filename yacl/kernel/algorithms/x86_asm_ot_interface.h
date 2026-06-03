@@ -28,7 +28,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("base_ot_x86_asm", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 class X86AsmOtInterface : public BaseOTInterface {
  public:
@@ -41,4 +41,4 @@ class X86AsmOtInterface : public BaseOTInterface {
             std::span<Block> recv_blocks) override;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

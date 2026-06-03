@@ -22,7 +22,7 @@
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParams {
   size_t num_ot;
@@ -107,4 +107,4 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(TestParams{1 << 20, OtKernel::ExtAlgorithm::Ferret},
                     TestParams{1 << 20, OtKernel::ExtAlgorithm::SoftSpoken}  //
                     ));
-}  // namespace yacl::crypto
+}  // namespace yacl

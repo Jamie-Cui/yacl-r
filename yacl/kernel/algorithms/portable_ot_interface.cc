@@ -20,7 +20,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/tools/ro.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void PortableOtInterface::Recv(const std::shared_ptr<link::Context> &ctx,
                                const dynamic_bitset<uint128_t> &choices,
@@ -117,4 +117,4 @@ void PortableOtInterface::Send(const std::shared_ptr<link::Context> &ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

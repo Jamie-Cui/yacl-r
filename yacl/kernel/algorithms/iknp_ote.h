@@ -33,7 +33,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("iknp_ote", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // IKNP OT Extension Implementation
 //
@@ -90,4 +90,4 @@ inline OtRecvStore IknpOtExtRecv(const std::shared_ptr<link::Context> &ctx,
   return MakeOtRecvStore(choices, std::move(blocks));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

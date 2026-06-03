@@ -14,7 +14,7 @@
 
 #pragma once
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Linear code interface in F2k
 class LinearCodeInterface {
@@ -32,4 +32,4 @@ class LinearCodeInterface {
   // virtual void GenGenerator() const = 0;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

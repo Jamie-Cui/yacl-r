@@ -26,7 +26,7 @@
 #include "yacl/tools/ro.h"
 #include "yacl/math/gadget.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void X86AsmOtInterface::Recv(const std::shared_ptr<link::Context> &ctx,
                              const dynamic_bitset<uint128_t> &choices,
@@ -129,4 +129,4 @@ void X86AsmOtInterface::Send(const std::shared_ptr<link::Context> &ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

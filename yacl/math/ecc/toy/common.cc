@@ -16,7 +16,7 @@
 
 #include <utility>
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 ToyEcGroup::ToyEcGroup(const CurveMeta &curve_meta, CurveParam param)
     : EcGroupSketch(curve_meta), params_(std::move(param)) {}
@@ -42,4 +42,4 @@ size_t ToyEcGroup::HashPoint(const EcPoint &point) const {
   return std::get<AffinePoint>(point).HashCode();
 }
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

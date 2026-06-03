@@ -21,7 +21,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/base/int128.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <size_t N /* bits numeber, as n in 2n */,
           typename StoreTy = uint128_t /* WARNING: DO NOT change StoreTy unless
@@ -101,4 +101,4 @@ class GE2n {
   StoreTy store_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

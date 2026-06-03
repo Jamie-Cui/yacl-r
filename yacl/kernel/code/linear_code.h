@@ -35,7 +35,7 @@
 #include "sse2neon/sse2neon.h"
 #endif
 
-namespace yacl::crypto {
+namespace yacl {
 
 constexpr uint32_t kLcBatchSize = 1024;  // linear code batch size
 
@@ -274,4 +274,4 @@ class LocalLinearCode : public LinearCodeInterface {
   }
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

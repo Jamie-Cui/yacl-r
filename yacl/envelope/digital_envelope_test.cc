@@ -18,7 +18,7 @@
 
 #include "yacl/ossl_key_utils.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(SmDigitalEnvelope, SealOpen_shouldOk) {
   // GIVEN
@@ -57,4 +57,4 @@ TEST(RsaDigitalEnvelope, SealOpen_shouldOk) {
   EXPECT_EQ(plaintext, std::string(decrypted.begin(), decrypted.end()));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

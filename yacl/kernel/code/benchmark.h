@@ -25,7 +25,7 @@
 #include "yacl/kernel/code/linear_code.h"
 #include "yacl/kernel/code/silver_code.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class CodeBench : public benchmark::Fixture {};
 
@@ -116,4 +116,4 @@ DELCARE_EXACC_BENCH(11);
 DELCARE_EXACC_BENCH(21);
 DELCARE_EXACC_BENCH(40);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

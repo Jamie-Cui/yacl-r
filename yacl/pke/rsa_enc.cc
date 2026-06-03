@@ -18,7 +18,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 // see: https://www.openssl.org/docs/man3.0/man3/RSA_public_encrypt.html
@@ -80,4 +80,4 @@ std::vector<uint8_t> RsaDecryptor::Decrypt(ByteContainerView ciphertext) {
   return out;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

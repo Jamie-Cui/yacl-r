@@ -16,7 +16,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 //----------------------------------
 //           Slice Base
 //----------------------------------
@@ -68,4 +68,4 @@ void SliceBase::Reset() {
   internal_buf_size_ = 0;
   ConsistencyCheck();
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

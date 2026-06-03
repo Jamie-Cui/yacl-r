@@ -16,7 +16,7 @@
 
 #include "yacl/math/ecc/toy/common.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 // y^2 = x^3 + Ax + B
 class ToyWeierstrassGroup : public ToyEcGroup {
@@ -51,4 +51,4 @@ class ToyWeierstrassGroup : public ToyEcGroup {
   AffinePoint Add(const AffinePoint &p1, const AffinePoint &p2) const;
 };
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

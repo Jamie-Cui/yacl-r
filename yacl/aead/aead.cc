@@ -17,7 +17,7 @@
 #include "yacl/aead/all_gcm.h"
 #include "yacl/aead/sm4_mte.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 size_t AeadCtx::GetKeySize(AeadAlgorithm algorithm) {
   switch (algorithm) {
@@ -160,4 +160,4 @@ void AeadCtx::Decrypt(AeadAlgorithm algorithm, ByteContainerView ciphertext,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

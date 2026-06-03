@@ -25,7 +25,7 @@
 
 #include "cpu_features/cpuinfo_x86.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // RdSeed (hardware) Entropy Source
 //
@@ -70,6 +70,6 @@ class RdSeedEntropySource : public EntropySource {
   std::string Name() override { return "rdseed entropy source"; }
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl
 
 #endif

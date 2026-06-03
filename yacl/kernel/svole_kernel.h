@@ -23,7 +23,7 @@
 #include "yacl/kernel/algorithms/silent_vole.h"
 #include "yacl/kernel/code/silver_code.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ---------------------
 // Kernel: Subfield VOLE
@@ -76,4 +76,4 @@ class SVoleKernel : StreamingKernel {
   CoreTy core_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

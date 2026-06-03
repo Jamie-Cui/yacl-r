@@ -21,7 +21,7 @@
 #include "yacl/utils/scope_guard.h"
 #include "yacl/utils/spi/type_traits.h"
 
-namespace yacl::crypto::ossl {
+namespace yacl::ossl {
 
 static constexpr size_t kHashToCurveCounterGuard = 100;
 
@@ -372,4 +372,4 @@ bool OpensslGroup::IsInfinity(const EcPoint &point) const {
   return EC_POINT_is_at_infinity(group_.get(), CastAny<EC_POINT>(point)) == 1;
 }
 
-}  // namespace yacl::crypto::ossl
+}  // namespace yacl::ossl

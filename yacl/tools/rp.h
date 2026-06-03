@@ -29,7 +29,7 @@
 // this header selects the block cipher mode at runtime, no standalone security
 // parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 // This is an implementation of the **theoretical tool**: Random Permutation.
 //
@@ -87,4 +87,4 @@ class RP {
   uint128_t iv_;   // default global iv
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

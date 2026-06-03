@@ -17,7 +17,7 @@
 #include "yacl/link/link.h"
 #include "yacl/utils/serialize.h"
 
-namespace yacl::crypto {
+namespace yacl {
 // -----------------------
 //   sync seed protocol
 // -----------------------
@@ -32,4 +32,4 @@ uint128_t inline SyncSeedRecv(const std::shared_ptr<link::Context>& ctx) {
   return DeserializeUint128(buf);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

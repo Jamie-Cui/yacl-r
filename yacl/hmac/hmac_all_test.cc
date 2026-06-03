@@ -19,7 +19,7 @@
 #include "yacl/hmac/hmac_sha256.h"
 #include "yacl/hmac/hmac_sm3.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <typename T>
 class HmacTest : public testing::Test {
@@ -124,4 +124,4 @@ TYPED_TEST(HmacTest, MultipleUpdates) {
             this->Data().result2);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

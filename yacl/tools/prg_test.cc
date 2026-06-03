@@ -24,7 +24,7 @@
 
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 namespace {
 
 constexpr uint128_t kKey1 = 1234;
@@ -359,4 +359,4 @@ TEST(PRTest, Ltn32) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -23,7 +23,7 @@
 #include "yacl/rand/drbg/drbg.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // NIST SP 800-90A ctr-drbg, Recommendation for Random Number Generation Using
 // Deterministic Random Bit Generators, see:
@@ -74,4 +74,4 @@ class OpensslDrbg : public Drbg {
   ossl::UniqueRandCtx ctx_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

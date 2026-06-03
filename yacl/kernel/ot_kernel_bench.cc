@@ -17,7 +17,7 @@
 #include "yacl/kernel/ot_kernel.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 static void BM_Ferret_OT_single_thread(benchmark::State& state) {
   auto lctxs = link::test::SetupWorld(2);
@@ -80,9 +80,9 @@ static void BM_SoftSpoken_OT_single_thread(benchmark::State& state) {
     state.ResumeTiming();
   }
 }
-}  // namespace yacl::crypto
+}  // namespace yacl
 
-BENCHMARK(yacl::crypto::BM_Ferret_OT_single_thread)
+BENCHMARK(yacl::BM_Ferret_OT_single_thread)
     ->Iterations(1)
     ->Arg(1 << 20)
     ->Arg(1 << 22)
@@ -90,7 +90,7 @@ BENCHMARK(yacl::crypto::BM_Ferret_OT_single_thread)
     ->Arg(1 << 26)
     ->Unit(benchmark::kMillisecond);
 
-BENCHMARK(yacl::crypto::BM_SoftSpoken_OT_single_thread)
+BENCHMARK(yacl::BM_SoftSpoken_OT_single_thread)
     ->Iterations(1)
     ->Arg(1 << 20)
     ->Arg(1 << 22)

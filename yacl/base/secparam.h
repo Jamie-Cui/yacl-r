@@ -25,7 +25,7 @@
 #include "yacl/math/gadget.h"
 #include "yacl/utils/compile_time_utils.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ------------------
 // Security parameter
@@ -183,7 +183,7 @@ uint64_t inline GenRegNoiseWeight(double min_dist_ratio, uint64_t sec) {
   return math::RoundUpTo(t, 8);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl
 
 // ------------------
 //    Yacl module
@@ -210,7 +210,7 @@ uint64_t inline GenRegNoiseWeight(double min_dist_ratio, uint64_t sec) {
 //
 template <uint32_t hash>
 struct YaclModule {
-  using SecParam = yacl::crypto::SecParam;
+  using SecParam = yacl::SecParam;
   [[maybe_unused]] static constexpr std::string_view name = "unknown";
   [[maybe_unused]] static const SecParam::C c = SecParam::C::UNKNOWN;
   [[maybe_unused]] static const SecParam::S s = SecParam::S::UNKNOWN;
@@ -229,7 +229,7 @@ struct YaclRegistry {
 // Yacl module handler, which helps to print all registed module infos
 class YaclModuleHandler {
  public:
-  using SecParam = yacl::crypto::SecParam;
+  using SecParam = yacl::SecParam;
 
   template <uint32_t N>
   static void PrintAll() {
@@ -300,7 +300,7 @@ class YaclModuleHandler {
 #define YACL_MODULE_DECLARE(NAME, COMP, STAT)        \
   template <>                                        \
   struct YaclModule<CT_CRC32(NAME)> {                \
-    using SecParam = yacl::crypto::SecParam;         \
+    using SecParam = yacl::SecParam;         \
     static constexpr std::string_view name = NAME;   \
     static constexpr SecParam::C c = (COMP);         \
     static constexpr SecParam::S s = (STAT);         \
@@ -342,4 +342,4 @@ class YaclModuleHandler {
       YACL_GLOB_SECPARAM_C_UINT, YACL_GLOB_SECPARAM_S_UINT)
 
 // alias
-using SecParam = yacl::crypto::SecParam;
+using SecParam = yacl::SecParam;

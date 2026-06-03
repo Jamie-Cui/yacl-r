@@ -27,7 +27,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sm2_sign", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 class Sm2Signer final : public AsymmetricSigner {
  public:
@@ -66,4 +66,4 @@ class Sm2Verifier final : public AsymmetricVerifier {
   const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

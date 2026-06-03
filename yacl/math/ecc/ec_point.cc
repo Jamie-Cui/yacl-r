@@ -14,7 +14,7 @@
 
 #include "yacl/math/ecc/ec_point.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 bool AffinePoint::operator==(const AffinePoint& rhs) const {
   return std::tie(x, y) == std::tie(rhs.x, rhs.y);
@@ -70,4 +70,4 @@ std::ostream& operator<<(std::ostream& os, const AffinePoint& point) {
   return os;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -21,7 +21,7 @@
 #include "yacl/base/secparam.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 static void BM_SecureRand(benchmark::State& state) {
   for (auto _ : state) {
@@ -77,4 +77,4 @@ BENCHMARK(BM_FastRand)
     ->Arg(81920)
     ->Arg(1 << 24);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

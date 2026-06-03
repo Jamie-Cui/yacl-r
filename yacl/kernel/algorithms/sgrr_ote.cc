@@ -27,7 +27,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/math/gadget.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -395,4 +395,4 @@ void SgrrOtExtSend_fixed_index(const OtSendStore& base_ot, uint32_t n,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

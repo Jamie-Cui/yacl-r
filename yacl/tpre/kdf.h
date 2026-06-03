@@ -19,7 +19,7 @@
 
 #include "yacl/hash/hash_utils.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // @brief The KDF structure is derived from the official document of SM2, i.e.,
 // "Public Key Cryptographic Algorithm SM2 Based on Elliptic Curves",
@@ -30,4 +30,4 @@ namespace yacl::crypto {
 // @return key
 std::vector<uint8_t> KDF(ByteContainerView Z, size_t key_len);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

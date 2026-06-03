@@ -24,7 +24,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("hash_all", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 enum class HashAlgorithm : int {
   UNKNOWN,
@@ -110,4 +110,4 @@ inline const char *ToString(HashAlgorithm hash_algo) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

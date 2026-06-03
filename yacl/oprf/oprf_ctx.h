@@ -24,7 +24,7 @@
 #include "yacl/math/ecc/ecc_spi.h"
 #include "yacl/hash/hash_interface.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ---------- //
 // Oprf Enums //
@@ -215,4 +215,4 @@ class OprfCtx {
   HashAlgorithm hash_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

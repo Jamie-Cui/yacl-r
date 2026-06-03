@@ -33,7 +33,7 @@
 #define SO_EXT ".so"
 #endif
 
-namespace yacl::crypto {
+namespace yacl {
 
 inline std::string GetProviderPath() {
   // FIXME
@@ -82,4 +82,4 @@ inline std::string GetProviderPath() {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

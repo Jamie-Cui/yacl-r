@@ -16,7 +16,7 @@
 
 #include <span>
 
-namespace yacl::crypto {
+namespace yacl {
 
 void SmEnvSeal(ByteContainerView pub_key, ByteContainerView iv,
                ByteContainerView plaintext, std::vector<uint8_t>* encrypted_key,
@@ -63,4 +63,4 @@ void RsaEnvOpen(ByteContainerView pri_key, ByteContainerView iv,
       .Decrypt(ciphertext, "", mac, std::span<uint8_t>(*plaintext));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

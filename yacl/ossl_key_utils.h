@@ -21,7 +21,7 @@
 #include "yacl/hash/hash_interface.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // -------------------
 // Key Pair Generation
@@ -184,4 +184,4 @@ void ExportSecretKeyToDerFile(
 void ExportX509CertToFile(const ossl::UniqueX509& x509,
                           const std::string& file_path);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

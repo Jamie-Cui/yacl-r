@@ -18,7 +18,7 @@
 
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 using math::MPInt;
 
@@ -123,4 +123,4 @@ class Polynomial {
   MPInt modulus_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -14,7 +14,7 @@
 
 #include "yacl/math/ecc/FourQlib/FourQ_group.h"
 
-namespace yacl::crypto::FourQ {
+namespace yacl::FourQ {
 
 namespace {
 
@@ -34,4 +34,4 @@ REGISTER_EC_LIBRARY(kLibName, 1500, IsSupported, Create);
 
 std::string FourQGroup::GetLibraryName() const { return kLibName; }
 
-}  // namespace yacl::crypto::FourQ
+}  // namespace yacl::FourQ

@@ -21,7 +21,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <typename T>
 struct is_variant : std::false_type {};
@@ -99,4 +99,4 @@ inline To* CastAny(From* p) {
   return std::get<AnyPtr>(*p).template get<To>();
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

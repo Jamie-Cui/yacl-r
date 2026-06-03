@@ -16,7 +16,7 @@
 
 #include <vector>
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 // see: https://www.openssl.org/docs/man3.0/man3/RSA_public_encrypt.html
@@ -87,4 +87,4 @@ bool RsaVerifier::Verify(ByteContainerView message,
   return ret == 1;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

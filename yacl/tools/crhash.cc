@@ -24,7 +24,7 @@
 #include "sse2neon/sse2neon.h"
 #endif
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 constexpr uint64_t kBatchSize = 1024;
@@ -148,4 +148,4 @@ void ParaCcrHashInplace_128(std::span<uint128_t> inout) {
   ParaCrHashInplace_128(inout_span.subspan(offset, remain));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

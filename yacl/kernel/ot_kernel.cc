@@ -32,7 +32,7 @@
 #include "yacl/utils/parallel.h"
 #include "yacl/utils/thread_pool.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -272,4 +272,4 @@ void OtKernel::eval_rot(const std::shared_ptr<link::Context>& lctx,
 //                         uint64_t ot_num,
 //                         /* random choice */ OtRecvStore* out) {}
 
-}  // namespace yacl::crypto
+}  // namespace yacl

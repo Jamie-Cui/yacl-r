@@ -21,7 +21,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParams {
   unsigned length;
@@ -116,4 +116,4 @@ INSTANTIATE_TEST_SUITE_P(Works_Instances, SilverCodeTest,
                                          //  TestParams{1000000}  // one million
                                          ));
 
-}  // namespace yacl::crypto
+}  // namespace yacl

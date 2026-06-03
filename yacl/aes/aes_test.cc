@@ -20,7 +20,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/aes/aes_intrinsics.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -98,4 +98,4 @@ TEST(AesTest, DecExample) {
   EXPECT_EQ(plain_bytes, kPlaintextExample);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -19,7 +19,7 @@
 #include <random>
 #include <string>
 
-namespace yacl::crypto {
+namespace yacl {
 
 Buffer UrandomEntropySource::GetEntropy(uint32_t bits_of_entropy) {
   uint32_t num_bytes = (bits_of_entropy + 7) / 8;
@@ -49,4 +49,4 @@ Buffer UrandomEntropySource::GetEntropy(uint32_t bits_of_entropy) {
 REGISTER_ENTROPY_SOURCE_LIBRARY("urandom", 90, UrandomEntropySource::Check,
                                 UrandomEntropySource::Create);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

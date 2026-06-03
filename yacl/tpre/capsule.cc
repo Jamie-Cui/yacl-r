@@ -20,7 +20,7 @@
 #include "yacl/tpre/kdf.h"
 #include "yacl/utils/scope_guard.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Encapsulate(pkA)->(K,capsule)
 std::pair<Capsule::CapsuleStruct, std::vector<uint8_t>> Capsule::EnCapsulate(
@@ -165,4 +165,4 @@ std::vector<uint8_t> Capsule::DeCapsulateFrags(
   return KDF(ecc_group->SerializePoint(E_prime_add_V_prime_mul_d), 16);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

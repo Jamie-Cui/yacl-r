@@ -36,7 +36,7 @@
 /* submodules */
 #include "yacl/rand/entropy_source/entropy_source.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // -------------------------------------------
 // Sync Drbg (Experimental, s-DRBG)
@@ -163,4 +163,4 @@ class SyncDrbg {
   void deserialize_hash_drbg_ctx(Buffer&& buf);
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

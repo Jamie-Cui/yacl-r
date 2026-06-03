@@ -16,7 +16,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::vector<uint8_t> Sm4MteEncrypt(ByteContainerView key, ByteContainerView iv,
                                    ByteContainerView plaintext) {
@@ -70,4 +70,4 @@ std::vector<uint8_t> Sm4MteDecrypt(ByteContainerView key, ByteContainerView iv,
   return {hmac_plaintext.begin() + kSm4MteMacCipherSize, hmac_plaintext.end()};
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -14,7 +14,7 @@
 
 #include "yacl/sign/sm2_signing.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 // The default sm2 id. see:
@@ -89,4 +89,4 @@ bool Sm2Verifier::Verify(ByteContainerView message,
   return rc == 1;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

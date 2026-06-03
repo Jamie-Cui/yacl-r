@@ -14,7 +14,7 @@
 
 #include "yacl/vss/vss.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Generate shares for the Verifiable Secret Sharing scheme.
 // Generate shares for the given secret using the provided polynomial.
@@ -54,7 +54,7 @@ VerifiableSecretSharing::CreateShare(const MPInt& secret,
 VerifiableSecretSharing::ShareWithCommitsResult
 VerifiableSecretSharing::CreateShareWithCommits(
     const MPInt& secret,
-    const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+    const std::unique_ptr<yacl::EcGroup>& ecc_group,
     Polynomial& poly) const {
   // Create a polynomial with the secret as the constant term and random
   // coefficients.
@@ -76,7 +76,7 @@ VerifiableSecretSharing::CreateShareWithCommits(
 
   // Generate commitments for the polynomial coefficients using the elliptic
   // curve group.
-  std::vector<yacl::crypto::EcPoint> commits =
+  std::vector<yacl::EcPoint> commits =
       CreateCommits(ecc_group, poly.GetCoeffs());
 
   return std::make_pair(shares, commits);
@@ -106,10 +106,10 @@ MPInt VerifiableSecretSharing::RecoverSecret(
 
 // Generate commitments for the given coefficients using the provided elliptic
 // curve group.
-std::vector<yacl::crypto::EcPoint> CreateCommits(
-    const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+std::vector<yacl::EcPoint> CreateCommits(
+    const std::unique_ptr<yacl::EcGroup>& ecc_group,
     const std::vector<MPInt>& coefficients) {
-  std::vector<yacl::crypto::EcPoint> commits(coefficients.size());
+  std::vector<yacl::EcPoint> commits(coefficients.size());
   for (size_t i = 0; i < coefficients.size(); i++) {
     // Commit each coefficient by multiplying it with the base point of the
     // group.
@@ -119,16 +119,16 @@ std::vector<yacl::crypto::EcPoint> CreateCommits(
 }
 
 // Verify the commitments and shares in the Verifiable Secret Sharing scheme.
-bool VerifyCommits(const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
+bool VerifyCommits(const std::unique_ptr<yacl::EcGroup>& ecc_group,
                    const VerifiableSecretSharing::Share& share,
-                   const std::vector<yacl::crypto::EcPoint>& commits,
+                   const std::vector<yacl::EcPoint>& commits,
                    const MPInt& prime) {
   // Compute the expected commitment of the share.y by multiplying it with the
   // base point.
-  yacl::crypto::EcPoint expected_gy = ecc_group->MulBase(share.y);
+  yacl::EcPoint expected_gy = ecc_group->MulBase(share.y);
 
   MPInt x_pow_i(1);
-  yacl::crypto::EcPoint gy = commits[0];
+  yacl::EcPoint gy = commits[0];
 
   // Evaluate the Lagrange polynomial at x = share.x to compute the share.y and
   // verify it.
@@ -141,4 +141,4 @@ bool VerifyCommits(const std::unique_ptr<yacl::crypto::EcGroup>& ecc_group,
   return ecc_group->PointEqual(expected_gy, gy);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -24,7 +24,7 @@
 #include "yacl/tpre/keys.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 /**
  * This class encapsulates the Encapsule, Decapsule and CheckCapsule methods:
@@ -103,4 +103,4 @@ class Capsule {
       const std::vector<CFrag>& cfrags) const;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

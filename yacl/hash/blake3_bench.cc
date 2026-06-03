@@ -20,7 +20,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/hash/blake3.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 static void BM_Blake3(benchmark::State& state) {
   for (auto _ : state) {
@@ -48,4 +48,4 @@ BENCHMARK(BM_Blake3)
     ->Arg(81920)
     ->Arg(1 << 21);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

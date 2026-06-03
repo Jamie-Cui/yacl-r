@@ -18,7 +18,7 @@
 #include "yacl/math/ecc/mcl/mcl_util.h"
 #include "yacl/math/pairing/factory/mcl_pairing_header.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <typename Fp_, typename Zn_>
 MclGroupT<Fp_, Zn_>::MclGroupT(const CurveMeta& meta, int mcl_curve_type,
@@ -533,4 +533,4 @@ TEMPLATE_CURVE_INSTANCE(bls124);
 TEMPLATE_CURVE_INSTANCE(bn256);
 #endif
 
-}  // namespace yacl::crypto
+}  // namespace yacl

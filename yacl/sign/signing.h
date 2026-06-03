@@ -22,7 +22,7 @@
 // this header dispatches between concrete signature schemes at runtime,
 // concrete scheme headers declare their own security parameters
 
-namespace yacl::crypto {
+namespace yacl {
 
 enum class SignatureScheme : int {
   UNKNOWN,
@@ -45,4 +45,4 @@ class AsymmetricVerifier {
                       ByteContainerView signature) const = 0;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

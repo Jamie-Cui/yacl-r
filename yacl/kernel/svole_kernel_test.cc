@@ -23,7 +23,7 @@
 
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParams {
   size_t num_vole;
@@ -107,4 +107,4 @@ INSTANTIATE_TEST_SUITE_P(Works_Instances, SVoleTest,
                                          TestParams{1 << 10, 4}   //
                                          ));
 
-}  // namespace yacl::crypto
+}  // namespace yacl

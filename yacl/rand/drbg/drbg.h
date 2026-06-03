@@ -23,7 +23,7 @@
 
 YACL_MODULE_DECLARE("drbg", SecParam::C::k256, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // -----------------------------------
 // Base class of DRBG (NIST SP800-90A)
@@ -83,4 +83,4 @@ class DrbgFactory final : public SpiFactoryBase<Drbg> {
   REGISTER_SPI_LIBRARY_HELPER(DrbgFactory, lib_name, performance, checker, \
                               creator)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

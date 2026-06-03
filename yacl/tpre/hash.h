@@ -18,7 +18,7 @@
 
 #include "yacl/math/ecc/ecc_spi.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // @brief Cryptographic hash function, h_x = 1 + Bignum(sm3(x)||sm3(sm3(x))),
 //        where n is the degree of EC Group, and x is input mod n-1
@@ -31,4 +31,4 @@ MPInt CipherHash(ByteContainerView input,
 MPInt CipherHash(std::initializer_list<EcPoint> input,
                  const std::unique_ptr<EcGroup>& ecc_group);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

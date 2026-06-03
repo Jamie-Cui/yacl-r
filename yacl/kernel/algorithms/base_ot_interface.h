@@ -24,7 +24,7 @@
 // this header is a transport-agnostic interface, concrete implementations
 // declare their own security parameters
 
-namespace yacl::crypto {
+namespace yacl {
 
 using Block = uint128_t;
 
@@ -38,4 +38,4 @@ class BaseOTInterface {
                     std::span<Block> recv_blocks) = 0;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

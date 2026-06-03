@@ -30,7 +30,7 @@
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct FerretParams {
   size_t ot_num;           // output ot num
@@ -198,4 +198,4 @@ TEST(FerretOtExtEdgeTest, Test2) {
               zero);  // ot block can not be zero
   }
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

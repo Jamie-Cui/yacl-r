@@ -18,7 +18,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 Blake3Hash::Blake3Hash()
     : hash_algo_(HashAlgorithm::BLAKE3), digest_size_(BLAKE3_OUT_LEN) {
@@ -64,4 +64,4 @@ std::vector<uint8_t> Blake3Hash::CumulativeHash() const {
   return digest;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

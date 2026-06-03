@@ -36,7 +36,7 @@
 
 YACL_MODULE_DECLARE("dpf", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Distributed Point Function (DPF)
 //
@@ -128,4 +128,4 @@ void DpfEval(const DpfKey& key, const GE2n<M>& in, GE2n<N>* out);
 template <size_t /* input bit num */ M, size_t /* output bit num */ N>
 void DpfEvalAll(DpfKey* key, std::span<GE2n<N>> out);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

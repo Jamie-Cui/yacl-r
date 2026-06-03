@@ -23,7 +23,7 @@
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 inline auto RandomBlocks(size_t length) {
@@ -52,4 +52,4 @@ TEST(RPTest, BlocksWorks) {
             RP.GenForMultiInputs(std::span(input)));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

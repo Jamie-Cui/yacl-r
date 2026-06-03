@@ -16,7 +16,7 @@
 #include "yacl/base/strings.h"
 #include "yacl/math/pairing/factory/mcl_pairing_group.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::map<PairingName, int> Name2MclPairingEnum = {
     {"bls12-381", MCL_BLS12_381}, {"bn_snark1", MCL_BN_SNARK1},
@@ -220,4 +220,4 @@ bool MclPGFactory::IsSupported(const PairingMeta& meta) {
 REGISTER_PAIRING_LIBRARY(kLibName, 400, MclPGFactory::IsSupported,
                          MclPGFactory::Create);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

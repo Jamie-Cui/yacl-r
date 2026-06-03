@@ -21,7 +21,7 @@
 #include "yacl/aead/sm4_mte.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 constexpr char iv_96[] = "000000000000";
 
@@ -91,4 +91,4 @@ INSTANTIATE_TEST_SUITE_P(AeadTest, AeadAlgorithmsTest,
 #endif
                                          AeadAlgorithm::SM4_MTE_HMAC_SM3));
 
-}  // namespace yacl::crypto
+}  // namespace yacl

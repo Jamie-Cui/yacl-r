@@ -20,11 +20,11 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("hmac_sm3", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 class HmacSm3 final : public Hmac {
  public:
   HmacSm3(ByteContainerView key) : Hmac(HashAlgorithm::SM3, key) {}
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

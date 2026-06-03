@@ -27,7 +27,7 @@
 #include "yacl/link/test_util.h"
 #include "yacl/math/gadget.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParams {
   unsigned n;
@@ -220,4 +220,4 @@ TEST(SgrrEdgeTest, Work) {
   receiver.get();
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

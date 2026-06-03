@@ -27,7 +27,7 @@
 #include "yacl/kernel/algorithms/ferret_ote.h"
 #include "yacl/kernel/algorithms/softspoken_ote.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // --------------------------
 // Kernel: Oblivious Transfer
@@ -126,4 +126,4 @@ class OtKernel : SingleThreadKernel {
   SoftSpokenCoreTy ss_core_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

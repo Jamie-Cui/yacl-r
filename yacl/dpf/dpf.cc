@@ -21,7 +21,7 @@
 #include "yacl/utils/serializer.h"
 #include "yacl/utils/serializer_adapter.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -313,4 +313,4 @@ DPF_T_SPECIFY_FUNC(2, 128)
 DPF_T_SPECIFY_FUNC(1, 128)
 
 #undef DPF_T_SPECIFY_FUNC
-}  // namespace yacl::crypto
+}  // namespace yacl

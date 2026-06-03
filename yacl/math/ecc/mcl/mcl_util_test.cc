@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(MclFieldTest, MclUtilWorks) {
   // small case
@@ -48,4 +48,4 @@ TEST(MclFieldTest, MclUtilWorks) {
     ASSERT_EQ(out, in);
   }
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

@@ -23,7 +23,7 @@
 #include "yacl/dpf/ge2n.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(DcfTest, Gen) {
   DcfKey k0;
@@ -83,4 +83,4 @@ TEST(DcfTest, Eval) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

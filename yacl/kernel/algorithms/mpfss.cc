@@ -26,7 +26,7 @@
 #include "yacl/math/gadget.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 constexpr uint32_t kSuperBatch = 16;
@@ -582,4 +582,4 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -20,7 +20,7 @@
 
 #include "yacl/rand/entropy_source/entropy_source.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class UrandomEntropySource : public EntropySource {
  public:
@@ -44,4 +44,4 @@ class UrandomEntropySource : public EntropySource {
   std::string Name() override { return "urandom entropy source"; }
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

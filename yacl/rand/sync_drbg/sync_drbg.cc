@@ -16,7 +16,7 @@
 
 #include "yacl/base/byte_container_view.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 constexpr size_t kBatchSize = 65536;
@@ -198,4 +198,4 @@ void SyncDrbg::RecvState(const std::shared_ptr<link::Context>& lctx,
   /* automatically unlocks when finished */
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

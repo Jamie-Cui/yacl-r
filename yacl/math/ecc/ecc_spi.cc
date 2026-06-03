@@ -16,7 +16,7 @@
 #include "yacl/math/ecc/ecc_spi.h"
 
 
-namespace yacl::crypto {
+namespace yacl {
 
 EcGroupFactory &EcGroupFactory::Instance() {
   static EcGroupFactory factory;
@@ -42,4 +42,4 @@ void EcGroupFactory::Register(const std::string &lib_name, uint64_t performance,
       });
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

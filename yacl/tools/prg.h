@@ -34,7 +34,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("prg", SecParam::C::k128, SecParam::S::k40);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ---------------------------
 //  Fill Pseudorandom (PRand)
@@ -387,4 +387,4 @@ class Prg {
   PRG_MODE mode_;  // prg mode
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

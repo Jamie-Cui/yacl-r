@@ -25,7 +25,7 @@
 /* security parameter declaration */
 // this module is only a wrapper, no need for security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 // 2PC Multi-point functional secret sharing (MPFSS) implementation
 //
@@ -211,4 +211,4 @@ void MpfssRecv_fixed_index(const std::shared_ptr<link::Context>& ctx,
                            MpFssParam& param, std::span<uint64_t> output,
                            const MpfssOp<uint64_t>& op = MpfssOp<uint64_t>());
 
-}  // namespace yacl::crypto
+}  // namespace yacl

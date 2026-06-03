@@ -16,7 +16,7 @@
 
 #include <vector>
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::pair<Keys::PublicKey, Keys::PrivateKey> Keys::GenerateKeyPair(
     const std::unique_ptr<EcGroup>& ecc_group) const {
@@ -140,4 +140,4 @@ std::vector<Keys::KFrag> Keys::GenerateReKey(
   return kfrags;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

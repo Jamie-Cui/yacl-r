@@ -16,11 +16,11 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 std::unique_ptr<EcGroup> Create(const CurveMeta &meta);
 }
 
-namespace yacl::crypto::toy::test {
+namespace yacl::toy::test {
 
 TEST(ToyWTest, Secp256k1Works) {
   auto curve = Create(GetCurveMetaByName("secp256k1"));
@@ -119,4 +119,4 @@ TEST(ToyWTest, SerializeWorks) {
       curve->PointEqual(curve->Div(p2, 123456789_mp), curve->GetGenerator()));
 }
 
-}  // namespace yacl::crypto::toy::test
+}  // namespace yacl::toy::test

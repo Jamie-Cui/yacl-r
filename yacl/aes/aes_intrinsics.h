@@ -70,7 +70,7 @@
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("aes_intrinsics", SecParam::C::k128, SecParam::S::INF);
-namespace yacl::crypto {
+namespace yacl {
 
 namespace internal {
 inline __m128i uint128_cast_m128i(uint128_t x) {
@@ -288,4 +288,4 @@ inline void AES_ecb_decrypt_blks(const AES_KEY &key, const uint128_t *in_blks,
   AES_ecb_decrypt_blks(in_ptr, out_ptr, blks_num, &key);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

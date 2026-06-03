@@ -25,7 +25,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sm2_enc", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // SM2
 class Sm2Encryptor : public PkeEncryptor {
@@ -58,4 +58,4 @@ class Sm2Decryptor : public PkeDecryptor {
   const PkeScheme scheme_ = PkeScheme::SM2;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

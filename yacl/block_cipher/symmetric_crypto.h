@@ -31,7 +31,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("aes_all_modes", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // This class implements Symmetric- crypto.
 class SymmetricCrypto {
@@ -138,4 +138,4 @@ inline const char* ToString(SymmetricCrypto::CryptoType type) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

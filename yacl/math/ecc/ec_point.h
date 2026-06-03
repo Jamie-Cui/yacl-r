@@ -20,7 +20,7 @@
 #include "yacl/math/ecc/any_ptr.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 using yacl::math::MPInt;
 
@@ -99,4 +99,4 @@ using EcPoint = std::variant<Array32, Array128, Array160, AnyPtr, AffinePoint>;
 
 inline auto format_as(const AffinePoint &ap) { return fmt::streamed(ap); }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

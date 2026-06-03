@@ -20,7 +20,7 @@
 
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(Llc, LlcWorks) {
   // GIVEN
@@ -52,4 +52,4 @@ TEST(Llc, LlcWorks) {
   EXPECT_LE(zero_counter, 2);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

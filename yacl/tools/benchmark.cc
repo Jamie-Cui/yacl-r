@@ -16,7 +16,7 @@
 
 #include <cstdint>
 
-namespace yacl::crypto {
+namespace yacl {
 
 void BM_DefaultArguments(benchmark::internal::Benchmark* b) {
   b->Unit(benchmark::kMillisecond)
@@ -45,4 +45,4 @@ BENCHMARK_REGISTER_F(FillPRandBench, FillPRand_AES128_ECB)
 BENCHMARK_REGISTER_F(FillPRandBench, FillPRandWithMersennePrime_AES128_ECB)
     ->Apply(BM_DefaultArguments);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

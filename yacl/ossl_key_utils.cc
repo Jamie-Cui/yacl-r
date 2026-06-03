@@ -19,7 +19,7 @@
 #include "yacl/ossl_wrappers.h"
 #include "yacl/io/stream/file_io.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -367,4 +367,4 @@ void ExportX509CertToFile(const ossl::UniqueX509& x509,
   ExportBufToFile(ExportX509CertToBuf(x509), file_path);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

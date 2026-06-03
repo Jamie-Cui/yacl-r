@@ -17,11 +17,11 @@
 #include "fmt/ranges.h"
 #include "gtest/gtest.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(KDFTest, Test1) {
   std::vector<uint8_t> key = KDF("key_str", 16);
   EXPECT_EQ(fmt::format("{:02x}", fmt::join(key, "")),
             "93a42c6b4c02ab6956f0095787c67e5e");
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

@@ -14,7 +14,7 @@
 
 #include "yacl/kernel/code/benchmark.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void BM_DualEncodeArguments(benchmark::internal::Benchmark* b) {
   b->Unit(benchmark::kMillisecond)
@@ -41,4 +41,4 @@ BENCHMARK_REGISTER_F(CodeBench, ExAcc11)->Apply(BM_DualEncodeArguments);
 BENCHMARK_REGISTER_F(CodeBench, ExAcc21)->Apply(BM_DualEncodeArguments);
 BENCHMARK_REGISTER_F(CodeBench, ExAcc40)->Apply(BM_DualEncodeArguments);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

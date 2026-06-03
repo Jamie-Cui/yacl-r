@@ -42,7 +42,7 @@
 #include <array>
 #include <vector>
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -1107,4 +1107,4 @@ void SoftspokenOtExtReceiver::Recv(const std::shared_ptr<link::Context>& ctx,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

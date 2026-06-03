@@ -24,7 +24,7 @@
 #include "yacl/hash/hash_utils.h"
 #include "yacl/tpre/kdf.h"
 
-namespace yacl::crypto {
+namespace yacl {
 // h_x = 1 + Bignum(sm3(x)||sm3(sm3(x))) mod n-1
 // where n is the degree of EC Group, and x is input
 MPInt CipherHash(ByteContainerView input,
@@ -59,4 +59,4 @@ MPInt CipherHash(std::initializer_list<EcPoint> inputs,
   return CipherHash(buf, ecc_group);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

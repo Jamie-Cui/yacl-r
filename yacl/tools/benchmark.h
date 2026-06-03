@@ -25,7 +25,7 @@
 #include "yacl/tools/ro.h"
 #include "yacl/tools/rp.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class TheoreticalToolBench : public benchmark::Fixture {};
 class PrgBench : public benchmark::Fixture {};
@@ -185,4 +185,4 @@ BENCHMARK_DEFINE_F(FillPRandBench, FillPRandWithMersennePrime_AES128_ECB)
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

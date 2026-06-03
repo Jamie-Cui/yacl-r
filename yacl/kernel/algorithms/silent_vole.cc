@@ -21,7 +21,7 @@
 #include "yacl/base/dynamic_bitset.h"
 #include "yacl/base/int128.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -289,4 +289,4 @@ void SilentVoleReceiver::RecvImpl(const std::shared_ptr<link::Context>& ctx,
   DualLpnEncode2(param, std::span(sparse_noise), a, mp_vole_output, b);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

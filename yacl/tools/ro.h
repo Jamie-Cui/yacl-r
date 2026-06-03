@@ -28,7 +28,7 @@
 // this header selects the hash algorithm and output length at runtime, no
 // standalone security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 // This is an implementation of the **theoretical tool**: Random oracle.
 //
@@ -153,4 +153,4 @@ inline uint128_t RO_SM3_128(ByteContainerView in) {
   return RandomOracle::GetSm3().Gen<uint128_t>(in);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

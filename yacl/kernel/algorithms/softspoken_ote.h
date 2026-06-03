@@ -38,7 +38,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("softspoken_ote", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // SoftSpoken OT Extension Implementation
 //
@@ -262,4 +262,4 @@ inline void SoftspokenOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   ssReceiver.Recv(ctx, choices, recv_blocks, cot);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

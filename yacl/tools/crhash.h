@@ -28,7 +28,7 @@
 YACL_MODULE_DECLARE("crhash_128", SecParam::C::k128, SecParam::S::INF);
 YACL_MODULE_DECLARE("ccrhash_128", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Correlation Robust Hash function (Single Block input)
 // See https://eprint.iacr.org/2019/074.pdf Sec 7.2
@@ -56,4 +56,4 @@ void ParaCcrHashInplace_128(std::span<uint128_t> inout);
 // TODO(@shanzhu) Tweakable Correlation Robust Hash function (Multiple Blocks)
 // See https://eprint.iacr.org/2019/074.pdf Sec 7.4
 
-}  // namespace yacl::crypto
+}  // namespace yacl

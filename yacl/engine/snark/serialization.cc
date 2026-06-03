@@ -36,8 +36,8 @@ uint64_t ReadU64(const uint8_t* buf, int64_t offset) {
 
 }  // namespace
 
-Buffer Groth16::SerializeProof(
-    const Proof& proof, const std::shared_ptr<crypto::PairingGroup>& pairing) {
+Buffer Groth16::SerializeProof(const Proof& proof,
+                               const std::shared_ptr<PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
 
@@ -70,8 +70,7 @@ Buffer Groth16::SerializeProof(
 }
 
 Groth16::Proof Groth16::DeserializeProof(
-    ByteContainerView buf,
-    const std::shared_ptr<crypto::PairingGroup>& pairing) {
+    ByteContainerView buf, const std::shared_ptr<PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
 
@@ -145,13 +144,12 @@ Buffer Groth16::SerializeVerificationKey(const VerificationKey& vk) {
   //         [alpha_len:8][alpha][beta_len:8][beta][gamma_len:8][gamma]
   //         [delta_len:8][delta][abt_len:8][abt]
   //         [ic_count:8] { [ic_len:8][ic_data] }*
-  int64_t total =
-      sizeof(uint64_t) +                                       // num_fields
-      5 * static_cast<int64_t>(sizeof(uint64_t)) +             // 5 lengths
-      alpha_buf.size() + beta_buf.size() + gamma_buf.size() +  //
-      delta_buf.size() + abt_buf.size() +                      //
-      sizeof(uint64_t) +                                       // ic_count
-      ic_total;
+  int64_t total = sizeof(uint64_t) +                            // num_fields
+                  5 * static_cast<int64_t>(sizeof(uint64_t)) +  // 5 lengths
+                  alpha_buf.size() + beta_buf.size() + gamma_buf.size() +  //
+                  delta_buf.size() + abt_buf.size() +                      //
+                  sizeof(uint64_t) +  // ic_count
+                  ic_total;
 
   Buffer result(total);
   auto* ptr = result.data<uint8_t>();
@@ -183,8 +181,7 @@ Buffer Groth16::SerializeVerificationKey(const VerificationKey& vk) {
 }
 
 Groth16::VerificationKey Groth16::DeserializeVerificationKey(
-    ByteContainerView buf,
-    const std::shared_ptr<crypto::PairingGroup>& pairing) {
+    ByteContainerView buf, const std::shared_ptr<PairingGroup>& pairing) {
   auto g1 = pairing->GetGroup1();
   auto g2 = pairing->GetGroup2();
   auto gt = pairing->GetGroupT();

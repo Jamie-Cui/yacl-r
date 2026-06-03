@@ -21,7 +21,7 @@
 #include "yacl/base/secparam.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Base class of Entropy Source (NIST SP800-90B)
 //
@@ -79,4 +79,4 @@ class EntropySourceFactory final : public SpiFactoryBase<EntropySource> {
   REGISTER_SPI_LIBRARY_HELPER(EntropySourceFactory, lib_name, performance, \
                               checker, creator)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

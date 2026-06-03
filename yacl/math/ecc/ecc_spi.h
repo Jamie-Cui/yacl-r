@@ -26,9 +26,9 @@
 #include "yacl/utils/spi/spi_factory.h"
 
 // ECC usage example:
-//   auto curve = ::yacl::crypto::EcGroupFactory::Instance().Create("sm2");
+//   auto curve = ::yacl::EcGroupFactory::Instance().Create("sm2");
 // And now you can perform ecc operations using the 'curve' object.
-namespace yacl::crypto {
+namespace yacl {
 
 using yacl::math::MPInt;
 
@@ -324,4 +324,4 @@ class EcGroupFactory final : public SpiFactoryBase<EcGroup> {
   REGISTER_SPI_LIBRARY_HELPER(EcGroupFactory, lib_name, performance, checker, \
                               creator)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

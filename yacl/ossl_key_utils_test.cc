@@ -19,7 +19,7 @@
 #include "yacl/pke/rsa_enc.h"
 #include "yacl/sign/rsa_signing.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(KeyUtilsTest, PemFormat) {
   auto pkey = GenRsaKeyPair();
@@ -90,4 +90,4 @@ TEST(KeyUtilsTest, X508CertFormat) {
   EXPECT_TRUE(V.Verify(plaintext, signature));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -22,7 +22,7 @@
 #include "yacl/oprf/oprf_ctx.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // RFC 9497: oblivious pseudorandom function (OPRF) using prime-order groups
 //
@@ -198,4 +198,4 @@ class OprfClient {
   math::MPInt blind_inv_;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

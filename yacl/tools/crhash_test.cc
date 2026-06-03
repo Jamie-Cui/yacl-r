@@ -22,7 +22,7 @@
 #include "yacl/rand/rand.h"
 #include "yacl/tools/prg.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 inline auto RandomBlocks(size_t length) {
@@ -108,4 +108,4 @@ TEST(RPTest, ParaCcrHashInplaceWorks) {
   EXPECT_EQ(inout, inout_copy);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

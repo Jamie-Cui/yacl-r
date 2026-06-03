@@ -25,7 +25,7 @@
 #include "yacl/kernel/type/slice_base.h"
 #include "yacl/link/context.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 enum class OtStoreType { Normal, Compact };
 
@@ -195,4 +195,4 @@ class OtSendStore : public SliceBase {
   BlkBufPtr blk_buf_;    // store blocks
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

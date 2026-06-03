@@ -16,7 +16,7 @@
 
 #include "yacl/math/ecc/toy/common.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 // RFC 7748 (Elliptic Curves for Security) implementation
 // https://tools.ietf.org/html/rfc7748
@@ -57,4 +57,4 @@ class ToyXGroup : public ToyEcGroup {
   MPInt a24_;
 };
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

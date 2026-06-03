@@ -14,7 +14,7 @@
 
 #include "yacl/math/pairing/factory/mcl_bls12_381.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 MclPairingBls12381::MclPairingBls12381(const PairingMeta& meta,
                                        std::unique_ptr<EcGroup>& g1,
@@ -71,4 +71,4 @@ GtElement MclPairingBls12381::Pairing(const EcPoint& group1_point,
   return ret;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

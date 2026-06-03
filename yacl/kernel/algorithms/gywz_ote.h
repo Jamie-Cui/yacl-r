@@ -32,7 +32,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("gywz_ote", SecParam::C::INF, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 //
 // GYWZ OT Extension (Half Tree) Implementation
 //
@@ -100,4 +100,4 @@ void GywzOtExtSend_fixed_index(const OtSendStore& cot, uint32_t n,
                                std::span<uint128_t> output,
                                std::span<uint128_t> send_msgs);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

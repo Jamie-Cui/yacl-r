@@ -29,7 +29,7 @@ YACL_MODULE_DECLARE("sm3_hash", SecParam::C::k128, SecParam::S::INF);
 YACL_MODULE_DECLARE("blake2_hash", SecParam::C::k256, SecParam::S::INF);
 #endif
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Abstract hash implements HashInterface.
 class SslHash : public HashInterface {
@@ -72,4 +72,4 @@ class Blake2Hash final : public SslHash {
 
 #endif
 
-}  // namespace yacl::crypto
+}  // namespace yacl

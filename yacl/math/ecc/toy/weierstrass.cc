@@ -14,7 +14,7 @@
 
 #include "yacl/math/ecc/toy/weierstrass.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 
 static const AffinePoint kInfPoint = AffinePoint(MPInt(0), MPInt(0));
 static const EcPoint kInfEcPoint = kInfPoint;
@@ -167,4 +167,4 @@ bool ToyWeierstrassGroup::IsInfinity(const AffinePoint &p) const {
   return p.x.IsZero() && p.y.IsZero();
 }
 
-}  // namespace yacl::crypto::toy
+}  // namespace yacl::toy

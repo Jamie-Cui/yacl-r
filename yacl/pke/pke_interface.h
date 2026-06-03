@@ -22,7 +22,7 @@
 // this header dispatches between concrete public-key encryption schemes at
 // runtime, concrete scheme headers declare their own security parameters
 
-namespace yacl::crypto {
+namespace yacl {
 
 enum class PkeScheme { UNKNOWN, RSA2048_OAEP, RSA3072_OAEP, SM2 };
 
@@ -40,4 +40,4 @@ class PkeDecryptor {
   virtual std::vector<uint8_t> Decrypt(ByteContainerView ciphertext) = 0;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

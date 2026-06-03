@@ -20,7 +20,7 @@
 #include "yacl/hash/ssl_hash.h"
 
 // hmcl = herumi_mcl
-namespace yacl::crypto {
+namespace yacl {
 
 const std::string kLibName = "libmcl";
 
@@ -146,4 +146,4 @@ MCL_CURVE_NIST_ALIAS(192)
 MCL_CURVE_NIST_ALIAS(224)
 MCL_CURVE_NIST_ALIAS(256)
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -21,7 +21,7 @@
 #include "yacl/vss/poly.h"
 #include "yacl/math/mpint/mp_int.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(VerifiableSecretSharingTest, TestCreateAndVerifyShares) {
   // Create an elliptic curve group using the SM2 algorithm
@@ -35,20 +35,20 @@ TEST(VerifiableSecretSharingTest, TestCreateAndVerifyShares) {
 
   // Create a VerifiableSecretSharing instance with parameters (total_shares,
   // required_shares, modulus)
-  yacl::crypto::VerifiableSecretSharing vss(20, 10, modulus);
+  yacl::VerifiableSecretSharing vss(20, 10, modulus);
 
   // Initialize a polynomial for the secret sharing scheme
-  yacl::crypto::Polynomial polynomial(modulus);
+  yacl::Polynomial polynomial(modulus);
 
   // Generate shares and commitments for the secret
   using ShareAndCommitPair =
-      std::pair<std::vector<yacl::crypto::VerifiableSecretSharing::Share>,
-                std::vector<yacl::crypto::EcPoint>>;
+      std::pair<std::vector<yacl::VerifiableSecretSharing::Share>,
+                std::vector<yacl::EcPoint>>;
   ShareAndCommitPair shares_and_commits =
       vss.CreateShareWithCommits(original_secret, ec_group, polynomial);
 
   // Extract the shares from the shares_and_commits pair
-  std::vector<yacl::crypto::VerifiableSecretSharing::Share> shares(10);
+  std::vector<yacl::VerifiableSecretSharing::Share> shares(10);
   for (size_t i = 0; i < shares.size(); i++) {
     shares[i] = shares_and_commits.first[i + 1];
   }
@@ -63,11 +63,11 @@ TEST(VerifiableSecretSharingTest, TestCreateAndVerifyShares) {
     // Verify the commitment for a share using the EC group, share, commitments,
     // and modulus
     bool is_verified =
-        yacl::crypto::VerifyCommits(ec_group, shares_and_commits.first[i],
+        yacl::VerifyCommits(ec_group, shares_and_commits.first[i],
                                     shares_and_commits.second, modulus);
 
     // Check if the commitment verification result is successful
     EXPECT_EQ(is_verified, 1);
   }
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

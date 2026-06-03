@@ -35,7 +35,7 @@
 #include "yacl/base/byte_container_view.h"
 #include "yacl/utils/scope_guard.h"
 
-namespace yacl::crypto::ossl {
+namespace yacl::ossl {
 
 namespace internal {
 
@@ -127,6 +127,6 @@ inline std::string GetOSSLErr() {
 // ---------------------------------
 /* enforce return code == 1 */
 #define OSSL_RET_1(MP_ERR) \
-  YACL_ENFORCE_EQ((MP_ERR), 1, ::yacl::crypto::ossl::GetOSSLErr())
+  YACL_ENFORCE_EQ((MP_ERR), 1, ::yacl::ossl::GetOSSLErr())
 
-}  // namespace yacl::crypto::ossl
+}  // namespace yacl::ossl

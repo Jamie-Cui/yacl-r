@@ -32,7 +32,7 @@
 #include "yacl/kernel/code/code_interface.h"
 #include "yacl/kernel/code/linear_code.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class ExAccCodeInterface : public LinearCodeInterface {
  public:
@@ -174,4 +174,4 @@ class ExAccCode : public ExAccCodeInterface {
   }
 };
 
-};  // namespace yacl::crypto
+};  // namespace yacl

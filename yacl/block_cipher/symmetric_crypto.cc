@@ -23,7 +23,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 namespace {
 
 void SetupEVPCipherCtx(ossl::UniqueCipherCtx* ctx,
@@ -224,4 +224,4 @@ void SymmetricCrypto::Reset() {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

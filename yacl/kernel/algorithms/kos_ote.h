@@ -32,7 +32,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("kos_ote", SecParam::C::k128, SecParam::S::k64);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // KOS OT Extension Implementation (Malicious Secure)
 //
@@ -97,4 +97,4 @@ inline OtRecvStore KosOtExtRecv(const std::shared_ptr<link::Context>& ctx,
   return MakeOtRecvStore(choices, std::move(blocks));
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

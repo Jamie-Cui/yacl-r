@@ -47,8 +47,8 @@ std::pair<T, T> operator^(const std::pair<T, T>& lhs,
 // check commutative property over F2k
 #define GF_MUL_TEST(FUNC, T)              \
   {                                       \
-    auto x = yacl::crypto::RandVec<T>(2); \
-    auto y = yacl::crypto::RandVec<T>(2); \
+    auto x = yacl::RandVec<T>(2); \
+    auto y = yacl::RandVec<T>(2); \
     auto x_sum = x[0] ^ x[1];             \
     auto y_sum = y[0] ^ y[1];             \
     T xy;                                 \
@@ -89,8 +89,8 @@ TEST(GFTest, Gf128_inner_product) {
   const uint64_t size = 1001;
   auto zero = uint128_t(0);
 
-  auto x = yacl::crypto::RandVec<uint128_t>(size);
-  auto y = yacl::crypto::RandVec<uint128_t>(size);
+  auto x = yacl::RandVec<uint128_t>(size);
+  auto y = yacl::RandVec<uint128_t>(size);
   auto x_span = std::span(x);
   auto y_span = std::span(y);
   uint128_t ret;
@@ -112,8 +112,8 @@ TEST(GFTest, Gf64_inner_product) {
   const uint64_t size = 1001;
   uint64_t zero = 0;
 
-  auto x = yacl::crypto::RandVec<uint64_t>(size);
-  auto y = yacl::crypto::RandVec<uint64_t>(size);
+  auto x = yacl::RandVec<uint64_t>(size);
+  auto y = yacl::RandVec<uint64_t>(size);
   auto x_span = std::span(x);
   auto y_span = std::span(y);
 
@@ -134,7 +134,7 @@ TEST(GFTest, Gf64_inner_product) {
 TEST(GFTest, GfInv64_inner_product) {
   const uint64_t size = 1001;
 
-  auto x = yacl::crypto::RandVec<uint64_t>(size);
+  auto x = yacl::RandVec<uint64_t>(size);
   for (uint64_t i = 0; i < size; ++i) {
     uint64_t x_inv;
     Gf64Inv(x[i], &x_inv);

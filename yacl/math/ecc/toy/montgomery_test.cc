@@ -16,11 +16,11 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto::toy {
+namespace yacl::toy {
 std::unique_ptr<EcGroup> Create(const CurveMeta &meta);
 }
 
-namespace yacl::crypto::toy::test {
+namespace yacl::toy::test {
 
 TEST(ToyMTest, MetaTest) {
   auto curve = Create(GetCurveMetaByName("curve25519"));
@@ -96,4 +96,4 @@ TEST(ToyMTest, X25519Works) {
   }
 }
 
-}  // namespace yacl::crypto::toy::test
+}  // namespace yacl::toy::test

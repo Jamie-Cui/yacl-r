@@ -35,7 +35,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rand", SecParam::C::k128, SecParam::S::k64);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // -------------------------
 // Generic Randomness Func
@@ -208,7 +208,7 @@ template <typename T, std::enable_if_t<std::is_unsigned_v<T>, bool> = true>
 class YaclReplayUrbg {
  public:
   using result_type = T;
-  using CType = yacl::crypto::SymmetricCrypto::CryptoType;
+  using CType = yacl::SymmetricCrypto::CryptoType;
 
   YaclReplayUrbg(uint128_t seed, uint64_t ctr, uint64_t iv = 0,
                  CType ctype = CType::AES128_CTR)
@@ -247,8 +247,8 @@ void ReplayShuffle(RandomIt first, RandomIt last, uint128_t seed,
   // ind[0] in [0, 1], ind[1] in [0, 2] ... ind[n-2] in [0, n-1]
   std::vector<uint128_t> ind(n - 1);
 
-  *ctr = yacl::crypto::FillPRand(
-      yacl::crypto::SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, *ctr,
+  *ctr = yacl::FillPRand(
+      yacl::SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, *ctr,
       (char *)ind.data(), (n - 1) * sizeof(uint128_t));
 
   // Though this is not strictly uniform random. it will
@@ -266,4 +266,4 @@ void ReplayShuffle(RandomIt first, RandomIt last, uint128_t seed,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

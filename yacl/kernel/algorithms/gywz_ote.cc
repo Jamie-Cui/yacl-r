@@ -22,7 +22,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/math/gadget.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 void CggmFullEval(uint128_t delta, uint128_t seed, uint32_t n,
@@ -320,4 +320,4 @@ void GywzOtExtSend_fixed_index(const OtSendStore& cot, uint32_t n,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

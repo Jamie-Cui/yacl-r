@@ -21,42 +21,42 @@
 #include "yacl/base/buffer.h"
 #include "yacl/base/byte_container_view.h"
 #include "yacl/engine/snark/r1cs.h"
-#include "yacl/math/pairing/pairing.h"
 #include "yacl/math/mpint/mp_int.h"
+#include "yacl/math/pairing/pairing.h"
 
 namespace yacl::engine::snark {
 
 class Groth16 {
  public:
   struct ProvingKey {
-    crypto::EcPoint alpha_g1;
-    crypto::EcPoint beta_g1;
-    crypto::EcPoint beta_g2;
-    crypto::EcPoint delta_g1;
-    crypto::EcPoint delta_g2;
-    std::vector<crypto::EcPoint> h_query;     // [tau^i * t(tau) / delta]_1
-    std::vector<crypto::EcPoint> l_query;     // private input commitments
-    std::vector<crypto::EcPoint> a_query;     // [u_i(tau)]_1 for all vars
-    std::vector<crypto::EcPoint> b_g1_query;  // [v_i(tau)]_1 for all vars
-    std::vector<crypto::EcPoint> b_g2_query;  // [v_i(tau)]_2 for all vars
-    std::shared_ptr<crypto::PairingGroup> pairing;
+    EcPoint alpha_g1;
+    EcPoint beta_g1;
+    EcPoint beta_g2;
+    EcPoint delta_g1;
+    EcPoint delta_g2;
+    std::vector<EcPoint> h_query;     // [tau^i * t(tau) / delta]_1
+    std::vector<EcPoint> l_query;     // private input commitments
+    std::vector<EcPoint> a_query;     // [u_i(tau)]_1 for all vars
+    std::vector<EcPoint> b_g1_query;  // [v_i(tau)]_1 for all vars
+    std::vector<EcPoint> b_g2_query;  // [v_i(tau)]_2 for all vars
+    std::shared_ptr<PairingGroup> pairing;
   };
 
   struct VerificationKey {
-    crypto::EcPoint alpha_g1;
-    crypto::EcPoint beta_g2;
-    crypto::EcPoint gamma_g2;
-    crypto::EcPoint delta_g2;
+    EcPoint alpha_g1;
+    EcPoint beta_g2;
+    EcPoint gamma_g2;
+    EcPoint delta_g2;
     // precomputed e(alpha, beta)
-    std::optional<crypto::GtElement> alpha_beta_gt;
-    std::vector<crypto::EcPoint> ic;  // public input commitments
-    std::shared_ptr<crypto::PairingGroup> pairing;
+    std::optional<GtElement> alpha_beta_gt;
+    std::vector<EcPoint> ic;  // public input commitments
+    std::shared_ptr<PairingGroup> pairing;
   };
 
   struct Proof {
-    crypto::EcPoint a;  // G1
-    crypto::EcPoint b;  // G2
-    crypto::EcPoint c;  // G1
+    EcPoint a;  // G1
+    EcPoint b;  // G2
+    EcPoint c;  // G1
   };
 
   struct SetupResult {
@@ -83,17 +83,15 @@ class Groth16 {
                      const Proof& proof);
 
   // Serialize and deserialize Groth16 proof material.
-  static Buffer SerializeProof(
-      const Proof& proof, const std::shared_ptr<crypto::PairingGroup>& pairing);
-  static Proof DeserializeProof(
-      ByteContainerView buf,
-      const std::shared_ptr<crypto::PairingGroup>& pairing);
+  static Buffer SerializeProof(const Proof& proof,
+                               const std::shared_ptr<PairingGroup>& pairing);
+  static Proof DeserializeProof(ByteContainerView buf,
+                                const std::shared_ptr<PairingGroup>& pairing);
 
   // Serialize and deserialize Groth16 verification keys.
   static Buffer SerializeVerificationKey(const VerificationKey& vk);
   static VerificationKey DeserializeVerificationKey(
-      ByteContainerView buf,
-      const std::shared_ptr<crypto::PairingGroup>& pairing);
+      ByteContainerView buf, const std::shared_ptr<PairingGroup>& pairing);
 };
 
 }  // namespace yacl::engine::snark

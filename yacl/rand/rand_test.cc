@@ -23,7 +23,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/block_cipher/symmetric_crypto.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 #define TEST_GENERIC_TYPE_RAND_FUNC(FUNC, ...) \
   TEST(GenericRandTest, Fast##FUNC##Test) {    \
@@ -130,7 +130,7 @@ TEST(GenericRandTest, ReplayRandomShuffleTest) {
     auto seed = SecureRandSeed();
     auto ctr = FastRandU64();
     auto iv = FastRandU64();
-    auto ctype = yacl::crypto::SymmetricCrypto::CryptoType::AES128_CTR;
+    auto ctype = yacl::SymmetricCrypto::CryptoType::AES128_CTR;
     auto vec_copy = vec;
 
     YaclReplayUrbg<uint32_t> g1(seed, ctr, iv, ctype);
@@ -148,7 +148,7 @@ TEST(GenericRandTest, ReplayRandomShuffleTest) {
     auto seed = SecureRandSeed();
     auto ctr = FastRandU64();
     auto iv = FastRandU64();
-    auto ctype = yacl::crypto::SymmetricCrypto::CryptoType::AES128_ECB;
+    auto ctype = yacl::SymmetricCrypto::CryptoType::AES128_ECB;
     auto vec1 = vec;
     auto vec2 = vec;
     auto vec3 = vec;
@@ -222,4 +222,4 @@ TEST(GenericRandTest, QuickShuffleTest) {
   EXPECT_EQ(std::memcmp(vec_bkup.data(), vec_2.data(), sizeof(uint128_t) * n),
             0);
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

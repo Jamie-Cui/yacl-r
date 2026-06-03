@@ -17,7 +17,7 @@
 
 #include "yacl/kernel/type/ot_store.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Easier way of generate a ot_store pointer from a given choice buffer and
 // a block buffer
@@ -91,4 +91,4 @@ MockOtStore MockCots(uint64_t num, uint128_t delta,
 // Note: Compact ot is correlated-ot (or called delta-ot)
 MockOtStore MockCompactOts(uint64_t num);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

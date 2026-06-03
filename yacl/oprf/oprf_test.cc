@@ -17,7 +17,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(SimpleTest, Works) {
   // get a default config
@@ -37,4 +37,4 @@ TEST(SimpleTest, Works) {
   client.Finalize(s2c_tape);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

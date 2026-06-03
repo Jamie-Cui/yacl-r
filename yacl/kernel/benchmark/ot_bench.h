@@ -37,7 +37,7 @@
 #include "yacl/link/test_util.h"
 #include "yacl/utils/matrix_utils.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 class OtBench : public benchmark::Fixture {
  public:
@@ -449,4 +449,4 @@ DELCARE_MAL_SOFTSPOKEN_BENCH(8)
   BM_REGISTER_MAL_FERRET_OTE(Arguments) \
   BM_REGISTER_SOFTSPOKEN_OTE(Arguments) \
   BM_REGISTER_MAL_SOFTSPOKEN_OTE(Arguments)
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 constexpr size_t kBitOfEntropy = 100;
@@ -70,4 +70,4 @@ TEST(OpensslTest, AutoESWorks) {
   EXPECT_FALSE(x == y);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

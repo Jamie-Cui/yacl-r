@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Some cryptographers (like Daniel Bernstein) believe that most of the curves,
 // described in the official crypto-standards are "unsafe" and define their own
@@ -73,4 +73,4 @@ struct CurveMeta {
 
 CurveMeta GetCurveMetaByName(const CurveName& name);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

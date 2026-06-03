@@ -35,7 +35,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("kkrt_ote", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 inline constexpr int kKkrtWidth = 4;  // KKRT width
 using KkrtRow = std::array<uint128_t, kKkrtWidth>;
@@ -178,4 +178,4 @@ class KkrtOtExtReceiver {
   AES_KEY aes_key_[kKkrtWidth];
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

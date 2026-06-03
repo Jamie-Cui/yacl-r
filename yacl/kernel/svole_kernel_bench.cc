@@ -19,7 +19,7 @@
 #include "yacl/kernel/svole_kernel.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 static void BM_SVOLE_single_thread(benchmark::State& state) {
   auto lctxs = link::test::SetupWorld(2);
@@ -121,15 +121,15 @@ static void BM_SVOLE_streaming(benchmark::State& state) {
     state.ResumeTiming();
   }
 }
-}  // namespace yacl::crypto
+}  // namespace yacl
 
-BENCHMARK(yacl::crypto::BM_SVOLE_single_thread)
+BENCHMARK(yacl::BM_SVOLE_single_thread)
     ->Iterations(1)
     ->Unit(benchmark::kMillisecond);
-BENCHMARK(yacl::crypto::BM_SVOLE_multi_thread)
+BENCHMARK(yacl::BM_SVOLE_multi_thread)
     ->Iterations(1)
     ->Unit(benchmark::kMillisecond);
-BENCHMARK(yacl::crypto::BM_SVOLE_streaming)
+BENCHMARK(yacl::BM_SVOLE_streaming)
     ->Iterations(1)
     ->Unit(benchmark::kMillisecond);
 

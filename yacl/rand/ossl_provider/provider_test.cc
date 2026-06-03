@@ -26,7 +26,7 @@
 #include "yacl/rand/ossl_provider/helper.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(OpensslTest, ShouldWork) {
   auto libctx = ossl::UniqueLib(OSSL_LIB_CTX_new());
@@ -139,4 +139,4 @@ TEST(OpensslTest, Example2) {
   EVP_RAND_CTX_free(rctx);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -20,9 +20,9 @@
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   auto view = yacl::ByteContainerView(data, size);
 
-  yacl::crypto::Sha256(view);
-  yacl::crypto::Sm3(view);
-  yacl::crypto::Blake3(view);
+  yacl::Sha256(view);
+  yacl::Sm3(view);
+  yacl::Blake3(view);
 
   return 0;
 }

@@ -22,7 +22,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::array<uint8_t, 32> Sha256(ByteContainerView data) {
   auto buf = SslHash(HashAlgorithm::SHA256).Update(data).CumulativeHash();
@@ -60,4 +60,4 @@ std::array<uint8_t, 32> Blake3(ByteContainerView data) {
   return digest;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

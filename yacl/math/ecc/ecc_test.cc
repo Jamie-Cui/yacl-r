@@ -24,7 +24,7 @@
 #include "yacl/utils/parallel.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(CurveFactoryTest, FactoryWorks) {
   // test list lib
@@ -447,4 +447,4 @@ TEST(AliasNameTest, AliasWorks) {
   }
 }
 
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

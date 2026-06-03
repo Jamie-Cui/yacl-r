@@ -20,7 +20,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -670,4 +670,4 @@ void SilverCode::RightEncode2(std::span<T> inout0,
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

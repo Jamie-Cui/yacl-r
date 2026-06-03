@@ -14,7 +14,7 @@
 
 #include "yacl/math/pairing/factory/pairing_spi.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void PairingGroupFactory::Register(const std::string &lib_name,
                                    uint64_t performance,
@@ -36,4 +36,4 @@ void PairingGroupFactory::Register(const std::string &lib_name,
       });
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -23,7 +23,7 @@
 // this header provides convenience wrappers over concrete hash modules, no
 // standalone security parameter definition
 
-namespace yacl::crypto {
+namespace yacl {
 
 std::array<uint8_t, 32> Sha256(ByteContainerView data);  // 256-bits
 
@@ -53,4 +53,4 @@ DECLARE_HASH_OUT_128(Blake2);  // uint128_t Blake2_128(ByteContainerView data);
 
 #undef DECLARE_HASH_OUT_128
 
-}  // namespace yacl::crypto
+}  // namespace yacl

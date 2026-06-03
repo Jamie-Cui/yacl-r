@@ -18,7 +18,7 @@
 
 #include "yacl/link/context.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Kernel interface class
 class Kernel {
@@ -62,4 +62,4 @@ class StreamingKernel : public Kernel {
   // virtual void eval_streaming(/* kernel-specific args*/) = 0;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

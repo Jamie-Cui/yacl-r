@@ -18,7 +18,7 @@
 
 #include "yacl/base/exception.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 // The default sm2 id. see:
@@ -72,4 +72,4 @@ std::vector<uint8_t> Sm2Decryptor::Decrypt(ByteContainerView ciphertext) {
   return out;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

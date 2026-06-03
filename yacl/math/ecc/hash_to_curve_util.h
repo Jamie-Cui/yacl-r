@@ -22,7 +22,7 @@
 #include "yacl/hash/blake3.h"
 #include "yacl/hash/ssl_hash.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Select the appropriate SHA-2 variant based on field bit size.
 inline HashAlgorithm SelectSha2ByBits(size_t bits) {
@@ -47,4 +47,4 @@ inline std::vector<uint8_t> HashForCurve(HashAlgorithm algo, size_t field_bits,
   return Blake3Hash((field_bits + 7) / 8).Update(data).CumulativeHash();
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

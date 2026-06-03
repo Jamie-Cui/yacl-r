@@ -26,7 +26,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("pprf", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Puncturable Psedu-Random Function (PPRF)
 //
@@ -71,4 +71,4 @@ void PprfEval(uint128_t prf_key, uint128_t point, GE2n<N>* out) {
   PprfEval<M, N>(prf_key, GE2n<M>(point), out);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

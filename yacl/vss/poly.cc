@@ -14,7 +14,7 @@
 
 #include "yacl/vss/poly.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void Polynomial::RandomPolynomial(size_t threshold) {
   MPInt zero_value;
@@ -125,4 +125,4 @@ MPInt Polynomial::LagrangeComputeAtX(std::span<const MPInt> xs, uint64_t index,
   return y.MulMod(num, modulus).MulMod(denum_inv, modulus);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

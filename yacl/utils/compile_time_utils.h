@@ -18,7 +18,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ---------------------------
 // Compile-Time Utility: CRC32
@@ -88,10 +88,10 @@ constexpr uint32_t crc32<static_cast<size_t>(-1)>(
   return 0xFFFFFFFF;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl
 
 // helper macros
-#define CT_CRC32(x) (yacl::crypto::crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
+#define CT_CRC32(x) (yacl::crc32<sizeof(x) - 2>(x) ^ 0xFFFFFFFF)
 
 // ----------------------------------------
 // Compile-Time Utility: Customized Counter

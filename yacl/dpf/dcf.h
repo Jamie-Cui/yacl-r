@@ -36,7 +36,7 @@
 
 YACL_MODULE_DECLARE("dcf", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // Distributed Point Function (DCF)
 //
@@ -110,4 +110,4 @@ void DcfKeyGen(DcfKey* first_key, DcfKey* second_key, const GE2n<M>& alpha,
 template <size_t /* input bit num */ M, size_t /* output bit num */ N>
 void DcfEval(const DcfKey& key, const GE2n<M>& in, GE2n<N>* out);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -19,7 +19,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/rand/rand.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(PprfTest, Works) {
   /* GIVEN */
@@ -46,4 +46,4 @@ TEST(PprfTest, Works) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -24,7 +24,7 @@
 #include "yacl/utils/matrix_utils.h"
 #include "yacl/utils/serialize.h"
 
-namespace yacl::crypto {
+namespace yacl {
 namespace {
 
 constexpr int kKappa = YACL_MODULE_SECPARAM_C_UINT("kkrt_ote");
@@ -496,4 +496,4 @@ yacl::Buffer KkrtOtExtReceiver::ShiftCorrection(uint64_t send_count) {
   return buf;
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

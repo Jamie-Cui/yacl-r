@@ -28,7 +28,7 @@
 
 YACL_MODULE_DECLARE("mp_vole", SecParam::C::INF, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 using MpVoleParam = MpFssParam;
 
@@ -222,4 +222,4 @@ class MpVoleReceiver {
   bool is_finish_{false};
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -25,7 +25,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("rsa_enc", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 // RSA with OAEP
 class RsaEncryptor : public PkeEncryptor {
@@ -56,4 +56,4 @@ class RsaDecryptor : public PkeDecryptor {
   const PkeScheme scheme_ = PkeScheme::RSA2048_OAEP;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

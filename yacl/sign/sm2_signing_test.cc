@@ -20,7 +20,7 @@
 
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(Sm2Signing, SignVerify_shouldOk) {
   // GIVEN
@@ -104,4 +104,4 @@ TEST(Sm2Signing, SignVerifyInitWithCert_shouldOk) {
   EXPECT_EQ(V.Verify(plaintext, signature), true);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -18,7 +18,7 @@
 
 #include "yacl/hash/ssl_hash.h"
 
-namespace yacl::crypto::FourQ {
+namespace yacl::FourQ {
 
 // Elements (a+b*i) over GF(p^2), where a and b are defined over GF(p), are
 // encoded as a||b, with a in the least significant position.
@@ -390,4 +390,4 @@ point_extproj* FourQGroup::CastR1(EcPoint& p) {
   return reinterpret_cast<point_extproj*>(std::get<Array160>(p).data());
 }
 
-}  // namespace yacl::crypto::FourQ
+}  // namespace yacl::FourQ

@@ -25,7 +25,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
   try {
     auto pairing =
-        yacl::crypto::PairingGroupFactory::Instance().Create("bn_snark1");
+        yacl::PairingGroupFactory::Instance().Create("bn_snark1");
 
     yacl::ByteContainerView buf(data, size);
     auto proof = yacl::engine::snark::Groth16::DeserializeProof(

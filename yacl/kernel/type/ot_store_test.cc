@@ -28,7 +28,7 @@
 #include "yacl/kernel/type/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 
@@ -288,7 +288,7 @@ TEST(OtSendStoreTest, GetElementsTest) {
   TEST(TYPE##Test, TYPE##SliceCompactTest) {         \
     auto [ot_store, blocks] = RandCompact##TYPE(25); \
     TYPE##_SLICE_TEST_INTERNAL(ot_store, blocks);    \
-  }  // namespace yacl::crypto
+  }  // namespace yacl
 
 SLICE_TEST(OtSendStore)
 SLICE_TEST(OtRecvStore)
@@ -343,4 +343,4 @@ TEST(MockCompactCotTest, Works) {
   }
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

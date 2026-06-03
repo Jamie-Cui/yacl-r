@@ -28,7 +28,7 @@
 #include "yacl/math/gadget.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 struct TestParam {
   size_t num;
@@ -226,4 +226,4 @@ INSTANTIATE_TEST_SUITE_P(
                          std::get<2>(p.param).num);
     });
 
-}  // namespace yacl::crypto
+}  // namespace yacl

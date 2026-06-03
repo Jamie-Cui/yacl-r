@@ -21,7 +21,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/ossl_wrappers.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(RsaEnc, EncryptDecrypt_shouldOk) {
   // GIVEN
@@ -55,4 +55,4 @@ TEST(RsaEnc, ShouldNotOk) {
   EXPECT_THROW(dec_ctx.Decrypt(c), yacl::Exception);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

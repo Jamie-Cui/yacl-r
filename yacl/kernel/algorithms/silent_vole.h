@@ -29,7 +29,7 @@
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("silent_vole", SecParam::C::k128, SecParam::S::INF);
-namespace yacl::crypto {
+namespace yacl {
 
 // Silent Vector OLE Implementation
 //
@@ -177,4 +177,4 @@ class SilentVoleReceiver {
                 std::span<K> b);
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

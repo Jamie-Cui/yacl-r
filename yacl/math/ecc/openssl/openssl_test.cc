@@ -20,14 +20,14 @@
 #include "yacl/utils/parallel.h"
 #include "yacl/utils/spi/spi_factory.h"
 
-namespace yacl::crypto::ossl {
+namespace yacl::ossl {
 // We only need to test these two functions, other functions will be tested by
 // SPI
 UniqueBn Mp2Bn(const MPInt &mp);
 MPInt Bn2Mp(const BIGNUM *bn);
-}  // namespace yacl::crypto::ossl
+}  // namespace yacl::ossl
 
-namespace yacl::crypto::ossl::test {
+namespace yacl::ossl::test {
 
 TEST(OpensslTest, BnWorks) {
   // small case
@@ -101,8 +101,8 @@ TEST(OpensslTest, AddInplaceWorks) {
 }
 
 TEST(OpensslMemLeakTest, MulBaseLeaks) {
-  std::shared_ptr<yacl::crypto::EcGroup> ec =
-      yacl::crypto::EcGroupFactory::Instance().Create("sm2",
+  std::shared_ptr<yacl::EcGroup> ec =
+      yacl::EcGroupFactory::Instance().Create("sm2",
                                                       ArgLib = "openssl");
 
   yacl::parallel_for(0, 2, [&](int64_t, int64_t) {
@@ -111,4 +111,4 @@ TEST(OpensslMemLeakTest, MulBaseLeaks) {
   });
 }
 
-}  // namespace yacl::crypto::ossl::test
+}  // namespace yacl::ossl::test

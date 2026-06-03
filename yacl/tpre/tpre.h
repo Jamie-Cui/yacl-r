@@ -23,7 +23,7 @@
 #include "yacl/tpre/capsule.h"
 #include "yacl/tpre/keys.h"
 
-namespace yacl::crypto {
+namespace yacl {
 /**
  * The TPRE class encapsulates the methods of threshold proxy
  * re-encryption, including encryption, decryption, re-encryption and
@@ -114,4 +114,4 @@ class TPRE {
           C_prime_set) const;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

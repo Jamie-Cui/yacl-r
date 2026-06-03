@@ -25,7 +25,7 @@
 
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 TEST(DrbgTest, DifferentDrbg) {
   /* GIVEN */
@@ -182,4 +182,4 @@ TEST(DrbgTest, BlockedSendWork) {
   // SPDLOG_INFO("buf0 = {}", yacl::BytesToHexString(buf0));
   // SPDLOG_INFO("buf1 = {}", yacl::BytesToHexString(buf1));
 }
-}  // namespace yacl::crypto
+}  // namespace yacl

@@ -18,7 +18,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/hash/ssl_hash.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 template <typename T>
 class SslHashTest : public testing::Test {
@@ -139,4 +139,4 @@ TYPED_TEST(SslHashTest, MultipleUpdates) {
             this->Data().result2);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

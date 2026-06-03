@@ -22,7 +22,7 @@
 #include "yacl/base/exception.h"
 #include "yacl/link/test_util.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 void BM_DefaultArguments(benchmark::internal::Benchmark* b) {
   b->Arg(8192)->Unit(benchmark::kMillisecond)->Iterations(1);
@@ -53,4 +53,4 @@ BM_REGISTER_ALL_OT(BM_DefaultArguments);
 // BM_REGISTER_SOFTSPOKEN_OTE(BM_PerfArguments);
 // BM_REGISTER_MAL_SOFTSPOKEN_OTE(BM_PerfArguments);
 
-}  // namespace yacl::crypto
+}  // namespace yacl

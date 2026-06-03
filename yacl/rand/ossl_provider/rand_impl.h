@@ -26,7 +26,7 @@
 #include "yacl/ossl_wrappers.h"
 #include "yacl/rand/entropy_source/entropy_source.h"
 
-namespace yc = yacl::crypto;
+namespace yc = yacl;
 
 static OSSL_FUNC_rand_newctx_fn yacl_rand_ctx_new;
 static OSSL_FUNC_rand_freectx_fn yacl_rand_ctx_free;

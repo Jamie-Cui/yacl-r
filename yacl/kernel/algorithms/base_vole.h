@@ -25,7 +25,7 @@
 #include "yacl/kernel/type/ot_store_utils.h"
 
 YACL_MODULE_DECLARE("base_vole", SecParam::C::INF, SecParam::S::INF);
-namespace yacl::crypto {
+namespace yacl {
 
 // Convert OT to f2k-VOLE (non-interactive)
 // the type of ot_store must be COT
@@ -136,4 +136,4 @@ void inline GilboaVoleRecv(const std::shared_ptr<link::Context>& ctx,
   Ot2VoleRecv<T, K>(recv_ot, u, v);
 }
 
-}  // namespace yacl::crypto
+}  // namespace yacl

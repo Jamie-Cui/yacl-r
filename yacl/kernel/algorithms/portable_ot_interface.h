@@ -28,7 +28,7 @@
 /* security parameter declaration */
 YACL_MODULE_DECLARE("base_ot_portable", SecParam::C::k128, SecParam::S::INF);
 
-namespace yacl::crypto {
+namespace yacl {
 
 class PortableOtInterface : public BaseOTInterface {
  public:
@@ -42,4 +42,4 @@ class PortableOtInterface : public BaseOTInterface {
             std::span<Block> recv_blocks) override;
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

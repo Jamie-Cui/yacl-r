@@ -20,7 +20,7 @@
 
 #include "yacl/tpre/keys.h"
 
-namespace yacl::crypto::test {
+namespace yacl::test {
 
 TEST(CapsuleTest, Test1) {
   std::unique_ptr<EcGroup> ecc_group = EcGroupFactory::Instance().Create("sm2");
@@ -59,4 +59,4 @@ TEST(CapsuleTest, Test1) {
 
   EXPECT_EQ(dek_str, dek_str1);
 }
-}  // namespace yacl::crypto::test
+}  // namespace yacl::test

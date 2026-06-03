@@ -24,7 +24,7 @@
 #include "yacl/base/int128.h"
 #include "yacl/tools/prg.h"
 
-namespace yacl::crypto {
+namespace yacl {
 
 namespace {
 void GgmPrg(uint128_t in, uint128_t* out1, uint128_t* out2) {
@@ -152,4 +152,4 @@ PPRF_T_SPECIFY_FUNC(2, 128)
 
 #undef PPRF_T_SPECIFY_FUNC
 
-}  // namespace yacl::crypto
+}  // namespace yacl

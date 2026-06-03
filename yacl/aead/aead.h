@@ -20,7 +20,7 @@
 // this header dispatches between multiple AEAD schemes at runtime, concrete
 // scheme headers declare their own security parameters
 
-namespace yacl::crypto {
+namespace yacl {
 
 // ===================================================
 // AEAD: Authenticated Encryption with Associated Data
@@ -139,4 +139,4 @@ class AeadCtx {
   AeadAlgorithm algorithm_ = AeadAlgorithm::UNKNOWN;  // GCM crypto schema
 };
 
-}  // namespace yacl::crypto
+}  // namespace yacl

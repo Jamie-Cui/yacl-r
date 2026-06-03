@@ -14,7 +14,7 @@
 
 #include "yacl/base/secparam.h"
 
-namespace yacl::crypto {
+namespace yacl {
 SecParam::C SecParam::glob_c = SecParam::C::INF;  // init to infinity
 SecParam::S SecParam::glob_s = SecParam::S::INF;  // init to infinity
-}  // namespace yacl::crypto
+}  // namespace yacl
