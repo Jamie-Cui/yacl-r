@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cstring>
 #include <memory>
 #include <span>
 
@@ -83,7 +85,11 @@ class PlainExecutor {
       for (size_t j = 0; j < circ_->now[i]; ++j) {
         result[j] = wires_[index - circ_->now[i] + j];
       }
-      outputs[circ_->nov - i - 1] = *(T *)result.data();
+      YACL_ENFORCE(circ_->now[i] <= sizeof(T) * 8);
+      T output = 0;
+      const size_t output_bytes = (circ_->now[i] + 7) / 8;
+      std::memcpy(&output, result.data(), output_bytes);
+      outputs[circ_->nov - i - 1] = output;
       index -= circ_->now[i];
     }
   }

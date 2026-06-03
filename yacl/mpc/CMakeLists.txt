@@ -27,3 +27,9 @@ add_yacl_test_if(ot_kernel_test)
 add_yacl_test_if(svole_kernel_test)
 add_yacl_test_if(ss_executor_test)
 add_yacl_test_if(plaintext_executor_test)
+
+# HACK
+if(BUILD_TEST)
+  set_tests_properties(plaintext_executor_test PROPERTIES WORKING_DIRECTORY
+                                                          ${PROJECT_SOURCE_DIR})
+endif()
