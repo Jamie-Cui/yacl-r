@@ -23,6 +23,7 @@
 
 #include "openssl/evp.h"
 
+#include "yacl/rand/drbg/openssl_factory.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
@@ -33,6 +34,11 @@
 #include "yacl/rand/entropy_source/entropy_source.h"
 
 namespace yacl {
+
+DrbgFactory::DrbgFactory() {
+  Register("OpenSSL", 100, OpensslDrbg::Check, OpensslDrbg::Create);
+  Register("NativeImpl", 100, NativeDrbg::Check, NativeDrbg::Create);
+}
 
 NativeDrbg::NativeDrbg(std::string type,
                        const std::shared_ptr<EntropySource>& es)
@@ -308,7 +314,5 @@ Buffer Sm4Drbg::Generate(size_t len, ByteContainerView additional_input) {
 }
 
 }  // namespace internal
-
-REGISTER_DRBG_LIBRARY("NativeImpl", 100, NativeDrbg::Check, NativeDrbg::Create);
 
 }  // namespace yacl

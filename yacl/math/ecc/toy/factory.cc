@@ -67,6 +67,4 @@ bool IsSupported(const CurveMeta &meta) {
   return kPredefinedCurves.count(meta.LowerName()) > 0;
 }
 
-REGISTER_EC_LIBRARY(kLibName, 10, IsSupported, Create);
-
 }  // namespace yacl::toy

@@ -127,6 +127,4 @@ void OpensslDrbg::ReSeed() {
                                  0) > 0);
 }
 
-REGISTER_DRBG_LIBRARY("OpenSSL", 100, OpensslDrbg::Check, OpensslDrbg::Create);
-
 }  // namespace yacl

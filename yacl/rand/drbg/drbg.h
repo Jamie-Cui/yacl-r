@@ -77,6 +77,9 @@ class DrbgFactory final : public SpiFactoryBase<Drbg> {
     static DrbgFactory factory;
     return factory;
   }
+
+ private:
+  DrbgFactory();
 };
 
 #define REGISTER_DRBG_LIBRARY(lib_name, performance, checker, creator)     \

@@ -20,6 +20,9 @@ namespace yacl::toy {
 
 static const std::string kLibName = "Toy";
 
+std::unique_ptr<EcGroup> Create(const CurveMeta &meta);
+bool IsSupported(const CurveMeta &meta);
+
 struct CurveParam {
   MPInt A;
   MPInt B;

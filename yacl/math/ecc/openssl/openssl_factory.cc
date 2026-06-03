@@ -135,9 +135,6 @@ std::map<CurveName, int> kName2Nid = {
     {"sm2", NID_sm2},
 };
 
-REGISTER_EC_LIBRARY(kLibName, 100, OpensslGroup::IsSupported,
-                    OpensslGroup::Create);
-
 std::unique_ptr<EcGroup> OpensslGroup::Create(const CurveMeta &meta) {
   YACL_ENFORCE(kName2Nid.count(meta.LowerName()) > 0,
                "curve {} not supported by openssl", meta.name);

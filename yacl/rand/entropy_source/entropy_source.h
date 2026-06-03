@@ -72,6 +72,9 @@ class EntropySourceFactory final : public SpiFactoryBase<EntropySource> {
     static EntropySourceFactory factory;
     return factory;
   }
+
+ private:
+  EntropySourceFactory();
 };
 
 #define REGISTER_ENTROPY_SOURCE_LIBRARY(lib_name, performance, checker,    \

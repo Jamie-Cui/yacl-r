@@ -93,6 +93,9 @@ class PairingGroupFactory final : public SpiFactoryBase<PairingGroup> {
   /// better
   void Register(const std::string &lib_name, uint64_t performance,
                 const PairingCheckerT &checker, const PairingCreatorT &creator);
+
+ private:
+  PairingGroupFactory();
 };
 
 }  // namespace yacl

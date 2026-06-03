@@ -158,6 +158,9 @@ class GaloisFieldFactory final : public SpiFactoryBase<GaloisField> {
     static GaloisFieldFactory factory;
     return factory;
   }
+
+ private:
+  GaloisFieldFactory();
 };
 
 //==   Supported lib list...   ==//

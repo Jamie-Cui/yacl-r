@@ -63,7 +63,4 @@ bool MclEGFactory::IsSupported(const CurveMeta& meta) {
   return Name2MclCurveEnum.count(meta.LowerName()) > 0;
 }
 
-REGISTER_EC_LIBRARY(kLibName, 400, MclEGFactory::IsSupported,
-                    MclEGFactory::Create);
-
 }  // namespace yacl

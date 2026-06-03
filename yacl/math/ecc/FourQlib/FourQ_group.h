@@ -20,6 +20,9 @@
 
 namespace yacl::FourQ {
 
+std::unique_ptr<EcGroup> Create(const CurveMeta& meta);
+bool IsSupported(const CurveMeta& meta);
+
 class FourQGroup : public EcGroupSketch {
  public:
   explicit FourQGroup(const CurveMeta& meta);

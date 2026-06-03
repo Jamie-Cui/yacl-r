@@ -22,9 +22,6 @@
 
 namespace yacl::math {
 
-REGISTER_GF_LIBRARY(kMclLib, 200, MclFieldFactory::Check,
-                    MclFieldFactory::Create);
-
 struct MclFieldMeta {
   std::string field_name;
   // Specified by ArgDegree

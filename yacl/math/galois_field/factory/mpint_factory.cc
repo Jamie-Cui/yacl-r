@@ -18,8 +18,6 @@
 
 namespace yacl::math {
 
-REGISTER_GF_LIBRARY(kMPIntLib, 100, MPIntField::Check, MPIntField::Create);
-
 std::unique_ptr<GaloisField> MPIntField::Create(const std::string &field_name,
                                                 const SpiArgs &args) {
   YACL_ENFORCE(field_name == kPrimeField);

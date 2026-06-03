@@ -313,6 +313,9 @@ class EcGroupFactory final : public SpiFactoryBase<EcGroup> {
   /// better
   void Register(const std::string &lib_name, uint64_t performance,
                 const EcCheckerT &checker, const EcCreatorT &creator);
+
+ private:
+  EcGroupFactory();
 };
 
 // Please run bazel run

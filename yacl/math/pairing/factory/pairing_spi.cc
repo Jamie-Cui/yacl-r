@@ -14,7 +14,13 @@
 
 #include "yacl/math/pairing/factory/pairing_spi.h"
 
+#include "yacl/math/pairing/factory/mcl_pairing_group.h"
+
 namespace yacl {
+
+PairingGroupFactory::PairingGroupFactory() {
+  Register(kLibName, 400, MclPGFactory::IsSupported, MclPGFactory::Create);
+}
 
 void PairingGroupFactory::Register(const std::string &lib_name,
                                    uint64_t performance,

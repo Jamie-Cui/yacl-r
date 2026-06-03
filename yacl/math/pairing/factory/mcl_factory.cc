@@ -217,7 +217,4 @@ bool MclPGFactory::IsSupported(const PairingMeta& meta) {
   return Name2MclPairingEnum.count(meta.LowerName()) > 0;
 }
 
-REGISTER_PAIRING_LIBRARY(kLibName, 400, MclPGFactory::IsSupported,
-                         MclPGFactory::Create);
-
 }  // namespace yacl

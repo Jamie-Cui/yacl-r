@@ -14,10 +14,18 @@
 
 #include "yacl/math/galois_field/factory/gf_spi.h"
 
+#include "yacl/math/galois_field/factory/mcl_factory.h"
+#include "yacl/math/galois_field/factory/mpint_factory.h"
+
 namespace yacl::math {
 
 DEFINE_ARG(MPInt, Mod);
 DEFINE_ARG(uint64_t, Degree);
 DEFINE_ARG(uint64_t, MaxBitSize);
+
+GaloisFieldFactory::GaloisFieldFactory() {
+  Register(kMclLib, 200, MclFieldFactory::Check, MclFieldFactory::Create);
+  Register(kMPIntLib, 100, MPIntField::Check, MPIntField::Create);
+}
 
 }  // namespace yacl::math

@@ -12,11 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/utils/strings.h"
 #include "yacl/math/ecc/ecc_spi.h"
 
+#include "yacl/math/ecc/FourQlib/FourQ_group.h"
+#include "yacl/math/ecc/mcl/mcl_ec_group.h"
+#include "yacl/math/ecc/openssl/openssl_group.h"
+#include "yacl/math/ecc/toy/common.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl {
+
+EcGroupFactory::EcGroupFactory() {
+  Register("FourQlib", 1500, FourQ::IsSupported, FourQ::Create);
+  Register("libmcl", 400, MclEGFactory::IsSupported, MclEGFactory::Create);
+  Register("OpenSSL", 100, ossl::OpensslGroup::IsSupported,
+           ossl::OpensslGroup::Create);
+  Register("Toy", 10, toy::IsSupported, toy::Create);
+}
 
 EcGroupFactory &EcGroupFactory::Instance() {
   static EcGroupFactory factory;

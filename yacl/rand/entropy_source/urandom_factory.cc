@@ -19,7 +19,18 @@
 #include <random>
 #include <string>
 
+#include "yacl/rand/entropy_source/rdseed_factory.h"
+
 namespace yacl {
+
+EntropySourceFactory::EntropySourceFactory() {
+#ifdef __x86_64
+  Register("RdSeed", 100, RdSeedEntropySource::Check,
+           RdSeedEntropySource::Create);
+#endif
+  Register("urandom", 90, UrandomEntropySource::Check,
+           UrandomEntropySource::Create);
+}
 
 Buffer UrandomEntropySource::GetEntropy(uint32_t bits_of_entropy) {
   uint32_t num_bytes = (bits_of_entropy + 7) / 8;
@@ -45,8 +56,5 @@ Buffer UrandomEntropySource::GetEntropy(uint32_t bits_of_entropy) {
 
   return out;
 }
-
-REGISTER_ENTROPY_SOURCE_LIBRARY("urandom", 90, UrandomEntropySource::Check,
-                                UrandomEntropySource::Create);
 
 }  // namespace yacl

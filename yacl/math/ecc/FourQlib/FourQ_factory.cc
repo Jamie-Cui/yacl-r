@@ -20,6 +20,8 @@ namespace {
 
 const std::string kLibName = "FourQlib";
 
+}  // namespace
+
 std::unique_ptr<EcGroup> Create(const CurveMeta &meta) {
   YACL_ENFORCE(meta.LowerName() == "fourq", "curve {} not supported",
                meta.name);
@@ -27,10 +29,6 @@ std::unique_ptr<EcGroup> Create(const CurveMeta &meta) {
 }
 
 bool IsSupported(const CurveMeta &meta) { return meta.LowerName() == "fourq"; }
-
-REGISTER_EC_LIBRARY(kLibName, 1500, IsSupported, Create);
-
-}  // namespace
 
 std::string FourQGroup::GetLibraryName() const { return kLibName; }
 
