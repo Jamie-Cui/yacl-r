@@ -20,7 +20,7 @@
 
 #include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
-#include "yacl/tools/prg.h"
+#include "yacl/experimental/prg.h"
 
 namespace yacl {
 

@@ -24,9 +24,9 @@
 #include <vector>
 
 #include "yacl/bc/symmetric_crypto.h"
+#include "yacl/experimental/prg.h"
 #include "yacl/math/mpint/mp_int.h"
 #include "yacl/rand/drbg/drbg.h"
-#include "yacl/tools/prg.h"
 #include "yacl/utils/dynamic_bitset.h"
 #include "yacl/utils/int128.h"
 #include "yacl/utils/ossl/defines.h"

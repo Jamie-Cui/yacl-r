@@ -19,7 +19,7 @@ Target Platforms (hopefully): MacOS Apple Silicon, Linux x86_64 and Linux aarch6
 ## Repo Layout
 
 - [base](yacl/utils/): some basic types and utils in yacl.
-- Top-level crypto modules: **crypto algorithms** without [link](yacl/link/), such as [aead](yacl/aead/), [hash](yacl/hash/), [pke](yacl/pke/), and [tools](yacl/tools/).
+- Top-level crypto modules: **crypto algorithms** without [link](yacl/link/), such as [aead](yacl/aead/), [hash](yacl/hash/), [pke](yacl/pke/), and [tools](yacl/experimental/).
 - [engine](yacl/engine/): **interactive engines** that is desgined for a purpose.
 - [io](yacl/io/): a simple streaming-based io library.
 - [kernel](yacl/kernel/): **crypto kernel** that includes [link](yacl/link/) with (WIP) multi-thread support, i.e. OT, DPF.

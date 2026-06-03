@@ -264,14 +264,14 @@ add_subdirectory(yacl/io)
 # math
 add_subdirectory(yacl/math)
 
-# engine
-add_subdirectory(yacl/engine)
-
-# kernel
-add_subdirectory(yacl/kernel)
-
 # link (networking)
 add_subdirectory(yacl/link)
+
+# mpc
+add_subdirectory(yacl/mpc)
+
+# snark
+add_subdirectory(yacl/snark)
 
 # other
 add_subdirectory(yacl/rand)
@@ -285,7 +285,7 @@ add_subdirectory(yacl/hmac)
 add_subdirectory(yacl/oprf)
 add_subdirectory(yacl/pke)
 add_subdirectory(yacl/sign)
-add_subdirectory(yacl/tools)
+add_subdirectory(yacl/experimental)
 add_subdirectory(yacl/tpre)
 # add_subdirectory(yacl/vss)
 

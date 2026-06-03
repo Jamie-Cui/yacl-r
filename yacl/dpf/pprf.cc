@@ -22,7 +22,7 @@
 
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
-#include "yacl/tools/prg.h"
+#include "yacl/experimental/prg.h"
 
 namespace yacl {
 
