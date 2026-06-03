@@ -20,7 +20,7 @@
 #include "gtest/gtest.h"
 
 #include "yacl/link/test_util.h"
-#include "yacl/mpc/type/ot_store_utils.h"
+#include "yacl/ot/ot_store_utils.h"
 
 namespace yacl {
 

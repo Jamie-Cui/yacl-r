@@ -21,10 +21,10 @@
 #include "yacl/experimental/common.h"
 #include "yacl/experimental/ro.h"
 #include "yacl/link/context.h"
-#include "yacl/mpc/core/silent_vole.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/thread_pool.h"
+#include "yacl/vole/silent_vole.h"
 
 namespace yacl {
 

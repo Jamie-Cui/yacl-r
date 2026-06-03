@@ -21,7 +21,7 @@
 
 /* submodules */
 #include "yacl/experimental/code/silver_code.h"
-#include "yacl/mpc/core/silent_vole.h"
+#include "yacl/vole/silent_vole.h"
 
 namespace yacl {
 

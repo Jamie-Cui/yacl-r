@@ -33,6 +33,7 @@ endif()
 # --------------------------------------------------------------------
 
 option(BUILD_TEST "Build the testing binaries (On/Off)." On)
+option(BUILD_BENCH "Build the benchmark binaries (On/Off)." Off)
 
 # --------------------------------------------------------------------
 # Project Generic Configuration
@@ -61,6 +62,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # Generic this project's CMake modules
 include(AddCompilerFlags)
+include(AddYaclBench)
 include(AddYaclFuzz)
 include(AddYaclTest)
 include(Coverage)
@@ -209,6 +211,7 @@ set(FETCHCONTENT_BASE_DIR ${CMAKE_DEPS_PREFIX}/src)
 include(deps/asio)
 
 include(deps/blake3)
+include(deps/benchmark)
 include(deps/cpu_features)
 include(deps/fmt)
 include(deps/fourq)
@@ -242,6 +245,7 @@ message(STATUS "C++ Standard              : ${CMAKE_CXX_STANDARD}")
 message(STATUS "Compiler Flags            : \n${CMAKE_CXX_FLAGS}")
 message(STATUS "Linker Flags              : \n${LINK_OPTIONS}")
 message(STATUS "(opt) Build Test          : ${BUILD_TEST}")
+message(STATUS "(opt) Build Bench         : ${BUILD_BENCH}")
 message(STATUS "(opt) Build Fuzz          : ${BUILD_FUZZ}")
 message(STATUS "Install Prefix            : ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "==============================================================")
@@ -267,13 +271,11 @@ add_subdirectory(yacl/math)
 # link (networking)
 add_subdirectory(yacl/link)
 
-# mpc
-add_subdirectory(yacl/mpc)
-
-# snark
-add_subdirectory(yacl/snark)
-
 # other
+add_subdirectory(yacl/snark)
+add_subdirectory(yacl/ot)
+add_subdirectory(yacl/mpc)
+add_subdirectory(yacl/vole)
 add_subdirectory(yacl/rand)
 add_subdirectory(yacl/aead)
 add_subdirectory(yacl/aes)

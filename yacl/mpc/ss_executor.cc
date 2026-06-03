@@ -25,7 +25,7 @@
 #include "fmt/format.h"
 
 #include "yacl/mpc/ot_kernel.h"
-#include "yacl/mpc/type/ot_store.h"
+#include "yacl/ot/ot_store.h"
 #include "yacl/rand/rand.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/exception.h"

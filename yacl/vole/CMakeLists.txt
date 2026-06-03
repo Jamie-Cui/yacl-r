@@ -12,18 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/ot_kernel.cc
-    ${CMAKE_CURRENT_LIST_DIR}/svole_kernel.cc
-    ${CMAKE_CURRENT_LIST_DIR}/plaintext_executor.cc
-    ${CMAKE_CURRENT_LIST_DIR}/ss_executor.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/mpfss.cc
+                      ${CMAKE_CURRENT_LIST_DIR}/silent_vole.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
-
-add_yacl_test_if(ot_kernel_test)
-add_yacl_test_if(svole_kernel_test)
-add_yacl_test_if(ss_executor_test)
-add_yacl_test_if(plaintext_executor_test)

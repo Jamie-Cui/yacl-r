@@ -18,13 +18,13 @@
 #include <variant>
 
 #include "yacl/mpc/kernel.h"
-#include "yacl/mpc/type/ot_store_utils.h"
+#include "yacl/ot/ot_store_utils.h"
 #include "yacl/utils/dynamic_bitset.h"
 
 /* submodules */
-#include "yacl/mpc/core/base_ot.h"
-#include "yacl/mpc/core/ferret_ote.h"
-#include "yacl/mpc/core/softspoken_ote.h"
+#include "yacl/ot/base_ot.h"
+#include "yacl/ot/ferret_ote.h"
+#include "yacl/ot/softspoken_ote.h"
 #include "yacl/utils/secparam.h"
 
 namespace yacl {
@@ -77,7 +77,7 @@ class OtKernel : SingleThreadKernel {
   // delta-correlated, which means m0 xor m1 = delta
   //
   // Note: all correlated ot instances are stored in *compact mode*
-  // see: yacl/mpc/type/ot_store_utils.h
+  // see: yacl/ot/ot_store_utils.h
   void eval_cot_random_choice(const std::shared_ptr<link::Context>& lctx,
                               uint64_t ot_num,
                               /* compact mode */ OtSendStore* out);
