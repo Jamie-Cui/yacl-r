@@ -30,20 +30,22 @@ namespace yacl::link::test {
 
 class MockChannel : public transport::IChannel {
  public:
-  MOCK_METHOD2(SendAsync,
-               void(const std::string& key, ByteContainerView value));
-  MOCK_METHOD2(SendAsync, void(const std::string& key, Buffer&& value));
-  MOCK_METHOD2(SendAsyncThrottled,
-               void(const std::string& key, ByteContainerView value));
-  MOCK_METHOD2(SendAsyncThrottled,
-               void(const std::string& key, Buffer&& value));
-  MOCK_METHOD2(Send, void(const std::string& key, ByteContainerView value));
-  MOCK_METHOD1(Recv, Buffer(const std::string& key));
-  MOCK_METHOD2(OnMessage,
-               void(const std::string& key, ByteContainerView value));
-  MOCK_METHOD4(OnChunkedMessage,
-               void(const std::string& key, ByteContainerView value,
-                    size_t offset, size_t total_length));
+  MOCK_METHOD(void, SendAsync,
+              (const std::string& key, ByteContainerView value), (override));
+  MOCK_METHOD(void, SendAsync, (const std::string& key, Buffer&& value),
+              (override));
+  MOCK_METHOD(void, SendAsyncThrottled,
+              (const std::string& key, ByteContainerView value), (override));
+  MOCK_METHOD(void, SendAsyncThrottled,
+              (const std::string& key, Buffer&& value), (override));
+  MOCK_METHOD(void, Send, (const std::string& key, ByteContainerView value),
+              (override));
+  MOCK_METHOD(Buffer, Recv, (const std::string& key), (override));
+  MOCK_METHOD(void, OnMessage,
+              (const std::string& key, ByteContainerView value), (override));
+  MOCK_METHOD(void, OnChunkedMessage,
+              (const std::string& key, ByteContainerView value, size_t offset,
+               size_t total_length));
   void SetRecvTimeout(uint64_t timeout_ms) override { timeout_ = timeout_ms; }
   uint64_t GetRecvTimeout() const override { return timeout_; }
   void WaitLinkTaskFinish() override {}
@@ -51,8 +53,8 @@ class MockChannel : public transport::IChannel {
   void SetThrottleWindowSize(size_t) override {}
   void SetChunkParallelSendSize(size_t) override {}
 
-  MOCK_METHOD1(TestSend, void(uint32_t));
-  MOCK_METHOD0(TestRecv, void());
+  MOCK_METHOD(void, TestSend, (uint32_t), (override));
+  MOCK_METHOD(void, TestRecv, (), (override));
 
  private:
   std::uint64_t timeout_{std::numeric_limits<std::uint32_t>::max()};

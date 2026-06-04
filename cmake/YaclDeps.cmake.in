@@ -43,6 +43,12 @@ _yacl_alias_dep(Deps::fmt libfmt)
 
 _yacl_import_interface_dep(
   libFourQ "${_YACL_DEPS_LIB_DIR}/libFourQ@CMAKE_STATIC_LIBRARY_SUFFIX@")
+set_property(
+  TARGET libFourQ
+  APPEND
+  PROPERTY INTERFACE_COMPILE_DEFINITIONS
+           $<$<PLATFORM_ID:Windows>:__WINDOWS__>
+           $<$<NOT:$<PLATFORM_ID:Windows>>:__LINUX__>)
 _yacl_alias_dep(Deps::fourq libFourQ)
 
 _yacl_import_interface_dep(

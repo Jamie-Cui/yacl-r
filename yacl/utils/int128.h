@@ -153,6 +153,7 @@ template <>
 struct is_arithmetic<uint128_t> : public true_type {};
 #endif
 
+#ifndef HAS_INT128_TRAITS
 template <>
 struct make_unsigned<int128_t> {
   using type = uint128_t;
@@ -172,5 +173,6 @@ template <>
 struct make_signed<int128_t> {
   using type = int128_t;
 };
+#endif
 
 }  // namespace std

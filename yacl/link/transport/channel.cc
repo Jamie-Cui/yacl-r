@@ -15,6 +15,7 @@
 #include "yacl/utils/strings.h"
 #include "yacl/link/transport/channel.h"
 
+#include <limits>
 #include <memory>
 #include <set>
 
@@ -43,11 +44,12 @@ void NormalMessageKeyEnforce(std::string_view k) {
 
 template <class View>
 size_t ViewToSizeT(View v) {
-  size_t ret = 0;
+  uint64_t ret = 0;
   YACL_ENFORCE(yacl::SimpleAtoi(
       std::string_view(reinterpret_cast<const char*>(v.data()), v.size()),
       &ret));
-  return ret;
+  YACL_ENFORCE(ret <= std::numeric_limits<size_t>::max());
+  return static_cast<size_t>(ret);
 }
 
 std::string BuildChannelKey(std::string_view msg_key, size_t seq_id) {

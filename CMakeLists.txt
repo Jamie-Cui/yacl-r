@@ -137,6 +137,9 @@ add_compiler_flags(-Wno-unused-parameter) # for butil
 add_compiler_flags(-Wno-stringop-overflow) # mcl
 add_compiler_flags(-Wno-mismatched-new-delete) # msgpack
 add_compiler_flags(-Wno-array-bounds) # mcl
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+  add_compiler_flags(-Wno-character-conversion) # gtest
+endif()
 
 # HACK we need to add the following global compiler flag in order to compile fourq
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -176,6 +179,10 @@ set(YACL_INSTALL_DEPS_LIBDIR ${CMAKE_INSTALL_LIBDIR}/yacl-r/deps)
 set(YACL_PUBLIC_COMPILE_DEFINITIONS
     ASIO_STANDALONE ASIO_NO_DEPRECATED MSGPACK_NO_BOOST SPDLOG_FMT_EXTERNAL
     MCL_ALL_PAIRING_FOR_YACL)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+  list(APPEND YACL_PUBLIC_COMPILE_DEFINITIONS FMT_USE_CONSTEVAL=0)
+endif()
 
 set(YACL_PUBLIC_COMPILE_OPTIONS "")
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|amd64")
@@ -306,6 +313,8 @@ target_include_directories(
   PUBLIC "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
          "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
          "$<BUILD_INTERFACE:${CMAKE_DEPS_INCLUDEDIR}>")
+
+target_compile_definitions(yacl_obj PUBLIC ${YACL_PUBLIC_COMPILE_DEFINITIONS})
 
 # Add include path for simplest-ot
 target_include_directories(

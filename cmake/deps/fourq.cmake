@@ -47,6 +47,11 @@ ExternalProject_Add(
   LOG_INSTALL On)
 
 import_static_lib_from(libFourQ fourq)
+if(WIN32)
+  target_compile_definitions(libFourQ INTERFACE __WINDOWS__)
+else()
+  target_compile_definitions(libFourQ INTERFACE __LINUX__)
+endif()
 
 # -----------------------------
 # Alias Target for External Use

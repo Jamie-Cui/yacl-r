@@ -23,6 +23,8 @@ ExternalProject_Add(
              -DCMAKE_INSTALL_PREFIX=${CMAKE_DEPS_PREFIX} #
              -DFMT_TEST=Off
              -DFMT_DOC=Off
+  PATCH_COMMAND patch -p1 -l -f --binary -i
+                ${PROJECT_SOURCE_DIR}/cmake/patches/fmt.patch || true
   PREFIX ${CMAKE_DEPS_PREFIX}
   BUILD_BYPRODUCTS ${CMAKE_DEPS_LIBDIR}/libfmt${CMAKE_STATIC_LIBRARY_SUFFIX}
   EXCLUDE_FROM_ALL true
