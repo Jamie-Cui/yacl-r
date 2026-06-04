@@ -28,6 +28,7 @@ enum class SignTy : uint8_t {
   UNKNOWN,
   SM2_SM3,
   RSA_SHA256,
+  ML_DSA,
 };
 
 class Signer {

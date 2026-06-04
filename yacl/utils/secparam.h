@@ -80,6 +80,18 @@ class SecParam {
   // convert to int
   static constexpr uint32_t MakeInt(C c);
 
+  // Post-Quantunm Secuirty Categories
+  enum class PqcCat : uint8_t {
+    k1,  // comparable to AES-128
+    k2,  // comparable to SHA-256
+    k3,  // comparable to AES-192
+    k4,  // comparable to SHA-384
+    k5,  // comparable to AES-256
+  };
+
+  // convert to int
+  static constexpr uint32_t MakeInt(PqcCat c);
+
   // Statistical Security Parameter: (from wikipedia) A measure of the
   // probability with which an adversary can break the scheme. Statistial
   // security parameter is usually used in the security proof of statistical
@@ -130,6 +142,23 @@ constexpr uint32_t SecParam::MakeInt(SecParam::S s) {
       return 64;
     case SecParam::S::INF:
       return UINT32_MAX;
+    default:
+      return 0;  // this should never be called
+  }
+}
+
+constexpr uint32_t SecParam::MakeInt(SecParam::PqcCat c) {
+  switch (c) {
+    case SecParam::PqcCat::k1:
+      return 1;
+    case SecParam::PqcCat::k2:
+      return 2;
+    case SecParam::PqcCat::k3:
+      return 3;
+    case SecParam::PqcCat::k4:
+      return 4;
+    case SecParam::PqcCat::k5:
+      return 5;
     default:
       return 0;  // this should never be called
   }

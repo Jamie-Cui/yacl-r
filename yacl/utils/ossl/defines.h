@@ -82,6 +82,7 @@ using UniqueX509Ext = internal::TyHelper<X509_EXTENSION, X509_EXTENSION_free>;
 
 using UniquePkey = internal::TyHelper<EVP_PKEY, EVP_PKEY_free>;
 using UniquePkeyCtx = internal::TyHelper<EVP_PKEY_CTX, EVP_PKEY_CTX_free>;
+using UniqueSignature = internal::TyHelper<EVP_SIGNATURE, EVP_SIGNATURE_free>;
 using UniqueEncoder =
     internal::TyHelper<OSSL_ENCODER_CTX, OSSL_ENCODER_CTX_free>;
 using UniqueDecoder =

@@ -34,7 +34,11 @@ namespace yacl {
 
 // Generate RSA secret key and public key pair, the resulting key pair is stored
 // in a single UniquePkey object
-[[nodiscard]] ossl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen = 2048);
+[[nodiscard]] ossl::UniquePkey GenRsaKeyPair(SecParam::C c = SecParam::C::k128);
+
+// TODO: Add description
+[[nodiscard]] ossl::UniquePkey GenMlDsaKeyPair(
+    SecParam::PqcCat c = SecParam::PqcCat::k2);
 
 // Generate SM2 secret key and public key pair, the resulting key pair is stored
 // in a single UniquePkey object
@@ -43,11 +47,15 @@ namespace yacl {
 // Generate RSA key pair, and convert the secret key (sk) and public key (pk)
 // into "PEM" format buffers, separately
 [[nodiscard]] std::pair<Buffer, Buffer> GenRsaKeyPairToPemBuf(
-    unsigned rsa_keygen = 2048);
+    SecParam::C c = SecParam::C::k128);
 
 // Generate RSA key pair, and convert the secret key (sk) and public key (pk)
 // into "PEM" format buffers, separately
 [[nodiscard]] std::pair<Buffer, Buffer> GenSm2KeyPairToPemBuf();
+
+// TODO: Add description
+[[nodiscard]] std::pair<Buffer, Buffer> GenMlDsaKeyPairToPemBuf(
+    SecParam::PqcCat c = SecParam::PqcCat::k2);
 
 // -------------------
 // Load Any Format Key

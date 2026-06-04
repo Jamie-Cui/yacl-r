@@ -18,6 +18,7 @@
 
 #include "yacl/io/stream/file_io.h"
 #include "yacl/utils/ossl/defines.h"
+#include "yacl/utils/secparam_utils.h"
 
 namespace yacl {
 
@@ -73,13 +74,19 @@ inline void ExportBufToFile(Buffer&& buf, const std::string& file_path) {
   out.Write(buf.data(), buf.size());
 }
 
+inline bool IsMlDsaKey(const ossl::UniquePkey& pkey) {
+  return EVP_PKEY_is_a(pkey.get(), "ML-DSA-44") ||
+         EVP_PKEY_is_a(pkey.get(), "ML-DSA-65") ||
+         EVP_PKEY_is_a(pkey.get(), "ML-DSA-87");
+}
+
 }  // namespace
 
 // -------------------
 // Key Pair Generation
 // -------------------
 
-ossl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen) {
+ossl::UniquePkey GenRsaKeyPair(SecParam::C c) {
   /* EVP_RSA_gen() may be set deprecated by later version of OpenSSL */
   EVP_PKEY* pkey = EVP_PKEY_new();  // placeholder
 
@@ -89,7 +96,7 @@ ossl::UniquePkey GenRsaKeyPair(unsigned rsa_keylen) {
   OSSL_RET_1(EVP_PKEY_keygen_init(ctx.get()));
 
   // set key length bits
-  OSSL_RET_1(EVP_PKEY_CTX_set_rsa_keygen_bits(ctx.get(), rsa_keylen));
+  OSSL_RET_1(EVP_PKEY_CTX_set_rsa_keygen_bits(ctx.get(), GetRsaPkSize(c)));
 
   // generate keys
   OSSL_RET_1(EVP_PKEY_keygen(ctx.get(), &pkey));
@@ -114,8 +121,38 @@ ossl::UniquePkey GenSm2KeyPair() {
   return ossl::UniquePkey(pkey);
 }
 
-std::pair<Buffer, Buffer> GenRsaKeyPairToPemBuf(unsigned rsa_keygen) {
-  auto pkey = GenRsaKeyPair(rsa_keygen);
+ossl::UniquePkey GenMlDsaKeyPair(SecParam::PqcCat c) {
+  /* EVP_RSA_gen() may be set deprecated by later version of OpenSSL */
+  EVP_PKEY* pkey = EVP_PKEY_new();  // placeholder
+
+  int evp_pkey_ml_dsa_id = 0;
+  switch (c) {
+    case SecParam::PqcCat::k2:
+      evp_pkey_ml_dsa_id = EVP_PKEY_ML_DSA_44;
+      break;
+    case SecParam::PqcCat::k3:
+      evp_pkey_ml_dsa_id = EVP_PKEY_ML_DSA_65;
+      break;
+    case SecParam::PqcCat::k5:
+      evp_pkey_ml_dsa_id = EVP_PKEY_ML_DSA_87;
+      break;
+    default:
+      YACL_THROW("Unsupported security parameter for ML-DSA: {}",
+                 SecParam::MakeInt(c));
+  }
+
+  ossl::UniquePkeyCtx ctx(
+      EVP_PKEY_CTX_new_id(evp_pkey_ml_dsa_id, /* engine = default */ nullptr));
+  YACL_ENFORCE(ctx != nullptr);
+  OSSL_RET_1(EVP_PKEY_keygen_init(ctx.get()));
+
+  // generate keys
+  OSSL_RET_1(EVP_PKEY_keygen(ctx.get(), &pkey));
+  return ossl::UniquePkey(pkey);
+}
+
+std::pair<Buffer, Buffer> GenRsaKeyPairToPemBuf(SecParam::C c) {
+  auto pkey = GenRsaKeyPair(c);
   Buffer pk_buf = ExportPublicKeyToPemBuf(pkey);
   Buffer sk_buf = ExportSecretKeyToPemBuf(pkey);
   return {pk_buf, sk_buf};
@@ -123,6 +160,13 @@ std::pair<Buffer, Buffer> GenRsaKeyPairToPemBuf(unsigned rsa_keygen) {
 
 std::pair<Buffer, Buffer> GenSm2KeyPairToPemBuf() {
   auto pkey = GenSm2KeyPair();
+  Buffer pk_buf = ExportPublicKeyToPemBuf(pkey);
+  Buffer sk_buf = ExportSecretKeyToPemBuf(pkey);
+  return {pk_buf, sk_buf};
+}
+
+std::pair<Buffer, Buffer> GenMlDsaKeyPairToPemBuf(SecParam::PqcCat c) {
+  auto pkey = GenMlDsaKeyPair(c);
   Buffer pk_buf = ExportPublicKeyToPemBuf(pkey);
   Buffer sk_buf = ExportSecretKeyToPemBuf(pkey);
   return {pk_buf, sk_buf};
@@ -315,8 +359,9 @@ ossl::UniqueX509 MakeX509Cert(
   AddX509Extension(x509.get(), NID_subject_key_identifier, kTmp2.data());
 
   /* self signing with digest algorithm */
-  auto sign_bytes =
-      X509_sign(x509.get(), sk.get(), ossl::FetchEvpMd(ToString(hash)).get());
+  auto md = ossl::FetchEvpMd(ToString(hash));
+  const EVP_MD* sign_md = IsMlDsaKey(sk) ? nullptr : md.get();
+  auto sign_bytes = X509_sign(x509.get(), sk.get(), sign_md);
   YACL_ENFORCE(sign_bytes > 0, "Perform self-signing failed.");
   return x509;
 }

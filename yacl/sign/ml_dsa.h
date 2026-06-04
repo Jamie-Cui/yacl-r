@@ -1,4 +1,4 @@
-// Copyright 2019 Ant Group Co., Ltd.
+// Copyright 2026 Jamie Cui
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@
 namespace yacl {
 
 // RSA sign with sha256 (wrapper for OpenSSL)
-class RsaSigner final : public Signer {
+class MlDsaSigner final : public Signer {
  public:
   // constructors and destrucors
-  explicit RsaSigner(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
-  explicit RsaSigner(/* pem key */ ByteContainerView sk_buf)
+  explicit MlDsaSigner(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
+  explicit MlDsaSigner(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
   // return the scheme name
@@ -44,15 +44,15 @@ class RsaSigner final : public Signer {
 
  private:
   const ossl::UniquePkey sk_;
-  const SignTy scheme_ = SignTy::RSA_SHA256;
+  const SignTy scheme_ = SignTy::ML_DSA;
 };
 
 // RSA verify with sha256 (wrapper for OpenSSL)
-class RsaVerifier final : public Verifier {
+class MlDsaVerifier final : public Verifier {
  public:
   // constructors and destrucors
-  explicit RsaVerifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
-  explicit RsaVerifier(/* pem key */ ByteContainerView pk_buf)
+  explicit MlDsaVerifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
+  explicit MlDsaVerifier(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
   // return the scheme name
@@ -64,7 +64,7 @@ class RsaVerifier final : public Verifier {
 
  private:
   const ossl::UniquePkey pk_;
-  const SignTy scheme_ = SignTy::RSA_SHA256;
+  const SignTy scheme_ = SignTy::ML_DSA;
 };
 
 }  // namespace yacl

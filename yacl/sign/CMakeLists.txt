@@ -12,8 +12,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa.cc
-                      ${CMAKE_CURRENT_LIST_DIR}/sm2.cc)
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa.cc
+    ${CMAKE_CURRENT_LIST_DIR}/sm2.cc ${CMAKE_CURRENT_LIST_DIR}/ml_dsa.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
@@ -25,3 +26,4 @@ set(YACL_SOURCE_FILES
 
 add_yacl_test_if(sign_test_sm2)
 add_yacl_test_if(sign_test_rsa)
+add_yacl_test_if(sign_test_ml_dsa)
