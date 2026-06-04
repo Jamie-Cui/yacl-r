@@ -36,7 +36,7 @@ namespace yacl {
 // NOTE Strictly, mac-then-encrypt algorithm is not aead, we add those
 // algorithms only for backword compatiability.
 
-enum class AeadAlgorithm : int {
+enum class AeadType : uint8_t {
   UNKNOWN = 0,
   AES128_GCM = 1,  // Galois-Counter Mode
   AES256_GCM = 2,  // Galois-Counter Mode
@@ -47,14 +47,14 @@ enum class AeadAlgorithm : int {
 };
 
 // Pre-defined default Aead algorithm for AeadCtx only
-constexpr AeadAlgorithm kDefaultAeadAlgorithm = AeadAlgorithm::AES128_GCM;
+constexpr AeadType kDefaultAeadAlgorithm = AeadType::AES128_GCM;
 
 // AEAD Context Class
 class AeadCtx {
  public:
   // Constructors
   AeadCtx();
-  explicit AeadCtx(AeadAlgorithm algorithm) { SetAlgorithm(algorithm); }
+  explicit AeadCtx(AeadType algorithm) { SetAlgorithm(algorithm); }
 
   // Get a default AeadCtx with the AeadAlgorithm set. This function could be
   // seen as a helper function if you do not know which algorithm to choose.
@@ -66,19 +66,19 @@ class AeadCtx {
 
   // Get the key size of the AEAD algorithm that is stored insize AeadCtx
   size_t GetKeySize() {
-    YACL_ENFORCE(algorithm_ != AeadAlgorithm::UNKNOWN);
+    YACL_ENFORCE(algorithm_ != AeadType::UNKNOWN);
     return GetKeySize(algorithm_);
   }
 
   // Staticlly get the key size of an AEAD algorithm
-  static size_t GetKeySize(AeadAlgorithm algorithm);
+  static size_t GetKeySize(AeadType algorithm);
 
   // Get the mac size of the AEAD algorithm that is stored insize AeadCtx
   //
   // NOTE in case of mac-then-encrypt algorithm, this function fetches the
   // encrypted mac size
   size_t GetMacSize() {
-    YACL_ENFORCE(algorithm_ != AeadAlgorithm::UNKNOWN);
+    YACL_ENFORCE(algorithm_ != AeadType::UNKNOWN);
     return GetMacSize(algorithm_);
   }
 
@@ -86,10 +86,10 @@ class AeadCtx {
   //
   // NOTE in case of mac-then-encrypt algorithm, this function fetches the
   // encrypted mac size
-  static size_t GetMacSize(AeadAlgorithm algorithm);
+  static size_t GetMacSize(AeadType algorithm);
 
-  AeadAlgorithm GetAlgorithm() { return algorithm_; }
-  void SetAlgorithm(AeadAlgorithm algorithm) { algorithm_ = algorithm; }
+  AeadType GetAlgorithm() { return algorithm_; }
+  void SetAlgorithm(AeadType algorithm) { algorithm_ = algorithm; }
 
   // Encrypts plaintext into ciphertext and mac. The input arguments
   // are the AEAD algorithm, the plaintext,  and the optional
@@ -118,7 +118,7 @@ class AeadCtx {
   //
   // NOTE Since Mac-Then-Encrypt results in one ciphertext, the argument "mac"
   // is ignored for Mte algorithms
-  static void Encrypt(AeadAlgorithm algorithm, ByteContainerView plaintext,
+  static void Encrypt(AeadType algorithm, ByteContainerView plaintext,
                       ByteContainerView key, ByteContainerView iv,
                       std::span<uint8_t> ciphertext, std::span<uint8_t> mac,
                       ByteContainerView aad = "");
@@ -130,13 +130,13 @@ class AeadCtx {
   //
   // NOTE Since Mac-Then-Encrypt results in one ciphertext, the argument "mac"
   // is ignored for Mte algorithms
-  static void Decrypt(AeadAlgorithm algorithm, ByteContainerView ciphertext,
+  static void Decrypt(AeadType algorithm, ByteContainerView ciphertext,
                       ByteContainerView mac, ByteContainerView key,
                       ByteContainerView iv, std::span<uint8_t> plaintext,
                       ByteContainerView aad = "");
 
  private:
-  AeadAlgorithm algorithm_ = AeadAlgorithm::UNKNOWN;  // GCM crypto schema
+  AeadType algorithm_ = AeadType::UNKNOWN;  // GCM crypto schema
 };
 
 }  // namespace yacl

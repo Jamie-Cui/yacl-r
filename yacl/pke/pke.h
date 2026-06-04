@@ -24,19 +24,19 @@
 
 namespace yacl {
 
-enum class PkeScheme { UNKNOWN, RSA2048_OAEP, RSA3072_OAEP, SM2 };
+enum class PkeTy : uint8_t { UNKNOWN, RSA2048_OAEP, RSA3072_OAEP, SM2 };
 
 class PkeEncryptor {
  public:
   virtual ~PkeEncryptor() = default;
-  virtual PkeScheme GetScheme() const = 0;
+  virtual PkeTy Type() const = 0;
   virtual std::vector<uint8_t> Encrypt(ByteContainerView plaintext) = 0;
 };
 
 class PkeDecryptor {
  public:
   virtual ~PkeDecryptor() = default;
-  virtual PkeScheme GetScheme() const = 0;
+  virtual PkeTy Type() const = 0;
   virtual std::vector<uint8_t> Decrypt(ByteContainerView ciphertext) = 0;
 };
 

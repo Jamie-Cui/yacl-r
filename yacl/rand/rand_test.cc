@@ -20,8 +20,8 @@
 
 #include "gtest/gtest.h"
 
+#include "yacl/bc/block_cipher.h"
 #include "yacl/utils/int128.h"
-#include "yacl/bc/symmetric_crypto.h"
 
 namespace yacl {
 
@@ -130,7 +130,7 @@ TEST(GenericRandTest, ReplayRandomShuffleTest) {
     auto seed = SecureRandSeed();
     auto ctr = FastRandU64();
     auto iv = FastRandU64();
-    auto ctype = yacl::SymmetricCrypto::CryptoType::AES128_CTR;
+    auto ctype = yacl::BlockCipherTy::AES128_CTR;
     auto vec_copy = vec;
 
     YaclReplayUrbg<uint32_t> g1(seed, ctr, iv, ctype);
@@ -148,7 +148,7 @@ TEST(GenericRandTest, ReplayRandomShuffleTest) {
     auto seed = SecureRandSeed();
     auto ctr = FastRandU64();
     auto iv = FastRandU64();
-    auto ctype = yacl::SymmetricCrypto::CryptoType::AES128_ECB;
+    auto ctype = yacl::BlockCipherTy::AES128_ECB;
     auto vec1 = vec;
     auto vec2 = vec;
     auto vec3 = vec;

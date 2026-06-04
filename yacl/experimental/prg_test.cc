@@ -141,10 +141,8 @@ TEST(Prg, FillPRandomBytes) {
   constexpr int kSize = 11;
   std::vector<uint8_t> output1(kSize);
   std::vector<uint8_t> output2(kSize);
-  auto c1 = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, 0,
-                      std::span(output1));
-  auto c2 = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, c1,
-                      std::span(output2));
+  auto c1 = FillPRand(BlockCipherTy::AES128_ECB, 0, 0, 0, std::span(output1));
+  auto c2 = FillPRand(BlockCipherTy::AES128_ECB, 0, 0, c1, std::span(output2));
   const uint128_t expected =
       (kSize + sizeof(uint128_t) - 1) / sizeof(uint128_t);
   EXPECT_EQ(c1, expected);
@@ -158,10 +156,8 @@ TEST(Prg, FillAesRandom) {
   constexpr int kSize = 11;
   std::vector<uint64_t> output1(kSize);
   std::vector<uint64_t> output2(kSize);
-  auto c1 = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, 0,
-                      std::span(output1));
-  auto c2 = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, c1,
-                      std::span(output2));
+  auto c1 = FillPRand(BlockCipherTy::AES128_ECB, 0, 0, 0, std::span(output1));
+  auto c2 = FillPRand(BlockCipherTy::AES128_ECB, 0, 0, c1, std::span(output2));
   const uint128_t expected =
       (sizeof(uint64_t) * kSize + sizeof(uint128_t) - 1) / sizeof(uint128_t);
   EXPECT_EQ(c1, expected);
@@ -282,8 +278,8 @@ TEST(PRandomCtrDrbg, DeterministicWithDifferentSeed) {
 
 TEST(PRTest, MersennePrime128) {
   std::vector<uint128_t> out(1000);
-  FillPRandWithMersennePrime<uint128_t>(SymmetricCrypto::CryptoType::AES128_ECB,
-                                        0, 0, 0, std::span(out));
+  FillPRandWithMersennePrime<uint128_t>(BlockCipherTy::AES128_ECB, 0, 0, 0,
+                                        std::span(out));
   constexpr uint128_t k_mp128_mask =
       MakeUint128(std::numeric_limits<uint64_t>::max() >> 1,
                   std::numeric_limits<uint64_t>::max());
@@ -295,8 +291,8 @@ TEST(PRTest, MersennePrime128) {
 
 TEST(PRTest, MersennePrime64) {
   std::vector<uint64_t> out(1000);
-  FillPRandWithMersennePrime<uint64_t>(SymmetricCrypto::CryptoType::AES128_ECB,
-                                       0, 0, 0, std::span(out));
+  FillPRandWithMersennePrime<uint64_t>(BlockCipherTy::AES128_ECB, 0, 0, 0,
+                                       std::span(out));
   EXPECT_NE(out[0], out[1]);
   constexpr uint64_t k_mp64_mask = 2305843009213693951;
   for (auto e : out) {
@@ -306,8 +302,8 @@ TEST(PRTest, MersennePrime64) {
 
 TEST(PRTest, MersennePrime32) {
   std::vector<uint32_t> out(1000);
-  FillPRandWithMersennePrime<uint32_t>(SymmetricCrypto::CryptoType::AES128_ECB,
-                                       0, 0, 0, std::span(out));
+  FillPRandWithMersennePrime<uint32_t>(BlockCipherTy::AES128_ECB, 0, 0, 0,
+                                       std::span(out));
   EXPECT_NE(out[0], out[1]);
   constexpr uint32_t k_mp32_mask = 2147483647;
   for (auto e : out) {
@@ -317,8 +313,8 @@ TEST(PRTest, MersennePrime32) {
 
 TEST(PRTest, MersennePrime8) {
   std::vector<uint8_t> out(1000);
-  FillPRandWithMersennePrime<uint8_t>(SymmetricCrypto::CryptoType::AES128_ECB,
-                                      0, 0, 0, std::span(out));
+  FillPRandWithMersennePrime<uint8_t>(BlockCipherTy::AES128_ECB, 0, 0, 0,
+                                      std::span(out));
   EXPECT_NE(out[0], out[1]);
   constexpr uint8_t k_mp8_mask = 127;
   for (auto e : out) {
@@ -329,7 +325,7 @@ TEST(PRTest, MersennePrime8) {
 TEST(PRTest, Ltn128) {
   std::vector<uint128_t> out(1000);
   uint128_t n = FastRandU128();
-  FillPRandWithLtN<uint128_t>(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, 0,
+  FillPRandWithLtN<uint128_t>(BlockCipherTy::AES128_ECB, 0, 0, 0,
                               std::span(out), n);
   EXPECT_NE(out[0], out[1]);
   for (auto e : out) {
@@ -340,8 +336,8 @@ TEST(PRTest, Ltn128) {
 TEST(PRTest, Ltn64) {
   std::vector<uint64_t> out(1000);
   uint64_t n = FastRandU64();
-  FillPRandWithLtN<uint64_t>(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, 0,
-                             std::span(out), n);
+  FillPRandWithLtN<uint64_t>(BlockCipherTy::AES128_ECB, 0, 0, 0, std::span(out),
+                             n);
   EXPECT_NE(out[0], out[1]);
   for (auto e : out) {
     EXPECT_LT(e, n);
@@ -351,8 +347,8 @@ TEST(PRTest, Ltn64) {
 TEST(PRTest, Ltn32) {
   std::vector<uint64_t> out(1000);
   uint32_t n = FastRandU32();
-  FillPRandWithLtN<uint64_t>(SymmetricCrypto::CryptoType::AES128_ECB, 0, 0, 0,
-                             std::span(out), n);
+  FillPRandWithLtN<uint64_t>(BlockCipherTy::AES128_ECB, 0, 0, 0, std::span(out),
+                             n);
   EXPECT_NE(out[0], out[1]);
   for (auto e : out) {
     EXPECT_LT(e, n);

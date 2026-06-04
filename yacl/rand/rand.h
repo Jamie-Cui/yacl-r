@@ -23,7 +23,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 #include "yacl/experimental/prg.h"
 #include "yacl/math/mpint/mp_int.h"
 #include "yacl/rand/drbg/drbg.h"
@@ -208,7 +208,7 @@ template <typename T, std::enable_if_t<std::is_unsigned_v<T>, bool> = true>
 class YaclReplayUrbg {
  public:
   using result_type = T;
-  using CType = yacl::SymmetricCrypto::CryptoType;
+  using CType = yacl::BlockCipherTy;
 
   YaclReplayUrbg(uint128_t seed, uint64_t ctr, uint64_t iv = 0,
                  CType ctype = CType::AES128_CTR)
@@ -247,8 +247,8 @@ void ReplayShuffle(RandomIt first, RandomIt last, uint128_t seed,
   // ind[0] in [0, 1], ind[1] in [0, 2] ... ind[n-2] in [0, n-1]
   std::vector<uint128_t> ind(n - 1);
 
-  *ctr = yacl::FillPRand(yacl::SymmetricCrypto::CryptoType::AES128_CTR, seed, 0,
-                         *ctr, (char*)ind.data(), (n - 1) * sizeof(uint128_t));
+  *ctr = yacl::FillPRand(yacl::BlockCipherTy::AES128_CTR, seed, 0, *ctr,
+                         (char*)ind.data(), (n - 1) * sizeof(uint128_t));
 
   // Though this is not strictly uniform random. it will
   // provide statistical security of no less than 40 bits.

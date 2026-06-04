@@ -34,12 +34,12 @@ class RsaEncryptor : public PkeEncryptor {
   explicit RsaEncryptor(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
-  PkeScheme GetScheme() const override { return scheme_; }
+  PkeTy Type() const override { return scheme_; }
   std::vector<uint8_t> Encrypt(ByteContainerView plaintext) override;
 
  private:
   const ossl::UniquePkey pk_;
-  const PkeScheme scheme_ = PkeScheme::RSA2048_OAEP;
+  const PkeTy scheme_ = PkeTy::RSA2048_OAEP;
 };
 
 class RsaDecryptor : public PkeDecryptor {
@@ -48,12 +48,12 @@ class RsaDecryptor : public PkeDecryptor {
   explicit RsaDecryptor(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
-  PkeScheme GetScheme() const override { return scheme_; }
+  PkeTy Type() const override { return scheme_; }
   std::vector<uint8_t> Decrypt(ByteContainerView ciphertext) override;
 
  private:
   const ossl::UniquePkey sk_;
-  const PkeScheme scheme_ = PkeScheme::RSA2048_OAEP;
+  const PkeTy scheme_ = PkeTy::RSA2048_OAEP;
 };
 
 }  // namespace yacl

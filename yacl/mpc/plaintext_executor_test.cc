@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 #include "yacl/rand/rand.h"
@@ -36,7 +36,7 @@ inline uint64_t UDiv64(uint64_t in1, uint64_t in2) { return in1 / in2; }
 inline bool Eqz(uint64_t in) { return in == 0; }
 
 inline uint128_t Aes128(uint128_t k, uint128_t m) {
-  SymmetricCrypto enc(SymmetricCrypto::CryptoType::AES128_ECB, k);
+  BlockCipher enc(BlockCipherTy::AES128_ECB, k);
   return enc.Encrypt(m);
 }
 

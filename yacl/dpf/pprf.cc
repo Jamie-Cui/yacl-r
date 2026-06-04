@@ -20,20 +20,20 @@
 
 #include "spdlog/spdlog.h"
 
+#include "yacl/experimental/prg.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
-#include "yacl/experimental/prg.h"
 
 namespace yacl {
 
 namespace {
 void GgmPrg(uint128_t in, uint128_t* out1, uint128_t* out2) {
   if (out1 != nullptr) {
-    FillPRand(SymmetricCrypto::CryptoType::AES128_CTR, in, 0, 0, (char*)out1,
+    FillPRand(BlockCipherTy::AES128_CTR, in, 0, 0, (char*)out1,
               sizeof(uint128_t));
   }
   if (out2 != nullptr) {
-    FillPRand(SymmetricCrypto::CryptoType::AES128_CTR, in, 0, 1, (char*)out2,
+    FillPRand(BlockCipherTy::AES128_CTR, in, 0, 1, (char*)out2,
               sizeof(uint128_t));
   }
 }

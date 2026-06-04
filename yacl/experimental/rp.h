@@ -22,8 +22,7 @@
 #include "yacl/utils/int128.h"
 
 /* submodules */
-// #include "yacl/aes/aes_intrinsics.h"
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 
 /* security parameter declaration */
 // this header selects the block cipher mode at runtime, no standalone security
@@ -48,7 +47,7 @@ namespace yacl {
 //
 class RP {
  public:
-  using Ctype = SymmetricCrypto::CryptoType;
+  using Ctype = BlockCipherTy;
 
   constexpr static Ctype kDefaultRpCtype = Ctype::AES128_CBC;
   constexpr static uint128_t kDefaultRpIV = 0x12345678;
@@ -66,8 +65,7 @@ class RP {
   void GenForMultiInputs(std::span<const uint128_t> in,
                          std::span<uint128_t> out) const;
 
-  std::vector<uint128_t> GenForMultiInputs(
-      std::span<const uint128_t> in) const;
+  std::vector<uint128_t> GenForMultiInputs(std::span<const uint128_t> in) const;
 
   // generate (block vector) x's random permutation, and inplace
   void GenForMultiInputsInplace(std::span<uint128_t> inout) const;

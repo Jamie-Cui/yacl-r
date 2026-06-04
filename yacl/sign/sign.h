@@ -24,23 +24,23 @@
 
 namespace yacl {
 
-enum class SignatureScheme : int {
+enum class SignTy : uint8_t {
   UNKNOWN,
-  SM2_SIGNING_SM3_HASH,
-  RSA_SIGNING_SHA256_HASH,
+  SM2_SM3,
+  RSA_SHA256,
 };
 
-class AsymmetricSigner {
+class Signer {
  public:
-  virtual ~AsymmetricSigner() = default;
-  virtual SignatureScheme GetSignatureSchema() const = 0;
+  virtual ~Signer() = default;
+  virtual SignTy Type() const = 0;
   virtual std::vector<uint8_t> Sign(ByteContainerView message) const = 0;
 };
 
-class AsymmetricVerifier {
+class Verifier {
  public:
-  virtual ~AsymmetricVerifier() = default;
-  virtual SignatureScheme GetSignatureSchema() const = 0;
+  virtual ~Verifier() = default;
+  virtual SignTy Type() const = 0;
   virtual bool Verify(ByteContainerView message,
                       ByteContainerView signature) const = 0;
 };

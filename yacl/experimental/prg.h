@@ -22,14 +22,14 @@
 #include <type_traits>
 #include <vector>
 
+#include "yacl/math/mpint/mp_int.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/dynamic_bitset.h"
 #include "yacl/utils/int128.h"
 #include "yacl/utils/secparam.h"
-#include "yacl/math/mpint/mp_int.h"
 
 /* submodules */
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("prg", SecParam::C::k128, SecParam::S::k40);
@@ -46,16 +46,15 @@ namespace yacl {
 //
 // NOTE FillPRand is not an instantiation of NIST800-90A.
 //
-uint64_t FillPRand(SymmetricCrypto::CryptoType type, uint128_t seed,
-                   uint64_t iv, uint64_t count, char* buf, size_t len);
+uint64_t FillPRand(BlockCipherTy type, uint128_t seed, uint64_t iv,
+                   uint64_t count, char* buf, size_t len);
 
 // Fill pseudo-randomness with template type T.
 // Return the increased counter (count++, presumably).
 template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
-inline uint64_t FillPRand(SymmetricCrypto::CryptoType crypto_type,
-                          uint128_t seed, uint64_t iv, uint64_t count,
-                          std::span<T> out) {
+inline uint64_t FillPRand(BlockCipherTy crypto_type, uint128_t seed,
+                          uint64_t iv, uint64_t count, std::span<T> out) {
   return FillPRand(crypto_type, seed, iv, count, (char*)out.data(),
                    out.size() * sizeof(T));
 }
@@ -68,15 +67,14 @@ inline uint64_t FillPRand(SymmetricCrypto::CryptoType crypto_type,
 template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
 inline void PrgAesCtr(const uint128_t seed, std::span<T> out) {
-  FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, 0, out);
+  FillPRand<T>(BlockCipherTy::AES128_CTR, seed, 0, 0, out);
 }
 
 template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
 inline std::vector<T> PrgAesCtr(const uint128_t seed, const size_t num) {
   std::vector<T> res(num);
-  FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CTR, seed, 0, 0,
-               std::span(res));
+  FillPRand<T>(BlockCipherTy::AES128_CTR, seed, 0, 0, std::span(res));
   return res;
 }
 
@@ -84,8 +82,7 @@ template <typename T,
           std::enable_if_t<std::is_standard_layout<T>::value, int> = 0>
 inline std::vector<T> PrgAesCbc(const uint128_t seed, const size_t num) {
   std::vector<T> res(num);
-  FillPRand<T>(SymmetricCrypto::CryptoType::AES128_CBC, seed, 0, 0,
-               std::span(res));
+  FillPRand<T>(BlockCipherTy::AES128_CBC, seed, 0, 0, std::span(res));
   return res;
 }
 
@@ -191,8 +188,8 @@ T MersennePrimeMod(ByteContainerView buf) {
 template <typename T,
           std::enable_if_t<IsSupportedMersennePrimeContainerType<T>::value,
                            bool> = true>
-uint64_t FillPRandWithMersennePrime(SymmetricCrypto::CryptoType crypto_type,
-                                    uint128_t seed, uint64_t iv, uint64_t count,
+uint64_t FillPRandWithMersennePrime(BlockCipherTy crypto_type, uint128_t seed,
+                                    uint64_t iv, uint64_t count,
                                     std::span<T> out) {
   if constexpr (std::is_same_v<T, uint128_t> || std::is_same_v<T, uint64_t>) {
     // first, fill all outputs with randomness
@@ -241,9 +238,8 @@ struct IsSupportedLtNContainerType
 
 template <typename T,
           std::enable_if_t<IsSupportedLtNContainerType<T>::value, bool> = true>
-uint64_t FillPRandWithLtN(SymmetricCrypto::CryptoType crypto_type,
-                          uint128_t seed, uint64_t iv, uint64_t count,
-                          std::span<T> out, T n) {
+uint64_t FillPRandWithLtN(BlockCipherTy crypto_type, uint128_t seed,
+                          uint64_t iv, uint64_t count, std::span<T> out, T n) {
   size_t n_bit_width = 0;
   // first, fill all outputs with randomness
   if constexpr (std::is_same_v<T, uint128_t>) {
@@ -345,13 +341,12 @@ class Prg {
     switch (mode_) {
       case PRG_MODE::kAesEcb:
         counter_ = FillPRand(
-            SymmetricCrypto::CryptoType::AES128_ECB, seed_, kInitVector,
-            counter_,
+            BlockCipherTy::AES128_ECB, seed_, kInitVector, counter_,
             std::span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
         break;
       case PRG_MODE::kSm4Ecb:
         counter_ = FillPRand(
-            SymmetricCrypto::CryptoType::SM4_ECB, seed_, kInitVector, counter_,
+            BlockCipherTy::SM4_ECB, seed_, kInitVector, counter_,
             std::span<uint8_t>((uint8_t*)out.data(), sizeof(Y) * out.size()));
         break;
     }
@@ -367,14 +362,12 @@ class Prg {
 
     switch (mode_) {
       case PRG_MODE::kAesEcb:
-        counter_ = FillPRand(SymmetricCrypto::CryptoType::AES128_ECB, seed_,
-                             kInitVector, counter_,
-                             std::span(cipher_ptr, cipher_size));
+        counter_ = FillPRand(BlockCipherTy::AES128_ECB, seed_, kInitVector,
+                             counter_, std::span(cipher_ptr, cipher_size));
         break;
       case PRG_MODE::kSm4Ecb:
-        counter_ =
-            FillPRand(SymmetricCrypto::CryptoType::SM4_ECB, seed_, kInitVector,
-                      counter_, std::span(cipher_ptr, cipher_size));
+        counter_ = FillPRand(BlockCipherTy::SM4_ECB, seed_, kInitVector,
+                             counter_, std::span(cipher_ptr, cipher_size));
         break;
     }
   }

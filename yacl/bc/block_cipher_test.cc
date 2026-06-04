@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/utils/strings.h"
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 
 #include <cstdint>
 #include <limits>
@@ -25,6 +24,7 @@
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl {
 
@@ -135,75 +135,69 @@ std::vector<uint128_t> MakeBlocks(size_t len) {
   return ret;
 }
 
-const std::vector<SymmetricCrypto::CryptoType> kTestTypes{
-    SymmetricCrypto::CryptoType::AES128_ECB,
-    SymmetricCrypto::CryptoType::AES128_CBC,
-    SymmetricCrypto::CryptoType::AES128_CTR,
-    SymmetricCrypto::CryptoType::SM4_ECB,
-    SymmetricCrypto::CryptoType::SM4_CBC,
-    SymmetricCrypto::CryptoType::SM4_CTR,
+const std::vector<BlockCipherTy> kTestTypes{
+    BlockCipherTy::AES128_ECB, BlockCipherTy::AES128_CBC,
+    BlockCipherTy::AES128_CTR, BlockCipherTy::SM4_ECB,
+    BlockCipherTy::SM4_CBC,    BlockCipherTy::SM4_CTR,
 };
 
 }  // namespace
 
-class SymmetricCryptoTest : public testing::TestWithParam<size_t> {};
+class BlockCipherTest : public testing::TestWithParam<size_t> {};
 
-TEST_P(SymmetricCryptoTest, WorksNBlocks) {
+TEST_P(BlockCipherTest, WorksNBlocks) {
   size_t msg_size = GetParam();
   for (auto type : kTestTypes) {
-    SymmetricCrypto crypto(type, kKey1, kIv1);
+    BlockCipher crypto(type, kKey1, kIv1);
     auto plaintext = MakeVector(msg_size);
     std::vector<uint8_t> encrypted(plaintext.size());
     ASSERT_NO_THROW(crypto.Encrypt(plaintext, std::span(encrypted)));
 
     std::vector<uint8_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted),
-                                   std::span(decrypted)));
+    ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_EQ(plaintext.size(), decrypted.size());
     EXPECT_EQ(plaintext, decrypted);
   }
 }
 
-TEST_P(SymmetricCryptoTest, WorksUint128) {
+TEST_P(BlockCipherTest, WorksUint128) {
   size_t msg_size = GetParam();
   for (auto type : kTestTypes) {
-    SymmetricCrypto crypto(type, kKey1, kIv1);
+    BlockCipher crypto(type, kKey1, kIv1);
     auto plaintext = MakeBlocks(msg_size);
     std::vector<uint128_t> encrypted(plaintext.size());
     ASSERT_NO_THROW(crypto.Encrypt(plaintext, std::span(encrypted)));
 
     std::vector<uint128_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted),
-                                   std::span(decrypted)));
+    ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_EQ(plaintext.size(), decrypted.size());
     EXPECT_EQ(plaintext, decrypted);
   }
 }
 
-INSTANTIATE_TEST_SUITE_P(Cases, SymmetricCryptoTest,
+INSTANTIATE_TEST_SUITE_P(Cases, BlockCipherTest,
                          testing::Values<size_t>(0, 16, 32, 128, 1024, 4096));
 
 // Large input is kind of slow to iterate through all cryptor kinds...so just
 // use one
-TEST(SymmetricCryptoTest, DISABLED_ExtraLarge) {
-  SymmetricCrypto crypto(kTestTypes.front(), kKey1, kIv1);
+TEST(BlockCipherTest, DISABLED_ExtraLarge) {
+  BlockCipher crypto(kTestTypes.front(), kKey1, kIv1);
   auto plaintext = MakeVector(static_cast<size_t>(1) << 32);
   std::vector<uint8_t> encrypted(plaintext.size());
   ASSERT_NO_THROW(crypto.Encrypt(plaintext, std::span(encrypted)));
 
   std::vector<uint8_t> decrypted(encrypted.size());
-  ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted),
-                                 std::span(decrypted)));
+  ASSERT_NO_THROW(crypto.Decrypt(std::span(encrypted), std::span(decrypted)));
   EXPECT_EQ(plaintext.size(), decrypted.size());
   EXPECT_EQ(plaintext, decrypted);
 }
 
-class SymmetricCryptoPerformanceTest : public testing::TestWithParam<size_t> {};
+class BlockCipherPerformanceTest : public testing::TestWithParam<size_t> {};
 
-TEST_P(SymmetricCryptoPerformanceTest, EncryptCountsUint128) {
+TEST_P(BlockCipherPerformanceTest, EncryptCountsUint128) {
   size_t loop_count = GetParam();
   for (auto type : kTestTypes) {
-    SymmetricCrypto crypto(type, kKey1, kIv1);
+    BlockCipher crypto(type, kKey1, kIv1);
     auto plaintext = MakeBlocks(128);
 
     std::vector<uint128_t> encrypted(plaintext.size());
@@ -213,12 +207,12 @@ TEST_P(SymmetricCryptoPerformanceTest, EncryptCountsUint128) {
   }
 }
 
-INSTANTIATE_TEST_SUITE_P(Cases, SymmetricCryptoPerformanceTest,
+INSTANTIATE_TEST_SUITE_P(Cases, BlockCipherPerformanceTest,
                          testing::Values(100, 1000, 10000));
 
-TEST(SymmetricCrypto, Uint128) {
+TEST(BlockCipher, Uint128) {
   for (auto type : kTestTypes) {
-    SymmetricCrypto crypto(type, kKey1, kIv1);
+    BlockCipher crypto(type, kKey1, kIv1);
     uint128_t input = rand();
     uint128_t encrypted = 0;
     uint128_t decrypted = 0;
@@ -228,44 +222,41 @@ TEST(SymmetricCrypto, Uint128) {
   }
 }
 
-TEST(SymmetricCrypto, WrongKey) {
+TEST(BlockCipher, WrongKey) {
   for (auto type : kTestTypes) {
-    SymmetricCrypto crypto(type, kKey1, kIv1);
-    auto plaintext = MakeVector(SymmetricCrypto::BlockSize());
+    BlockCipher crypto(type, kKey1, kIv1);
+    auto plaintext = MakeVector(BlockCipher::BlockSize());
     std::vector<uint8_t> encrypted(plaintext.size());
     ASSERT_NO_THROW(crypto.Encrypt(plaintext, std::span(encrypted)));
 
-    SymmetricCrypto crypto2(type, kKey2, kIv2);
+    BlockCipher crypto2(type, kKey2, kIv2);
     std::vector<uint8_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto2.Decrypt(std::span(encrypted),
-                                    std::span(decrypted)));
+    ASSERT_NO_THROW(
+        crypto2.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_NE(decrypted, plaintext);
   }
 }
 
-TEST(SymmetricCrypto, PartialBlock) {
+TEST(BlockCipher, PartialBlock) {
   for (auto type : kTestTypes) {
-    bool isCTR = ((type == SymmetricCrypto::CryptoType::AES128_CTR) ||
-                  (type == SymmetricCrypto::CryptoType::SM4_CTR));
-    SymmetricCrypto crypto(type, kKey1, kIv1);
-    auto plaintext = MakeVector(SymmetricCrypto::BlockSize() - 1);
+    bool isCTR = ((type == BlockCipherTy::AES128_CTR) ||
+                  (type == BlockCipherTy::SM4_CTR));
+    BlockCipher crypto(type, kKey1, kIv1);
+    auto plaintext = MakeVector(BlockCipher::BlockSize() - 1);
     std::vector<uint8_t> encrypted(plaintext.size());
     if (!isCTR) {
-      ASSERT_THROW(crypto.Encrypt(plaintext, std::span(encrypted)),
-                   Exception);
+      ASSERT_THROW(crypto.Encrypt(plaintext, std::span(encrypted)), Exception);
     } else {
       crypto.Encrypt(plaintext, std::span(encrypted));
     }
 
-    SymmetricCrypto crypto2(type, kKey1, kIv1);
+    BlockCipher crypto2(type, kKey1, kIv1);
     std::vector<uint8_t> decrypted(encrypted.size());
     if (!isCTR) {
-      ASSERT_THROW(crypto2.Decrypt(std::span(encrypted),
-                                   std::span(decrypted)),
+      ASSERT_THROW(crypto2.Decrypt(std::span(encrypted), std::span(decrypted)),
                    Exception);
     } else {
-      crypto2.Decrypt(std::span(encrypted),
-                      std::span(decrypted));
+      crypto2.Decrypt(std::span(encrypted), std::span(decrypted));
     }
     if (isCTR) {
       // Partial block should work under CRT mode
@@ -274,93 +265,93 @@ TEST(SymmetricCrypto, PartialBlock) {
   }
 }
 
-TEST(SymmetricCrypto, AesEcbExampleKey) {
+TEST(BlockCipher, AesEcbExampleKey) {
   // for (auto type : kTestTypes)
-  auto type = SymmetricCrypto::CryptoType::AES128_ECB;
+  auto type = BlockCipherTy::AES128_ECB;
   {
     uint128_t aes_key;
     memcpy(&aes_key, kKeyExample, sizeof(aes_key));
-    SymmetricCrypto crypto(type, aes_key, kIv1);
+    BlockCipher crypto(type, aes_key, kIv1);
 
     std::vector<uint8_t> encrypted(kPlaintextExample.size());
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted)));
     EXPECT_EQ(encrypted, kCiphertextExample);
 
-    SymmetricCrypto crypto2(type, aes_key, kIv1);
+    BlockCipher crypto2(type, aes_key, kIv1);
     std::vector<uint8_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto2.Decrypt(std::span(encrypted),
-                                    std::span(decrypted)));
+    ASSERT_NO_THROW(
+        crypto2.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_EQ(decrypted, kPlaintextExample);
 
     // check
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted)));
     EXPECT_EQ(encrypted, kCiphertextExample);
   }
 }
 
-TEST(SymmetricCrypto, AesCbcExampleKey) {
-  auto type = SymmetricCrypto::CryptoType::AES128_CBC;
+TEST(BlockCipher, AesCbcExampleKey) {
+  auto type = BlockCipherTy::AES128_CBC;
   {
     uint128_t aes_key;
     uint128_t aes_iv;
     memcpy(&aes_key, kKeyExample, sizeof(aes_key));
     memcpy(&aes_iv, kIvExample, sizeof(aes_iv));
-    SymmetricCrypto crypto(type, aes_key, aes_iv);
+    BlockCipher crypto(type, aes_key, aes_iv);
 
     std::vector<uint8_t> encrypted(kPlaintextExample.size());
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted)));
     EXPECT_EQ(encrypted, kCbcCiphertextExample);
 
-    SymmetricCrypto crypto2(type, aes_key, aes_iv);
+    BlockCipher crypto2(type, aes_key, aes_iv);
     std::vector<uint8_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto2.Decrypt(std::span(encrypted),
-                                    std::span(decrypted)));
+    ASSERT_NO_THROW(
+        crypto2.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_EQ(decrypted, kPlaintextExample);
   }
 }
 
-TEST(SymmetricCrypto, AesCtrExampleKey) {
-  auto type = SymmetricCrypto::CryptoType::AES128_CTR;
+TEST(BlockCipher, AesCtrExampleKey) {
+  auto type = BlockCipherTy::AES128_CTR;
   {
     uint128_t aes_key;
     uint128_t aes_counter;
     memcpy(&aes_key, kKeyExample, sizeof(aes_key));
     memcpy(&aes_counter, kCtrCounter, sizeof(aes_counter));
-    SymmetricCrypto crypto(type, aes_key, aes_counter);
+    BlockCipher crypto(type, aes_key, aes_counter);
 
     std::vector<uint8_t> encrypted(kPlaintextExample.size());
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted)));
     EXPECT_EQ(encrypted, kCtrCipherExample);
 
-    SymmetricCrypto crypto2(type, aes_key, aes_counter);
+    BlockCipher crypto2(type, aes_key, aes_counter);
     std::vector<uint8_t> decrypted(encrypted.size());
-    ASSERT_NO_THROW(crypto2.Decrypt(std::span(encrypted),
-                                    std::span(decrypted)));
+    ASSERT_NO_THROW(
+        crypto2.Decrypt(std::span(encrypted), std::span(decrypted)));
     EXPECT_EQ(decrypted, kPlaintextExample);
   }
 }
 
-TEST(SymmetricCrypto, CbcSameKeyAndIVDifferentResult) {
-  auto type = SymmetricCrypto::CryptoType::AES128_CBC;
+TEST(BlockCipher, CbcSameKeyAndIVDifferentResult) {
+  auto type = BlockCipherTy::AES128_CBC;
   {
     uint128_t aes_key;
     uint128_t aes_iv;
     memcpy(&aes_key, kKeyExample, sizeof(aes_key));
     memcpy(&aes_iv, kIvExample, sizeof(aes_iv));
-    SymmetricCrypto crypto(type, aes_key, aes_iv);
+    BlockCipher crypto(type, aes_key, aes_iv);
 
     std::vector<uint8_t> encrypted(kPlaintextExample.size());
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted)));
     EXPECT_EQ(encrypted, kCbcCiphertextExample);
 
     std::vector<uint8_t> encrypted2(kPlaintextExample.size());
-    ASSERT_NO_THROW(crypto.Encrypt(std::span(kPlaintextExample),
-                                   std::span(encrypted2)));
+    ASSERT_NO_THROW(
+        crypto.Encrypt(std::span(kPlaintextExample), std::span(encrypted2)));
 
     EXPECT_NE(encrypted, encrypted2);
   }

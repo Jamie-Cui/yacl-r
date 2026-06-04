@@ -13,7 +13,7 @@
 # the License.
 
 set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
-                      ${CMAKE_CURRENT_LIST_DIR}/symmetric_crypto.cc)
+                      ${CMAKE_CURRENT_LIST_DIR}/block_cipher.cc)
 
 # Add header files for installation
 
@@ -25,4 +25,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test_if(symmetric_crypto_test)
+add_yacl_test_if(block_cipher_test)

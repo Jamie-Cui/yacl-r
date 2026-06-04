@@ -17,12 +17,12 @@
 #include <algorithm>
 #include <cstdint>
 
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 
 namespace yacl {
 
 void RP::Gen(uint128_t in, uint128_t* out) const {
-  *out = SymmetricCrypto(ctype_, key_, iv_).Encrypt(in);
+  *out = BlockCipher(ctype_, key_, iv_).Encrypt(in);
 }
 
 uint128_t RP::Gen(uint128_t in) const {
@@ -34,7 +34,7 @@ uint128_t RP::Gen(uint128_t in) const {
 void RP::GenForMultiInputs(std::span<const uint128_t> in,
                            std::span<uint128_t> out) const {
   YACL_ENFORCE(in.size() == out.size());
-  SymmetricCrypto(ctype_, key_, iv_).Encrypt(in, out);
+  BlockCipher(ctype_, key_, iv_).Encrypt(in, out);
 }
 
 std::vector<uint128_t> RP::GenForMultiInputs(
@@ -45,7 +45,7 @@ std::vector<uint128_t> RP::GenForMultiInputs(
 }
 
 void RP::GenForMultiInputsInplace(std::span<uint128_t> inout) const {
-  SymmetricCrypto(ctype_, key_, iv_).Encrypt(inout, inout);
+  BlockCipher(ctype_, key_, iv_).Encrypt(inout, inout);
 }
 
 }  // namespace yacl

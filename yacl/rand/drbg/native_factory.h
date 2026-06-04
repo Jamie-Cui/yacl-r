@@ -20,15 +20,15 @@
 #include <string_view>
 #include <unordered_set>
 
+#include "yacl/rand/drbg/drbg.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/int128.h"
-#include "yacl/utils/secparam.h"
 #include "yacl/utils/ossl/defines.h"
-#include "yacl/rand/drbg/drbg.h"
+#include "yacl/utils/secparam.h"
 #include "yacl/utils/spi/argument/arg_set.h"
 
 /* submodules */
-#include "yacl/bc/symmetric_crypto.h"
+#include "yacl/bc/block_cipher.h"
 
 namespace yacl {
 
@@ -44,7 +44,7 @@ namespace internal {
 class Sm4Drbg {
  public:
   // default values
-  constexpr static auto kCodeType = SymmetricCrypto::CryptoType::SM4_ECB;
+  constexpr static auto kCodeType = BlockCipherTy::SM4_ECB;
   constexpr static uint32_t kBlockSize = 16; /* 128 bits = 16 bytes */
   constexpr static uint32_t kKeySize = 16;   /* 128 bits = 16 bytes */
   constexpr static uint32_t kMinEntropyBits = 256;
@@ -54,7 +54,7 @@ class Sm4Drbg {
 
   // Constructor
   explicit Sm4Drbg(SecParam::C secparam = SecParam::C::k128,
-                   const std::shared_ptr<EntropySource> &es =
+                   const std::shared_ptr<EntropySource>& es =
                        EntropySourceFactory::Instance().Create("auto"));
 
   // Instantiate the drbg
@@ -82,7 +82,7 @@ class Sm4Drbg {
 
   // use buf to update the values of key and v
   void rng_update(ByteContainerView seed_buf, uint128_t key, uint128_t v,
-                  uint128_t *out_key, uint128_t *out_v);
+                  uint128_t* out_key, uint128_t* out_v);
 
   // derive randomness from seed_buf
   Buffer derive(ByteContainerView buf, /* out bytes */ uint32_t out_len);
@@ -111,28 +111,28 @@ class NativeDrbg : public Drbg {
   };
 
   explicit NativeDrbg(std::string type,
-                      const std::shared_ptr<EntropySource> &es =
+                      const std::shared_ptr<EntropySource>& es =
                           EntropySourceFactory::Instance().Create("auto"));
 
   // reseed this drbg
   void ReSeed() final;
 
   // fill buffer with randomness
-  void Fill(char *buf, size_t len) final;
+  void Fill(char* buf, size_t len) final;
 
   // SPI: Get the lib name
   std::string Name() override { return "NativeImpl"; }
 
   // SPI: Create drbg instance
-  static std::unique_ptr<Drbg> Create(const std::string &type,
-                                      const SpiArgs &config) {
+  static std::unique_ptr<Drbg> Create(const std::string& type,
+                                      const SpiArgs& config) {
     YACL_ENFORCE(Check(type, config));  // make sure check passes
     return std::make_unique<NativeDrbg>(yacl::AsciiStrToUpper(type));
   }
 
   // SPI: Check drbg avaliability
-  static bool Check(const std::string &type,
-                    [[maybe_unused]] const SpiArgs &config) {
+  static bool Check(const std::string& type,
+                    [[maybe_unused]] const SpiArgs& config) {
     return find(begin(TypeList), end(TypeList), yacl::AsciiStrToUpper(type)) !=
            end(TypeList);
   }

@@ -34,12 +34,12 @@ class Sm2Encryptor : public PkeEncryptor {
   explicit Sm2Encryptor(ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
-  PkeScheme GetScheme() const override { return scheme_; }
+  PkeTy Type() const override { return scheme_; }
   std::vector<uint8_t> Encrypt(ByteContainerView plaintext) override;
 
  private:
   const ossl::UniquePkey pk_;
-  const PkeScheme scheme_ = PkeScheme::SM2;
+  const PkeTy scheme_ = PkeTy::SM2;
 };
 
 class Sm2Decryptor : public PkeDecryptor {
@@ -50,12 +50,12 @@ class Sm2Decryptor : public PkeDecryptor {
   explicit Sm2Decryptor(ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
-  PkeScheme GetScheme() const override { return scheme_; }
+  PkeTy Type() const override { return scheme_; }
   std::vector<uint8_t> Decrypt(ByteContainerView ciphertext) override;
 
  private:
   const ossl::UniquePkey sk_;
-  const PkeScheme scheme_ = PkeScheme::SM2;
+  const PkeTy scheme_ = PkeTy::SM2;
 };
 
 }  // namespace yacl

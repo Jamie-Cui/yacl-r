@@ -19,11 +19,11 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/rand/rand.h"
 #include "yacl/experimental/crhash.h"
 #include "yacl/experimental/prg.h"
 #include "yacl/experimental/ro.h"
 #include "yacl/experimental/rp.h"
+#include "yacl/rand/rand.h"
 
 namespace yacl {
 
@@ -56,7 +56,7 @@ BENCHMARK_DEFINE_F(TheoreticalToolBench, RP)(benchmark::State& state) {
     size_t n = state.range(0);
     input.resize(n);
     std::fill(input.begin(), input.end(), 0);
-    using Ctype = SymmetricCrypto::CryptoType;
+    using Ctype = BlockCipherTy;
     const auto& rp = RP(Ctype::AES128_CTR, 0x12345678);
 
     state.ResumeTiming();
@@ -160,7 +160,7 @@ BENCHMARK_DEFINE_F(FillPRandBench, FillPRand_AES128_ECB)
     auto seed = FastRandSeed();
     auto iv = 0;
     auto count = 0;
-    auto ctype = SymmetricCrypto::CryptoType::AES128_ECB;
+    auto ctype = BlockCipherTy::AES128_ECB;
     out.resize(n);
 
     state.ResumeTiming();
@@ -177,7 +177,7 @@ BENCHMARK_DEFINE_F(FillPRandBench, FillPRandWithMersennePrime_AES128_ECB)
     auto seed = FastRandSeed();
     auto iv = 0;
     auto count = 0;
-    auto ctype = SymmetricCrypto::CryptoType::AES128_ECB;
+    auto ctype = BlockCipherTy::AES128_ECB;
     out.resize(n);
 
     state.ResumeTiming();

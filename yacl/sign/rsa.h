@@ -30,7 +30,7 @@ YACL_MODULE_DECLARE("rsa_sign", SecParam::C::k128, SecParam::S::INF);
 namespace yacl {
 
 // RSA sign with sha256 (wrapper for OpenSSL)
-class RsaSigner final : public AsymmetricSigner {
+class RsaSigner final : public Signer {
  public:
   // constructors and destrucors
   explicit RsaSigner(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
@@ -38,18 +38,18 @@ class RsaSigner final : public AsymmetricSigner {
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
   // return the scheme name
-  SignatureScheme GetSignatureSchema() const override { return scheme_; }
+  SignTy Type() const override { return scheme_; }
 
   // sign a message with stored private key
   std::vector<uint8_t> Sign(ByteContainerView message) const override;
 
  private:
   const ossl::UniquePkey sk_;
-  const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
+  const SignTy scheme_ = SignTy::RSA_SHA256;
 };
 
 // RSA verify with sha256 (wrapper for OpenSSL)
-class RsaVerifier final : public AsymmetricVerifier {
+class RsaVerifier final : public Verifier {
  public:
   // constructors and destrucors
   explicit RsaVerifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
@@ -57,7 +57,7 @@ class RsaVerifier final : public AsymmetricVerifier {
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
   // return the scheme name
-  SignatureScheme GetSignatureSchema() const override { return scheme_; }
+  SignTy Type() const override { return scheme_; }
 
   // verify a message and its signature with stored public key
   bool Verify(ByteContainerView message,
@@ -65,7 +65,7 @@ class RsaVerifier final : public AsymmetricVerifier {
 
  private:
   const ossl::UniquePkey pk_;
-  const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
+  const SignTy scheme_ = SignTy::RSA_SHA256;
 };
 
 }  // namespace yacl
