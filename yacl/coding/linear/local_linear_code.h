@@ -20,7 +20,7 @@
 
 #include "yacl/coding/linear/linear_code.h"
 #include "yacl/coding/linear/local_linear_code.h"
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/rp.h"
 #include "yacl/math/gadget.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"

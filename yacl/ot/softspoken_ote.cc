@@ -20,7 +20,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "yacl/experimental/common.h"
+#include "yacl/theoretical_tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/ot/ot_store_utils.h"
 #include "yacl/utils/aligned_vector.h"

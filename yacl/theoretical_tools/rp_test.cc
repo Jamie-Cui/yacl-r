@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/rp.h"
 
 #include <algorithm>
 #include <random>
@@ -21,7 +21,7 @@
 
 #include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 
 namespace yacl {
 

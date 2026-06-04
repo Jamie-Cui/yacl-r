@@ -91,7 +91,7 @@ class Sm4Drbg {
   std::array<uint8_t, kBlockSize> cbc_mac(uint128_t key,
                                           ByteContainerView data);
 
-  // Q: why not use SymmetricCrypto in yacl/bc?
+  // Q: why not use BlockCipher in yacl/block_cipher?
   // A: SymmetricCrypto is originally designed to be use to entrypt large amount
   // of plaintexts with the same key, and in DRBG we need to change the key
   // oftenly. It's more efficient to use openssl's native APIs.

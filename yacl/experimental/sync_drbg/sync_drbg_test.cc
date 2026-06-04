@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "yacl/utils/strings.h"
-#include "yacl/rand/sync_drbg/sync_drbg.h"
+#include "yacl/experimental/sync_drbg/sync_drbg.h"
 
 #include <cstdint>
 #include <future>

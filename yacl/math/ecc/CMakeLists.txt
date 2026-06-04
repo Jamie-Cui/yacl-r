@@ -66,3 +66,9 @@ set(YACL_SPI_LIBS
 # ------------
 
 add_yacl_test_if(ecc_test)
+add_yacl_test_if(fourq_test FourQlib/FourQ_test.cc)
+add_yacl_test_if(mcl_ec_test mcl/mcl_ec_test.cc)
+add_yacl_test_if(mcl_util_test mcl/mcl_util_test.cc)
+add_yacl_test_if(openssl_test openssl/openssl_test.cc)
+add_yacl_test_if(toy_montgomery_test toy/montgomery_test.cc)
+add_yacl_test_if(toy_weierstrass_test toy/weierstrass_test.cc)

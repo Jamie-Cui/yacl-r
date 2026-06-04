@@ -56,7 +56,7 @@ class AeadCtx {
   AeadCtx();
   explicit AeadCtx(AeadType algorithm) { SetAlgorithm(algorithm); }
 
-  // Get a default AeadCtx with the AeadAlgorithm set. This function could be
+  // Get a default AeadCtx with the AeadType set. This function could be
   // seen as a helper function if you do not know which algorithm to choose.
   // Yacl recommend the use of GetDefault().
   static AeadCtx& GetDefault() {

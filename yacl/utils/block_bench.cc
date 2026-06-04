@@ -19,7 +19,7 @@
 #include "benchmark/benchmark.h"
 
 #include "yacl/utils/block.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 #include "yacl/utils/matrix_utils.h"
 
 namespace {

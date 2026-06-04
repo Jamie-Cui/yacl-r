@@ -20,6 +20,15 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 # ------------
+# Test
+# ------------
+
+add_yacl_test_if(base_vole_test)
+add_yacl_test_if(mp_vole_test)
+add_yacl_test_if(mpfss_test)
+add_yacl_test_if(silent_vole_test)
+
+# ------------
 # Bench
 # ------------
 

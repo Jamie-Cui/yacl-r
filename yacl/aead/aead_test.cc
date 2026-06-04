@@ -25,11 +25,11 @@ namespace yacl {
 
 constexpr char iv_96[] = "000000000000";
 
-class AeadAlgorithmsTest : public testing::TestWithParam<AeadAlgorithm> {};
+class AeadAlgorithmsTest : public testing::TestWithParam<AeadType> {};
 
 // This will create multiple tests.
 TEST_P(AeadAlgorithmsTest, EncryptDecrypt_ShouldOk) {
-  AeadAlgorithm algorithm = GetParam();
+  AeadType algorithm = GetParam();
   auto key = FastRandBytes(AeadCtx::GetKeySize(algorithm));
   auto iv = ByteContainerView(iv_96, sizeof(iv_96) - 1);
 
@@ -37,7 +37,7 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_ShouldOk) {
   std::string plaintext = "I am a plaintext.";
   std::string aad = "This is additional authenticated data.";
   size_t additional_cipher_size =
-      algorithm == AeadAlgorithm::SM4_MTE_HMAC_SM3 ? kSm4MteMacCipherSize : 0;
+      algorithm == AeadType::SM4_MTE_HMAC_SM3 ? kSm4MteMacCipherSize : 0;
   std::vector<uint8_t> ciphertext(plaintext.size() + additional_cipher_size);
   std::vector<uint8_t> mac(aead_cxt.GetMacSize());
 
@@ -52,7 +52,7 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_ShouldOk) {
 }
 
 TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
-  AeadAlgorithm algorithm = GetParam();
+  AeadType algorithm = GetParam();
   auto key = FastRandBytes(AeadCtx::GetKeySize(algorithm));
   auto iv = ByteContainerView(iv_96, sizeof(iv_96) - 1);
 
@@ -60,7 +60,7 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
   std::string plaintext = "I am a plaintext.";
   std::string aad = "This is additional authenticated data.";
   size_t additional_cipher_size =
-      algorithm == AeadAlgorithm::SM4_MTE_HMAC_SM3 ? kSm4MteMacCipherSize : 0;
+      algorithm == AeadType::SM4_MTE_HMAC_SM3 ? kSm4MteMacCipherSize : 0;
   std::vector<uint8_t> ciphertext(plaintext.size() + additional_cipher_size);
   std::vector<uint8_t> mac(aead_cxt.GetMacSize());
 
@@ -69,7 +69,7 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
 
   std::vector<uint8_t> decrypted(plaintext.size());
 
-  if (algorithm == AeadAlgorithm::SM4_MTE_HMAC_SM3) {
+  if (algorithm == AeadType::SM4_MTE_HMAC_SM3) {
     // wrong cipher, SM4_MTE_HMAC_SM3 does not have plaintext mac
     ciphertext[0] += 1;
   } else {
@@ -84,11 +84,11 @@ TEST_P(AeadAlgorithmsTest, EncryptDecrypt_withErrorGMAC_ShouldThrowException) {
 }
 
 INSTANTIATE_TEST_SUITE_P(AeadTest, AeadAlgorithmsTest,
-                         testing::Values(AeadAlgorithm::AES128_GCM,
-                                         AeadAlgorithm::AES256_GCM,
+                         testing::Values(AeadType::AES128_GCM,
+                                         AeadType::AES256_GCM,
 #ifdef YACL_WITH_TONGSUO
-                                         AeadAlgorithm::SM4_GCM,
+                                         AeadType::SM4_GCM,
 #endif
-                                         AeadAlgorithm::SM4_MTE_HMAC_SM3));
+                                         AeadType::SM4_MTE_HMAC_SM3));
 
 }  // namespace yacl

@@ -20,7 +20,7 @@
 
 #include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 
 namespace yacl {
 
@@ -33,7 +33,7 @@ class DynamicBitsetTest : public testing::Test {
  public:
   dynamic_bitset<T> GetRandInstance(uint128_t seed, size_t bitlen) {
     dynamic_bitset<T> out;
-    crypto::Prg<bool> prg(seed);
+    Prg<bool> prg(seed);
     for (size_t i = 0; i < bitlen; i++) {
       out.push_back(prg());
     }
@@ -100,7 +100,7 @@ TYPED_TEST(DynamicBitsetTest, ResizeTest) {
 
 TYPED_TEST(DynamicBitsetTest, ClearTest) {
   // GIVEN
-  auto bitset = crypto::RandBits<dynamic_bitset<TypeParam>>(10);
+  auto bitset = RandBits<dynamic_bitset<TypeParam>>(10);
 
   // WHEN
   bitset.clear();
@@ -126,7 +126,7 @@ TYPED_TEST(DynamicBitsetTest, PushPopTest) {
 TYPED_TEST(DynamicBitsetTest, AppendBlockTest) {
   // GIVEN
   auto bitset = dynamic_bitset<TypeParam>("0100101");
-  auto block = static_cast<TypeParam>(crypto::FastRandU128());
+  auto block = static_cast<TypeParam>(FastRandU128());
 
   // WHEN
   bitset.append(block);
@@ -169,8 +169,8 @@ TYPED_TEST(DynamicBitsetTest, AppendBitSetTest2) {
 }
 
 TYPED_TEST(DynamicBitsetTest, XorTest) {
-  auto r1 = crypto::RandVec<TypeParam>(kBlockNum);
-  auto r2 = crypto::RandVec<TypeParam>(kBlockNum);
+  auto r1 = RandVec<TypeParam>(kBlockNum);
+  auto r2 = RandVec<TypeParam>(kBlockNum);
 
   dynamic_bitset<TypeParam> x;
   dynamic_bitset<TypeParam> y;
@@ -185,8 +185,8 @@ TYPED_TEST(DynamicBitsetTest, XorTest) {
 }
 
 TYPED_TEST(DynamicBitsetTest, AndTest) {
-  auto r1 = crypto::RandVec<TypeParam>(kBlockNum);
-  auto r2 = crypto::RandVec<TypeParam>(kBlockNum);
+  auto r1 = RandVec<TypeParam>(kBlockNum);
+  auto r2 = RandVec<TypeParam>(kBlockNum);
 
   dynamic_bitset<TypeParam> x;
   dynamic_bitset<TypeParam> y;
@@ -201,8 +201,8 @@ TYPED_TEST(DynamicBitsetTest, AndTest) {
 }
 
 TYPED_TEST(DynamicBitsetTest, OrTest) {
-  auto r1 = crypto::RandVec<TypeParam>(kBlockNum);
-  auto r2 = crypto::RandVec<TypeParam>(kBlockNum);
+  auto r1 = RandVec<TypeParam>(kBlockNum);
+  auto r2 = RandVec<TypeParam>(kBlockNum);
 
   dynamic_bitset<TypeParam> x;
   dynamic_bitset<TypeParam> y;
@@ -217,7 +217,7 @@ TYPED_TEST(DynamicBitsetTest, OrTest) {
 }
 
 TYPED_TEST(DynamicBitsetTest, NegTest) {
-  auto r = crypto::RandVec<TypeParam>(kBlockNum);
+  auto r = RandVec<TypeParam>(kBlockNum);
 
   dynamic_bitset<TypeParam> x;
   dynamic_bitset<TypeParam> check;
@@ -363,7 +363,7 @@ TYPED_TEST(DynamicBitsetTest, IterateBitTest) {
 
 TYPED_TEST(DynamicBitsetTest, BufferTest) {
   // GIVEN
-  auto bitset = crypto::RandBits<dynamic_bitset<TypeParam>>(3);
+  auto bitset = RandBits<dynamic_bitset<TypeParam>>(3);
   EXPECT_EQ(bitset.size(), 3);
 
   // WHEN

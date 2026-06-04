@@ -25,8 +25,8 @@
 /* submodules */
 #include "yacl/aes/aes_opt.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/crhash.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/crhash.h"
+#include "yacl/theoretical_tools/prg.h"
 #include "yacl/ot/ot_store_utils.h"
 
 /* security parameter declaration */
@@ -50,7 +50,7 @@ namespace yacl {
 //
 // Security assumptions:
 //   - Circular correlation-robust Hash, for more details
-//     see yacl/experimental/rp.h
+//     see yacl/theoretical_tools/rp.h
 //
 void GywzOtExtRecv(const std::shared_ptr<link::Context>& ctx,
                    const OtRecvStore& cot, uint32_t n, uint32_t index,

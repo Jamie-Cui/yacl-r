@@ -26,9 +26,9 @@
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/experimental/crhash.h"
-#include "yacl/experimental/prg.h"
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/crhash.h"
+#include "yacl/theoretical_tools/prg.h"
+#include "yacl/theoretical_tools/rp.h"
 #include "yacl/ot/base_ot.h"
 #include "yacl/ot/ot_store_utils.h"
 #include "yacl/ot/sgrr_ote.h"
@@ -60,7 +60,7 @@ namespace yacl {
 //
 // Security assumptions:
 // => correlation-robust hash function, for more details about its
-// implementation, see `yacl/experimental/rp.h`
+// implementation, see `yacl/theoretical_tools/rp.h`
 //
 // NOTE:
 // => OT Extension sender requires receiver base ot context.

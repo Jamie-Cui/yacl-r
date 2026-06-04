@@ -19,7 +19,7 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/experimental/common.h"
+#include "yacl/theoretical_tools/common.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/int128.h"

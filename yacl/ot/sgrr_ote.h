@@ -25,10 +25,10 @@
 /* submodules */
 #include "yacl/aes/aes_opt.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/crhash.h"
-#include "yacl/experimental/prg.h"
-#include "yacl/experimental/ro.h"
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/crhash.h"
+#include "yacl/theoretical_tools/prg.h"
+#include "yacl/theoretical_tools/ro.h"
+#include "yacl/theoretical_tools/rp.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("sgrr_ote", SecParam::C::INF, SecParam::S::INF);

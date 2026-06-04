@@ -49,9 +49,9 @@ namespace yacl {
 //
 // Security assumptions:
 //  > OT extension functionality, for more details about its implementation, see
-//  `yacl/mpc/core/softspoken_ote.h`
+//  `yacl/ot/softspoken_ote.h`
 //  > base VOLE and multi-point VOLE functionalities, for more details about its
-//  implementation, see `yacl/mpc/core/mp_vole.h`
+//  implementation, see `yacl/vole/mp_vole.h`
 //  > Dual LPN problem, for more details, please see the original papers
 //    1) Silver (https://eprint.iacr.org/2021/1150.pdf) Most
 //    efficiency, but not recommended to use due to its security flaw.

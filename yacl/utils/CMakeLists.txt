@@ -47,6 +47,9 @@ add_yacl_test_if(platform_utils_test)
 add_yacl_test_if(scope_guard_test)
 add_yacl_test_if(segment_tree_test)
 add_yacl_test_if(serializer_test)
+add_yacl_test_if(dynamic_bitset_test)
+add_yacl_test_if(exception_test)
+add_yacl_test_if(int128_test)
 
 # ------------
 # Fuzz

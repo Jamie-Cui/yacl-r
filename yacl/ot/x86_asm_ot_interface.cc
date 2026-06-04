@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-#include "yacl/experimental/ro.h"
+#include "yacl/theoretical_tools/ro.h"
 #include "yacl/math/gadget.h"
 #include "yacl/ot/simplest_ot_x86_asm/ot_receiver.h"
 #include "yacl/ot/simplest_ot_x86_asm/ot_sender.h"

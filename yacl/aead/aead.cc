@@ -26,15 +26,15 @@ size_t AeadCtx::GetKeySize(AeadType algorithm) {
     case AeadType::AES256_GCM:
       return kAes256GcmKeySize;
 #ifdef YACL_WITH_TONGSUO
-    case AeadAlgorithm::SM4_GCM:
+    case AeadType::SM4_GCM:
       return kSm4GcmKeySize;
 #endif
     case AeadType::SM4_MTE_HMAC_SM3:
       return kSm4MteKeySize;
     case AeadType::UNKNOWN:
-      YACL_THROW("It seems you have set AeadAlgorithm::UNKNOWN, aborting");
+      YACL_THROW("It seems you have set AeadType::UNKNOWN, aborting");
     default:
-      YACL_THROW("Unknown AeadAlgorithm");
+      YACL_THROW("Unknown AeadType");
   }
 }
 
@@ -45,15 +45,15 @@ size_t AeadCtx::GetMacSize(AeadType algorithm) {
     case AeadType::AES256_GCM:
       return kAes256GcmKeySize;
 #ifdef YACL_WITH_TONGSUO
-    case AeadAlgorithm::SM4_GCM:
+    case AeadType::SM4_GCM:
       return kSm4GcmKeySize;
 #endif
     case AeadType::SM4_MTE_HMAC_SM3:
       return kSm4MteMacCipherSize;
     case AeadType::UNKNOWN:
-      YACL_THROW("It seems you have set AeadAlgorithm::UNKNOWN, aborting");
+      YACL_THROW("It seems you have set AeadType::UNKNOWN, aborting");
     default:
-      YACL_THROW("Unknown AeadAlgorithm");
+      YACL_THROW("Unknown AeadType");
   }
 }
 
@@ -97,7 +97,7 @@ void AeadCtx::Encrypt(AeadType algorithm, ByteContainerView plaintext,
       break;
     }
 #ifdef YACL_WITH_TONGSUO
-    case AeadAlgorithm::SM4_GCM: {
+    case AeadType::SM4_GCM: {
       GcmCrypto(GcmCryptoSchema::SM4_GCM, key, iv)
           .Encrypt(plaintext, aad, ciphertext, mac);
       break;
@@ -111,11 +111,11 @@ void AeadCtx::Encrypt(AeadType algorithm, ByteContainerView plaintext,
       break;
     }
     case AeadType::UNKNOWN: {
-      YACL_THROW("It seems you have set AeadAlgorithm::UNKNOWN, aborting");
+      YACL_THROW("It seems you have set AeadType::UNKNOWN, aborting");
       break;
     }
     default:
-      YACL_THROW("Unknown AeadAlgorithm");
+      YACL_THROW("Unknown AeadType");
   }
 }
 
@@ -138,7 +138,7 @@ void AeadCtx::Decrypt(AeadType algorithm, ByteContainerView ciphertext,
           .Decrypt(ciphertext, aad, mac, plaintext);
       break;
 #ifdef YACL_WITH_TONGSUO
-    case AeadAlgorithm::SM4_GCM: {
+    case AeadType::SM4_GCM: {
       GcmCrypto(GcmCryptoSchema::SM4_GCM, key, iv)
           .Decrypt(ciphertext, aad, mac, plaintext);
       break;
@@ -152,11 +152,11 @@ void AeadCtx::Decrypt(AeadType algorithm, ByteContainerView ciphertext,
       break;
     }
     case AeadType::UNKNOWN: {
-      YACL_THROW("It seems you have set AeadAlgorithm::UNKNOWN, aborting");
+      YACL_THROW("It seems you have set AeadType::UNKNOWN, aborting");
       break;
     }
     default:
-      YACL_THROW("Unknown AeadAlgorithm");
+      YACL_THROW("Unknown AeadType");
   }
 }
 

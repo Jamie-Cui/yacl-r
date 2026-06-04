@@ -19,7 +19,6 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rand.cc)
 add_subdirectory(drbg)
 add_subdirectory(entropy_source)
 add_subdirectory(ossl_provider)
-# add_subdirectory(sync_drbg)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}

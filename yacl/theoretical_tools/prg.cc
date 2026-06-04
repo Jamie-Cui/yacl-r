@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 
 #include "yacl/block_cipher/block_cipher.h"
 

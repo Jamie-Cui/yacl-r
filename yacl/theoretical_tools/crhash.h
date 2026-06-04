@@ -22,7 +22,7 @@
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/rp.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("crhash_128", SecParam::C::k128, SecParam::S::INF);

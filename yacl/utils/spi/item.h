@@ -426,7 +426,7 @@ class Item {
 
   // operations only for array
   template <typename T>
-  Item SubItem(size_t pos, size_t len = std::span<T>::npos) {
+  Item SubItem(size_t pos, size_t len = std::dynamic_extent) {
     YACL_ENFORCE(IsArray(), "You cannot do slice for scalar value");
 
     if (IsReadOnly() || is_const_v<T>) {
@@ -438,7 +438,7 @@ class Item {
   }
 
   template <typename T>
-  Item SubItem(size_t pos, size_t len = std::span<T>::npos) const {
+  Item SubItem(size_t pos, size_t len = std::dynamic_extent) const {
     YACL_ENFORCE(IsArray(), "You cannot do slice for scalar value");
     return SubConstItemImpl<remove_cvref_t<T>>(pos, len);
   }
@@ -488,12 +488,17 @@ class Item {
                  "Cannot make a read-write sub-item of a const span");
 
     Item item;
+    std::span<T> sp;
     if (IsView()) {
-      item.v_ = As<std::span<T>>().subspan(pos, len);
+      sp = As<std::span<T>>();
     } else {
       // vector
-      item.v_ = std::span(As<std::vector<T>>()).subspan(pos, len);
+      sp = std::span(As<std::vector<T>>());
     }
+    YACL_ENFORCE(pos <= sp.size(), "SubItem position {} exceeds size {}", pos,
+                 sp.size());
+    len = std::min(len, sp.size() - pos);
+    item.v_ = sp.subspan(pos, len);
 
     item.Setup(true, true, false);
     return item;
@@ -502,19 +507,23 @@ class Item {
   template <typename T>
   Item SubConstItemImpl(size_t pos, size_t len) const {
     Item item;
+    std::span<const T> sp;
     if (IsView()) {
       if (IsReadOnly()) {
         // const span -> const span
-        item.v_ = As<std::span<const T>>().subspan(pos, len);
+        sp = As<std::span<const T>>();
       } else {
         // span -> const span
-        std::span<const T> sp = As<std::span<T>>().subspan(pos, len);
-        item.v_ = sp;
+        sp = As<std::span<T>>();
       }
     } else {
       // vector -> const span
-      item.v_ = std::span(As<std::vector<T>>()).subspan(pos, len);
+      sp = std::span(As<std::vector<T>>());
     }
+    YACL_ENFORCE(pos <= sp.size(), "SubItem position {} exceeds size {}", pos,
+                 sp.size());
+    len = std::min(len, sp.size() - pos);
+    item.v_ = sp.subspan(pos, len);
 
     item.Setup(true, true, true);
     return item;

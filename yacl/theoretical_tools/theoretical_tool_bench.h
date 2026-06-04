@@ -19,10 +19,10 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/experimental/crhash.h"
-#include "yacl/experimental/prg.h"
-#include "yacl/experimental/ro.h"
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/crhash.h"
+#include "yacl/theoretical_tools/prg.h"
+#include "yacl/theoretical_tools/ro.h"
+#include "yacl/theoretical_tools/rp.h"
 #include "yacl/rand/rand.h"
 
 namespace yacl {

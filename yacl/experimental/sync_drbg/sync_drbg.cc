@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/rand/sync_drbg/sync_drbg.h"
+#include "yacl/experimental/sync_drbg/sync_drbg.h"
 
 #include "yacl/utils/byte_container_view.h"
 

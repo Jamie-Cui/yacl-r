@@ -24,7 +24,7 @@
 
 #include "yacl/utils/exception.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 #include "yacl/ot/ot_store_utils.h"
 #include "yacl/link/test_util.h"
 

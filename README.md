@@ -23,8 +23,9 @@ Target platforms: Linux x86_64, Linux aarch64, and macOS Apple Silicon.
 
 ## Repo Layout
 
-- [aead](yacl/aead/), [aes](yacl/aes/), [bc](yacl/bc/), [hash](yacl/hash/),
-  [hmac](yacl/hmac/): symmetric crypto, hashing, and authentication primitives.
+- [aead](yacl/aead/), [aes](yacl/aes/),
+  [block_cipher](yacl/block_cipher/), [hash](yacl/hash/), [hmac](yacl/hmac/):
+  symmetric crypto, hashing, and authentication primitives.
 - [pke](yacl/pke/), [sign](yacl/sign/), [envelope](yacl/envelope/),
   [tpre](yacl/tpre/): public-key, signature, envelope, and threshold proxy
   re-encryption code.
@@ -41,7 +42,10 @@ Target platforms: Linux x86_64, Linux aarch64, and macOS Apple Silicon.
   code.
 - [utils](yacl/utils/): common types, buffers, exceptions, serialization, and
   helper utilities.
-- [experimental](yacl/experimental/): experimental PRG/RO/code utilities.
+- [theoretical_tools](yacl/theoretical_tools/): PRG/RO/code utilities used by
+  protocol implementations.
+- [experimental](yacl/experimental/): experimental components that are not part
+  of the stable module layout.
 - [cmake](cmake/): CMake modules, dependency scripts, and dependency patches.
 
 ## Prerequisites

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/crhash.h"
+#include "yacl/theoretical_tools/crhash.h"
 
 #ifndef __aarch64__
 // sse

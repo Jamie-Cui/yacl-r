@@ -29,8 +29,8 @@
 #include "yacl/block_cipher/block_cipher.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/rand/rand.h"
-#include "yacl/experimental/prg.h"
-#include "yacl/experimental/ro.h"
+#include "yacl/theoretical_tools/prg.h"
+#include "yacl/theoretical_tools/ro.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("kkrt_ote", SecParam::C::k128, SecParam::S::INF);
@@ -56,7 +56,7 @@ using KkrtRow = std::array<uint128_t, kKkrtWidth>;
 //
 // Security assumptions:
 //  *. correlation-robust hash function, for more details about its
-//  implementation, see `yacl/experimental/rp.h`
+//  implementation, see `yacl/theoretical_tools/rp.h`
 //
 // NOTE
 //  * OT Extension sender requires receiver base ot context.

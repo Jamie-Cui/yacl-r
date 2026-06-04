@@ -14,7 +14,7 @@
 
 #include "yacl/ot/portable_ot_interface.h"
 
-#include "yacl/experimental/ro.h"
+#include "yacl/theoretical_tools/ro.h"
 #include "yacl/ot/simplest_ot_portable/ot_receiver.h"
 #include "yacl/ot/simplest_ot_portable/ot_sender.h"
 #include "yacl/utils/exception.h"

@@ -24,7 +24,7 @@
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/experimental/rp.h"
+#include "yacl/theoretical_tools/rp.h"
 #include "yacl/ot/gywz_ote.h"
 
 /* security parameter declaration */

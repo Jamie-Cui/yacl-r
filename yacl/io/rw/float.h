@@ -53,6 +53,7 @@ std::string FloatToString(S v, int precision) {
 template <class S>
 [[nodiscard]] bool FloatFromString(std::string_view str, S* ret) {
   static_assert(std::is_floating_point_v<S>);
+  str = yacl::StripAsciiWhitespace(str);
   double double_value = 0;
   if (YACL_UNLIKELY(!yacl::SimpleAtod(str, &double_value))) {
     return false;

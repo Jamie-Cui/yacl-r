@@ -20,7 +20,7 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
 

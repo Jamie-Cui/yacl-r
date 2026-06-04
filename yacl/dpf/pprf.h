@@ -21,7 +21,7 @@
 #include "yacl/dpf/ge2n.h"
 
 /* submodules */
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("pprf", SecParam::C::k128, SecParam::S::INF);

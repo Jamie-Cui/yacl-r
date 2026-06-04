@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-#include "yacl/experimental/common.h"
+#include "yacl/theoretical_tools/common.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/math/galois_field/gf_intrinsic.h"
 #include "yacl/utils/secparam.h"

@@ -28,3 +28,4 @@ set(YACL_SOURCE_FILES
 
 add_yacl_test_if(all_gcm_test)
 add_yacl_test_if(sm4_mte_test)
+add_yacl_test_if(aead_test)

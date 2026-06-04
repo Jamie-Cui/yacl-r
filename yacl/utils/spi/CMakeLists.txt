@@ -29,3 +29,5 @@ set(YACL_SOURCE_FILES
     PARENT_SCOPE)
 
 add_yacl_test_if(spi_factory_test)
+add_yacl_test_if(item_test)
+add_yacl_test_if(util_test argument/util_test.cc)

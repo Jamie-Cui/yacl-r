@@ -18,8 +18,8 @@
 #include <variant>
 #include <vector>
 
-#include "yacl/experimental/common.h"
-#include "yacl/experimental/ro.h"
+#include "yacl/theoretical_tools/common.h"
+#include "yacl/theoretical_tools/ro.h"
 #include "yacl/link/context.h"
 #include "yacl/ot/base_ot.h"
 #include "yacl/ot/ferret_ote.h"

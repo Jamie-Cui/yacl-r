@@ -13,7 +13,7 @@
 # the License.
 
 macro(add_yacl_test NAME)
-  add_executable(${NAME} ${NAME}.cc)
+  add_executable(${NAME} ${ARGN})
   target_link_libraries(${NAME} PRIVATE Yacl::yacl Deps::gtest Deps::gmock)
   add_test(NAME ${NAME} COMMAND ${NAME})
   set_tests_properties(
@@ -23,6 +23,10 @@ endmacro()
 
 macro(add_yacl_test_if NAME)
   if(BUILD_TEST)
-    add_yacl_test(${NAME})
+    if(NOT "${ARGN}" STREQUAL "")
+      add_yacl_test(${NAME} ${ARGN})
+    else()
+      add_yacl_test(${NAME} ${NAME}.cc)
+    endif()
   endif()
 endmacro()

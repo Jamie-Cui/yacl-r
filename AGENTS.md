@@ -160,10 +160,10 @@ yacl-r/
 ├── yacl/
 │   ├── aead/             # AEAD implementations
 │   ├── aes/              # AES intrinsics and wrappers
-│   ├── bc/               # Block-cipher helpers
+│   ├── block_cipher/     # Block-cipher helpers
 │   ├── dpf/              # DPF/DCF/PPRF protocols
 │   ├── envelope/         # Envelope encryption
-│   ├── experimental/     # Experimental PRG/RO/code utilities
+│   ├── experimental/     # Experimental components
 │   ├── hash/             # Hashing utilities
 │   ├── hmac/             # HMAC
 │   ├── io/               # Streaming I/O and circuit parsing
@@ -177,6 +177,7 @@ yacl-r/
 │   ├── sign/             # Signatures
 │   ├── snark/            # SNARK-related code
 │   ├── tpre/             # Threshold proxy re-encryption
+│   ├── theoretical_tools/ # PRG/RO/code utilities
 │   ├── utils/            # Common utilities
 │   └── vole/             # VOLE and MPFSS code
 └── cmake/                # CMake modules and dependency scripts

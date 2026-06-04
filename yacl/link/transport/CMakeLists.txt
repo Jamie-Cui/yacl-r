@@ -29,3 +29,6 @@ set(LINK_TRANSPORT_HEADERS
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
+
+add_yacl_test_if(asio_link_test)
+add_yacl_test_if(channel_mem_test)

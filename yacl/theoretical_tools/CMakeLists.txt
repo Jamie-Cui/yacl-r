@@ -1,4 +1,4 @@
-# Copyright 2026 Jamie Cui
+# Copyright 2024 Ant Group Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -12,14 +12,25 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# sync_drbg depends on the external hash_drbg headers, which are not part of
-# the default CMake dependency set. Keep the experimental source tree available
-# without pulling it into the main build until that dependency is wired up.
-option(BUILD_EXPERIMENTAL_SYNC_DRBG "Build experimental sync_drbg" Off)
-if(BUILD_EXPERIMENTAL_SYNC_DRBG)
-  add_subdirectory(sync_drbg)
-endif()
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
+    ${CMAKE_CURRENT_LIST_DIR}/prg.cc ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
+
+add_yacl_test_if(crhash_test)
+add_yacl_test_if(prg_test)
+add_yacl_test_if(ro_test)
+add_yacl_test_if(rp_test)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(theoretical_tool_bench)

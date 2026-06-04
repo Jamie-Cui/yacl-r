@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "yacl/block_cipher/block_cipher.h"
-#include "yacl/experimental/prg.h"
+#include "yacl/theoretical_tools/prg.h"
 #include "yacl/math/mpint/mp_int.h"
 #include "yacl/rand/drbg/drbg.h"
 #include "yacl/utils/dynamic_bitset.h"

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/mpc/core/base_vole.h"
+#include "yacl/vole/base_vole.h"
 
 #include <gtest/gtest.h>
 
