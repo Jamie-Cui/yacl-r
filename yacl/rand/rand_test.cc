@@ -20,7 +20,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 #include "yacl/utils/int128.h"
 
 namespace yacl {

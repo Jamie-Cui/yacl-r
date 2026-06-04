@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/cuckoo_index.h"
+#include "yacl/coding/batch/cuckoo_index.h"
 
 #include <random>
 
@@ -29,7 +29,7 @@ TEST_P(CuckooIndexTest, Works) {
   {
     // Insert all in one call.
     CuckooIndex cuckoo_index(param);
-    std::vector<uint128_t> inputs = crypto::RandVec<uint128_t>(param.num_input);
+    std::vector<uint128_t> inputs = RandVec<uint128_t>(param.num_input);
 
     ASSERT_NO_THROW(cuckoo_index.Insert(std::span(inputs)));
     ASSERT_NO_THROW(cuckoo_index.SanityCheck());
@@ -41,7 +41,7 @@ TEST_P(CuckooIndexTest, Works) {
   {
     // Insert by batches.
     CuckooIndex cuckoo_index(param);
-    std::vector<uint128_t> inputs = crypto::RandVec<uint128_t>(param.num_input);
+    std::vector<uint128_t> inputs = RandVec<uint128_t>(param.num_input);
 
     constexpr size_t kChunkSize = 1024;
     for (size_t i = 0; i < inputs.size(); i += kChunkSize) {
@@ -69,14 +69,14 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST(CuckooIndexTest, Bad_StashTooSmall) {
   CuckooIndex cuckoo_index(CuckooIndex::Options{1 << 16, 0, 3, 1.1});
-  std::vector<uint128_t> inputs = crypto::RandVec<uint128_t>(1 << 16);
+  std::vector<uint128_t> inputs = RandVec<uint128_t>(1 << 16);
 
   ASSERT_THROW(cuckoo_index.Insert(std::span(inputs)), yacl::Exception);
 }
 
 TEST(CuckooIndexTest, Bad_SmallScaleFactor) {
   CuckooIndex cuckoo_index(CuckooIndex::Options{1 << 16, 8, 3, 1.01});
-  std::vector<uint128_t> inputs = crypto::RandVec<uint128_t>(1 << 16);
+  std::vector<uint128_t> inputs = RandVec<uint128_t>(1 << 16);
 
   ASSERT_THROW(cuckoo_index.Insert(std::span(inputs)), yacl::Exception);
 }

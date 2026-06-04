@@ -28,7 +28,7 @@
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
 #include "yacl/utils/secparam.h"
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 #include "yacl/hash/hash_utils.h"
 #include "yacl/utils/ossl/defines.h"
 #include "yacl/rand/entropy_source/entropy_source.h"

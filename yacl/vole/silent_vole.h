@@ -20,9 +20,9 @@
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/experimental/code/code_interface.h"
-#include "yacl/experimental/code/ea_code.h"
-#include "yacl/experimental/code/silver_code.h"
+#include "yacl/coding/linear/ea_code.h"
+#include "yacl/coding/linear/local_linear_code.h"
+#include "yacl/coding/linear/silver_code.h"
 #include "yacl/rand/rand.h"
 #include "yacl/vole/base_vole.h"
 #include "yacl/vole/mp_vole.h"

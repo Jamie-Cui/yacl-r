@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 
 #include <cstdint>
 #include <limits>

@@ -29,7 +29,7 @@
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 
 /* security parameter declaration */
 YACL_MODULE_DECLARE("prg", SecParam::C::k128, SecParam::S::k40);

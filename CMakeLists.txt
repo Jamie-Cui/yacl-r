@@ -266,37 +266,7 @@ enable_testing()
 set(YACL_SOURCE_FILES "")
 set(YACL_SPI_LIBS "")
 
-# utils
-add_subdirectory(yacl/utils)
-
-# io
-add_subdirectory(yacl/io)
-
-# math
-add_subdirectory(yacl/math)
-
-# link (networking)
-add_subdirectory(yacl/link)
-
-# other
-add_subdirectory(yacl/snark)
-add_subdirectory(yacl/ot)
-add_subdirectory(yacl/mpc)
-add_subdirectory(yacl/vole)
-add_subdirectory(yacl/rand)
-add_subdirectory(yacl/aead)
-add_subdirectory(yacl/aes)
-add_subdirectory(yacl/bc)
-add_subdirectory(yacl/dpf)
-add_subdirectory(yacl/envelope)
-add_subdirectory(yacl/hash)
-add_subdirectory(yacl/hmac)
-add_subdirectory(yacl/oprf)
-add_subdirectory(yacl/pke)
-add_subdirectory(yacl/sign)
-add_subdirectory(yacl/experimental)
-add_subdirectory(yacl/tpre)
-# add_subdirectory(yacl/vss)
+add_subdirectory(yacl)
 
 # TODO Remove all test files from ${YACL_SOURCE_FILES}
 file(GLOB_RECURSE SRC_TEST_CC *_test.cc)

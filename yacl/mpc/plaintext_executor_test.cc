@@ -16,7 +16,7 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/io/circuit/bristol_fashion.h"
 #include "yacl/rand/rand.h"

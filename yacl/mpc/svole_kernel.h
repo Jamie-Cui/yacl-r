@@ -20,7 +20,7 @@
 #include "yacl/mpc/kernel.h"
 
 /* submodules */
-#include "yacl/experimental/code/silver_code.h"
+#include "yacl/coding/linear/silver_code.h"
 #include "yacl/vole/silent_vole.h"
 
 namespace yacl {

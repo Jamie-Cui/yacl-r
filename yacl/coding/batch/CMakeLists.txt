@@ -12,9 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
-    ${CMAKE_CURRENT_LIST_DIR}/prg.cc ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES}
+                      ${CMAKE_CURRENT_LIST_DIR}/cuckoo_index.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
@@ -24,7 +23,4 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test_if(crhash_test)
-add_yacl_test_if(prg_test)
-add_yacl_test_if(ro_test)
-add_yacl_test_if(rp_test)
+add_yacl_test_if(cuckoo_index_test)

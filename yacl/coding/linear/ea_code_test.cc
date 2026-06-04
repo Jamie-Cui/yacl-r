@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/code/ea_code.h"
+#include "yacl/coding/linear/ea_code.h"
 
 #include <vector>
 

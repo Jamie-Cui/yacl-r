@@ -23,7 +23,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 #include "yacl/experimental/prg.h"
 #include "yacl/math/mpint/mp_int.h"
 #include "yacl/rand/drbg/drbg.h"

@@ -21,10 +21,9 @@
 #include <span>
 #include <vector>
 
-#include "code_interface.h"
 #include "spdlog/spdlog.h"
 
-#include "yacl/experimental/code/code_interface.h"
+#include "yacl/coding/linear/local_linear_code.h"
 #include "yacl/utils/block.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"

@@ -12,19 +12,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/crhash.cc
-    ${CMAKE_CURRENT_LIST_DIR}/prg.cc ${CMAKE_CURRENT_LIST_DIR}/rp.cc)
+add_subdirectory(batch)
+add_subdirectory(linear)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
-
-# ------------
-# Test
-# ------------
-
-add_yacl_test_if(crhash_test)
-add_yacl_test_if(prg_test)
-add_yacl_test_if(ro_test)
-add_yacl_test_if(rp_test)

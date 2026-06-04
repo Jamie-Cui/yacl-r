@@ -24,5 +24,11 @@ set(YACL_SOURCE_FILES
 # ------------
 
 add_yacl_test_if(ea_code_test)
-add_yacl_test_if(linear_code_test)
+add_yacl_test_if(local_linear_code_test)
 add_yacl_test_if(silver_code_test)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(linear_code_bench)

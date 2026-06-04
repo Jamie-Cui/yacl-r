@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/cuckoo_index.h"
+#include "yacl/coding/batch/cuckoo_index.h"
 
 #include <cmath>
 #include <set>

@@ -22,7 +22,7 @@
 #include "yacl/utils/int128.h"
 
 /* submodules */
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 
 /* security parameter declaration */
 // this header selects the block cipher mode at runtime, no standalone security

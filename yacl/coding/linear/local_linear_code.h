@@ -18,7 +18,8 @@
 #include <array>
 #include <span>
 
-#include "yacl/experimental/code/code_interface.h"
+#include "yacl/coding/linear/linear_code.h"
+#include "yacl/coding/linear/local_linear_code.h"
 #include "yacl/experimental/rp.h"
 #include "yacl/math/gadget.h"
 #include "yacl/utils/exception.h"

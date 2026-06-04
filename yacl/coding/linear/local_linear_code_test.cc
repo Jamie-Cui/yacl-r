@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/experimental/code/linear_code.h"
+#include "yacl/coding/linear/local_linear_code.h"
 
 #include <vector>
 

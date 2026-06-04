@@ -19,7 +19,8 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/experimental/cuckoo_index.h"
+#include "yacl/coding/batch/cuckoo_index.h"
+#include "yacl/coding/linear/local_linear_code.h"
 #include "yacl/utils/aligned_vector.h"
 #include "yacl/utils/serialize.h"
 

@@ -28,7 +28,7 @@
 #include "yacl/utils/spi/argument/arg_set.h"
 
 /* submodules */
-#include "yacl/bc/block_cipher.h"
+#include "yacl/block_cipher/block_cipher.h"
 
 namespace yacl {
 

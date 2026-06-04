@@ -19,13 +19,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include "yacl/experimental/cuckoo_index.h"
+#include "yacl/coding/batch/cuckoo_index.h"
 #include "yacl/math/gadget.h"
 #include "yacl/ot/ot_store_utils.h"
 #include "yacl/utils/secparam.h"
 
 /* submodules */
-#include "yacl/experimental/code/linear_code.h"
+#include "yacl/coding/linear/local_linear_code.h"
 #include "yacl/ot/ferret_ote_rn.h"
 #include "yacl/ot/ferret_ote_un.h"
 #include "yacl/ot/gywz_ote.h"
