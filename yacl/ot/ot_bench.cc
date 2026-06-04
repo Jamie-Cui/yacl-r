@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/mpc/ot_bench.h"
+#include "yacl/ot/ot_bench.h"
 
 #include <future>
 #include <vector>

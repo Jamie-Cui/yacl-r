@@ -53,3 +53,10 @@ add_yacl_test_if(serializer_test)
 # ------------
 add_yacl_fuzz_if(serializer_fuzz)
 add_yacl_fuzz_if(buffer_fuzz)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(block_bench)
+add_yacl_bench_if(int128_bench)

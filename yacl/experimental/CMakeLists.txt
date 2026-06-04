@@ -28,3 +28,9 @@ add_yacl_test_if(crhash_test)
 add_yacl_test_if(prg_test)
 add_yacl_test_if(ro_test)
 add_yacl_test_if(rp_test)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(theoretical_tool_bench)

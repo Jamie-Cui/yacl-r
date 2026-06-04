@@ -14,27 +14,27 @@
 
 #pragma once
 
+#include <bit>
 #include <future>
 #include <memory>
 #include <vector>
 
-#include <bit>
 #include "benchmark/benchmark.h"
 
+#include "yacl/link/test_util.h"
+#include "yacl/ot/base_ot.h"
+#include "yacl/ot/ferret_ote.h"
+#include "yacl/ot/gywz_ote.h"
+#include "yacl/ot/iknp_ote.h"
+#include "yacl/ot/kkrt_ote.h"
+#include "yacl/ot/kos_ote.h"
+#include "yacl/ot/ot_store_utils.h"
+#include "yacl/ot/sgrr_ote.h"
+#include "yacl/ot/softspoken_ote.h"
+#include "yacl/rand/rand.h"
 #include "yacl/utils/aligned_vector.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
-#include "yacl/rand/rand.h"
-#include "yacl/mpc/core/base_ot.h"
-#include "yacl/mpc/core/ferret_ote.h"
-#include "yacl/mpc/core/gywz_ote.h"
-#include "yacl/mpc/core/iknp_ote.h"
-#include "yacl/mpc/core/kkrt_ote.h"
-#include "yacl/mpc/core/kos_ote.h"
-#include "yacl/mpc/core/sgrr_ote.h"
-#include "yacl/mpc/core/softspoken_ote.h"
-#include "yacl/ot/ot_store_utils.h"
-#include "yacl/link/test_util.h"
 #include "yacl/utils/matrix_utils.h"
 
 namespace yacl {
@@ -68,8 +68,8 @@ BENCHMARK_DEFINE_F(OtBench, SimplestOT)(benchmark::State& state) {
       state.ResumeTiming();
 
       // run base OT
-      auto sender = std::async(
-          [&] { BaseOtSend(lctxs_[0], std::span(send_blocks)); });
+      auto sender =
+          std::async([&] { BaseOtSend(lctxs_[0], std::span(send_blocks)); });
       auto receiver = std::async(
           [&] { BaseOtRecv(lctxs_[1], choices, std::span(recv_blocks)); });
       sender.get();
@@ -100,8 +100,7 @@ BENCHMARK_DEFINE_F(OtBench, IknpOTe)(benchmark::State& state) {
         IknpOtExtSend(lctxs_[0], base_ot.recv, std::span(send_blocks));
       });
       auto receiver = std::async([&] {
-        IknpOtExtRecv(lctxs_[1], base_ot.send, choices,
-                      std::span(recv_blocks));
+        IknpOtExtRecv(lctxs_[1], base_ot.send, choices, std::span(recv_blocks));
       });
       sender.get();
       receiver.get();
@@ -131,8 +130,7 @@ BENCHMARK_DEFINE_F(OtBench, KosOTe)(benchmark::State& state) {
         KosOtExtSend(lctxs_[0], base_ot.recv, std::span(send_blocks));
       });
       auto receiver = std::async([&] {
-        KosOtExtRecv(lctxs_[1], base_ot.send, choices,
-                     std::span(recv_blocks));
+        KosOtExtRecv(lctxs_[1], base_ot.send, choices, std::span(recv_blocks));
       });
       sender.get();
       receiver.get();
@@ -160,8 +158,7 @@ BENCHMARK_DEFINE_F(OtBench, KkrtOTe)(benchmark::State& state) {
       auto sender =
           std::async([&] { KkrtOtExtSend(lctxs_[0], base_ot.recv, num_ot); });
       auto receiver = std::async([&] {
-        KkrtOtExtRecv(lctxs_[1], base_ot.send, inputs,
-                      std::span(recv_out));
+        KkrtOtExtRecv(lctxs_[1], base_ot.send, inputs, std::span(recv_out));
       });
       sender.get();
       receiver.get();
@@ -188,8 +185,7 @@ BENCHMARK_DEFINE_F(OtBench, SgrrOTe)(benchmark::State& state) {
 
       // run base OT
       auto sender = std::async([&] {
-        SgrrOtExtSend(lctxs_[0], base_ot.send, range_n,
-                      std::span(send_out));
+        SgrrOtExtSend(lctxs_[0], base_ot.send, range_n, std::span(send_out));
       });
       auto receiver = std::async([&] {
         SgrrOtExtRecv(lctxs_[1], base_ot.recv, range_n, choice_value,
@@ -221,8 +217,7 @@ BENCHMARK_DEFINE_F(OtBench, GywzOTe)(benchmark::State& state) {
 
       // run base OT
       auto sender = std::async([&] {
-        GywzOtExtSend(lctxs_[0], base_ot.send, range_n,
-                      std::span(send_out));
+        GywzOtExtSend(lctxs_[0], base_ot.send, range_n, std::span(send_out));
       });
       auto receiver = std::async([&] {
         GywzOtExtRecv(lctxs_[1], base_ot.recv, range_n, choice_value,
@@ -236,44 +231,42 @@ BENCHMARK_DEFINE_F(OtBench, GywzOTe)(benchmark::State& state) {
   }
 }
 
-#define DELCARE_SOFTSPOKEN_BENCH(K)                                         \
-  BENCHMARK_DEFINE_F(OtBench, SoftspokenOTe##K)(benchmark::State & state) { \
-    YACL_ENFORCE(lctxs_.size() == 2);                                       \
-    for (auto _ : state) {                                                  \
-      state.PauseTiming();                                                  \
-      {                                                                     \
-        const auto num_ot = state.range(0);                                 \
-        std::vector<std::array<uint128_t, 2>> send_blocks(num_ot);          \
-        std::vector<uint128_t> recv_blocks(num_ot);                         \
-        auto choices = RandBits<dynamic_bitset<uint128_t>>(num_ot);         \
-        auto base_ot = MockRots(128);                                       \
-        auto ssSenderTask = std::async([&] {                                \
-          auto ssSender = SoftspokenOtExtSender(K);                         \
-          ssSender.OneTimeSetup(lctxs_[0], base_ot.recv);                   \
-          return ssSender;                                                  \
-        });                                                                 \
-        auto ssReceiverTask = std::async([&] {                              \
-          auto ssReceiver = SoftspokenOtExtReceiver(K);                     \
-          ssReceiver.OneTimeSetup(lctxs_[1], base_ot.send);                 \
-          return ssReceiver;                                                \
-        });                                                                 \
-        auto ssSender = ssSenderTask.get();                                 \
-        auto ssReceiver = ssReceiverTask.get();                             \
-        state.ResumeTiming();                                               \
-        /* true (default) for COT, false for ROT */                         \
-        auto sender = std::async([&] {                                      \
-          ssSender.Send(lctxs_[0], std::span(send_blocks), true);      \
-        });                                                                 \
-        auto receiver = std::async([&] {                                    \
-          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks),  \
-                          true);                                            \
-        });                                                                 \
-        sender.get();                                                       \
-        receiver.get();                                                     \
-        state.PauseTiming();                                                \
-      }                                                                     \
-      state.ResumeTiming();                                                 \
-    }                                                                       \
+#define DELCARE_SOFTSPOKEN_BENCH(K)                                           \
+  BENCHMARK_DEFINE_F(OtBench, SoftspokenOTe##K)(benchmark::State & state) {   \
+    YACL_ENFORCE(lctxs_.size() == 2);                                         \
+    for (auto _ : state) {                                                    \
+      state.PauseTiming();                                                    \
+      {                                                                       \
+        const auto num_ot = state.range(0);                                   \
+        std::vector<std::array<uint128_t, 2>> send_blocks(num_ot);            \
+        std::vector<uint128_t> recv_blocks(num_ot);                           \
+        auto choices = RandBits<dynamic_bitset<uint128_t>>(num_ot);           \
+        auto base_ot = MockRots(128);                                         \
+        auto ssSenderTask = std::async([&] {                                  \
+          auto ssSender = SoftspokenOtExtSender(K);                           \
+          ssSender.OneTimeSetup(lctxs_[0], base_ot.recv);                     \
+          return ssSender;                                                    \
+        });                                                                   \
+        auto ssReceiverTask = std::async([&] {                                \
+          auto ssReceiver = SoftspokenOtExtReceiver(K);                       \
+          ssReceiver.OneTimeSetup(lctxs_[1], base_ot.send);                   \
+          return ssReceiver;                                                  \
+        });                                                                   \
+        auto ssSender = ssSenderTask.get();                                   \
+        auto ssReceiver = ssReceiverTask.get();                               \
+        state.ResumeTiming();                                                 \
+        /* true (default) for COT, false for ROT */                           \
+        auto sender = std::async(                                             \
+            [&] { ssSender.Send(lctxs_[0], std::span(send_blocks), true); }); \
+        auto receiver = std::async([&] {                                      \
+          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks), true);  \
+        });                                                                   \
+        sender.get();                                                         \
+        receiver.get();                                                       \
+        state.PauseTiming();                                                  \
+      }                                                                       \
+      state.ResumeTiming();                                                   \
+    }                                                                         \
   }
 
 DELCARE_SOFTSPOKEN_BENCH(1)
@@ -370,12 +363,10 @@ BENCHMARK_DEFINE_F(OtBench, MalFerretOTe)(benchmark::State& state) {
         auto ssReceiver = ssReceiverTask.get();                                \
         state.ResumeTiming();                                                  \
         /* true (default) for COT, false for ROT */                            \
-        auto sender = std::async([&] {                                         \
-          ssSender.Send(lctxs_[0], std::span(send_blocks), true);         \
-        });                                                                    \
+        auto sender = std::async(                                              \
+            [&] { ssSender.Send(lctxs_[0], std::span(send_blocks), true); });  \
         auto receiver = std::async([&] {                                       \
-          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks),     \
-                          true);                                               \
+          ssReceiver.Recv(lctxs_[1], choices, std::span(recv_blocks), true);   \
         });                                                                    \
         sender.get();                                                          \
         receiver.get();                                                        \

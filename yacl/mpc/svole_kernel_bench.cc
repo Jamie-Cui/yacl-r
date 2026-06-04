@@ -16,8 +16,8 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/kernel/svole_kernel.h"
 #include "yacl/link/test_util.h"
+#include "yacl/mpc/svole_kernel.h"
 
 namespace yacl {
 
@@ -75,8 +75,7 @@ static void BM_SVOLE_multi_thread(benchmark::State& state) {
       });
       auto receiver = std::async([&] {
         kernel1.init(lctxs[1]);
-        kernel1.eval_multithread(lctxs[1], std::span(a), std::span(b),
-                                 threads);
+        kernel1.eval_multithread(lctxs[1], std::span(a), std::span(b), threads);
       });
       sender.get();
       receiver.get();
@@ -111,8 +110,8 @@ static void BM_SVOLE_streaming(benchmark::State& state) {
       });
       auto receiver = std::async([&] {
         kernel1.init(lctxs[1]);
-        kernel1.eval_streaming(lctxs[1], std::span(a), std::span(b),
-                               threads, step_size);
+        kernel1.eval_streaming(lctxs[1], std::span(a), std::span(b), threads,
+                               step_size);
       });
       sender.get();
       receiver.get();

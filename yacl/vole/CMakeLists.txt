@@ -18,3 +18,9 @@ set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/mpfss.cc
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
     PARENT_SCOPE)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(vole_bench)

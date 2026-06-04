@@ -33,3 +33,10 @@ if(BUILD_TEST)
   set_tests_properties(plaintext_executor_test PROPERTIES WORKING_DIRECTORY
                                                           ${PROJECT_SOURCE_DIR})
 endif()
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(ot_kernel_bench NO_MAIN)
+add_yacl_bench_if(svole_kernel_bench NO_MAIN)

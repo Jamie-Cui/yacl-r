@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/kernel/code/benchmark.h"
+#include "yacl/coding/linear/linear_code_bench.h"
 
 namespace yacl {
 

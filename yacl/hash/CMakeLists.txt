@@ -33,3 +33,9 @@ add_yacl_test_if(ssl_hash_all_test)
 # Fuzz
 # ------------
 add_yacl_fuzz_if(hash_fuzz)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(blake3_bench)

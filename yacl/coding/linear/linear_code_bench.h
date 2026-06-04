@@ -19,11 +19,11 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/utils/aligned_vector.h"
+#include "yacl/coding/linear/ea_code.h"
+#include "yacl/coding/linear/linear_code.h"
+#include "yacl/coding/linear/silver_code.h"
 #include "yacl/rand/rand.h"
-#include "yacl/kernel/code/ea_code.h"
-#include "yacl/kernel/code/linear_code.h"
-#include "yacl/kernel/code/silver_code.h"
+#include "yacl/utils/aligned_vector.h"
 
 namespace yacl {
 
@@ -63,7 +63,7 @@ BENCHMARK_DEFINE_F(CodeBench, LLC)(benchmark::State& state) {
         SilverCode slv(n, weight);                       \
         auto input = RandVec<uint128_t>(n * 2);          \
         state.ResumeTiming();                            \
-        slv.DualEncodeInplace(std::span(input));    \
+        slv.DualEncodeInplace(std::span(input));         \
         state.PauseTiming();                             \
       }                                                  \
       state.ResumeTiming();                              \
@@ -81,7 +81,7 @@ BENCHMARK_DEFINE_F(CodeBench, LLC)(benchmark::State& state) {
         auto input = RandVec<uint128_t>(n * 2);                             \
         auto output = std::vector<uint128_t>(n);                            \
         state.ResumeTiming();                                               \
-        slv.DualEncode(std::span(input), std::span(output));      \
+        slv.DualEncode(std::span(input), std::span(output));                \
         state.PauseTiming();                                                \
       }                                                                     \
       state.ResumeTiming();                                                 \
@@ -104,7 +104,7 @@ DELCARE_SLV_INPLACE_BENCH(11);
         auto input = RandVec<uint128_t>(n * 2);                            \
         auto output = std::vector<uint128_t>(n);                           \
         state.ResumeTiming();                                              \
-        acc.DualEncode(std::span(input), std::span(output));     \
+        acc.DualEncode(std::span(input), std::span(output));               \
         state.PauseTiming();                                               \
       }                                                                    \
       state.ResumeTiming();                                                \

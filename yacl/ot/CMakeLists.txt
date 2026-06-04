@@ -57,3 +57,9 @@ add_yacl_test_if(kos_ote_test)
 add_yacl_test_if(ot_store_test)
 add_yacl_test_if(sgrr_ote_test)
 add_yacl_test_if(softspoken_ote_test)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(ot_bench)

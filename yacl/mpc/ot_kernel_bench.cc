@@ -14,8 +14,8 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/kernel/ot_kernel.h"
 #include "yacl/link/test_util.h"
+#include "yacl/mpc/ot_kernel.h"
 
 namespace yacl {
 

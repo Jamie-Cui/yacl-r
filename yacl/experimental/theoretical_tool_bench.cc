@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "benchmark.h"
+#include "theoretical_tool_bench.h"
 
 #include <cstdint>
 

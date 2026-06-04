@@ -34,3 +34,9 @@ set(YACL_SPI_LIBS
 # ------------
 
 add_yacl_test_if(rand_test)
+
+# ------------
+# Bench
+# ------------
+
+add_yacl_bench_if(rand_bench)

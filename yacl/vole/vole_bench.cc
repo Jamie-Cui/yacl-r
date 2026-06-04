@@ -18,10 +18,10 @@
 
 #include "benchmark/benchmark.h"
 
-#include "yacl/utils/exception.h"
-#include "yacl/mpc/core/base_vole.h"
-#include "yacl/mpc/core/silent_vole.h"
 #include "yacl/link/test_util.h"
+#include "yacl/utils/exception.h"
+#include "yacl/vole/base_vole.h"
+#include "yacl/vole/silent_vole.h"
 
 //
 // bazel run //yacl/kernelle/f2k:benchmark -c opt --
@@ -121,12 +121,11 @@ void GilboaVoleBench(benchmark::State& state, Args&&... args) {
       send_byte -= lctxs[0]->GetStats()->sent_bytes;
       recv_byte -= lctxs[0]->GetStats()->recv_bytes;
       state.ResumeTiming();
-      auto sender = decorator::async([&] {
-        GilboaVoleSend<T, K>(lctxs[0], rot.recv, std::span(w), mal);
-      });
+      auto sender = decorator::async(
+          [&] { GilboaVoleSend<T, K>(lctxs[0], rot.recv, std::span(w), mal); });
       auto receiver = decorator::async([&] {
-        GilboaVoleRecv<T, K>(lctxs[1], rot.send, std::span(u),
-                             std::span(v), mal);
+        GilboaVoleRecv<T, K>(lctxs[1], rot.send, std::span(u), std::span(v),
+                             mal);
       });
       state.counters["send"] += sender.get();
       state.counters["recv"] += receiver.get();
@@ -183,8 +182,7 @@ void SilentVoleBench(benchmark::State& state, Args&&... args) {
       auto sender_task = decorator::async(
           [&] { SendWrapper<T, K>(sender, lctxs[0], std::span(c)); });
       auto receiver_task = decorator::async([&] {
-        RecvWrapper<T, K>(receiver, lctxs[1], std::span(a),
-                          std::span(b));
+        RecvWrapper<T, K>(receiver, lctxs[1], std::span(a), std::span(b));
       });
       state.counters["send"] += sender_task.get();
       state.counters["recv"] += receiver_task.get();

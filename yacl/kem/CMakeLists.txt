@@ -1,4 +1,4 @@
-# Copyright 2024 Jamie Cui
+# Copyright 2026 Ant Group Co., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
@@ -12,19 +12,18 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-macro(add_yacl_bench NAME)
-  cmake_parse_arguments(YACL_BENCH "NO_MAIN" "" "" ${ARGN})
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa.cc
+                      ${CMAKE_CURRENT_LIST_DIR}/ec.cc)
 
-  add_executable(${NAME} ${NAME}.cc)
-  if(YACL_BENCH_NO_MAIN)
-    target_link_libraries(${NAME} PRIVATE Yacl::yacl libbenchmark)
-  else()
-    target_link_libraries(${NAME} PRIVATE Yacl::yacl Deps::benchmark)
-  endif()
-endmacro()
+# Add header files for installation
 
-macro(add_yacl_bench_if NAME)
-  if(BUILD_BENCH)
-    add_yacl_bench(${NAME} ${ARGN})
-  endif()
-endmacro()
+set(YACL_SOURCE_FILES
+    ${YACL_SOURCE_FILES}
+    PARENT_SCOPE)
+
+# ------------
+# Test
+# ------------
+
+add_yacl_test_if(kem_test_rsa)
+add_yacl_test_if(kem_test_ec)
