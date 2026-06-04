@@ -28,11 +28,11 @@
 #include "asio/ssl.hpp"
 #include "msgpack.hpp"
 
+#include "yacl/link/ssl_options.h"
+#include "yacl/link/transport/channel.h"
 #include "yacl/utils/buffer.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/exception.h"
-#include "yacl/link/ssl_options.h"
-#include "yacl/link/transport/channel.h"
 
 namespace yacl::link::transport {
 
@@ -81,6 +81,7 @@ class ReceiverLoopAsio final : public IReceiverLoop {
  private:
   void DoAccept();
   void HandleSession(std::shared_ptr<asio::ip::tcp::socket> socket);
+  void ReadMessage(std::shared_ptr<asio::ip::tcp::socket> socket);
 
   asio::io_context io_ctx_;
   std::unique_ptr<asio::ip::tcp::acceptor> acceptor_;

@@ -16,6 +16,7 @@
 
 #include <cstring>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "spdlog/spdlog.h"
@@ -107,7 +108,16 @@ class AsioRequest : public Request {
  public:
   MessageHeader header;
   std::vector<uint8_t> body;
+  mutable std::optional<PushMessage> push_msg;
 };
+
+const PushMessage& GetPushMessage(const AsioRequest& request) {
+  if (!request.push_msg.has_value()) {
+    request.push_msg =
+        DeserializePushMessage(request.body.data(), request.body.size());
+  }
+  return *request.push_msg;
+}
 
 ReceiverLoopAsio::~ReceiverLoopAsio() { Stop(); }
 
@@ -120,9 +130,15 @@ void ReceiverLoopAsio::Stop() {
     asio::error_code ec;
     acceptor_->close(ec);
   }
+  io_ctx_.stop();
   if (io_thread_.joinable()) {
     io_thread_.join();
   }
+  {
+    std::lock_guard<std::mutex> lock(sessions_mutex_);
+    active_sessions_.clear();
+  }
+  io_ctx_.restart();
 }
 
 std::string ReceiverLoopAsio::Start(const std::string& host,
@@ -183,79 +199,91 @@ void ReceiverLoopAsio::DoAccept() {
 
 void ReceiverLoopAsio::HandleSession(
     std::shared_ptr<asio::ip::tcp::socket> socket) {
-  auto read_header = [this, socket]() {
-    auto header_buf =
-        std::make_shared<std::array<uint8_t, MessageHeader::kHeaderLen>>();
-    asio::async_read(
-        *socket, asio::buffer(*header_buf),
-        [this, socket, header_buf](asio::error_code ec, size_t) {
-          if (ec) {
-            SPDLOG_DEBUG("Read header error: {}", ec.message());
-            return;
-          }
+  ReadMessage(std::move(socket));
+}
 
-          auto header = MessageHeader::Parse(header_buf->data());
-          if (header.magic != 0x5941434C) {
-            SPDLOG_WARN("Invalid magic number");
-            return;
-          }
+void ReceiverLoopAsio::ReadMessage(
+    std::shared_ptr<asio::ip::tcp::socket> socket) {
+  auto header_buf =
+      std::make_shared<std::array<uint8_t, MessageHeader::kHeaderLen>>();
+  asio::async_read(
+      *socket, asio::buffer(*header_buf),
+      [this, socket, header_buf](asio::error_code ec, size_t) {
+        if (ec) {
+          SPDLOG_DEBUG("Read header error: {}", ec.message());
+          return;
+        }
 
-          auto body_buf =
-              std::make_shared<std::vector<uint8_t>>(header.body_len);
-          asio::async_read(
-              *socket, asio::buffer(*body_buf),
-              [this, socket, header, body_buf](asio::error_code ec, size_t) {
-                if (ec) {
-                  SPDLOG_DEBUG("Read body error: {}", ec.message());
-                  return;
-                }
+        auto header = MessageHeader::Parse(header_buf->data());
+        if (header.magic != 0x5941434C) {
+          SPDLOG_WARN("Invalid magic number");
+          return;
+        }
 
-                if (header.msg_type ==
-                    static_cast<uint8_t>(MessageType::kPush)) {
+        auto body_buf = std::make_shared<std::vector<uint8_t>>(header.body_len);
+        asio::async_read(
+            *socket, asio::buffer(*body_buf),
+            [this, socket, header, body_buf](asio::error_code ec, size_t) {
+              if (ec) {
+                SPDLOG_DEBUG("Read body error: {}", ec.message());
+                return;
+              }
+
+              PushAckMessage ack_msg;
+              if (header.msg_type == static_cast<uint8_t>(MessageType::kPush)) {
+                try {
                   auto push_msg = DeserializePushMessage(body_buf->data(),
                                                          body_buf->size());
                   auto iter = listeners_.find(push_msg.sender_rank);
-                  if (iter != listeners_.end()) {
+                  if (iter == listeners_.end()) {
+                    ack_msg.error_code = kErrorCodeInvalid;
+                    ack_msg.error_msg = fmt::format("no listener for rank {}",
+                                                    push_msg.sender_rank);
+                  } else {
                     auto request = std::make_unique<AsioRequest>();
+                    Response response;
                     request->header = header;
                     request->body = *body_buf;
-
-                    PushAckMessage ack_msg;
-                    try {
-                      iter->second->OnRequest(*request, nullptr);
-                      ack_msg.error_code = kErrorCodeOk;
-                    } catch (const std::exception& e) {
-                      ack_msg.error_code = kErrorCodeInvalid;
-                      ack_msg.error_msg = e.what();
-                    }
-
-                    auto ack_body = SerializePushAckMessage(ack_msg);
-                    MessageHeader ack_header;
-                    ack_header.magic = 0x5941434C;
-                    ack_header.body_len =
-                        static_cast<uint32_t>(ack_body.size());
-                    ack_header.msg_type =
-                        static_cast<uint8_t>(MessageType::kPushAck);
-
-                    auto ack_header_buf = ack_header.Serialize();
-                    std::vector<asio::const_buffer> buffers;
-                    buffers.push_back(asio::buffer(ack_header_buf));
-                    buffers.push_back(asio::buffer(ack_body));
-
-                    asio::async_write(*socket, buffers,
-                                      [socket](asio::error_code ec, size_t) {
-                                        if (ec) {
-                                          SPDLOG_DEBUG("Write ack error: {}",
-                                                       ec.message());
-                                        }
-                                      });
+                    request->push_msg = std::move(push_msg);
+                    iter->second->OnRequest(*request, &response);
+                    ack_msg.error_code = kErrorCodeOk;
                   }
+                } catch (const std::exception& e) {
+                  ack_msg.error_code = kErrorCodeInvalid;
+                  ack_msg.error_msg = e.what();
                 }
-              });
-        });
-  };
+              } else {
+                ack_msg.error_code = kErrorCodeInvalid;
+                ack_msg.error_msg =
+                    fmt::format("unexpected message type {}", header.msg_type);
+              }
 
-  read_header();
+              auto ack_body = std::make_shared<std::vector<uint8_t>>(
+                  SerializePushAckMessage(ack_msg));
+              MessageHeader ack_header;
+              ack_header.magic = 0x5941434C;
+              ack_header.body_len = static_cast<uint32_t>(ack_body->size());
+              ack_header.msg_type = static_cast<uint8_t>(MessageType::kPushAck);
+
+              auto ack_header_buf = std::make_shared<
+                  std::array<uint8_t, MessageHeader::kHeaderLen>>(
+                  ack_header.Serialize());
+              std::vector<asio::const_buffer> buffers;
+              buffers.push_back(asio::buffer(*ack_header_buf));
+              buffers.push_back(asio::buffer(*ack_body));
+
+              asio::async_write(*socket, buffers,
+                                [this, socket, ack_header_buf, ack_body](
+                                    asio::error_code ec, size_t) {
+                                  if (ec) {
+                                    SPDLOG_DEBUG("Write ack error: {}",
+                                                 ec.message());
+                                    return;
+                                  }
+                                  ReadMessage(socket);
+                                });
+            });
+      });
 }
 
 AsioLink::AsioLink(size_t self_rank, size_t peer_rank, Options options,
@@ -382,7 +410,7 @@ std::unique_ptr<Request> AsioLink::PackChunkedRequest(
 void AsioLink::UnpackMonoRequest(const Request& request, std::string* key,
                                  ByteContainerView* value) const {
   auto& req = static_cast<const AsioRequest&>(request);
-  auto msg = DeserializePushMessage(req.body.data(), req.body.size());
+  const auto& msg = GetPushMessage(req);
   *key = msg.key;
   *value = ByteContainerView(msg.value.data(), msg.value.size());
 }
@@ -391,7 +419,7 @@ void AsioLink::UnpackChunckRequest(const Request& request, std::string* key,
                                    ByteContainerView* value, size_t* offset,
                                    size_t* total_length) const {
   auto& req = static_cast<const AsioRequest&>(request);
-  auto msg = DeserializePushMessage(req.body.data(), req.body.size());
+  const auto& msg = GetPushMessage(req);
   *key = msg.key;
   *value = ByteContainerView(msg.value.data(), msg.value.size());
   *offset = static_cast<size_t>(msg.chunk_offset);
@@ -406,13 +434,13 @@ void AsioLink::FillResponseError(const Request& /*request*/,
 
 bool AsioLink::IsChunkedRequest(const Request& request) const {
   auto& req = static_cast<const AsioRequest&>(request);
-  auto msg = DeserializePushMessage(req.body.data(), req.body.size());
+  const auto& msg = GetPushMessage(req);
   return msg.trans_type == kTransChunked;
 }
 
 bool AsioLink::IsMonoRequest(const Request& request) const {
   auto& req = static_cast<const AsioRequest&>(request);
-  auto msg = DeserializePushMessage(req.body.data(), req.body.size());
+  const auto& msg = GetPushMessage(req);
   return msg.trans_type == kTransMono;
 }
 
