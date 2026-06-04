@@ -16,8 +16,8 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/pke/rsa_enc.h"
-#include "yacl/sign/rsa_signing.h"
+#include "yacl/pke/rsa.h"
+#include "yacl/sign/rsa.h"
 
 namespace yacl {
 

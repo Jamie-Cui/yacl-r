@@ -25,8 +25,8 @@
 #include "yacl/bc/symmetric_crypto.h"
 #include "yacl/hash/ssl_hash.h"
 #include "yacl/hmac/hmac_sm3.h"
-#include "yacl/pke/rsa_enc.h"
-#include "yacl/pke/sm2_enc.h"
+#include "yacl/pke/rsa.h"
+#include "yacl/pke/sm2.h"
 #include "yacl/rand/rand.h"
 
 /* security parameter declaration */

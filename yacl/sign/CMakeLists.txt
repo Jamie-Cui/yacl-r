@@ -12,11 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES
-    ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa_signing.cc
-    ${CMAKE_CURRENT_LIST_DIR}/sm2_signing.cc)
-
-# Add header files for installation
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa.cc
+                      ${CMAKE_CURRENT_LIST_DIR}/sm2.cc)
 
 set(YACL_SOURCE_FILES
     ${YACL_SOURCE_FILES}
@@ -26,5 +23,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test_if(rsa_signing_test)
-add_yacl_test_if(sm2_signing_test)
+add_yacl_test_if(sign_test_sm2)
+add_yacl_test_if(sign_test_rsa)

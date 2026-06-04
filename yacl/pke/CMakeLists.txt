@@ -12,8 +12,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa_enc.cc
-                      ${CMAKE_CURRENT_LIST_DIR}/sm2_enc.cc)
+set(YACL_SOURCE_FILES ${YACL_SOURCE_FILES} ${CMAKE_CURRENT_LIST_DIR}/rsa.cc
+                      ${CMAKE_CURRENT_LIST_DIR}/sm2.cc)
 
 # Add header files for installation
 
@@ -25,5 +25,5 @@ set(YACL_SOURCE_FILES
 # Test
 # ------------
 
-add_yacl_test_if(rsa_enc_test)
-add_yacl_test_if(sm2_enc_test)
+add_yacl_test_if(pke_test_rsa)
+add_yacl_test_if(pke_test_sm2)

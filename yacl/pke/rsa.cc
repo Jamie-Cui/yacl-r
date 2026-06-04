@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/pke/rsa_enc.h"
+#include "yacl/pke/rsa.h"
 
 #include <vector>
 

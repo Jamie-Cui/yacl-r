@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/pke/sm2_enc.h"
-
 #include "gtest/gtest.h"
 
+#include "yacl/pke/sm2.h"
 #include "yacl/utils/ossl/defines.h"
 
 namespace yacl {

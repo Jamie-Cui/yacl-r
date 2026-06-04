@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "yacl/sign/sm2_signing.h"
+#include "yacl/sign/sm2.h"
 
 namespace yacl {
 

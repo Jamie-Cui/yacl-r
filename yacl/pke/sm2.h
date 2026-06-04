@@ -18,7 +18,7 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/pke/pke_interface.h"
+#include "yacl/pke/pke.h"
 #include "yacl/utils/ossl/key_utils.h"
 #include "yacl/utils/secparam.h"
 

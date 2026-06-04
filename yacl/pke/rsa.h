@@ -18,12 +18,12 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/pke/pke_interface.h"
+#include "yacl/pke/pke.h"
 #include "yacl/utils/ossl/key_utils.h"
 #include "yacl/utils/secparam.h"
 
 /* security parameter declaration */
-YACL_MODULE_DECLARE("rsa_enc", SecParam::C::k128, SecParam::S::INF);
+YACL_MODULE_DECLARE("rsa", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl {
 

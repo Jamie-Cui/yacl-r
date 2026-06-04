@@ -17,7 +17,7 @@
 #include <utility>
 #include <vector>
 
-#include "yacl/sign/signing.h"
+#include "yacl/sign/sign.h"
 #include "yacl/utils/ossl/key_utils.h"
 #include "yacl/utils/secparam.h"
 
@@ -25,35 +25,33 @@
 #include "yacl/hash/hash_utils.h"
 
 /* security parameter declaration */
-YACL_MODULE_DECLARE("rsa_sign", SecParam::C::k128, SecParam::S::INF);
+YACL_MODULE_DECLARE("sm2_sign", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl {
 
-// RSA sign with sha256 (wrapper for OpenSSL)
-class RsaSigner final : public AsymmetricSigner {
+class Sm2Signer final : public AsymmetricSigner {
  public:
   // constructors and destrucors
-  explicit RsaSigner(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
-  explicit RsaSigner(/* pem key */ ByteContainerView sk_buf)
+  explicit Sm2Signer(ossl::UniquePkey&& sk) : sk_(std::move(sk)) {}
+  explicit Sm2Signer(/* pem key */ ByteContainerView sk_buf)
       : sk_(LoadKeyFromBuf(sk_buf)) {}
 
-  // return the scheme name
   SignatureScheme GetSignatureSchema() const override { return scheme_; }
 
-  // sign a message with stored private key
+  // Sign message with the default id.
   std::vector<uint8_t> Sign(ByteContainerView message) const override;
 
  private:
   const ossl::UniquePkey sk_;
-  const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
+  const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
-// RSA verify with sha256 (wrapper for OpenSSL)
-class RsaVerifier final : public AsymmetricVerifier {
+// SM2 verify with SM3 (wrapper for OpenSSL)
+class Sm2Verifier final : public AsymmetricVerifier {
  public:
   // constructors and destrucors
-  explicit RsaVerifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
-  explicit RsaVerifier(/* pem key */ ByteContainerView pk_buf)
+  explicit Sm2Verifier(ossl::UniquePkey&& pk) : pk_(std::move(pk)) {}
+  explicit Sm2Verifier(/* pem key */ ByteContainerView pk_buf)
       : pk_(LoadKeyFromBuf(pk_buf)) {}
 
   // return the scheme name
@@ -65,7 +63,7 @@ class RsaVerifier final : public AsymmetricVerifier {
 
  private:
   const ossl::UniquePkey pk_;
-  const SignatureScheme scheme_ = SignatureScheme::RSA_SIGNING_SHA256_HASH;
+  const SignatureScheme scheme_ = SignatureScheme::SM2_SIGNING_SM3_HASH;
 };
 
 }  // namespace yacl
