@@ -49,14 +49,14 @@ class Blake3Hash : public HashInterface {
   ~Blake3Hash() override;
 
   // From HashInterface.
-  HashAlgorithm GetHashAlgorithm() const override;
+  HashTy GetHashTy() const override;
   size_t DigestSize() const override;
   Blake3Hash& Reset() override;
   Blake3Hash& Update(ByteContainerView data) override;
   std::vector<uint8_t> CumulativeHash() const override;
 
  private:
-  const HashAlgorithm hash_algo_;
+  const HashTy hash_algo_;
   const size_t digest_size_;
   blake3_hasher hasher_ctx_;
 

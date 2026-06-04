@@ -19,7 +19,7 @@
 
 namespace yacl {
 
-Hmac::Hmac(HashAlgorithm hash_algo, ByteContainerView key)
+Hmac::Hmac(HashTy hash_algo, ByteContainerView key)
     : hash_algo_(hash_algo), key_(key.begin(), key.end()) {
   mac_ = ossl::FetchEvpHmac();
   ctx_ = ossl::UniqueMacCtx(EVP_MAC_CTX_new(mac_.get()));
@@ -36,7 +36,7 @@ Hmac::Hmac(HashAlgorithm hash_algo, ByteContainerView key)
                           /* params */ params.data()));
 }
 
-HashAlgorithm Hmac::GetHashAlgorithm() const { return hash_algo_; }
+HashTy Hmac::GetHashTy() const { return hash_algo_; }
 
 Hmac& Hmac::Reset() {
   YACL_ENFORCE(mac_ != nullptr);

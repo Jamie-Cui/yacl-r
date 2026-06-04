@@ -22,12 +22,12 @@ namespace yacl {
 
 class Shake128Hash final : public SslHash {
  public:
-  Shake128Hash() : SslHash(HashAlgorithm::SHAKE128) {}
+  Shake128Hash() : SslHash(HashTy::SHAKE128) {}
 };
 
 class Shake256Hash final : public SslHash {
  public:
-  Shake256Hash() : SslHash(HashAlgorithm::SHAKE256) {}
+  Shake256Hash() : SslHash(HashTy::SHAKE256) {}
 };
 
 template <typename T>

@@ -49,9 +49,9 @@ namespace yacl {
 
 class OtKernel : SingleThreadKernel {
  public:
-  enum class Role { Sender, Receiver };
+  enum class Role : uint8_t { Sender, Receiver };
 
-  enum class ExtAlgorithm {
+  enum class ExtAlgorithm : uint8_t {
     Ferret,      // default: softspoken + ferrret
     SoftSpoken,  // faster on LAN
     // IKNP,        // not recommended

@@ -16,8 +16,6 @@
 
 #include <vector>
 
-#include "openssl/evp.h" /* for evp type conversions */
-
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/secparam.h"
 
@@ -26,8 +24,8 @@ YACL_MODULE_DECLARE("hash_all", SecParam::C::k128, SecParam::S::INF);
 
 namespace yacl {
 
-enum class HashAlgorithm : int {
-  UNKNOWN,
+enum class HashTy : uint8_t {
+  UNKNOWN = 0,
   // SHA-2 family of algorithms
   SHA224 = 1,
   SHA256 = 2,
@@ -59,7 +57,7 @@ class HashInterface {
   virtual ~HashInterface() = default;
 
   // Returns the hash algorithm implemented by this object.
-  virtual HashAlgorithm GetHashAlgorithm() const = 0;
+  virtual HashTy GetHashTy() const = 0;
 
   // Returns the size of the message-digest of this hash algorithm. A return
   // value of zero indicates that the object does not implement a fixed-size
@@ -84,29 +82,29 @@ class HashInterface {
 };
 
 /* to a string which openssl recognizes */
-inline const char* ToString(HashAlgorithm hash_algo) {
+inline const char* ToString(HashTy hash_algo) {
   switch (hash_algo) {
     // see: https://www.openssl.org/docs/man3.0/man7/EVP_MD-SHA3.html
     // see: https://www.openssl.org/docs/man3.0/man7/EVP_MD-SHA2.html
-    case HashAlgorithm::SHA224:
+    case HashTy::SHA224:
       return "sha2-224";
-    case HashAlgorithm::SHA256:
+    case HashTy::SHA256:
       return "sha2-256";
-    case HashAlgorithm::SHA384:
+    case HashTy::SHA384:
       return "sha2-384";
-    case HashAlgorithm::SHA512:
+    case HashTy::SHA512:
       return "sha2-512";
-    // case HashAlgorithm::SHA_1:
+    // case HashTy::SHA_1:
     //   return "sha1";
-    case HashAlgorithm::SM3:
+    case HashTy::SM3:
       return "sm3";
 #ifndef YACL_WITH_TONGSUO
-    case HashAlgorithm::BLAKE2B:
+    case HashTy::BLAKE2B:
       return "blake2b-512";
 #endif
-    case HashAlgorithm::SHAKE128:
+    case HashTy::SHAKE128:
       return "shake128";
-    case HashAlgorithm::SHAKE256:
+    case HashTy::SHAKE256:
       return "shake256";
     default:
       YACL_THROW("Unsupported hash algo: {}", static_cast<int>(hash_algo));

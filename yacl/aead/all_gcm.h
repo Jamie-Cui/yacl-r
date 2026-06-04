@@ -14,9 +14,8 @@
 
 #pragma once
 
-#include <vector>
-
 #include <span>
+#include <vector>
 
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/secparam.h"
@@ -41,7 +40,7 @@ constexpr size_t kSm4GcmMacSize = 16;
 constexpr size_t kSm4GcmKeySize = 16;
 #endif
 
-enum class GcmCryptoSchema : int {
+enum class GcmCryptoSchema : uint8_t {
   AES128_GCM, /* security level = 128 */
   AES256_GCM, /* security level = 256 */
 #ifdef YACL_WITH_TONGSUO

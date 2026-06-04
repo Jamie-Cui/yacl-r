@@ -33,7 +33,7 @@ struct TestTypes {
   static T get_t_instance() { return T(); }
 };
 
-enum class SslMode {
+enum class SslMode : uint8_t {
   NONE,        // mode = 0
   RSA_SHA256,  // mode = 1
   SM2_SM3,     // mode = 2
@@ -58,7 +58,7 @@ inline std::pair<std::string, std::string> GenCertFiles(
                                  {"OU", "EGG"},
                                  {"CN", "demo.trustedegg.com"},
                              },
-                             3, HashAlgorithm::SHA256);
+                             3, HashTy::SHA256);
     ExportX509CertToFile(cert, cert_path);
   } else if (mode == SslMode::SM2_SM3) {
     auto key_pair = GenSm2KeyPair();
@@ -73,7 +73,7 @@ inline std::pair<std::string, std::string> GenCertFiles(
                                  {"OU", "EGG"},
                                  {"CN", "demo.trustedegg.com"},
                              },
-                             3, HashAlgorithm::SM3);
+                             3, HashTy::SM3);
     ExportX509CertToFile(cert, cert_path);
   } else {
     YACL_THROW("Unknown SSL mode.");

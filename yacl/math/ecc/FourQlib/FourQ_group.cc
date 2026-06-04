@@ -274,7 +274,7 @@ EcPoint FourQGroup::HashToCurve(HashToCurveStrategy strategy,
                static_cast<int>(strategy));
 
   std::vector<uint8_t> sha_bytes =
-      SslHash(HashAlgorithm::SHA512)
+      SslHash(HashTy::SHA512)
           .Update(std::span(input.data(), input.size()))
           .CumulativeHash();
   auto* f2elmt = reinterpret_cast<f2elm_t*>(sha_bytes.data());

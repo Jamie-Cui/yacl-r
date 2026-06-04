@@ -17,10 +17,9 @@
 #include <any>
 #include <atomic>
 #include <cstdint>
+#include <span>
 #include <utility>
 #include <vector>
-
-#include <span>
 
 #include "yacl/utils/exception.h"
 #include "yacl/utils/parallel.h"
@@ -56,7 +55,7 @@ constexpr bool is_const_v =
 template <class T>
 using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
-enum class OperandType : int {
+enum class OperandType : uint8_t {
   Scalar2Scalar = 0b00,
   Scalar2Vector = 0b01,
   Vector2Scalar = 0b10,

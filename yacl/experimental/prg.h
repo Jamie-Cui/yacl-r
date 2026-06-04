@@ -293,7 +293,7 @@ struct cipher_data<bool, BATCH_SIZE> {
 }  // namespace internal
 
 // core implementation of prg
-enum class PRG_MODE {
+enum class PRG_MODE : uint8_t {
   kAesEcb,  // aes-128 ecb (with an internal counter)
   kSm4Ecb,  // sm4-128 ecb (with an internal counter)
 };

@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -31,7 +32,7 @@ namespace yacl {
 // or even standard curves.
 using CurveName = std::string;
 
-enum class CurveForm {
+enum class CurveForm : uint8_t {
   // General form of elliptic curve
   // y^2 = x^3 + ax + b
   Weierstrass,
@@ -48,7 +49,7 @@ enum class CurveForm {
   TwistedEdwards,
 };
 
-enum class FieldType {
+enum class FieldType : uint8_t {
   // Non-binary Curves, define on E(F_p) where p is prime
   Prime,
   // Binary Curves, define on E(F_{2^m}), not recommend:

@@ -24,7 +24,7 @@ namespace yacl {
 
 class HmacSm3 final : public Hmac {
  public:
-  HmacSm3(ByteContainerView key) : Hmac(HashAlgorithm::SM3, key) {}
+  HmacSm3(ByteContainerView key) : Hmac(HashTy::SM3, key) {}
 };
 
 }  // namespace yacl

@@ -33,7 +33,7 @@ YACL_MODULE_DECLARE("aes_all_modes", SecParam::C::k128, SecParam::S::INF);
 namespace yacl {
 
 // supported AES modes
-enum class BlockCipherTy : int {
+enum class BlockCipherTy : uint8_t {
   AES128_ECB,  // ECB = Electronic Code Book
   AES128_CBC,  // CBC = Cipher Block Chaining
   AES128_CTR,  // CTR = Counter

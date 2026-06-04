@@ -25,23 +25,23 @@
 namespace yacl {
 
 // Select the appropriate SHA-2 variant based on field bit size.
-inline HashAlgorithm SelectSha2ByBits(size_t bits) {
+inline HashTy SelectSha2ByBits(size_t bits) {
   if (bits <= 224) {
-    return HashAlgorithm::SHA224;
+    return HashTy::SHA224;
   } else if (bits <= 256) {
-    return HashAlgorithm::SHA256;
+    return HashTy::SHA256;
   } else if (bits <= 384) {
-    return HashAlgorithm::SHA384;
+    return HashTy::SHA384;
   } else {
-    return HashAlgorithm::SHA512;
+    return HashTy::SHA512;
   }
 }
 
 // Compute a hash of the input data using the given algorithm.
 // For BLAKE3, field_bits controls the output length.
-inline std::vector<uint8_t> HashForCurve(HashAlgorithm algo, size_t field_bits,
+inline std::vector<uint8_t> HashForCurve(HashTy algo, size_t field_bits,
                                          ByteContainerView data) {
-  if (algo != HashAlgorithm::BLAKE3) {
+  if (algo != HashTy::BLAKE3) {
     return SslHash(algo).Update(data).CumulativeHash();
   }
   return Blake3Hash((field_bits + 7) / 8).Update(data).CumulativeHash();

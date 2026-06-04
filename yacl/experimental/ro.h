@@ -59,7 +59,7 @@ namespace yacl {
 
 class RandomOracle {
  public:
-  explicit RandomOracle(HashAlgorithm hash_type, size_t outlen = 16)
+  explicit RandomOracle(HashTy hash_type, size_t outlen = 16)
       : outlen_(outlen), hash_alg_(hash_type) {
     SanityCheck();
   }
@@ -75,13 +75,13 @@ class RandomOracle {
   // fixed output size = 32 (256bits)
   Buffer operator()(ByteContainerView x, size_t outlen) const {
     switch (hash_alg_) {
-      case HashAlgorithm::SHA256:  // outlen = 32 (256bits)
+      case HashTy::SHA256:  // outlen = 32 (256bits)
         YACL_ENFORCE(outlen <= 32);
         return {Sha256(x).data(), outlen};
-      case HashAlgorithm::SM3:  // outlen = 32 (256bits)
+      case HashTy::SM3:  // outlen = 32 (256bits)
         YACL_ENFORCE(outlen <= 32);
         return {Sm3(x).data(), outlen};
-      case HashAlgorithm::BLAKE3:
+      case HashTy::BLAKE3:
         YACL_ENFORCE(outlen <= 32);  // outlen = 32 (256bits)
         return {Blake3(x).data(), outlen};
       default:
@@ -118,8 +118,8 @@ class RandomOracle {
   // Check if the parameters are valid
   void SanityCheck() {
     YACL_ENFORCE(outlen_ > 0);
-    if (hash_alg_ == HashAlgorithm::SHA256 || hash_alg_ == HashAlgorithm::SM3 ||
-        hash_alg_ == HashAlgorithm::BLAKE3) {
+    if (hash_alg_ == HashTy::SHA256 || hash_alg_ == HashTy::SM3 ||
+        hash_alg_ == HashTy::BLAKE3) {
       YACL_ENFORCE(outlen_ <= 32);
     } else {
       YACL_THROW("Unsupported hash algorithm for random oracle: {}",
@@ -128,12 +128,12 @@ class RandomOracle {
   }
 
   static RandomOracle& GetBlake3() {
-    static RandomOracle ro(HashAlgorithm::BLAKE3, 16);
+    static RandomOracle ro(HashTy::BLAKE3, 16);
     return ro;
   }
 
   static RandomOracle& GetSm3() {
-    static RandomOracle ro(HashAlgorithm::SM3, 16);
+    static RandomOracle ro(HashTy::SM3, 16);
     return ro;
   }
 
@@ -142,7 +142,7 @@ class RandomOracle {
 
  private:
   size_t outlen_;
-  HashAlgorithm hash_alg_;
+  HashTy hash_alg_;
 };
 
 inline uint128_t RO_Blake3_128(ByteContainerView in) {

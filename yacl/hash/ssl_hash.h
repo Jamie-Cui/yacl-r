@@ -34,17 +34,17 @@ namespace yacl {
 // Abstract hash implements HashInterface.
 class SslHash : public HashInterface {
  public:
-  explicit SslHash(HashAlgorithm hash_algo);
+  explicit SslHash(HashTy hash_algo);
 
   // From HashInterface.
-  HashAlgorithm GetHashAlgorithm() const override;
+  HashTy GetHashTy() const override;
   size_t DigestSize() const override;
   SslHash& Reset() override;
   SslHash& Update(ByteContainerView data) override;
   std::vector<uint8_t> CumulativeHash() const override;
 
  private:
-  const HashAlgorithm hash_algo_;
+  const HashTy hash_algo_;
   ossl::UniqueMd md_;
   ossl::UniqueMdCtx context_;
   const size_t digest_size_;
@@ -53,13 +53,13 @@ class SslHash : public HashInterface {
 // Sm3Hash implements HashInterface for the SM3 hash function.
 class Sm3Hash final : public SslHash {
  public:
-  Sm3Hash() : SslHash(HashAlgorithm::SM3) {}
+  Sm3Hash() : SslHash(HashTy::SM3) {}
 };
 
 // Sha256Hash implements HashInterface for the SHA-256 hash function.
 class Sha256Hash final : public SslHash {
  public:
-  Sha256Hash() : SslHash(HashAlgorithm::SHA256) {}
+  Sha256Hash() : SslHash(HashTy::SHA256) {}
 };
 
 #ifndef YACL_WITH_TONGSUO
@@ -67,7 +67,7 @@ class Sha256Hash final : public SslHash {
 // Blake2Hash implements HashInterface for the Blake2b512 hash function.
 class Blake2Hash final : public SslHash {
  public:
-  Blake2Hash() : SslHash(HashAlgorithm::BLAKE2B) {}
+  Blake2Hash() : SslHash(HashTy::BLAKE2B) {}
 };
 
 #endif

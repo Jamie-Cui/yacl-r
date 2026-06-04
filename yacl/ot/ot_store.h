@@ -18,16 +18,16 @@
 #include <span>
 #include <vector>
 
+#include "yacl/link/context.h"
+#include "yacl/ot/slice_base.h"
 #include "yacl/utils/aligned_vector.h"
 #include "yacl/utils/dynamic_bitset.h"
 #include "yacl/utils/exception.h"
 #include "yacl/utils/int128.h"
-#include "yacl/ot/slice_base.h"
-#include "yacl/link/context.h"
 
 namespace yacl {
 
-enum class OtStoreType { Normal, Compact };
+enum class OtStoreType : uint8_t { Normal, Compact };
 
 // OT Receiver (for 1-out-of-2 OT)
 //

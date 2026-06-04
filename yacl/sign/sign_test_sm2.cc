@@ -87,7 +87,7 @@ TEST(Sm2Signing, SignVerifyInitWithCert_shouldOk) {
                                {"OU", "EGG"},
                                {"CN", "demo.trustedegg.com"},
                            },
-                           3, HashAlgorithm::SM3);
+                           3, HashTy::SM3);
   auto cert_buf = ExportX509CertToBuf(cert);
 
   std::string plaintext = "I am a plaintext.";

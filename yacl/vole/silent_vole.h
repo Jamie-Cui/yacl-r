@@ -67,7 +67,7 @@ namespace yacl {
 // `GilboaVoleSend/GilboaVoleRecv` instead.
 
 // dual-LPN code type
-enum class CodeType {
+enum class CodeType : uint8_t {
   // Support Silver & ExAcc only
   Silver5,
   Silver11,

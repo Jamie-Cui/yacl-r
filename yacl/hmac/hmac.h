@@ -41,11 +41,11 @@ class Hmac {
   // Hmac(const Hmac &) = delete;
   // Hmac &operator=(const Hmac &) = delete;
 
-  Hmac(HashAlgorithm hash_algo, ByteContainerView key);
+  Hmac(HashTy hash_algo, ByteContainerView key);
   // virtual ~Hmac();
 
   // Returns the hash algorithm implemented by this object.
-  HashAlgorithm GetHashAlgorithm() const;
+  HashTy GetHashTy() const;
 
   // Reset this hmac object to a clean state. Calling this method clears
   // the effects of all previous Update() operations. Note that a newly
@@ -64,7 +64,7 @@ class Hmac {
   std::vector<uint8_t> CumulativeMac() const;
 
  private:
-  const HashAlgorithm hash_algo_;
+  const HashTy hash_algo_;
   const std::vector<uint8_t> key_;
   ossl::UniqueMac mac_;
   ossl::UniqueMacCtx ctx_;

@@ -25,7 +25,7 @@
 namespace yacl {
 
 std::array<uint8_t, 32> Sha256(ByteContainerView data) {
-  auto buf = SslHash(HashAlgorithm::SHA256).Update(data).CumulativeHash();
+  auto buf = SslHash(HashTy::SHA256).Update(data).CumulativeHash();
   YACL_ENFORCE(buf.size() >= 32);
   std::array<uint8_t, 32> out{};
   memcpy(out.data(), buf.data(), 32);
@@ -33,7 +33,7 @@ std::array<uint8_t, 32> Sha256(ByteContainerView data) {
 }
 
 std::array<uint8_t, 32> Sm3(ByteContainerView data) {
-  auto buf = SslHash(HashAlgorithm::SM3).Update(data).CumulativeHash();
+  auto buf = SslHash(HashTy::SM3).Update(data).CumulativeHash();
   YACL_ENFORCE(buf.size() >= 32);
   std::array<uint8_t, 32> out{};
   memcpy(out.data(), buf.data(), 32);
@@ -42,7 +42,7 @@ std::array<uint8_t, 32> Sm3(ByteContainerView data) {
 
 #ifndef YACL_WITH_TONGSUO
 std::array<uint8_t, 64> Blake2(ByteContainerView data) {
-  auto buf = SslHash(HashAlgorithm::BLAKE2B).Update(data).CumulativeHash();
+  auto buf = SslHash(HashTy::BLAKE2B).Update(data).CumulativeHash();
   YACL_ENFORCE(buf.size() >= 64);
   std::array<uint8_t, 64> out{};
   memcpy(out.data(), buf.data(), 64);

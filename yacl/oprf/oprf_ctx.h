@@ -30,7 +30,7 @@ namespace yacl {
 // ---------- //
 enum class OprfMode : uint8_t { OPRF = 0x00, VOPRF = 0x01, POPRF = 0x02 };
 
-enum class OprfCipherSuite : int {
+enum class OprfCipherSuite : uint8_t {
   ristretto255_Sha512,  // FIXME unsupported
   decaf448_SHAKE256,    // FIXME unsupported
   P256_SHA256,
@@ -165,7 +165,7 @@ class OprfCtx {
   EcGroup* BorrowEcGroup() { return ec_.get(); }
 
   // Get the defined hash algorithm
-  HashAlgorithm GetHashAlgorithm() const { return hash_; }
+  HashTy GetHashTy() const { return hash_; }
 
   // Get the defined oprf mode
   OprfMode GetMode() const { return mode_; }
@@ -178,27 +178,27 @@ class OprfCtx {
                                       const std::string& info = "");
 
   // Statistcally decompose the cipher suite object to valid EcGroup and
-  // HashAlgorithm objects
-  static std::pair<std::unique_ptr<EcGroup>, HashAlgorithm>
-  DecomposeCipherSuite(const OprfCipherSuite& cipher_suite) {
+  // HashTy objects
+  static std::pair<std::unique_ptr<EcGroup>, HashTy> DecomposeCipherSuite(
+      const OprfCipherSuite& cipher_suite) {
     switch (cipher_suite) {
       case OprfCipherSuite::ristretto255_Sha512:
         YACL_THROW("Unsupported cipher suite: ristretto255_Sha512");
         // return {EcGroupFactory::Instance().Create("ristretto255"),
-        //         HashAlgorithm::SHA512};
+        //         HashTy::SHA512};
       case OprfCipherSuite::decaf448_SHAKE256:
         // return {EcGroupFactory::Instance().Create("decaf448"),
-        //         HashAlgorithm::SHAKE512};
+        //         HashTy::SHAKE512};
         YACL_THROW("Unsupported cipher suite: decaf448_SHAKE256");
       case OprfCipherSuite::P256_SHA256:
         return {EcGroupFactory::Instance().Create("brainpoolP256r1"),
-                HashAlgorithm::SHA256};
+                HashTy::SHA256};
       case OprfCipherSuite::P384_SHA384:
         return {EcGroupFactory::Instance().Create("brainpoolP384r1"),
-                HashAlgorithm::SHA384};
+                HashTy::SHA384};
       case OprfCipherSuite::P521_SHA512:
         return {EcGroupFactory::Instance().Create("brainpoolP512r1"),
-                HashAlgorithm::SHA512};
+                HashTy::SHA512};
       default:
         YACL_THROW(
             "Decompose Oprf Cipher Suite failure, unknown CipherSuite "
@@ -211,7 +211,7 @@ class OprfCtx {
   std::string ctx_str_;
   OprfMode mode_;
   std::unique_ptr<EcGroup> ec_;
-  HashAlgorithm hash_;
+  HashTy hash_;
 };
 
 }  // namespace yacl

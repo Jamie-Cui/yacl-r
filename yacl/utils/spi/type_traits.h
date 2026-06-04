@@ -14,10 +14,12 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace yacl {
 
 // borrow from c++20 stl
-enum class Endian {
+enum class Endian : uint16_t {
   // The high byte of the data is stored in the high address of the memory
   little = __ORDER_LITTLE_ENDIAN__,
   // The high byte of the data is stored in the low address of the memory

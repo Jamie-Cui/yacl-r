@@ -19,10 +19,10 @@
 #include <utility>
 #include <variant>
 
-#include "yacl/utils/byte_container_view.h"
 #include "yacl/math/ecc/curve_meta.h"
 #include "yacl/math/ecc/ec_point.h"
 #include "yacl/math/mpint/mp_int.h"
+#include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/spi/spi_factory.h"
 
 // ECC usage example:
@@ -32,7 +32,7 @@ namespace yacl {
 
 using yacl::math::MPInt;
 
-enum class HashToCurveStrategy {
+enum class HashToCurveStrategy : uint8_t {
   // Default strategy for HashToCurve(method)'s easy usage, dealing with the
   // scene that different libraries support different hash algorithms
   Autonomous,
@@ -164,16 +164,16 @@ class EcGroup {
   //================================//
 
   // return p1 + p2
-  virtual EcPoint Add(const EcPoint &p1, const EcPoint &p2) const = 0;
-  virtual void AddInplace(EcPoint *p1, const EcPoint &p2) const = 0;
+  virtual EcPoint Add(const EcPoint& p1, const EcPoint& p2) const = 0;
+  virtual void AddInplace(EcPoint* p1, const EcPoint& p2) const = 0;
 
   // return p1 - p2
-  virtual EcPoint Sub(const EcPoint &p1, const EcPoint &p2) const = 0;
-  virtual void SubInplace(EcPoint *p1, const EcPoint &p2) const = 0;
+  virtual EcPoint Sub(const EcPoint& p1, const EcPoint& p2) const = 0;
+  virtual void SubInplace(EcPoint* p1, const EcPoint& p2) const = 0;
 
   // return p * 2
-  virtual EcPoint Double(const EcPoint &p) const = 0;
-  virtual void DoubleInplace(EcPoint *p) const = 0;
+  virtual EcPoint Double(const EcPoint& p) const = 0;
+  virtual void DoubleInplace(EcPoint* p) const = 0;
 
   // three types of scalar multiplications:
   //
@@ -184,23 +184,23 @@ class EcGroup {
   // - Double-Base: when the protocol actually requires to compute two scalar
   // multiplications and then to add both results. (e.g. 𝑘𝑃+𝑟𝐵)
   // @param scalar: can be < 0
-  virtual EcPoint Mul(const EcPoint &point, const MPInt &scalar) const = 0;
-  virtual void MulInplace(EcPoint *point, const MPInt &scalar) const = 0;
+  virtual EcPoint Mul(const EcPoint& point, const MPInt& scalar) const = 0;
+  virtual void MulInplace(EcPoint* point, const MPInt& scalar) const = 0;
   // Returns: scalar*G
-  virtual EcPoint MulBase(const MPInt &scalar) const = 0;
+  virtual EcPoint MulBase(const MPInt& scalar) const = 0;
   // Returns: s1*G + s2*p2
-  virtual EcPoint MulDoubleBase(const MPInt &s1, const MPInt &s2,
-                                const EcPoint &p2) const = 0;
+  virtual EcPoint MulDoubleBase(const MPInt& s1, const MPInt& s2,
+                                const EcPoint& p2) const = 0;
 
   // Output: p / s = p * s^-1
   // Please note that not all scalars have inverses
   // An exception will be thrown if the inverse of s does not exist
-  virtual EcPoint Div(const EcPoint &point, const MPInt &scalar) const = 0;
-  virtual void DivInplace(EcPoint *point, const MPInt &scalar) const = 0;
+  virtual EcPoint Div(const EcPoint& point, const MPInt& scalar) const = 0;
+  virtual void DivInplace(EcPoint* point, const MPInt& scalar) const = 0;
 
   // Output: -p
-  virtual EcPoint Negate(const EcPoint &point) const = 0;
-  virtual void NegateInplace(EcPoint *point) const = 0;
+  virtual EcPoint Negate(const EcPoint& point) const = 0;
+  virtual void NegateInplace(EcPoint* point) const = 0;
 
   //================================//
   //     EcPoint helper tools       //
@@ -213,7 +213,7 @@ class EcGroup {
   //  2. Convert AffinePoint to EcPoint.
   //     > EcPoint ep = CopyPoint(AffinePoint(x, y));
   //     Note: If x, y is not in EC group, then an exception will throw.
-  virtual EcPoint CopyPoint(const EcPoint &point) const = 0;
+  virtual EcPoint CopyPoint(const EcPoint& point) const = 0;
 
   // Return the byte length of serialized point (not infinity)
   virtual uint64_t GetSerializeLength(PointOctetFormat format) const = 0;
@@ -222,23 +222,23 @@ class EcGroup {
   }
 
   // Compress and serialize a point
-  virtual Buffer SerializePoint(const EcPoint &point,
+  virtual Buffer SerializePoint(const EcPoint& point,
                                 PointOctetFormat format) const = 0;
-  Buffer SerializePoint(const EcPoint &point) const {
+  Buffer SerializePoint(const EcPoint& point) const {
     return SerializePoint(point, PointOctetFormat::Autonomous);
   }
 
-  virtual void SerializePoint(const EcPoint &point, PointOctetFormat format,
-                              Buffer *buf) const = 0;
-  void SerializePoint(const EcPoint &point, Buffer *buf) const {
+  virtual void SerializePoint(const EcPoint& point, PointOctetFormat format,
+                              Buffer* buf) const = 0;
+  void SerializePoint(const EcPoint& point, Buffer* buf) const {
     SerializePoint(point, PointOctetFormat::Autonomous, buf);
   }
 
   // Serialize to a fixed buf [buf, buf + buf_size]
-  virtual void SerializePoint(const EcPoint &point, PointOctetFormat format,
-                              uint8_t *buf, uint64_t buf_size) const = 0;
+  virtual void SerializePoint(const EcPoint& point, PointOctetFormat format,
+                              uint8_t* buf, uint64_t buf_size) const = 0;
 
-  void SerializePoint(const EcPoint &point, uint8_t *buf,
+  void SerializePoint(const EcPoint& point, uint8_t* buf,
                       uint64_t buf_size) const {
     return SerializePoint(point, PointOctetFormat::Autonomous, buf, buf_size);
   }
@@ -251,7 +251,7 @@ class EcGroup {
   }
 
   // Get a human-readable representation of elliptic curve point
-  virtual AffinePoint GetAffinePoint(const EcPoint &point) const = 0;
+  virtual AffinePoint GetAffinePoint(const EcPoint& point) const = 0;
 
   // Map a string to curve point
   //   Waring! Not all strategies are supported by libs, be care to choose a
@@ -280,39 +280,39 @@ class EcGroup {
   //   points_map[p] = i;
   // }
   // ```
-  virtual std::size_t HashPoint(const EcPoint &point) const = 0;
+  virtual std::size_t HashPoint(const EcPoint& point) const = 0;
 
   // Check p1 & p2 are equal
   // It is not recommended to directly compare the buffer of EcPoint using
   // "p1 == p2" since EcPoint is a black box, same point may have multiple
   // representations.
-  virtual bool PointEqual(const EcPoint &p1, const EcPoint &p2) const = 0;
+  virtual bool PointEqual(const EcPoint& p1, const EcPoint& p2) const = 0;
 
   // Is point on this curve
   // Every override function in subclass must support EcPoint<AffinePoint>
   // representation.
-  virtual bool IsInCurveGroup(const EcPoint &point) const = 0;
+  virtual bool IsInCurveGroup(const EcPoint& point) const = 0;
 
   // Is the point at infinity
-  virtual bool IsInfinity(const EcPoint &point) const = 0;
+  virtual bool IsInfinity(const EcPoint& point) const = 0;
 };
 
 // Give curve meta, return curve instance.
-using EcCreatorT = std::function<std::unique_ptr<EcGroup>(const CurveMeta &)>;
+using EcCreatorT = std::function<std::unique_ptr<EcGroup>(const CurveMeta&)>;
 // Give curve meta, return whether curve is supported by this lib.
 // True is supported and false is unsupported.
-using EcCheckerT = std::function<bool(const CurveMeta &)>;
+using EcCheckerT = std::function<bool(const CurveMeta&)>;
 
 class EcGroupFactory final : public SpiFactoryBase<EcGroup> {
  public:
-  static EcGroupFactory &Instance();
+  static EcGroupFactory& Instance();
 
   /// Register an elliptic curve library
   /// \param lib_name library name, e.g. openssl
   /// \param performance the estimated performance of this lib, bigger is
   /// better
-  void Register(const std::string &lib_name, uint64_t performance,
-                const EcCheckerT &checker, const EcCreatorT &creator);
+  void Register(const std::string& lib_name, uint64_t performance,
+                const EcCheckerT& checker, const EcCreatorT& creator);
 
  private:
   EcGroupFactory();

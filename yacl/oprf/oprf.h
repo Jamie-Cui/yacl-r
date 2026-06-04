@@ -174,7 +174,7 @@ class OprfClient {
     snprintf(p, kPhaseStr.size(), "%s", kPhaseStr.data());
 
     // hash every thing in hash_buf
-    return SslHash(ctx_->GetHashAlgorithm()).Update(hash_buf).CumulativeHash();
+    return SslHash(ctx_->GetHashTy()).Update(hash_buf).CumulativeHash();
   }
 
   void RefreshBlind() {

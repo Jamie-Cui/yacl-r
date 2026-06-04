@@ -145,28 +145,28 @@ EcPoint ToyXGroup::DeserializePoint(ByteContainerView buf,
 EcPoint ToyXGroup::HashToCurve(HashToCurveStrategy strategy,
                                std::string_view str) const {
   auto bits = params_.p.BitCount();
-  HashAlgorithm hash_algorithm;
+  HashTy hash_algorithm;
   switch (strategy) {
     case HashToCurveStrategy::HashAsPointX_SHA2:
       if (bits <= 224) {
-        hash_algorithm = HashAlgorithm::SHA224;
+        hash_algorithm = HashTy::SHA224;
       } else if (bits <= 256) {
-        hash_algorithm = HashAlgorithm::SHA256;
+        hash_algorithm = HashTy::SHA256;
       } else if (bits <= 384) {
-        hash_algorithm = HashAlgorithm::SHA384;
+        hash_algorithm = HashTy::SHA384;
       } else {
-        hash_algorithm = HashAlgorithm::SHA512;
+        hash_algorithm = HashTy::SHA512;
       }
       break;
     case HashToCurveStrategy::HashAsPointX_SHA3:
       YACL_THROW("Toy lib does not support HashAsPointX_SHA3 strategy now");
       break;
     case HashToCurveStrategy::HashAsPointX_SM:
-      hash_algorithm = HashAlgorithm::SM3;
+      hash_algorithm = HashTy::SM3;
       break;
     case HashToCurveStrategy::Autonomous:
     case HashToCurveStrategy::HashAsPointX_BLAKE3:
-      hash_algorithm = HashAlgorithm::BLAKE3;
+      hash_algorithm = HashTy::BLAKE3;
       break;
     default:
       YACL_THROW(
@@ -175,7 +175,7 @@ EcPoint ToyXGroup::HashToCurve(HashToCurveStrategy strategy,
   }
 
   std::vector<uint8_t> buf;
-  if (hash_algorithm != HashAlgorithm::BLAKE3) {
+  if (hash_algorithm != HashTy::BLAKE3) {
     buf = SslHash(hash_algorithm).Update(str).CumulativeHash();
   } else {
     buf = Blake3Hash((bits + 7) / 8).Update(str).CumulativeHash();

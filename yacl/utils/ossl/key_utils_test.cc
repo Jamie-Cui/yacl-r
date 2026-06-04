@@ -74,7 +74,7 @@ TEST(KeyUtilsTest, X508CertFormat) {
                                {"OU", "EGG"},
                                {"CN", "demo.trustedegg.com"},
                            },
-                           3, HashAlgorithm::SHA256);
+                           3, HashTy::SHA256);
   auto cert_buf = ExportX509CertToBuf(cert);
 
   std::string plaintext = "I am a plaintext.";

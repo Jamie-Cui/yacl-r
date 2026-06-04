@@ -251,8 +251,8 @@ ossl::UniqueX509 MakeX509Cert(
     /* issuer's sk */ const ossl::UniquePkey& sk,
     /* subjects info */
     const std::unordered_map<std::string, std::string>& subjects,
-    /* time */ unsigned days, HashAlgorithm hash) {
-  YACL_ENFORCE(hash == HashAlgorithm::SHA256 || hash == HashAlgorithm::SM3);
+    /* time */ unsigned days, HashTy hash) {
+  YACL_ENFORCE(hash == HashTy::SHA256 || hash == HashTy::SM3);
   // ++++++++++++++++++++++++++++++
   // Generate X509 cert (version 3)
   // ++++++++++++++++++++++++++++++

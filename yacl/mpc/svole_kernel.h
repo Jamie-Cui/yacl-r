@@ -34,7 +34,7 @@ namespace yacl {
 // Receiver receives: a, b
 class SVoleKernel : StreamingKernel {
  public:
-  enum class Role { Sender, Receiver };
+  enum class Role : uint8_t { Sender, Receiver };
 
   // constructor
   explicit SVoleKernel(Role role) : role_(role) {}

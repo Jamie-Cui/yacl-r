@@ -23,7 +23,7 @@ namespace yacl {
 // Kernel interface class
 class Kernel {
  public:
-  enum class Kind {
+  enum class Kind : uint8_t {
     SingleThread,  // supports eval
     MultiThread,   // supports eval, eval_multithread
     Streaming      // supports eval, eval_multithread, and eval_streaming

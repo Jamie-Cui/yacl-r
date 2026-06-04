@@ -21,7 +21,7 @@
 namespace yacl {
 
 Blake3Hash::Blake3Hash()
-    : hash_algo_(HashAlgorithm::BLAKE3), digest_size_(BLAKE3_OUT_LEN) {
+    : hash_algo_(HashTy::BLAKE3), digest_size_(BLAKE3_OUT_LEN) {
   Init();
 }
 
@@ -29,7 +29,7 @@ Blake3Hash::Blake3Hash()
 // https://github.com/BLAKE3-team/BLAKE3-specs/blob/master/blake3.pdf
 // Section 2.6
 Blake3Hash::Blake3Hash(size_t output_len)
-    : hash_algo_(HashAlgorithm::BLAKE3), digest_size_(output_len) {
+    : hash_algo_(HashTy::BLAKE3), digest_size_(output_len) {
   Init();
 }
 
@@ -37,7 +37,7 @@ void Blake3Hash::Init() { blake3_hasher_init(&hasher_ctx_); }
 
 Blake3Hash::~Blake3Hash() { Init(); }
 
-HashAlgorithm Blake3Hash::GetHashAlgorithm() const { return hash_algo_; }
+HashTy Blake3Hash::GetHashTy() const { return hash_algo_; }
 
 size_t Blake3Hash::DigestSize() const { return digest_size_; }
 

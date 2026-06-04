@@ -21,14 +21,14 @@
 #include "libtommath/tommath.h"
 #include "msgpack.hpp"
 
-#include "yacl/utils/byte_container_view.h"
-#include "yacl/utils/int128.h"
 #include "yacl/math/mpint/mp_int_enforce.h"
 #include "yacl/math/mpint/tommath_ext_features.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/int128.h"
 
 namespace yacl::math {
 
-enum class PrimeType : int {
+enum class PrimeType : uint8_t {
   Normal = 0,    // p is prime
   BBS = 1,       // p = 3 mod 4
   Safe = 2,      // (p-1)/2 is prime, use FastSafe instead
@@ -70,13 +70,13 @@ class MPInt {
   //  - if num is started with 0, the radix is 8
   //  - otherwise radix is 10
   // Plus and minus signs are supported, e.g. MPInt("-0xFF") is -255
-  explicit MPInt(const std::string &num, size_t radix = 0);
+  explicit MPInt(const std::string& num, size_t radix = 0);
 
-  MPInt(MPInt &&other) noexcept;
-  MPInt(const MPInt &other);
+  MPInt(MPInt&& other) noexcept;
+  MPInt(const MPInt& other);
 
-  MPInt &operator=(const MPInt &other);
-  MPInt &operator=(MPInt &&other) noexcept;  // not thread safe
+  MPInt& operator=(const MPInt& other);
+  MPInt& operator=(MPInt&& other) noexcept;  // not thread safe
 
   ~MPInt() { mp_clear(&n_); }
 
@@ -95,7 +95,7 @@ class MPInt {
   //  - if num is start with 0 , the radix is 8
   //  - otherwise radix is 10
   // Plus and minus signs are supported, e.g. "-0xFF" is -255
-  void Set(const std::string &num, int radix = 0);
+  void Set(const std::string& num, int radix = 0);
 
   void SetZero();
   [[nodiscard]] bool IsZero() const { return mp_iszero(&n_); }
@@ -134,98 +134,98 @@ class MPInt {
   //          Comparators           //
   //================================//
 
-  bool operator>(const MPInt &other) const;
-  bool operator<(const MPInt &other) const;
-  bool operator>=(const MPInt &other) const;
-  bool operator<=(const MPInt &other) const;
-  bool operator==(const MPInt &other) const;
-  bool operator!=(const MPInt &other) const;
+  bool operator>(const MPInt& other) const;
+  bool operator<(const MPInt& other) const;
+  bool operator>=(const MPInt& other) const;
+  bool operator<=(const MPInt& other) const;
+  bool operator==(const MPInt& other) const;
+  bool operator!=(const MPInt& other) const;
 
   // compare a to b
   // Returns:
   //  > 0:  this > other
   //  == 0: this == other
   //  < 0:  this < other
-  [[nodiscard]] int Compare(const MPInt &other) const;
+  [[nodiscard]] int Compare(const MPInt& other) const;
 
   // compare a to b
   // Returns:
   //  > 0:  |this| > |other|
   //  == 0: |this| == |other|
   //  < 0:  |this| < |other|
-  [[nodiscard]] int CompareAbs(const MPInt &other) const;
+  [[nodiscard]] int CompareAbs(const MPInt& other) const;
 
   //================================//
   //           Operators            //
   //================================//
 
-  MPInt operator+(const MPInt &operand2) const;
-  MPInt operator-(const MPInt &operand2) const;
-  MPInt operator*(const MPInt &operand2) const;
-  MPInt operator/(const MPInt &operand2) const;
-  MPInt operator%(const MPInt &operand2) const;
+  MPInt operator+(const MPInt& operand2) const;
+  MPInt operator-(const MPInt& operand2) const;
+  MPInt operator*(const MPInt& operand2) const;
+  MPInt operator/(const MPInt& operand2) const;
+  MPInt operator%(const MPInt& operand2) const;
   MPInt operator<<(size_t operand2) const;
   MPInt operator>>(size_t operand2) const;
   MPInt operator-() const;
-  MPInt operator&(const MPInt &operand2) const;
-  MPInt operator|(const MPInt &operand2) const;
-  MPInt operator^(const MPInt &operand2) const;
+  MPInt operator&(const MPInt& operand2) const;
+  MPInt operator|(const MPInt& operand2) const;
+  MPInt operator^(const MPInt& operand2) const;
 
-  MPInt operator+=(const MPInt &operand2);
-  MPInt operator-=(const MPInt &operand2);
-  MPInt operator*=(const MPInt &operand2);
-  MPInt operator/=(const MPInt &operand2);
-  MPInt operator%=(const MPInt &operand2);
+  MPInt operator+=(const MPInt& operand2);
+  MPInt operator-=(const MPInt& operand2);
+  MPInt operator*=(const MPInt& operand2);
+  MPInt operator/=(const MPInt& operand2);
+  MPInt operator%=(const MPInt& operand2);
   MPInt operator<<=(size_t operand2);
   MPInt operator>>=(size_t operand2);
-  MPInt operator&=(const MPInt &operand2);
-  MPInt operator|=(const MPInt &operand2);
-  MPInt operator^=(const MPInt &operand2);
+  MPInt operator&=(const MPInt& operand2);
+  MPInt operator|=(const MPInt& operand2);
+  MPInt operator^=(const MPInt& operand2);
 
-  MPInt &DecrOne() &;
-  MPInt &IncrOne() &;
-  [[nodiscard]] MPInt &&DecrOne() &&;
-  [[nodiscard]] MPInt &&IncrOne() &&;
+  MPInt& DecrOne() &;
+  MPInt& IncrOne() &;
+  [[nodiscard]] MPInt&& DecrOne() &&;
+  [[nodiscard]] MPInt&& IncrOne() &&;
 
   [[nodiscard]] MPInt Abs() const;
 
   // (*c) = a + b
-  static void Add(const MPInt &a, const MPInt &b, MPInt *c);
+  static void Add(const MPInt& a, const MPInt& b, MPInt* c);
 
-  MPInt AddMod(const MPInt &b, const MPInt &mod) const;
-  static void AddMod(const MPInt &a, const MPInt &b, const MPInt &mod,
-                     MPInt *d);
+  MPInt AddMod(const MPInt& b, const MPInt& mod) const;
+  static void AddMod(const MPInt& a, const MPInt& b, const MPInt& mod,
+                     MPInt* d);
 
   // (*c) = a - b
-  static void Sub(const MPInt &a, const MPInt &b, MPInt *c);
+  static void Sub(const MPInt& a, const MPInt& b, MPInt* c);
 
-  MPInt SubMod(const MPInt &b, const MPInt &mod) const;
-  static void SubMod(const MPInt &a, const MPInt &b, const MPInt &mod,
-                     MPInt *d);
+  MPInt SubMod(const MPInt& b, const MPInt& mod) const;
+  static void SubMod(const MPInt& a, const MPInt& b, const MPInt& mod,
+                     MPInt* d);
 
   // (*c) = a * b
-  static void Mul(const MPInt &a, const MPInt &b, MPInt *c);
+  static void Mul(const MPInt& a, const MPInt& b, MPInt* c);
   MPInt Mul(mp_digit b) const;
   void MulInplace(mp_digit b);
 
-  MPInt MulMod(const MPInt &b, const MPInt &mod) const;
-  static void MulMod(const MPInt &a, const MPInt &b, const MPInt &mod,
-                     MPInt *d);
+  MPInt MulMod(const MPInt& b, const MPInt& mod) const;
+  static void MulMod(const MPInt& a, const MPInt& b, const MPInt& mod,
+                     MPInt* d);
 
   // *d = (a**b) mod c
-  static void Pow(const MPInt &a, uint32_t b, MPInt *c);
+  static void Pow(const MPInt& a, uint32_t b, MPInt* c);
   MPInt Pow(uint32_t b) const;
   void PowInplace(uint32_t b);
 
-  static void PowMod(const MPInt &a, const MPInt &b, const MPInt &mod,
-                     MPInt *d);
-  MPInt PowMod(const MPInt &b, const MPInt &mod) const;
+  static void PowMod(const MPInt& a, const MPInt& b, const MPInt& mod,
+                     MPInt* d);
+  MPInt PowMod(const MPInt& b, const MPInt& mod) const;
 
   /* a/b => cb + d == a */
-  static void Div(const MPInt &a, const MPInt &b, MPInt *c, MPInt *d);
+  static void Div(const MPInt& a, const MPInt& b, MPInt* c, MPInt* d);
 
   // b = a // 3
-  static void Div3(const MPInt &a, MPInt *b);
+  static void Div3(const MPInt& a, MPInt* b);
 
   // ac = 1 (mod b)
   // example: a = 3, b = 10000, output c = 6667
@@ -234,15 +234,15 @@ class MPInt {
   // A necessary and sufficient condition for the existence of c is that a
   // and b are coprime. If a and b are not coprime, then c does not exist and an
   // exception is thrown
-  static void InvertMod(const MPInt &a, const MPInt &mod, MPInt *c);
-  MPInt InvertMod(const MPInt &mod) const;
+  static void InvertMod(const MPInt& a, const MPInt& mod, MPInt* c);
+  MPInt InvertMod(const MPInt& mod) const;
 
   /* c = a mod b, 0 <= c < b  */
-  static void Mod(const MPInt &a, const MPInt &mod, MPInt *c);
-  MPInt Mod(const MPInt &mod) const;
+  static void Mod(const MPInt& a, const MPInt& mod, MPInt* c);
+  MPInt Mod(const MPInt& mod) const;
 
   /* a = -a */
-  inline void Negate(MPInt *z) const { MPINT_ENFORCE_OK(mp_neg(&n_, &z->n_)); }
+  inline void Negate(MPInt* z) const { MPINT_ENFORCE_OK(mp_neg(&n_, &z->n_)); }
   inline void NegateInplace() { MPINT_ENFORCE_OK(mp_neg(&n_, &n_)); }
 
   /**
@@ -263,16 +263,16 @@ class MPInt {
    *     - Generate an exact bit_size random number with the highest bit
    * being 1.
    */
-  static void RandomRoundDown(size_t bit_size, MPInt *r);
-  static void RandomRoundUp(size_t bit_size, MPInt *r);
-  static void RandomExactBits(size_t bit_size, MPInt *r);
-  static void RandomMonicExactBits(size_t bit_size, MPInt *r);
+  static void RandomRoundDown(size_t bit_size, MPInt* r);
+  static void RandomRoundUp(size_t bit_size, MPInt* r);
+  static void RandomExactBits(size_t bit_size, MPInt* r);
+  static void RandomMonicExactBits(size_t bit_size, MPInt* r);
 
   // select a random r in [0, n)
-  static void RandomLtN(const MPInt &n, MPInt *r);
+  static void RandomLtN(const MPInt& n, MPInt* r);
 
-  static void Lcm(const MPInt &a, const MPInt &b, MPInt *c);
-  static void Gcd(const MPInt &a, const MPInt &b, MPInt *c);
+  static void Lcm(const MPInt& a, const MPInt& b, MPInt* c);
+  static void Gcd(const MPInt& a, const MPInt& b, MPInt* c);
 
   //================================//
   //          Prime tools           //
@@ -299,21 +299,21 @@ class MPInt {
    * @param[in] bit_size prime bit size, at least 81 bits
    * @param[out] out a bit_size prime whose highest bit always one
    */
-  static void RandPrimeOver(size_t bit_size, MPInt *out,
+  static void RandPrimeOver(size_t bit_size, MPInt* out,
                             PrimeType prime_type = PrimeType::BBS);
 
   //================================//
   //               I/O              //
   //================================//
 
-  friend std::ostream &operator<<(std::ostream &os, const MPInt &an_int);
+  friend std::ostream& operator<<(std::ostream& os, const MPInt& an_int);
 
   [[nodiscard]] yacl::Buffer Serialize() const;
   // serialize mpint to already allocated buffer.
   // if buf is nullptr, then calc serialize size only
   // @return: the actual size of serialized buffer
   // @throw: if buf_len is too small, an exception will be thrown
-  size_t Serialize(uint8_t *buf, size_t buf_len) const;
+  size_t Serialize(uint8_t* buf, size_t buf_len) const;
 
   void Deserialize(yacl::ByteContainerView buffer);
   [[nodiscard]] std::string ToString() const;
@@ -324,7 +324,7 @@ class MPInt {
   // If byte_len exceeds the actual size, the high bits of the buffer will be
   // filled with 0 for positive number, otherwise 1.
   yacl::Buffer ToBytes(size_t byte_len, Endian endian = Endian::native) const;
-  void ToBytes(unsigned char *buf, size_t buf_len,
+  void ToBytes(unsigned char* buf, size_t buf_len,
                Endian endian = Endian::native) const;
 
   // Converts the absolute value of MPInt into a byte string.
@@ -335,7 +335,7 @@ class MPInt {
   // characteristics of big-endian, the remaining part will not be assigned 0.
   // If buf is nullptr, then calc serialize size only
   // @return: the number of bytes written
-  size_t ToMagBytes(unsigned char *buf, size_t buf_len,
+  size_t ToMagBytes(unsigned char* buf, size_t buf_len,
                     Endian endian = Endian::native) const;
 
   // Converts the positive integer in buffer to a (positive) MPInt.
@@ -352,8 +352,8 @@ class MPInt {
   // warning: this function is very slow.
   template <typename T>
   static T SlowCustomPow(
-      const T &identity, const T &base, const MPInt &scalar,
-      const std::function<void(T *, const T &)> &combine_inplace) {
+      const T& identity, const T& base, const MPInt& scalar,
+      const std::function<void(T*, const T&)>& combine_inplace) {
     YACL_ENFORCE(!scalar.IsNegative(), "scalar must >= 0, get {}", scalar);
 
     if (scalar.IsZero()) {
@@ -397,16 +397,16 @@ class MPInt {
 };
 
 // for fmtlib
-inline auto format_as(const MPInt &i) { return fmt::streamed(i); }
+inline auto format_as(const MPInt& i) { return fmt::streamed(i); }
 
 }  // namespace yacl::math
 
-yacl::math::MPInt operator""_mp(const char *sz, size_t n);
+yacl::math::MPInt operator""_mp(const char* sz, size_t n);
 yacl::math::MPInt operator""_mp(unsigned long long num);
 
 template <>
 struct std::hash<yacl::math::MPInt> {
-  size_t operator()(const yacl::math::MPInt &x) const {
+  size_t operator()(const yacl::math::MPInt& x) const {
     uint64_t h;
     MPINT_ENFORCE_OK(mp_hash(&x.n_, &h));
     return h;
@@ -420,8 +420,8 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
   template <>
   struct pack<yacl::math::MPInt> {
     template <typename Stream>
-    msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &object,
-                                        const yacl::math::MPInt &mp) const {
+    msgpack::packer<Stream>& operator()(msgpack::packer<Stream>& object,
+                                        const yacl::math::MPInt& mp) const {
       object.pack(std::string_view(mp.Serialize()));
       return object;
     }
@@ -429,8 +429,8 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
 
   template <>
   struct convert<yacl::math::MPInt> {
-    const msgpack::object &operator()(const msgpack::object &object,
-                                      yacl::math::MPInt &mp) const {
+    const msgpack::object& operator()(const msgpack::object& object,
+                                      yacl::math::MPInt& mp) const {
       mp.Deserialize(object.as<std::string_view>());
       return object;
     }

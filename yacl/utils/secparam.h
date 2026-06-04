@@ -21,9 +21,9 @@
 
 #include "fmt/color.h"
 
-#include "yacl/utils/exception.h"
 #include "yacl/math/gadget.h"
 #include "yacl/utils/compile_time_utils.h"
+#include "yacl/utils/exception.h"
 
 namespace yacl {
 
@@ -68,7 +68,7 @@ class SecParam {
   // FFC: finite field cryptography, L is the pk length, N is the sk length
   // IFC: integer factorization cryptography, k is modulus length
   // ECC: elliptic curve cryptograpjy, f is the key length (depending on curves)
-  enum class C {
+  enum class C : uint8_t {
     UNKNOWN,
     k112,  // not recommended in any cases (last reviewed: 2023-9)
     k128,  // default for yacl
@@ -85,7 +85,7 @@ class SecParam {
   // security parameter is usually used in the security proof of statistical
   // indistinguishability. The recommended value is 40, which indicates a
   // probability of 2^{-40}.
-  enum class S {
+  enum class S : uint8_t {
     UNKNOWN,  //
     k30,      //
     k40,      // default for yacl
@@ -139,7 +139,7 @@ constexpr uint32_t SecParam::MakeInt(SecParam::S s) {
 // LPN Parameter (security related)
 // --------------------------------
 
-enum class LpnNoiseAsm { RegularNoise, UniformNoise };
+enum class LpnNoiseAsm : uint8_t { RegularNoise, UniformNoise };
 
 // For more parameter choices, see results in
 // https://eprint.iacr.org/2019/273.pdf Page 20, Table 1.
@@ -300,7 +300,7 @@ class YaclModuleHandler {
 #define YACL_MODULE_DECLARE(NAME, COMP, STAT)        \
   template <>                                        \
   struct YaclModule<CT_CRC32(NAME)> {                \
-    using SecParam = yacl::SecParam;         \
+    using SecParam = yacl::SecParam;                 \
     static constexpr std::string_view name = NAME;   \
     static constexpr SecParam::C c = (COMP);         \
     static constexpr SecParam::S s = (STAT);         \

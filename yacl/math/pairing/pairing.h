@@ -29,7 +29,7 @@ using GtElement = Item;
 // Pairing setting.
 using GroupTarget = yacl::math::GaloisField;
 
-enum class PairingAlgorithm {
+enum class PairingAlgorithm : uint8_t {
   Weil,
   Tate,
   Ate,
@@ -61,28 +61,28 @@ class PairingGroup {
   virtual std::shared_ptr<GroupTarget> GetGroupT() const = 0;
 
   virtual MPInt GetOrder() const = 0;
-  virtual GtElement MillerLoop(const EcPoint &group1_point,
-                               const EcPoint &group2_point) const = 0;
-  virtual GtElement FinalExp(const GtElement &x) const = 0;
+  virtual GtElement MillerLoop(const EcPoint& group1_point,
+                               const EcPoint& group2_point) const = 0;
+  virtual GtElement FinalExp(const GtElement& x) const = 0;
   // pairing = MillerLoop + FinalExponentiation
   // Group1 x Group2 -> Gt
-  virtual GtElement Pairing(const EcPoint &group1_point,
-                            const EcPoint &group2_point) const = 0;
+  virtual GtElement Pairing(const EcPoint& group1_point,
+                            const EcPoint& group2_point) const = 0;
   // TODO multi_miller_loop
   // TODO multi_pairing
 };
 
 // Give pairing meta, return pairing instance.
 using PairingCreatorT =
-    std::function<std::unique_ptr<PairingGroup>(const PairingMeta &)>;
+    std::function<std::unique_ptr<PairingGroup>(const PairingMeta&)>;
 // Give pairing meta, return whether pairing is supported by this lib.
 // True is supported and false is unsupported.
-using PairingCheckerT = std::function<bool(const PairingMeta &)>;
+using PairingCheckerT = std::function<bool(const PairingMeta&)>;
 
 // registray utils
 class PairingGroupFactory final : public SpiFactoryBase<PairingGroup> {
  public:
-  static PairingGroupFactory &Instance() {
+  static PairingGroupFactory& Instance() {
     static PairingGroupFactory factory;
     return factory;
   }
@@ -91,8 +91,8 @@ class PairingGroupFactory final : public SpiFactoryBase<PairingGroup> {
   /// \param lib_name library name, e.g. openssl
   /// \param performance the estimated performance of this lib, bigger is
   /// better
-  void Register(const std::string &lib_name, uint64_t performance,
-                const PairingCheckerT &checker, const PairingCreatorT &creator);
+  void Register(const std::string& lib_name, uint64_t performance,
+                const PairingCheckerT& checker, const PairingCreatorT& creator);
 
  private:
   PairingGroupFactory();

@@ -24,17 +24,16 @@ namespace {
 constexpr size_t kShake128DigestSize = 16;
 constexpr size_t kShake256DigestSize = 32;
 
-bool IsXof(HashAlgorithm hash_algo) {
-  return hash_algo == HashAlgorithm::SHAKE128 ||
-         hash_algo == HashAlgorithm::SHAKE256;
+bool IsXof(HashTy hash_algo) {
+  return hash_algo == HashTy::SHAKE128 || hash_algo == HashTy::SHAKE256;
 }
 
-size_t GetDigestSize(HashAlgorithm hash_algo, const EVP_MD* md) {
+size_t GetDigestSize(HashTy hash_algo, const EVP_MD* md) {
   YACL_ENFORCE(md != nullptr, "Unsupported hash algo: {}", ToString(hash_algo));
-  if (hash_algo == HashAlgorithm::SHAKE128) {
+  if (hash_algo == HashTy::SHAKE128) {
     return kShake128DigestSize;
   }
-  if (hash_algo == HashAlgorithm::SHAKE256) {
+  if (hash_algo == HashTy::SHAKE256) {
     return kShake256DigestSize;
   }
 
@@ -46,7 +45,7 @@ size_t GetDigestSize(HashAlgorithm hash_algo, const EVP_MD* md) {
 
 }  // namespace
 
-SslHash::SslHash(HashAlgorithm hash_algo)
+SslHash::SslHash(HashTy hash_algo)
     : hash_algo_(hash_algo),
       md_(ossl::FetchEvpMd(ToString(hash_algo))),
       context_(EVP_MD_CTX_new()),
@@ -54,7 +53,7 @@ SslHash::SslHash(HashAlgorithm hash_algo)
   Reset();
 }
 
-HashAlgorithm SslHash::GetHashAlgorithm() const { return hash_algo_; }
+HashTy SslHash::GetHashTy() const { return hash_algo_; }
 
 size_t SslHash::DigestSize() const { return digest_size_; }
 

@@ -24,7 +24,7 @@ namespace yacl {
 
 class HmacSha256 final : public Hmac {
  public:
-  HmacSha256(ByteContainerView key) : Hmac(HashAlgorithm::SHA256, key) {}
+  HmacSha256(ByteContainerView key) : Hmac(HashTy::SHA256, key) {}
 };
 
 }  // namespace yacl

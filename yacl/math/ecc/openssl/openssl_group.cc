@@ -276,7 +276,7 @@ EcPoint OpensslGroup::DeserializePoint(ByteContainerView buf,
 EcPoint OpensslGroup::HashToCurve(HashToCurveStrategy strategy,
                                   std::string_view str) const {
   auto bits = EC_GROUP_order_bits(group_.get());
-  HashAlgorithm hash_algorithm;
+  HashTy hash_algorithm;
   switch (strategy) {
     case HashToCurveStrategy::TryAndRehash_SHA2:
       hash_algorithm = SelectSha2ByBits(bits);
@@ -285,11 +285,11 @@ EcPoint OpensslGroup::HashToCurve(HashToCurveStrategy strategy,
       YACL_THROW("Openssl does not support TryAndRehash_SHA3 strategy now");
       break;
     case HashToCurveStrategy::TryAndRehash_SM:
-      hash_algorithm = HashAlgorithm::SM3;
+      hash_algorithm = HashTy::SM3;
       break;
     case HashToCurveStrategy::TryAndRehash_BLAKE3:
     case HashToCurveStrategy::Autonomous:
-      hash_algorithm = HashAlgorithm::BLAKE3;
+      hash_algorithm = HashTy::BLAKE3;
       break;
     default:
       YACL_THROW("Openssl only supports TryAndRehash strategy now. select={}",

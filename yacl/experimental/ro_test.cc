@@ -39,7 +39,7 @@ TEST_P(RandomOracleTest, Default) {
 
 TEST_P(RandomOracleTest, OutLen8) {
   const auto& param = GetParam();
-  auto RO = RandomOracle(HashAlgorithm::BLAKE3, 8);
+  auto RO = RandomOracle(HashTy::BLAKE3, 8);
   auto input = FastRandBytes(param);
   auto out1 = RO.Gen(input);
   auto out2 = RO.Gen(input);
@@ -48,11 +48,11 @@ TEST_P(RandomOracleTest, OutLen8) {
 }
 
 TEST(RandomOracleTest, EdgeTest1) {
-  EXPECT_THROW(RandomOracle(HashAlgorithm::BLAKE3, 0), yacl::EnforceNotMet);
+  EXPECT_THROW(RandomOracle(HashTy::BLAKE3, 0), yacl::EnforceNotMet);
 }
 
 TEST(RandomOracleTest, EdgeTest2) {
-  EXPECT_THROW(RandomOracle(HashAlgorithm::BLAKE3, 33);, yacl::EnforceNotMet);
+  EXPECT_THROW(RandomOracle(HashTy::BLAKE3, 33);, yacl::EnforceNotMet);
 }
 
 template <typename T>

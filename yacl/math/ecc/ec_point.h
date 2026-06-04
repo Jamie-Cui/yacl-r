@@ -26,7 +26,7 @@ using yacl::math::MPInt;
 
 // Elliptic curve point Octet-String format
 // See SECG standard for details: SEC 1, section 2.3. https://www.secg.org/
-enum class PointOctetFormat {
+enum class PointOctetFormat : uint8_t {
   // The format is determined by the library itself.
   Autonomous,
 
@@ -69,13 +69,13 @@ struct AffinePoint {
   AffinePoint(MPInt x, MPInt y) : x(std::move(x)), y(std::move(y)) {}
   AffinePoint() = default;
 
-  bool operator==(const AffinePoint &rhs) const;
-  bool operator!=(const AffinePoint &rhs) const;
+  bool operator==(const AffinePoint& rhs) const;
+  bool operator!=(const AffinePoint& rhs) const;
 
   std::string ToString() const;
 
   uint64_t GetSerializeLength() const;
-  void SerializePoint(uint8_t *buf, uint64_t buf_size) const;
+  void SerializePoint(uint8_t* buf, uint64_t buf_size) const;
   [[nodiscard]] Buffer Serialize() const;
   void Deserialize(ByteContainerView in);
 
@@ -83,7 +83,7 @@ struct AffinePoint {
   // associative containers such as std::unordered_map, std::unordered_set, etc.
   std::size_t HashCode() const;
 
-  friend std::ostream &operator<<(std::ostream &os, const AffinePoint &point);
+  friend std::ostream& operator<<(std::ostream& os, const AffinePoint& point);
 };
 
 // Feel free to add more storage types if you need.
@@ -97,6 +97,6 @@ using Array160 =
 // a black box
 using EcPoint = std::variant<Array32, Array128, Array160, AnyPtr, AffinePoint>;
 
-inline auto format_as(const AffinePoint &ap) { return fmt::streamed(ap); }
+inline auto format_as(const AffinePoint& ap) { return fmt::streamed(ap); }
 
 }  // namespace yacl

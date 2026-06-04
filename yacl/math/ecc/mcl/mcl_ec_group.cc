@@ -388,7 +388,7 @@ EcPoint MclGroupT<Fp_, Zn_>::HashToStdCurve(HashToCurveStrategy strategy,
 
   auto ret = MakeShared<Ec>();
   const auto bits = Fp::BaseFp::getOp().mp.getBitSize();
-  HashAlgorithm hash_algorithm;
+  HashTy hash_algorithm;
   switch (strategy) {
     case HashToCurveStrategy::TryAndIncrement_SHA2:
       hash_algorithm = SelectSha2ByBits(bits);
@@ -397,11 +397,11 @@ EcPoint MclGroupT<Fp_, Zn_>::HashToStdCurve(HashToCurveStrategy strategy,
       YACL_THROW("Mcl lib do not support TryAndRehash_SHA3 strategy now");
       break;
     case HashToCurveStrategy::TryAndIncrement_SM:
-      hash_algorithm = HashAlgorithm::SM3;
+      hash_algorithm = HashTy::SM3;
       break;
     case HashToCurveStrategy::TryAndIncrement_BLAKE3:
     case HashToCurveStrategy::Autonomous:
-      hash_algorithm = HashAlgorithm::BLAKE3;
+      hash_algorithm = HashTy::BLAKE3;
       break;
     default:
       YACL_THROW("Mcl lib only support TryAndIncrement strategy now. select={}",

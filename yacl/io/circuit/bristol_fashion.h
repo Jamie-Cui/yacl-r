@@ -23,12 +23,12 @@
 
 #include "spdlog/spdlog.h"
 
-#include "yacl/utils/strings.h"
-#include "yacl/utils/byte_container_view.h"
-#include "yacl/utils/exception.h"
 #include "yacl/io/stream/file_io.h"
 #include "yacl/io/stream/interface.h"
+#include "yacl/utils/byte_container_view.h"
+#include "yacl/utils/exception.h"
 #include "yacl/utils/spi/type_traits.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl::io {
 
@@ -44,7 +44,7 @@ class BFCircuit {
   std::vector<uint32_t> now;  // number of wires per each output values
 
   // circuit oeprations
-  enum class Op { XOR, AND, INV, EQ, EQW, MAND };
+  enum class Op : uint8_t { XOR, AND, INV, EQ, EQW, MAND };
 
   // Gate definition
   class Gate {
@@ -64,7 +64,7 @@ class BFCircuit {
 // bristol fashion circuit file reader
 class CircuitReader {
  public:
-  explicit CircuitReader(const std::string &path) {
+  explicit CircuitReader(const std::string& path) {
     Reset();
     Init(path);
   }
@@ -89,7 +89,7 @@ class CircuitReader {
     }
   }
 
-  void Init(const std::string &path) {
+  void Init(const std::string& path) {
     in_ = std::unique_ptr<io::InputStream>(new io::FileInputStream(path));
     circ_ = std::make_unique<BFCircuit>();  // get a new circ instance
   }

@@ -162,7 +162,7 @@ void ExportSecretKeyToDerFile(
     /* issuer's sk */ const ossl::UniquePkey& sk,
     /* subjects info */
     const std::unordered_map<std::string, std::string>& subjects,
-    /* time */ unsigned days, HashAlgorithm hash);
+    /* time */ unsigned days, HashTy hash);
 
 // Load x509 certificate from buffer
 [[nodiscard]] ossl::UniqueX509 LoadX509Cert(ByteContainerView buf);
