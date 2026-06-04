@@ -18,7 +18,7 @@
 #include <unordered_map>
 #include <utility>
 
-#include "yacl/hash/hash_interface.h"
+#include "yacl/hash/hash.h"
 #include "yacl/utils/ossl/defines.h"
 
 namespace yacl {

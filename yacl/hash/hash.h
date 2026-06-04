@@ -33,15 +33,14 @@ enum class HashAlgorithm : int {
   SHA256 = 2,
   SHA384 = 3,
   SHA512 = 4,
-
   // SHA_1 = 5, // not recommended to use
-
   SM3 = 6,
-
 #ifndef YACL_WITH_TONGSUO
   BLAKE2B = 7,  // blake2 is disabled by tongsuo
 #endif
-  BLAKE3 = 8
+  BLAKE3 = 8,
+  SHAKE128 = 9,
+  SHAKE256 = 10,
 };
 
 // HashInterface defines an interface for hash functions.
@@ -54,8 +53,8 @@ enum class HashAlgorithm : int {
 // Implementations of this interface need not be thread-safe.
 class HashInterface {
  public:
-  HashInterface(const HashInterface &) = delete;
-  HashInterface &operator=(const HashInterface &) = delete;
+  HashInterface(const HashInterface&) = delete;
+  HashInterface& operator=(const HashInterface&) = delete;
   HashInterface() = default;
   virtual ~HashInterface() = default;
 
@@ -71,10 +70,10 @@ class HashInterface {
   // the effects of all previous Update() operations. Note that a newly
   // constructed hash object is always expected to be in a clean state and users
   // are not required to call Reset() on such objects.
-  virtual HashInterface &Reset() = 0;
+  virtual HashInterface& Reset() = 0;
 
   // Updates this hash object by adding the contents of |data|.
-  virtual HashInterface &Update(ByteContainerView data) = 0;
+  virtual HashInterface& Update(ByteContainerView data) = 0;
 
   // Computes the hash of the data added so far and writes it to |digest|.
   // Returns a non-OK status on error.
@@ -85,7 +84,7 @@ class HashInterface {
 };
 
 /* to a string which openssl recognizes */
-inline const char *ToString(HashAlgorithm hash_algo) {
+inline const char* ToString(HashAlgorithm hash_algo) {
   switch (hash_algo) {
     // see: https://www.openssl.org/docs/man3.0/man7/EVP_MD-SHA3.html
     // see: https://www.openssl.org/docs/man3.0/man7/EVP_MD-SHA2.html
@@ -105,6 +104,10 @@ inline const char *ToString(HashAlgorithm hash_algo) {
     case HashAlgorithm::BLAKE2B:
       return "blake2b-512";
 #endif
+    case HashAlgorithm::SHAKE128:
+      return "shake128";
+    case HashAlgorithm::SHAKE256:
+      return "shake256";
     default:
       YACL_THROW("Unsupported hash algo: {}", static_cast<int>(hash_algo));
   }

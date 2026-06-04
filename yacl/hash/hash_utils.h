@@ -16,8 +16,8 @@
 
 #include <vector>
 
-#include "yacl/utils/int128.h"
 #include "yacl/hash/ssl_hash.h"
+#include "yacl/utils/int128.h"
 
 /* security parameter declaration */
 // this header provides convenience wrappers over concrete hash modules, no
@@ -31,6 +31,10 @@ std::array<uint8_t, 32> Sm3(ByteContainerView data);  // 256-bits
 
 std::array<uint8_t, 32> Blake3(ByteContainerView data);  // 256-bits
 
+std::array<uint8_t, 16> Shake128(ByteContainerView data);  // 128-bits
+
+std::array<uint8_t, 32> Shake256(ByteContainerView data);  // 256-bits
+
 #define DECLARE_HASH_OUT_128(func)                                   \
   inline uint128_t func##_128(ByteContainerView data) {              \
     auto hash_bytes = func(data);                                    \
@@ -43,7 +47,6 @@ std::array<uint8_t, 32> Blake3(ByteContainerView data);  // 256-bits
 
 DECLARE_HASH_OUT_128(Sha256);  // uint128_t Sha256_128(ByteContainerView data);
 DECLARE_HASH_OUT_128(Sm3);     // uint128_t Sm3_128(ByteContainerView data);
-
 DECLARE_HASH_OUT_128(Blake3);  // uint128_t Blake3_128(ByteContainerView data);
 
 #ifndef YACL_WITH_TONGSUO

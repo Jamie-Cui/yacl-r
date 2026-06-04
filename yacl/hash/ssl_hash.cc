@@ -19,12 +19,38 @@
 #include "yacl/utils/scope_guard.h"
 
 namespace yacl {
+namespace {
+
+constexpr size_t kShake128DigestSize = 16;
+constexpr size_t kShake256DigestSize = 32;
+
+bool IsXof(HashAlgorithm hash_algo) {
+  return hash_algo == HashAlgorithm::SHAKE128 ||
+         hash_algo == HashAlgorithm::SHAKE256;
+}
+
+size_t GetDigestSize(HashAlgorithm hash_algo, const EVP_MD* md) {
+  YACL_ENFORCE(md != nullptr, "Unsupported hash algo: {}", ToString(hash_algo));
+  if (hash_algo == HashAlgorithm::SHAKE128) {
+    return kShake128DigestSize;
+  }
+  if (hash_algo == HashAlgorithm::SHAKE256) {
+    return kShake256DigestSize;
+  }
+
+  int digest_size = EVP_MD_size(md);
+  YACL_ENFORCE(digest_size > 0, "Invalid digest size for hash algo: {}",
+               ToString(hash_algo));
+  return static_cast<size_t>(digest_size);
+}
+
+}  // namespace
 
 SslHash::SslHash(HashAlgorithm hash_algo)
     : hash_algo_(hash_algo),
       md_(ossl::FetchEvpMd(ToString(hash_algo))),
       context_(EVP_MD_CTX_new()),
-      digest_size_(EVP_MD_size(md_.get())) {
+      digest_size_(GetDigestSize(hash_algo, md_.get())) {
   Reset();
 }
 
@@ -59,9 +85,15 @@ std::vector<uint8_t> SslHash::CumulativeHash() const {
   EVP_MD_CTX_init(ctx_snapshot.get());  // no return value
 
   OSSL_RET_1(EVP_MD_CTX_copy_ex(ctx_snapshot.get(), context_.get()));
-  OSSL_RET_1(EVP_DigestFinal_ex(ctx_snapshot.get(), out.data(), &out_len));
 
-  YACL_ENFORCE(out_len == DigestSize());
+  // See: https://docs.openssl.org/3.3/man7/EVP_MD-SHAKE/, XOF: Extendable
+  // Output Function
+  if (IsXof(hash_algo_)) {
+    OSSL_RET_1(EVP_DigestFinalXOF(ctx_snapshot.get(), out.data(), out.size()));
+  } else {
+    OSSL_RET_1(EVP_DigestFinal_ex(ctx_snapshot.get(), out.data(), &out_len));
+    YACL_ENFORCE(out_len == DigestSize());
+  }
 
   return out;
 }

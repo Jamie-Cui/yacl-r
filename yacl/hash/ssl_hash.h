@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include "yacl/hash/hash_interface.h"
+#include "yacl/hash/hash.h"
 #include "yacl/utils/byte_container_view.h"
 #include "yacl/utils/ossl/defines.h"
 #include "yacl/utils/secparam.h"

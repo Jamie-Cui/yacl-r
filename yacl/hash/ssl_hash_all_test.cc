@@ -14,11 +14,21 @@
 
 #include "gtest/gtest.h"
 
-#include "yacl/utils/strings.h"
-#include "yacl/utils/exception.h"
 #include "yacl/hash/ssl_hash.h"
+#include "yacl/utils/exception.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl {
+
+class Shake128Hash final : public SslHash {
+ public:
+  Shake128Hash() : SslHash(HashAlgorithm::SHAKE128) {}
+};
+
+class Shake256Hash final : public SslHash {
+ public:
+  Shake256Hash() : SslHash(HashAlgorithm::SHAKE256) {}
+};
 
 template <typename T>
 class SslHashTest : public testing::Test {
@@ -63,6 +73,21 @@ class SslHashTest : public testing::Test {
         "9d6dac6d7d8fc6bf1d389d7d1f8e1f8a17c69e5ee3120871c10a4322849e5cef1e6db5"
         "f5e968ee7c39d9d76e74806dd7e34a7d58e8c901883787c8edf7809072",
         "dabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd"};
+    // The following two test vectors are SHAKE128 XOF outputs using a
+    // 128-bit output length.
+    test_data_shake128_ = {
+        "abc", "5881092dd818bf5cf8a3ddb793fbcba7",
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
+        "1a96182b50fb8c7e74e0a707788f55e9",
+        "dbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"};
+    // The following two test vectors are SHAKE256 XOF outputs using a
+    // 256-bit output length.
+    test_data_shake256_ = {
+        "abc",
+        "483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739",
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
+        "4d8c2dd2435a0128eefbb8c36f6f87133a7911e18d979ee1ae6be5d4fd2e3329",
+        "dbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"};
   }
 
  protected:
@@ -71,6 +96,10 @@ class SslHashTest : public testing::Test {
       return test_data_sm3_;
     } else if (std::is_same<T, Sha256Hash>::value) {
       return test_data_sha256_;
+    } else if (std::is_same<T, Shake128Hash>::value) {
+      return test_data_shake128_;
+    } else if (std::is_same<T, Shake256Hash>::value) {
+      return test_data_shake256_;
     }
 #ifndef YACL_WITH_TONGSUO
     else if (std::is_same<T, Blake2Hash>::value) {
@@ -84,9 +113,11 @@ class SslHashTest : public testing::Test {
   TestData test_data_sm3_;
   TestData test_data_sha256_;
   TestData test_data_blake2b_;
+  TestData test_data_shake128_;
+  TestData test_data_shake256_;
 };
 
-using MyTypes = ::testing::Types<Sm3Hash, Sha256Hash
+using MyTypes = ::testing::Types<Sm3Hash, Sha256Hash, Shake128Hash, Shake256Hash
 #ifndef YACL_WITH_TONGSUO
                                  ,
                                  Blake2Hash

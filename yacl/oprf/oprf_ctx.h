@@ -19,10 +19,9 @@
 #include <utility>
 #include <vector>
 
-
-#include "yacl/utils/strings.h"
+#include "yacl/hash/hash.h"
 #include "yacl/math/ecc/ecc_spi.h"
-#include "yacl/hash/hash_interface.h"
+#include "yacl/utils/strings.h"
 
 namespace yacl {
 

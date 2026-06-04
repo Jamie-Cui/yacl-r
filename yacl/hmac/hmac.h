@@ -20,7 +20,7 @@
 #include "yacl/utils/ossl/defines.h"
 
 /* submodules */
-#include "yacl/hash/hash_interface.h"
+#include "yacl/hash/hash.h"
 
 /* security parameter declaration */
 // this header selects the hash algorithm at runtime, concrete HMAC wrappers
@@ -51,10 +51,10 @@ class Hmac {
   // the effects of all previous Update() operations. Note that a newly
   // constructed hash object is always expected to be in a clean state and users
   // are not required to call Reset() on such objects.
-  Hmac &Reset();
+  Hmac& Reset();
 
   // Updates this hash object by adding the contents of |data|.
-  Hmac &Update(ByteContainerView data);
+  Hmac& Update(ByteContainerView data);
 
   // Computes the hmac of the data added so far and writes it to |digest|.
   // Returns a non-OK status on error.
