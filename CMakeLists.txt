@@ -142,7 +142,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 endif()
 
 # HACK we need to add the following global compiler flag in order to compile fourq
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(WIN32)
+  add_compile_definitions(__WINDOWS__)
+else()
   add_compile_definitions(__LINUX__)
 endif()
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64|ARM64")
